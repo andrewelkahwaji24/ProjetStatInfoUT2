@@ -1,0 +1,28 @@
+
+DONNEES INCENDIES
+commune : nom de la commune
+code_INSEE : code de la commune
+annee : année de l'incendie
+mois : mois de l'incendie
+jour : jour de 1ère alerte de l'incendie
+heure : heure de 1ère  alerte de l'incendie
+nature_inc_prim : nature primaire de l'incendie (Accidentelle / Involontaire / Malveillance)
+nature_sec_inc : nature secondaire de l'incendie (particulier / travaux)
+
+DONNEES GEOGRAPHIQUES
+"latitude                        : latitude de la commune, négative au sud (en degrés et millionièmes de degré)"
+"longitude                        : longitude de la commune, négative à l’ouest de GREENWICH (en degrés et millionièmes de degré)"
+Altitude                      : altitude de la commune (en m)
+
+DONNEES METEOROLOGIQUES
+"Le préfixe ""_med"" adossé aux caractéristiques ci-après indique que la valeur est la médiane calculée sur la période 1950-2022"
+RR_med                   : cumul mensuel des hauteurs de précipitation (en mm et 1/10)
+NBJRR1_med           : nombre de jours avec RR ≥ 1.0 mm
+NBJRR5_med           : nombre de jours avec RR ≥ 5.0 mm
+NBJRR10_med         : nombre de jours avec RR ≥ 10.0 mm
+Tmin_med                : moyenne mensuelle des températures minimales (TN) quotidiennes (en °C et 1/10)
+Tmax_med               : moyenne mensuelle des températures maximales (TX) quotidiennes (en °C et 1/10)
+Tens_vap_med         : moyenne mensuelle de la tension de vapeur (en hPa et 1/10)
+"Tens_vap_med         : moyenne mensuelle de la force moyenne quotidienne du vent moyenné sur 10 mn (FFM), à 10 m (en m/s et 1/10)"
+Insolation_med        : cumul mensuel des durées totales d’insolation quotidiennes (en mn)
+Rayonnement_med  : cumul mensuel du rayonnement global quotidien (en J/cm2)

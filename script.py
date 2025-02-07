@@ -1,5 +1,1 @@
-import sqlite3 , numpy as np , csv
-BaseDonnees= sqlite3.connect('data.db')
-curs= BaseDonnees.cursor()
-
-
+import sqlite3 , pandas as pd , numpy as np , csv

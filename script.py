@@ -27,5 +27,10 @@ def creer_table_incendies():
             )
         '''
     )
+    #confirme la creation
+    connexion.commit()
+    #fermer le courser et la connexion
+    curs.close()
+    connexion.close()
 
 creer_table_incendies()

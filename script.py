@@ -242,11 +242,11 @@ def menu():
 
         choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
-        if choix1 == "1":
+        if choix1 == 1:
             creer_table_incendies()
-        elif choix1 == "2":
+        elif choix1 == 2:
             creer_table_donnees_meteo()
-        elif choix1 == "3":
+        elif choix1 == 3:
             creer_table_donnees_geo()
         else:
             print("Le numero choisi est invalide ou n'existe pas")
@@ -259,13 +259,13 @@ def menu():
 
         choix2 = int(input("Veuillez choisir une option: "))
 
-        if choix2 == "1":
+        if choix2 == 1:
             print("Injection des données dans la table incendies")
             injecter_donnees_incendies()
-        elif choix2 == "2":
+        elif choix2 == 2:
             print("Injection des données dans la table meteo")
             injecter_donnees_meteo()
-        elif choix2 == "3":
+        elif choix2 == 3:
             print("Injection des données dans la table geo")
             injecter_donnees_geo()
         else:
@@ -277,13 +277,13 @@ def menu():
         print('2. Afficher les donnees de la table Meteo')
         print('3. Afficher les donnees de la table Geo')
         choix3 = int(input("Veuillez choisir une option: "))
-        if choix3 == "1":
+        if choix3 == 1:
             print("Afficher les donnees de la table Incendies")
             afficher_donnees_incendies()
-        elif choix3 == "2":
+        elif choix3 == 2:
             print("Afficher les donnees de la table Meteo")
             afficher_donnees_meteo()
-        elif choix3 == "3":
+        elif choix3 == 3:
             print("Afficher les donnees de la table Geo")
             afficher_donnees_geo()
         else:

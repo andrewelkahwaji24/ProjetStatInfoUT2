@@ -75,6 +75,13 @@ def creer_table_donnees_geo():
     curs.close()
     connexion.close()
 
+#Creation de la table Departements WAEL TASK
+def creer_table_Departements():
+
+#Creation de la Table Incendies_Departements HANS and Andrew TASK
+
+def creer_table_incendiesdepartements():
+
 #Phase d'injection des donees
 #Injection des donees dans la Table Incendies
 def injecter_donnees_incendies():
@@ -110,6 +117,7 @@ def injecter_donnees_incendies():
         print("Les donnees ont etes importes avec succees")
     except:
         raise ValueError("Erreur lors de l'importation des données.")
+
 
 #Injection des donees dans la Table Geo
 def injecter_donnees_geo():
@@ -185,6 +193,13 @@ def injecter_donnees_meteo():
     except Exception as e:
         raise ValueError("Erreur lors de l'importation des données.")
 
+#Injection des donees dans la Table Departements WAEL TASK
+
+def injection_table_departements():
+
+#Injection des donees dans la table Incendies_Departements HANS and Andrew TASK
+def injection_table_incendiesdepartements():
+
 #Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
     connexion, curs = connecterdb()
@@ -239,6 +254,8 @@ def menu():
         print('1. Creer table incendies')
         print('2. Creer table donnees meteo')
         print('3. Creer table donnees geo')
+        print('4. Creer Table Departements')
+        print('5. Creer Table Incendies_Departements')
 
         choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
@@ -248,6 +265,10 @@ def menu():
             creer_table_donnees_meteo()
         elif choix1 == 3:
             creer_table_donnees_geo()
+        elif choix1 == 4:
+            creer_table_Departements()
+        elif choix1 == 5:
+            creer_table_incendiesdepartements()
         else:
             print("Le numero choisi est invalide ou n'existe pas")
 
@@ -256,6 +277,8 @@ def menu():
         print('1. Injecter des donnees dans la table incendies')
         print('2. Injecter des donnees dans la table meteo')
         print('3. Injecter des donnees dans la table geo')
+        print('4. Injection des donees dans la Table Departements')
+        print('5. Injection des donees dans la Table Incendies_Departements')
 
         choix2 = int(input("Veuillez choisir une option: "))
 
@@ -268,6 +291,12 @@ def menu():
         elif choix2 == 3:
             print("Injection des données dans la table geo")
             injecter_donnees_geo()
+        elif choix2 == 4:
+            print("Injection des donees dans la Table Departements")
+            injection_table_departements()
+        elif choix2==5:
+            print("Injection des donnes dans la Table Incendies_Departements")
+            injection_table_incendiesdepartements()
         else:
             print("Le numero choisi est invalide ou n'existe pas")
 

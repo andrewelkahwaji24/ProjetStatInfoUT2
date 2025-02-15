@@ -75,8 +75,20 @@ def creer_table_donnees_geo():
     curs.close()
     connexion.close()
 
-#Creation de la table Departements WAEL TASK
+# Création de la table Departements - WAEL TASK
 def creer_table_Departements():
+    connexion, curs = connecterdb()
+    curs.execute("""
+    CREATE TABLE IF NOT EXISTS Departements (
+        Departement_nom TEXT PRIMARY KEY,
+        Code_Insee INTEGER NOT NULL UNIQUE
+    )
+    """)
+    connexion.commit()
+    curs.close()
+    connexion.close()
+
+
 
 #Creation de la Table Incendies_Departements HANS and Andrew TASK
 
@@ -192,10 +204,25 @@ def injecter_donnees_meteo():
 
     except Exception as e:
         raise ValueError("Erreur lors de l'importation des données.")
-
+ 
 #Injection des donees dans la Table Departements WAEL TASK
 
 def injection_table_departements():
+    import pandas as pd
+    chemin_fichier = r"Fichiers et Outils/Departements Table/Departments Table.xlsx"
+    
+    df = pd.read_excel(chemin_fichier)
+    connexion, curs = connecterdb()
+    
+    donnees = [(ligne["Département"], ligne["Code INSEE"]) for _, ligne in df.iterrows()]
+    
+    curs.executemany("INSERT INTO Departements (Departement_nom, Code_Insee) VALUES (?, ?);", donnees)
+    connexion.commit()
+    curs.close()
+    connexion.close()
+    print("Table créée et données insérées avec succès.")
+
+
 
 #Injection des donees dans la table Incendies_Departements HANS and Andrew TASK
 def injection_table_incendiesdepartements():

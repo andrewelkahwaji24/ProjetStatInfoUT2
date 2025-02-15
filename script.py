@@ -93,7 +93,7 @@ def creer_table_Departements():
 #Creation de la Table Incendies_Departements HANS and Andrew TASK
 
 def creer_table_incendiesdepartements():
-
+    print('ok')
 #Phase d'injection des donees
 #Injection des donees dans la Table Incendies
 def injecter_donnees_incendies():
@@ -208,26 +208,134 @@ def injecter_donnees_meteo():
 #Injection des donees dans la Table Departements WAEL TASK
 
 def injection_table_departements():
-    chemin_fichier = "Fichiers et Outils/Departements Table/Departments Table.csv"
-    # Lire les données correctement
-    donnees = []
-    with open(chemin_fichier, "r", encoding="utf-8") as fichier:
-        lecteur = csv.DictReader(fichier)  # Ouvrir correctement le fichier
-        for ligne in lecteur:
-            donnees.append((ligne["Département"], int(ligne["Code INSEE"])))  # Convertir en tuple
+    # Liste des départements et leurs codes INSEE
+    donnees = [
+        ("Ain", 1),
+        ("Aisne", 2),
+        ("Allier", 3),
+        ("Alpes-de-Haute-Provence", 4),
+        ("Hautes-Alpes", 5),
+        ("Alpes-Maritimes", 6),
+        ("Ardèche", 7),
+        ("Ardennes", 8),
+        ("Ariège", 9),
+        ("Aube", 10),
+        ("Aude", 11),
+        ("Aveyron", 12),
+        ("Bouches-du-Rhône", 13),
+        ("Calvados", 14),
+        ("Cantal", 15),
+        ("Charente", 16),
+        ("Charente-Maritime", 17),
+        ("Cher", 18),
+        ("Corrèze", 19),
+        ("Côte-d'Or", 21),
+        ("Côtes-d'Armor", 22),
+        ("Creuse", 23),
+        ("Dordogne", 24),
+        ("Doubs", 25),
+        ("Drôme", 26),
+        ("Eure", 27),
+        ("Eure-et-Loir", 28),
+        ("Finistère", 29),
+        ("Gard", 30),
+        ("Haute-Garonne", 31),
+        ("Gers", 32),
+        ("Gironde", 33),
+        ("Hérault", 34),
+        ("Ille-et-Vilaine", 35),
+        ("Indre", 36),
+        ("Indre-et-Loire", 37),
+        ("Isère", 38),
+        ("Jura", 39),
+        ("Landes", 40),
+        ("Loir-et-Cher", 41),
+        ("Loire", 42),
+        ("Haute-Loire", 43),
+        ("Loire-Atlantique", 44),
+        ("Loiret", 45),
+        ("Lot", 46),
+        ("Lot-et-Garonne", 47),
+        ("Lozère", 48),
+        ("Maine-et-Loire", 49),
+        ("Manche", 50),
+        ("Marne", 51),
+        ("Haute-Marne", 52),
+        ("Mayenne", 53),
+        ("Meurthe-et-Moselle", 54),
+        ("Meuse", 55),
+        ("Morbihan", 56),
+        ("Moselle", 57),
+        ("Nièvre", 58),
+        ("Nord", 59),
+        ("Oise", 60),
+        ("Orne", 61),
+        ("Pas-de-Calais", 62),
+        ("Puy-de-Dôme", 63),
+        ("Pyrénées-Atlantiques", 64),
+        ("Hautes-Pyrénées", 65),
+        ("Pyrénées-Orientales", 66),
+        ("Bas-Rhin", 67),
+        ("Haut-Rhin", 68),
+        ("Rhône", 69),
+        ("Haute-Saône", 70),
+        ("Saône-et-Loire", 71),
+        ("Sarthe", 72),
+        ("Savoie", 73),
+        ("Haute-Savoie", 74),
+        ("Paris", 75),
+        ("Seine-Maritime", 76),
+        ("Seine-et-Marne", 77),
+        ("Yvelines", 78),
+        ("Deux-Sèvres", 79),
+        ("Somme", 80),
+        ("Tarn", 81),
+        ("Tarn-et-Garonne", 82),
+        ("Var", 83),
+        ("Vaucluse", 84),
+        ("Vendée", 85),
+        ("Vienne", 86),
+        ("Haute-Vienne", 87),
+        ("Vosges", 88),
+        ("Yonne", 89),
+        ("Territoire de Belfort", 90),
+        ("Essonne", 91),
+        ("Hauts-de-Seine", 92),
+        ("Seine-Saint-Denis", 93),
+        ("Val-de-Marne", 94),
+        ("Val-d'Oise", 95),
+        ("Guadeloupe", 971),
+        ("Martinique", 972),
+        ("Guyane", 973),
+        ("La Réunion", 974),
+        ("Mayotte", 976)
+    ]
 
-    # Insérer les données dans la base SQLite
-    connexion, curs = connecterdb()
-    curs.executemany("INSERT INTO Departements (Departement_nom, Code_Insee) VALUES (?, ?);", donnees)
-    connexion.commit()
-    curs.close()
-    connexion.close()
-    
-    print("Table créée et données insérées avec succès.")
+    try:
+        # Se connecter à la base de données
+        connexion, curs = connecterdb()
+
+        # Exécuter l'insertion des données dans la table
+        curs.executemany(
+            "INSERT INTO Departements (Departement_nom, Code_Insee) VALUES (?, ?);",
+            donnees
+        )
+
+        # Valider la transaction
+        connexion.commit()
+
+        # Fermer la connexion
+        curs.close()
+        connexion.close()
+
+        print("Les données des départements ont été insérées avec succès.")
+
+    except Exception as e:
+        # En cas d'erreur, afficher le message et annuler la transaction
+        print("Erreur lors de l'insertion des données des départements :")
 
 
 #Injection des donees dans la table Incendies_Departements HANS and Andrew TASK
-def injection_table_incendiesdepartements():
 
 #Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
@@ -261,6 +369,19 @@ def afficher_donnees_meteo():
 
     curs.execute("SELECT * FROM donnees_meteo")
     lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
+#Affiche des doneees dans la Table Departements
+
+def afficher_donees_Departements():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM Departements")
+    lignes=curs.fetchall()
 
     for ligne in lignes:
         print(ligne)
@@ -334,6 +455,7 @@ def menu():
         print('1. Afficher les doneees de la table Incendies')
         print('2. Afficher les donnees de la table Meteo')
         print('3. Afficher les donnees de la table Geo')
+        print('4. Afficher les donnees de la table Departements')
         choix3 = int(input("Veuillez choisir une option: "))
         if choix3 == 1:
             print("Afficher les donnees de la table Incendies")
@@ -344,6 +466,10 @@ def menu():
         elif choix3 == 3:
             print("Afficher les donnees de la table Geo")
             afficher_donnees_geo()
+        elif choix3== 4:
+            print('Afficher les doneees de la Table Departements')
+            afficher_donees_Departements()
+
         else:
             print("Le numero choisi est invalide ou n'existe pas")
     else:

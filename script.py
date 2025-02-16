@@ -443,19 +443,19 @@ def afficher_doneees_IncendiesDep():
 def menu():
     print("Bienvenue dans le Menu du Programme du Projet Stat Info")
     print("Veuillez choisir une des options suivantes selon votre besoin")
-    print("1. Créer les tables")
-    print("2. Injecter des données dans les tables")
-    print("3. Afficher des donnees d'une table")
+    print("1. 📌 Créer les tables")
+    print("2. 📥 Injecter des données dans les tables")
+    print("3. 📊 Afficher des donnees d'une table")
 
     choix = input("Entrez le numero de choix que vous voulez choisir: ")
 
     if choix == "1":
         print('Bienvenue dans le Module de Creation des tables')
-        print('1. Creer table incendies')
-        print('2. Creer table donnees meteo')
-        print('3. Creer table donnees geo')
-        print('4. Creer Table Departements')
-        print('5. Creer Table Incendies_Departements')
+        print('1. 📌 Creer table incendies')
+        print('2. 📌 Creer table donnees meteo')
+        print('3. 📌 Creer table donnees geo')
+        print('4. 📌 Creer Table Departements')
+        print('5. 📌 Creer Table Incendies_Departements')
 
         choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
@@ -474,11 +474,11 @@ def menu():
 
     elif choix == "2":
         print("Bienvenue dans le Module de l'injection des tables avec des donnees")
-        print('1. Injecter des donnees dans la table incendies')
-        print('2. Injecter des donnees dans la table meteo')
-        print('3. Injecter des donnees dans la table geo')
-        print('4. Injection des donees dans la Table Departements')
-        print('5. Injection des donees dans la Table Incendies_Departements')
+        print('1. 📥 Injecter des donnees dans la table incendies')
+        print('2. 📥 Injecter des donnees dans la table meteo')
+        print('3. 📥 Injecter des donnees dans la table geo')
+        print('4. 📥 Injection des donees dans la Table Departements')
+        print('5. 📥 Injection des donees dans la Table Incendies_Departements')
 
         choix2 = int(input("Veuillez choisir une option: "))
 
@@ -502,11 +502,11 @@ def menu():
 
     elif choix=="3":
         print("Bienvenue dans le module de l'affichage des tables")
-        print('1. Afficher les doneees de la table Incendies')
-        print('2. Afficher les donnees de la table Meteo')
-        print('3. Afficher les donnees de la table Geo')
-        print('4. Afficher les donnees de la table Departements')
-        print('5. Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
+        print('1. 📊 Afficher les doneees de la table Incendies')
+        print('2. 📊 Afficher les donnees de la table Meteo')
+        print('3. 📊 Afficher les donnees de la table Geo')
+        print('4. 📊 Afficher les donnees de la table Departements')
+        print('5. 📊 Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
         choix3 = int(input("Veuillez choisir une option: "))
         if choix3 == 1:
             print("Afficher les donnees de la table Incendies")

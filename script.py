@@ -107,6 +107,7 @@ def creer_table_incendiesdepartements():
     connexion.commit()
     curs.close()
     connexion.close()
+    print("La Table Incendies Departements a ete creer avec succees")
 
 
 #Phase d'injection des donees

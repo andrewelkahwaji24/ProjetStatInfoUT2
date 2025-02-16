@@ -528,18 +528,23 @@ def menu():
             if choix3 == 1:
                 print("📊 Afficher les donnees de la table Incendies")
                 afficher_donnees_incendies()
+                print("Affichage de la Table Incendies completes avec succees ✅")
             elif choix3 == 2:
                 print("📊 Afficher les donnees de la table Meteo")
                 afficher_donnees_meteo()
+                print("Affichage de la Table Meteo completes avec succees ✅")
             elif choix3 == 3:
                 print("📊 Afficher les donnees de la table Geo")
                 afficher_donnees_geo()
+                print("Affichage de la Table Geo completes avec succees ✅")
             elif choix3== 4:
                 print('📊 Afficher les doneees de la Table Departements')
                 afficher_donees_Departements()
+                print("Affichage de la Table Departements completes avec succees ✅")
             elif choix3==5:
                 print('📊 Afficher les donnees de la Table Incidenes_Departements')
                 afficher_doneees_IncendiesDep()
+                print("Affichage de la Table Incendies_Departements completes avec succees ✅")
             else:
                 print("⚠️Le numero choisi est invalide ou n'existe pas⚠️")
         elif choix=="4":

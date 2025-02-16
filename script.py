@@ -93,7 +93,22 @@ def creer_table_Departements():
 #Creation de la Table Incendies_Departements HANS and Andrew TASK
 
 def creer_table_incendiesdepartements():
-    print('ok')
+    connexion , curs = connecterdb()
+    curs.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Incendies_Departements (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        numero_departement TEXT NOT NULL,
+        nom_departement TEXT NOT NULL,
+        nombre_incident INTEGER NOT NULL
+        )
+        """
+    )
+    connexion.commit()
+    curs.close()
+    connexion.close()
+
+
 #Phase d'injection des donees
 #Injection des donees dans la Table Incendies
 def injecter_donnees_incendies():
@@ -336,6 +351,25 @@ def injection_table_departements():
 
 
 #Injection des donees dans la table Incendies_Departements HANS and Andrew TASK
+def injection_table_incendies_departements():
+    connexion, curs = connecterdb()
+
+    curs.execute("""
+        INSERT INTO Incendies_Departements (numero_departement, nom_departement, nombre_incident)
+        SELECT 
+            SUBSTR(i.code_INSEE, 1, 2) AS numero_departement,
+            d.Departement_nom,
+            COUNT(*) AS nombre_incident
+        FROM incendies i
+        INNER JOIN Departements d ON SUBSTR(i.code_INSEE, 1, 2) = CAST(d.Code_Insee AS TEXT)
+        GROUP BY numero_departement
+    """)
+
+    connexion.commit()
+    curs.close()
+    connexion.close()
+    print("Les données des incendies par département ont été insérées avec succès.")
+
 
 #Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
@@ -446,7 +480,7 @@ def menu():
             injection_table_departements()
         elif choix2==5:
             print("Injection des donnes dans la Table Incendies_Departements")
-            injection_table_incendiesdepartements()
+            injection_table_incendies_departements()
         else:
             print("Le numero choisi est invalide ou n'existe pas")
 

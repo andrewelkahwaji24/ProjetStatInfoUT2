@@ -497,18 +497,23 @@ def menu():
             if choix2 == 1:
                 print("📥 Injection des données dans la table incendies")
                 injecter_donnees_incendies()
+                print("Injection effectue avec succees dans la Table Incendies ✅")
             elif choix2 == 2:
                 print("📥 Injection des données dans la table meteo")
                 injecter_donnees_meteo()
+                print("Injection effectue avec succees dans la Table Meteos ✅")
             elif choix2 == 3:
                 print("📥 Injection des données dans la table geo")
                 injecter_donnees_geo()
+                print("Injection effectue avec succees dans la Table Geo ✅")
             elif choix2 == 4:
                 print("📥 Injection des donees dans la Table Departements")
                 injection_table_departements()
+                print("Injection effectue avec succees dans la Table Departements ✅")
             elif choix2==5:
                 print("📥 Injection des donnes dans la Table Incendies_Departements")
                 injection_table_incendies_departements()
+                print("Injection effectue avec succees dans la Table Incendies_Departements ✅")
             else:
                 print("⚠️Le numero choisi est invalide ou n'existe pas⚠️")
 

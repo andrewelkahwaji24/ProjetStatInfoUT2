@@ -9,6 +9,7 @@ def connecterdb(database="data.db"):
     return connexion, curs
 
 #Creation des Tables
+
 #Creation de la Table Incendies
 def creer_table_incendies():
     connexion, curs = connecterdb()
@@ -33,6 +34,7 @@ def creer_table_incendies():
     # Fermer le curseur et la connexion
     curs.close()
     connexion.close()
+    print("La Table des Icendies a ete creer avec succees")
 
 #Creation de la Table de Donees Meteo
 def creer_table_donnees_meteo():
@@ -57,6 +59,7 @@ def creer_table_donnees_meteo():
     connexion.commit()
     curs.close()
     connexion.close()
+    print("La Table donnees meteo creer avec succees")
 
 #Creation de la Table Donnees Geo
 def creer_table_donnees_geo():
@@ -74,6 +77,7 @@ def creer_table_donnees_geo():
     connexion.commit()
     curs.close()
     connexion.close()
+    print("La Table donnees geo creer avec succees")
 
 # Création de la table Departements - WAEL TASK
 def creer_table_Departements():
@@ -87,7 +91,7 @@ def creer_table_Departements():
     connexion.commit()
     curs.close()
     connexion.close()
-
+    print("La Table Departements creer avec succees")
 
 
 #Creation de la Table Incendies_Departements HANS and Andrew TASK
@@ -346,7 +350,7 @@ def injection_table_departements():
 
         print("Les données des départements ont été insérées avec succès.")
 
-    except Exception as e:
+    except Exception:
         # En cas d'erreur, afficher le message et annuler la transaction
         print("Erreur lors de l'insertion des données des départements :")
 
@@ -424,6 +428,17 @@ def afficher_donees_Departements():
     curs.close()
     connexion.close()
 
+def afficher_doneees_IncendiesDep():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM Incendies_Departements")
+    lignes=curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
 #Menu de notre Programme
 def menu():
     print("Bienvenue dans le Menu du Programme du Projet Stat Info")
@@ -491,6 +506,7 @@ def menu():
         print('2. Afficher les donnees de la table Meteo')
         print('3. Afficher les donnees de la table Geo')
         print('4. Afficher les donnees de la table Departements')
+        print('5. Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
         choix3 = int(input("Veuillez choisir une option: "))
         if choix3 == 1:
             print("Afficher les donnees de la table Incendies")
@@ -504,6 +520,9 @@ def menu():
         elif choix3== 4:
             print('Afficher les doneees de la Table Departements')
             afficher_donees_Departements()
+        elif choix3==5:
+            print('Afficher les donnees de la Table Incidenes_Departements')
+            afficher_doneees_IncendiesDep()
 
         else:
             print("Le numero choisi est invalide ou n'existe pas")

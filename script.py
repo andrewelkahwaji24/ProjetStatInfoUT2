@@ -441,93 +441,111 @@ def afficher_doneees_IncendiesDep():
 
 #Menu de notre Programme
 def menu():
-    print("Bienvenue dans le Menu du Programme du Projet Stat Info")
-    print("Veuillez choisir une des options suivantes selon votre besoin")
-    print("1. 📌 Créer les tables")
-    print("2. 📥 Injecter des données dans les tables")
-    print("3. 📊 Afficher des donnees d'une table")
+    while True:
+        print("🔹Bienvenue dans le Menu du Programme du Projet Stat Info🔹")
+        print("Veuillez choisir une des options suivantes selon votre besoin")
+        print("1. 📌 Créer les tables")
+        print("2. 📥 Injecter des données dans les tables")
+        print("3. 📊 Afficher des donnees d'une table")
+        print("4. ❌ Quiiter le Menu")
 
-    choix = input("Entrez le numero de choix que vous voulez choisir: ")
+        choix = input("Entrez le numero de choix que vous voulez choisir: ")
 
-    if choix == "1":
-        print('Bienvenue dans le Module de Creation des tables')
-        print('1. 📌 Creer table incendies')
-        print('2. 📌 Creer table donnees meteo')
-        print('3. 📌 Creer table donnees geo')
-        print('4. 📌 Creer Table Departements')
-        print('5. 📌 Creer Table Incendies_Departements')
+        if choix == "1":
+            print('🔹 Bienvenue dans le Module de Creation des tables🔹')
+            print('1. 📌 Creer table incendies')
+            print('2. 📌 Creer table donnees meteo')
+            print('3. 📌 Creer table donnees geo')
+            print('4. 📌 Creer Table Departements')
+            print('5. 📌 Creer Table Incendies_Departements')
 
-        choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
+            choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
-        if choix1 == 1:
-            creer_table_incendies()
-        elif choix1 == 2:
-            creer_table_donnees_meteo()
-        elif choix1 == 3:
-            creer_table_donnees_geo()
-        elif choix1 == 4:
-            creer_table_Departements()
-        elif choix1 == 5:
-            creer_table_incendiesdepartements()
+            if choix1 == 1:
+                print("📌 Creation de la Table Incendies")
+                creer_table_incendies()
+                print("La Creation de la Table Incendies a ete creer avec succees ✅")
+            elif choix1 == 2:
+                print("📌 Creation de la Table Meteo")
+                creer_table_donnees_meteo()
+                print("La Creation de la Table Meteos a ete creer avec succees ✅")
+            elif choix1 == 3:
+                print("📌 Creation de la Table Geo")
+                creer_table_donnees_geo()
+                print("La Creation de la Table Geos a ete creer avec succees ✅")
+            elif choix1 == 4:
+                print("📌 Creation de la Table Departements")
+                creer_table_Departements()
+                print("La Creation de la Table Departements a ete creer avec succees ✅")
+            elif choix1 == 5:
+                print("📌 Creation de la Table Incendies_Departements")
+                creer_table_incendiesdepartements()
+                print("La Creation de la Table Incendies_Departements a ete creer avec succees ✅")
+            else:
+                print("⚠️ Le numero choisi est invalide ou n'existe pas ⚠️")
+
+        elif choix == "2":
+            print("🔹Bienvenue dans le Module de l'injection des tables avec des donnees🔹")
+            print('1. 📥 Injecter des donnees dans la table incendies')
+            print('2. 📥 Injecter des donnees dans la table meteo')
+            print('3. 📥 Injecter des donnees dans la table geo')
+            print('4. 📥 Injection des donees dans la Table Departements')
+            print('5. 📥 Injection des donees dans la Table Incendies_Departements')
+
+            choix2 = int(input("Veuillez choisir une option: "))
+
+            if choix2 == 1:
+                print("📥 Injection des données dans la table incendies")
+                injecter_donnees_incendies()
+            elif choix2 == 2:
+                print("📥 Injection des données dans la table meteo")
+                injecter_donnees_meteo()
+            elif choix2 == 3:
+                print("📥 Injection des données dans la table geo")
+                injecter_donnees_geo()
+            elif choix2 == 4:
+                print("📥 Injection des donees dans la Table Departements")
+                injection_table_departements()
+            elif choix2==5:
+                print("📥 Injection des donnes dans la Table Incendies_Departements")
+                injection_table_incendies_departements()
+            else:
+                print("⚠️Le numero choisi est invalide ou n'existe pas⚠️")
+
+        elif choix=="3":
+            print("Bienvenue dans le module de l'affichage des tables")
+            print('1. 📊 Afficher les doneees de la table Incendies')
+            print('2. 📊 Afficher les donnees de la table Meteo')
+            print('3. 📊 Afficher les donnees de la table Geo')
+            print('4. 📊 Afficher les donnees de la table Departements')
+            print('5. 📊 Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
+            choix3 = int(input("Veuillez choisir une option: "))
+            if choix3 == 1:
+                print("📊 Afficher les donnees de la table Incendies")
+                afficher_donnees_incendies()
+            elif choix3 == 2:
+                print("📊 Afficher les donnees de la table Meteo")
+                afficher_donnees_meteo()
+            elif choix3 == 3:
+                print("📊 Afficher les donnees de la table Geo")
+                afficher_donnees_geo()
+            elif choix3== 4:
+                print('📊 Afficher les doneees de la Table Departements')
+                afficher_donees_Departements()
+            elif choix3==5:
+                print('📊 Afficher les donnees de la Table Incidenes_Departements')
+                afficher_doneees_IncendiesDep()
+            else:
+                print("⚠️Le numero choisi est invalide ou n'existe pas⚠️")
+        elif choix=="4":
+            confirmation = input("❓Etes vous sur de vouloir quiiter le menu du Projet Stat Info?")
+            if confirmation == "o" or confirmation == "ok" or confirmation == "yes" or confirmation == "Oui" or confirmation == "si" or confirmation == "oui":
+                print("👋 Merci d'avoir d'utilise le programme A bientot!")
+                break
+            else:
+                print("✅ Retour au menu...")
         else:
-            print("Le numero choisi est invalide ou n'existe pas")
-
-    elif choix == "2":
-        print("Bienvenue dans le Module de l'injection des tables avec des donnees")
-        print('1. 📥 Injecter des donnees dans la table incendies')
-        print('2. 📥 Injecter des donnees dans la table meteo')
-        print('3. 📥 Injecter des donnees dans la table geo')
-        print('4. 📥 Injection des donees dans la Table Departements')
-        print('5. 📥 Injection des donees dans la Table Incendies_Departements')
-
-        choix2 = int(input("Veuillez choisir une option: "))
-
-        if choix2 == 1:
-            print("Injection des données dans la table incendies")
-            injecter_donnees_incendies()
-        elif choix2 == 2:
-            print("Injection des données dans la table meteo")
-            injecter_donnees_meteo()
-        elif choix2 == 3:
-            print("Injection des données dans la table geo")
-            injecter_donnees_geo()
-        elif choix2 == 4:
-            print("Injection des donees dans la Table Departements")
-            injection_table_departements()
-        elif choix2==5:
-            print("Injection des donnes dans la Table Incendies_Departements")
-            injection_table_incendies_departements()
-        else:
-            print("Le numero choisi est invalide ou n'existe pas")
-
-    elif choix=="3":
-        print("Bienvenue dans le module de l'affichage des tables")
-        print('1. 📊 Afficher les doneees de la table Incendies')
-        print('2. 📊 Afficher les donnees de la table Meteo')
-        print('3. 📊 Afficher les donnees de la table Geo')
-        print('4. 📊 Afficher les donnees de la table Departements')
-        print('5. 📊 Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
-        choix3 = int(input("Veuillez choisir une option: "))
-        if choix3 == 1:
-            print("Afficher les donnees de la table Incendies")
-            afficher_donnees_incendies()
-        elif choix3 == 2:
-            print("Afficher les donnees de la table Meteo")
-            afficher_donnees_meteo()
-        elif choix3 == 3:
-            print("Afficher les donnees de la table Geo")
-            afficher_donnees_geo()
-        elif choix3== 4:
-            print('Afficher les doneees de la Table Departements')
-            afficher_donees_Departements()
-        elif choix3==5:
-            print('Afficher les donnees de la Table Incidenes_Departements')
-            afficher_doneees_IncendiesDep()
-
-        else:
-            print("Le numero choisi est invalide ou n'existe pas")
-    else:
-        print("Le numero choisi est invalide ou n'existe pas")
+            print("⚠️Le numero choisi est invalide ou n'existe pas⚠️")
 
 
 # Appel de la fonction menu

@@ -439,6 +439,123 @@ def afficher_doneees_IncendiesDep():
     curs.close()
     connexion.close()
 
+
+#Phase d'exportation des doneees en CSV Comma Separated Values
+
+#Exportation des donees de la Table Incendies
+def export_doneees_incendies(fichier_output="Exports/export_incendies.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM incendies")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Incendies ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite")
+    except Exception as e:
+        print("Erreur lors de l'exportation des données")
+
+#Exportation des doneees de la Table Meteo
+def export_doneees_meteo(fichier_output="Exports/export_meteo.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM donnees_meteo")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Meteo ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite")
+    except Exception as e:
+        print("Erreur lors de l'exportation des données")
+
+#Exportation des donnees de la Table Geo
+def export_doneees_geo(fichier_output="Exports/export_geo.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM donnees_geo")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Geo ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite")
+    except Exception as e:
+        print("Erreur lors de l'exportation des données")
+
+#Exportarion des donnees de la Table Departements
+def export_doneees_departements(fichier_output="Exports/export_departements.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM Departements")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Departements ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite")
+    except Exception as e:
+        print("Erreur lors de l'exportation des données")
+
+#Exportation des donees de la Table Incendies_Departements
+def export_doneees_incendies_dep(fichier_output="Exports/export_Incendies_Departements.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM Incendies_Departements")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Incedies Departements ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite")
+    except Exception as e:
+        print("Erreur lors de l'exportation des données")
 #Menu de notre Programme
 def menu():
     while True:
@@ -447,7 +564,8 @@ def menu():
         print("1. 📌 Créer les tables")
         print("2. 📥 Injecter des données dans les tables")
         print("3. 📊 Afficher des donnees d'une table")
-        print("4. ❌ Quiiter le Menu")
+        print("4. 📦Exporter des doneees d'une table")
+        print("5. ❌ Quiiter le Menu")
 
         choix = input("Entrez le numero de choix que vous voulez choisir: ")
 
@@ -547,7 +665,33 @@ def menu():
                 print("Affichage de la Table Incendies_Departements completes avec succees ✅")
             else:
                 print("⚠️Le numero choisi est invalide ou n'existe pas⚠️")
-        elif choix=="4":
+        elif choix == "4":
+            print("Bienvenue dans le module de l'exportation des donees d'une table")
+            print("1. 📦 Exporter les donees de la Table Incendies")
+            print("2. 📦 Exporter les donees de la Table Meteo")
+            print("3. 📦 Exporter les donees de la Table Geo")
+            print("4. 📦 Exporter les donees de la Table Departements")
+            print("5. 📦 Exporter les donees de la Table Incendies_Departements")
+            choix4 = int(input("Veuillez choisir une option"))
+            if choix4 == 1:
+                print("La procedure de l'exportation des donees pour la Table Incendies a commencee")
+                export_doneees_incendies()
+            elif choix4 == 2:
+                print("La procedure de l'exportation des donees pour la Table Meteo a commencee")
+                export_doneees_meteo()
+            elif choix4 == 3:
+                print("La procedure de l'exportation des donees pour la Table Geo a commencee")
+                export_doneees_geo()
+            elif choix4 == 4:
+                print("La procedure de l'exportation des donees pour la Table Departements a commencee")
+                export_doneees_departements()
+            elif choix4 == 5:
+                print("La procedure de l'exportation des donees pour la Table Incendies_Departements a commencee")
+                export_doneees_incendies_dep()
+            else:
+                print("⚠️Le numero choisi est invalide ou n'existe pas⚠️")
+
+        elif choix=="5":
             confirmation = input("❓Etes vous sur de vouloir quiiter le menu du Projet Stat Info?")
             if confirmation == "o" or confirmation == "ok" or confirmation == "yes" or confirmation == "Oui" or confirmation == "si" or confirmation == "oui":
                 print("👋 Merci d'avoir d'utilise le programme A bientot!")

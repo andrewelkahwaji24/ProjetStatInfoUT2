@@ -1,7 +1,7 @@
 ---
 title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
-date: "15/04/2025"
+date: "09/05/2025"
 output:
   pdf_document: 
     toc: true
@@ -9,6 +9,8 @@ output:
   html_document: 
     toc: true
     toc_depth: 3
+
+
 ---
  
 ## 1. Objectif du Projet
@@ -43,5 +45,62 @@ La création de la base de données commence par la création d'un fichier qui s
 Une fois le fichier de la base de données créé, il est important de pouvoir y accéder afin de manipuler les données. Pour cela, une fonction de connexion est nécessaire. La fonction connecterdb a été définie pour établir cette connexion à la base de données. Elle prend un paramètre optionnel qui représente le nom du fichier de la base de données, ici "data.db". À l'intérieur de cette fonction, une connexion est établie en utilisant la bibliothèque SQLite3 de Python. La méthode sqlite3.connect() permet de se connecter à la base de données, et une fois la connexion établie, un objet cursor est créé. Ce curseur permet d'exécuter des requêtes SQL sur la base de données. Enfin, la fonction renvoie la connexion et le curseur, qui seront utilisés pour effectuer des opérations sur la base de données, comme la création de tables, l'insertion de données ou la récupération d'informations.
 
 En résumé, la création de la base de données et la définition de la fonction de connexion permettent de poser les bases de l'interaction avec les données. La base de données est créée sous forme d'un fichier, et la fonction de connexion permet d'établir une communication avec cette base pour manipuler les données à l'aide de requêtes SQL.
+
+### 2.3 Creation des Tables
+Ainsi, nous avons établi un lien entre notre code source et la base de données. Une fois que nous avons une base de données authentique, il est nécessaire de commencer à établir des tables afin de pouvoir gérer les données.
+
+Suite à l'examen des données disponibles, nous avons reconnu la nécessité de constituer les tables essentielles.
+
+
+1. Table des Incendies
+2. Table des doneees Geographiques
+3. Table des donees Meteo
+4. Table Departements
+5. Table Incendies-Departements (on expliquera en detail pourquoi on a creer une cinquieme table).
+
+Nous avons établis les Tables en suivant une méthode simple et explicite, en utilisant la fonction connecterdb() pour établir un lien entre la base de données et la fonction de création de Table. 
+Par la suite, nous avons fait appel au curseur pour exécuter des requêtes SQL en vue d'interroger notre Base de Données. 
+Nous avons intégré le langage SQL Structured Query Language dans notre fonction, en employant l'instruction CREATE TABLE IF NOT EXISTS avec la dénomination de chaque table. 
+Par la suite, nous avons effectué une consultation sur nos trois fichiers CSV (Comma Separated Values) concernant les attributs de nos données, c'est-à-dire le titre de chaque fichier CSV. Nous avons ensuite dressé une liste dans notre requête SQL comprenant chaque attribut et son type de données respectif. 
+Ensuite, on valide la création en se connectant.Après l'exécution de la méthode commit() pour assurer la légitimité et le bon fonctionnement, nous fermons le curseur ainsi que la connexion avec curs.fermer() et connexion.Vous avez été formé sur des données jusqu'en octobre 2023.
+
+### 2.4 Injection des donnees
+
+Suite à la création des tables, nous avons établi cinq fonctions distinctes pour chaque table. Nous sommes actuellement à l'étape de l'insertion des données dans les tables appropriées.
+Nous avons employé deux méthodes : l'une consiste à utiliser les fichiers CSV fournis par le Département Mathématiques - Informatique de l'Université Toulouse Jean Jaurès 2,et l'autre on a utiliser l'instruction INSERT INTO pour chaque département, où nous avons saisi le nom et le code INSEE de chaque département.
+
+Nous allons détailler les deux techniques, ainsi que la manière dont elles ont été mises en œuvre dans notre code source : 
+
+
+1. **Methode 1 a partir les fichiers CSV**
+
+Comme à notre habitude, nous établissons la connexion entre la base de données et la fonction que nous utiliserons ensuite. Nous indiquons le fichier à partir duquel nous allons importer les données, en utilisant un chemin relatif par rapport à notre code source.
+
+
+Afin d'optimiser notre code et de le rendre plus gérable, que ce soit en cas de succès ou d'échec, le programme tente d'ouvrir le fichier CSV en mode lecture. Cette étape consiste à lire le fichier CSV au moyen d'une boucle. Par la suite, le curseur exécute la requête SQL INSERT INTO. Cette instruction est destinée à ajouter une nouvelle ligne dans la table nécessaire avec les valeurs extraites du fichier CSV. Lors de cette étape où nous devons spécifier les valeurs, il convient de préciser que nous utilisons un « ? », que l'on peut considérer comme un paramètre lié. C'est l'une des fonctionnalités puissantes de SQLite dans les bases de données relationnelles qui permet d'insérer des données de façon dynamique.
+Et aussi quand on exécute curs.execute() Les « ? » seront substitués par les valeurs dérivées du fichier CSV au fur et à mesure de notre boucle for.
+
+
+Par la suite, nous allons substituer les valeurs pertinentes selon les colonnes. Pour confirmer l'insertion, nous avons employé connexion.commit().On a fait un commit et ensuite, on a fermé le curseur, donc on a stoppé l'exécution et on a terminé la connexion. 
+
+Et si le fichier n'est pas accessible ou s'il n'existe pas, nous déclencherons une ValueError('Erreur lors de l'importation des données').
+
+2. **Methode 2 a partir d'une Insertion SQL**
+
+Dans la deuxième phase de ce projet, nous avons utilisé l'intégration des données à partir d'un dictionnaire. Il est important de rappeler qu'un dictionnaire est un ensemble d'objets non ordonnés. Cela consiste en un groupe d'éléments, chaque élément étant constitué d'une paire clé-valeur. 
+
+Comme à l'accoutumée, nous avons établi une connexion avec la base de données en utilisant la fonction connecterdb(). Nous avons ensuite activé le curseur. Puis, nous avons exploité l'un des outils puissants de SQLite le curs.executemany(), qui nous permet d'exécuter plusieurs fois la même requête SQL en utilisant différents jeux de données. Elle est plus performante que curs.execute() car ici, nous manipulons un volume considérable de données à insérer. 
+
+Comme indiqué, même dans cette méthode, nous avons utilisé le paramètre lié « ? » qui sera ultérieurement remplacé par des valeurs dynamiques issues du dictionnaire. 
+
+Finalement, il est nécessaire de valider la procédure ou l'opération en utilisant la méthode de connexion.Vous êtes formé sur des données jusqu'à octobre 2023. Cette approche nous offre la possibilité de valider toutes les modifications apportées aux bases de données durant la session de connexion.Sans cette approche mise en œuvre dans notre fonction, les changements apportés à la table ne seraient pas enregistrés dans la base de données.
+
+
+Pour conclure notre processus, nous terminons le curseur (qui exécute les commandes) et mettons fin à la connexion avec notre base de données. 
+
+Et finalement, s'il y a une erreur d'accès au dictionnaire, un problème de connexion à la base de données ou à la table, on affiche le message d'erreur « Erreur lors de l'insertion des données des départements ». 
+
+## 3. Partie Statistique
+
 
 

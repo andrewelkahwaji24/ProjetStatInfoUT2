@@ -1,37 +1,35 @@
 ---
 title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
-author: "Andrew El Kahwaji , Wael Aboulkacem  , Hans Kanen Soobbooroyen"
+author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "15/04/2025"
 output:
-  pdf_document: default
-  html_document: default
-  toc: true        
-  toc_depth: 3     
+  pdf_document: 
+    toc: true
+    toc_depth: 3
+  html_document: 
+    toc: true
+    toc_depth: 3
 ---
+ 
+## 1. Objectif du Projet
 
-## Objectif du Projet
+Ce projet qui est liee a l'UE Statistique Inferentielle / Projet Stat-Info qui vise à mieux comprendre les raisons et cause des incendies en analysant des données statistiques. L'idée principale est de voir comment différentes variables influencent l'étendue des incendies, en utilisant des outils statistiques et informatiques. 
 
-Ce projet se concentre sur l'analyse des incendies à travers l'étude statistique de données. L'objectif principal est d'analyser l'impact de plusieurs variables sur l'étendue des incendies, à l'aide d'outils statistiques et informatiques. Le projet comporte la construction d'une base de données à partir des fichiers fournis, l'analyse statistique univariée et bivariée des variables pertinentes, ainsi que l'exploration de problématiques spécifiques liées aux incendies. Les résultats sont analysés à l'aide des outils de régression et des tests statistiques pour identifier les relations entre les variables, notamment l'impact de l'altitude sur la superficie parcourue par l'incendie.
+## 2. Partie Informatique
 
-## Introduction
+La partie Informatique de notre Projet consiste à effectuer les démarches suivantes :
 
-Le projet présenté dans ce rapport explore l'impact de certaines variables sur [indiquer le phénomène étudié]. Le problème est formulé comme une analyse des relations entre [expliquer brièvement les variables principales] et la variable cible.
+1. Création de la Base de données
+2. Création de la connexion entre la Base de données et notre code source
+3. Établissement des Tables dans la Base de Données
+4. Insertion de données dans les tables
+5. Présenter les informations des tables dans la console
+6. Exportation des données dans les tables dans des fichiers CSV
+ 
+### 2.1 Création de la base de données
 
-L'objectif principal de ce projet est de démontrer les méthodes de régression pour analyser ces relations. La méthodologie employée repose sur des techniques statistiques descriptives et inférentielles, ainsi que des méthodes de programmation en R pour la manipulation et l'analyse des données.
+Les données sont collectées à partir de sources disponibles et intégrées dans une base de données structurée pour une analyse statistique approfondie.
 
-Le rapport se divise en plusieurs sections : nous commencerons par présenter les données et la méthodologie utilisée, suivis des résultats obtenus à partir des analyses statistiques et des conclusions tirées.
+### 2.2 Analyse des données
 
-## Méthodologie
-
-Les données utilisées dans ce projet proviennent de [indiquer la source des données]. Nous avons appliqué les techniques suivantes :
-
-1. **Préparation des données** : Nettoyage des données et gestion des valeurs manquantes.
-2. **Analyse exploratoire des données** : Visualisation des variables et identification des tendances.
-3. **Méthodes statistiques** : Application de la régression linéaire pour étudier la relation entre les variables.
-4. **Tests statistiques** : Test d'hypothèses pour valider les résultats.
-
-## Analyse des données
-
-Voici un exemple de code R pour charger et visualiser les données :
-
-
+Cette section décrit les différentes méthodes d’analyse statistique appliquées aux données des incendies, en explorant les relations entre diverses variables.

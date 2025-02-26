@@ -25,11 +25,16 @@ La partie Informatique de notre Projet consiste à effectuer les démarches suiv
 4. Insertion de données dans les tables
 5. Présenter les informations des tables dans la console
 6. Exportation des données dans les tables dans des fichiers CSV
- 
-### 2.1 Création de la base de données
+
+### 2.1 Bibliotheques Utilisees
+
+Dans notre Partie Informatique on a utilisee le Language de Programmation Python de plus pour pouvoir effectuer la manipulation des doneees de la maniere optimale on a utilisee les bibliotheques necessaires:
+
+1. sqlite3
+SQLite3 est une bibliothèque peu aisée qui facilite l'incorporation d'une base de données au sein d'une application, sans nécessiter l'utilisation d'un serveur séparé. Elle offre la possibilité de stocker et de gérer des données grâce aux requêtes SQL, ce qui la rend pratique pour des projets nécessitant une base de données locale. SQLite3 est parfaitement adaptée aux applications simples, car elle offre une gestion aisée des données, que ce soit pour les ajouts, les changements ou les suppressions, tout en restant performante et peu gourmande en ressources.
+2. csv
+### 2.2 Création de la base de données
 
 Les données sont collectées à partir de sources disponibles et intégrées dans une base de données structurée pour une analyse statistique approfondie.
 
-### 2.2 Analyse des données
 
-Cette section décrit les différentes méthodes d’analyse statistique appliquées aux données des incendies, en explorant les relations entre diverses variables.

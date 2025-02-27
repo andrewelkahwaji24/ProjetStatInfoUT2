@@ -17,7 +17,9 @@ output:
 
 Ce projet qui est liee a l'UE Statistique Inferentielle / Projet Stat-Info qui vise à mieux comprendre les raisons et cause des incendies en analysant des données statistiques. L'idée principale est de voir comment différentes variables influencent l'étendue des incendies, en utilisant des outils statistiques et informatiques. 
 
-## 2. Partie Informatique
+## 2. Partie Informative
+
+## 3. Partie Informatique
 
 La partie Informatique de notre Projet consiste à effectuer les démarches suivantes :
 
@@ -31,6 +33,12 @@ La partie Informatique de notre Projet consiste à effectuer les démarches suiv
 ### 2.1 Definition de quelques terme Informatiques
 
 Avant d'initier notre compte-rendu en détaillant les phases et procédures que nous avons mises en place pour l'administration optimale de la section informatique de notre projet, nous allons définir quelques notions qui offriront un socle solide au lecteur. 
+
+1.  Un **INNER JOIN** est un type de jointure en SQL (Structured Query Language) qui autorise la fusion de lignes issues de deux tables basées sur un critère déterminé. L'idée est de ne conserver que les lignes qui ont une correspondance dans les deux tables. De plus, si une ligne d'une table n'a pas de correspondance dans l'autre table, elle ne sera pas intégrée au résultat. 
+
+2.  Un **Cast** est une fonction SQL appelée CAST nous donne la possibilité de transformer un type de données en un autre.
+
+
 
 ### 2.2 Bibliotheques Utilisees
 
@@ -170,14 +178,25 @@ Cette table nous donne la possibilité de réaliser des analyses quantitatives c
 
 **Explication du code concernant l'injection des donnees dans la Table:**
 
+Comme habituellement, nous allons d'abord établir une connexion avec la base de données en utilisant la fonction que nous avons définie dans notre programme, nommée connecterdb(). Ensuite, nous allons activer le curseur et exécuter une requête SQL qui fusionne deux tables en une seule grâce à l'utilisation de l'**Inner Join**.
+
+
+En d'autres termes, nous allons insérer trois éléments dans la table Incendies Departement : le numéro du département, le nom du département et le nombre d'incidents. Pour commencer, nous allons sélectionner le numéro du département. Étant donné que notre table Incendies contient des codes INSEE qui ne représentent pas seulement le numéro du département, mais également celui de la commune, nous utiliserons SUBSTR(i.code_INSEE , 1 , 2) comme numéro du département. Cela signifie que nous allons extraire les deux premiers chiffres du code INSEE de l'incendie qui correspondent au numéro du département. Nous récupérerons d'autre part le nom du département à partir de la table Départements. Enfin, nous compterons le nombre total d'incendies pour chaque département à l'aide de la fonction préétablie en SQL COUNT.
+
+
+Après avoir sélectionné tous les termes que nous allons utiliser, il est temps de mettre en œuvre la jointure définie précédemment. Nous devons associer chaque incendie à son département en liant le numéro de département dérivé du code INSEE au code départemental dans la table Départements. De plus, nous allons regrouper les incendies par département afin d'obtenir un total pour chaque département.
+
+**Que gagne-t-on en faisant cette requête ?** 
+
+En construisant cette table, nous avons fusionné deux tables indépendantes afin de centraliser les données souhaitées. Dans cette table , nous avions comptabilisé le nombre d'incendies par département sur le territoire français, nous permettant ainsi d'avoir une représentation plus claire du nombre d'incendies à l'échelle nationale. Par ailleurs, nous allons approfondir notre analyse dans la section Statistique de notre projet.
 
 
 
-## 3. Partie Statistique
+## 4. Partie Statistique
 
-### 3.1 Definitions des concepts statistiques
+### 4.1 Definitions des concepts statistiques
 
-### 3.2 Description des donnees
+### 4.2 Description des donnees
 
 
 

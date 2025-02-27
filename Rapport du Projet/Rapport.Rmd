@@ -100,6 +100,48 @@ Pour conclure notre processus, nous terminons le curseur (qui exécute les comma
 
 Et finalement, s'il y a une erreur d'accès au dictionnaire, un problème de connexion à la base de données ou à la table, on affiche le message d'erreur « Erreur lors de l'insertion des données des départements ». 
 
+### 2.5 Affichage des donnees 
+
+Tout comme dans tout programme ou projet informatique, nous développons des fonctionnalités pour illustrer notre tâche ou les modifications effectuées sur les données ou les tables dans notre console ou terminal. 
+
+Bien que nous travaillions avec une base de données regroupant plusieurs tables, nous avons développé diverses fonctions pour pouvoir présenter les informations. 
+
+Ainsi, nous employons une méthode explicite et rigoureuse. Tout d'abord, nous devons nous connecter à la base de données. Ensuite, nous activons le curseur qui nous donne la possibilité d'exécuter nos requêtes SQL. 
+ 
+
+Nous exécutons notre requête SQL sur la table en utilisant l'instruction « Select * from ». Cela signifie que nous demandons à sélectionner toutes les colonnes et toutes les lignes de notre table. Ensuite, on définit une variable nommée lignes qui prend pour valeur curs.fetchall() est une méthode prédéfinie en SQLite qui nous offre la possibilité de rassembler toutes les lignes du résultat de la requête SQL et de les sauvegarder dans la variable lignes. 
+
+En outre, il est possible d'y définir la variable « lignes », qui est une collection de tuples, chaque tuple représentant une ligne de la table correspondante. 
+
+Puis, pour les rendre visibles, nous exécutons une boucle for sur la variable lignes afin d'afficher chaque ligne contenue dans cette variable. 
+
+Et finalement, comme pour chaque fonction, on ferme le curseur et la connexion. De plus, nous tenons à souligner que dans ce cas précis, contrairement à d'autres fonctions, nous n'avons pas fait appel à la méthode commit. C'est dû au fait que cette fonction n'a pas impliqué de modifications.
+
+### 2.6 Exportation des donnees sous forme CSV 
+
+Tout d'abord, nous allons expliquer pourquoi cette fonction est importante pour notre projet. Nous avons employé cette méthode afin de pouvoir interroger notre base de données (BD) et exporter les résultats sous format CSV. Ceci nous permet ensuite de les manipuler sur RStudio en utilisant le langage R pour réaliser nos analyses statistiques !
+
+Ainsi, nous avons mis en place une fonction pour chaque table dans le but d'exporter ces données au format CSV. Ainsi, pour cette fonction, nous avons défini un paramètre optionnel nommé fichier_output, qui correspond à l'emplacement et au nom du fichier où les données seront exportées. De plus, nous utilisons un chemin relatif plutôt qu'un chemin absolu. 
+
+Ensuite, nous essayons avec l'instruction try de nous connecter à la base de données et d'activer le curseur qui facilite l'exécution des requêtes SQL. La méthode curs.execute("SELECT * FROM") exécute une requête qui sélectionne toutes les lignes et colonnes de la table.
+
+Ensuite, on définit une variable nommée lignes qui prend pour valeur curs.fetchall() est une méthode prédéfinie en SQLite qui nous offre la possibilité de rassembler toutes les lignes du résultat de la requête SQL et de les sauvegarder dans la variable lignes. 
+
+En outre, il est possible d'y définir la variable « lignes », qui est une collection de tuples, chaque tuple représentant une ligne de la table correspondante. 
+
+De plus, nous utilisons curs.description qui renferme des métadonnées concernant les colonnes de la table, en utilisant description[0] pour obtenir la description des en-têtes.
+
+Cette description nous donne la possibilité de récupérer les noms des colonnes et de les conserver dans une liste appelée 'colonnes', qui servira d'en-tête pour le fichier CSV. 
+
+À présent, nous devons accéder au fichier CSV pour écrire les données que nous possédons. Nous ouvrons donc le fichier en mode écriture ('w') avec un encodage UTF-8. L'outil csv.writer(fichier) est utilisé pour générer un objet qui permet d’écrire dans le fichier CSV. La méthode writerow(colonnes) écrit les en-têtes des colonnes tandis que writerows(lignes) écrit toutes les informations ligne par ligne. 
+
+Finalement, on ferme le curseur et on met fin à la connexion avec la base de données. 
+
+Dans chaque programme, il est indispensable pour les développeurs de gérer les erreurs afin d'améliorer l'expérience client. Ainsi, nous avons mis en place deux types d'erreurs : une erreur liée à la base de données (comme une connexion à la base de données) et une exception telle qu'une erreur liée à la table correspondante. Cette dernière peut être affichée en cas de problème d'accès au fichier, d'encodage, etc. 
+ 
+### 2.7 Menu du Programme 
+
+
 ## 3. Partie Statistique
 
 

@@ -30,6 +30,8 @@ La partie Informatique de notre Projet consiste à effectuer les démarches suiv
 
 ### 2.1 Definition de quelques terme Informatiques
 
+Avant d'initier notre compte-rendu en détaillant les phases et procédures que nous avons mises en place pour l'administration optimale de la section informatique de notre projet, nous allons définir quelques notions qui offriront un socle solide au lecteur. 
+
 ### 2.2 Bibliotheques Utilisees
 
 Dans notre Partie Informatique on a utilisee le Language de Programmation Python de plus pour pouvoir effectuer la manipulation des doneees de la maniere optimale on a utilisee les bibliothèques necessaires:

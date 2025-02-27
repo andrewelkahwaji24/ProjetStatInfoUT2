@@ -19,6 +19,16 @@ Ce projet qui est liee a l'UE Statistique Inferentielle / Projet Stat-Info qui v
 
 ## 2. Partie Informative
 
+Dans cette partie on va detailler des informations de type informartive avant de detailler notre partie Informatique et Stastique 
+
+### 2.1 C'est quoi un incendie 
+
+L'incendie est un phénomène de combustion incontrôlée dans le temps et l'espace, dont la principale caractéristique est sa capacité à se propager rapidement.
+
+Pour qu'une combustion puisse se produire, trois éléments habituellement réunis dans le « triangle du feu » sont indispensables : un matériau combustible, un agent comburant et une source d'énergie d'activation.
+
+
+
 ## 3. Partie Informatique
 
 La partie Informatique de notre Projet consiste à effectuer les démarches suivantes :

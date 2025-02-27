@@ -160,6 +160,19 @@ De plus, pour clarifier, si l'utilisateur entre un numéro qui n'est pas compris
 
 ### 2.9 La Table Incendies-Departements
 
+Pour rester cohérents, nous allons insister sur les tables que nous utiliserons pour expliquer comment nous avons eu l'idée de réaliser cette table en premier lieu. Nous avons une table Incendies qui contient des informations sur tous les incendies qui ont été menés sur le territoire français. Il convient également de souligner que la France est un État-nation depuis 1789, suite à la Révolution française, et qu'elle est reconnue comme une nation souveraine. Ainsi, ce pays est constitué d'une collection de villes, qui elles-mêmes regroupent une série de départements. En d'autres mots, la France est constituée de départements qui sont à leur tour composés de villes.
+
+Ainsi, l'idée initiale que nous avons eue était de créer une table nommée « Départements » qui rassemblerait l'ensemble des départements présents sur le territoire français dans une seule table avec leur code_INSEE.
+
+**Pourquoi est-il nécessaire de créer cette table des départements ?**
+
+Cette table nous donne la possibilité de réaliser des analyses quantitatives concernant le nombre d'incendies dans un département. 
+
+**Explication du code concernant l'injection des donnees dans la Table:**
+
+
+
+
 ## 3. Partie Statistique
 
 ### 3.1 Definitions des concepts statistiques

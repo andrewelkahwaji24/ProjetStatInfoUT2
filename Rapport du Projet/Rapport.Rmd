@@ -27,6 +27,13 @@ L'incendie est un phénomène de combustion incontrôlée dans le temps et l'esp
 
 Pour qu'une combustion puisse se produire, trois éléments habituellement réunis dans le « triangle du feu » sont indispensables : un matériau combustible, un agent comburant et une source d'énergie d'activation.
 
+### 2.2 Causes des Incendies
+
+Les raisons des incendies sont multiples, cependant, une grande majorité d'entre eux provient d'une action humaine.Comme la négligence, malveillance, préparation insuffisante aux catastrophes naturelles comme les séismes, les tsunamis
+
+
+
+
 
 
 ## 3. Partie Informatique
@@ -209,6 +216,11 @@ En construisant cette table, nous avons fusionné deux tables indépendantes afi
 ### 4.2 Description des donnees
 
 
+## 5. Ressources
+
+Jean-Luc CARTAULT, CLAIR, B., & KAPP, D. (2025, January 29). INCENDIES : Le phénomène physique. Encyclopædia Universalis. https://www.universalis.fr/encyclopedie/incendies/2-le-phenomene-physique/
+
+Contributeurs aux projets Wikimedia. (2004, July 23). feu violent et destructeur. Wikipedia.org; Fondation Wikimedia, Inc. https://fr.wikipedia.org/wiki/Incendie
 
 
 

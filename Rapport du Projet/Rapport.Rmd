@@ -19,7 +19,7 @@ Ce projet qui est liee a l'UE Statistique Inferentielle / Projet Stat-Info qui v
 
 ## 2. Partie Informative
 
-Dans cette partie on va detailler des informations de type informartive avant de detailler notre partie Informatique et Stastique 
+Dans cette partie, nous allons considérer des données informatives avant de passer à la description de notre section Informatique et Statistique.
 
 ### 2.1 C'est quoi un incendie 
 
@@ -32,8 +32,9 @@ Pour qu'une combustion puisse se produire, trois éléments habituellement réun
 Les raisons des incendies sont multiples, cependant, une grande majorité d'entre eux provient d'une action humaine.Comme la négligence, malveillance, préparation insuffisante aux catastrophes naturelles comme les séismes, les tsunamis
 
 
+### 2.3 Consequences des Incendies 
 
-
+Les effets des incendies sont nombreux et graves. Elles ont des conséquences sur l'homme (asphyxie, intoxication due aux fumées, brûlures sévères), sur les entreprises (diminution de la production, dégâts matériels, licenciements) et sur l'environnement (contamination de l'air et de l'eau, ravage du paysage). Les principales causes de décès liés aux incendies sont l'intoxication par le monoxyde de carbone et la diminution de l'oxygène, plutôt que les flammes elles-mêmes. Pour plus d'informations, veuillez consulter l'article intégral ici.
 
 
 ## 3. Partie Informatique
@@ -49,11 +50,21 @@ La partie Informatique de notre Projet consiste à effectuer les démarches suiv
 
 ### 2.1 Definition de quelques terme Informatiques
 
-Avant d'initier notre compte-rendu en détaillant les phases et procédures que nous avons mises en place pour l'administration optimale de la section informatique de notre projet, nous allons définir quelques notions qui offriront un socle solide au lecteur. 
+Avant d'initier notre compte-rendu en détaillant les phases et procédures que nous avons mises en place pour l'administration optimale de la section informatique de notre projet, nous allons définir quelques notions qui offriront un socle solide au lecteur.
 
-1.  Un **INNER JOIN** est un type de jointure en SQL (Structured Query Language) qui autorise la fusion de lignes issues de deux tables basées sur un critère déterminé. L'idée est de ne conserver que les lignes qui ont une correspondance dans les deux tables. De plus, si une ligne d'une table n'a pas de correspondance dans l'autre table, elle ne sera pas intégrée au résultat. 
+1.  Une **Base de Données** regroupe un ensemble d'informatins qui est organise pour etre accessible , gere et mise a jour facilement par ses utilisateurs
 
-2.  Un **Cast** est une fonction SQL appelée CAST nous donne la possibilité de transformer un type de données en un autre.
+2.  Une **Base de Données Relationnelle**.Il s'agit d'un type de base de données qui se distingue des autres par sa capacité à établir des liens entre diverses données. 
+
+3.  Un **INNER JOIN** est un type de jointure en SQL (Structured Query Language) qui autorise la fusion de lignes issues de deux tables basées sur un critère déterminé. L'idée est de ne conserver que les lignes qui ont une correspondance dans les deux tables. De plus, si une ligne d'une table n'a pas de correspondance dans l'autre table, elle ne sera pas intégrée au résultat. 
+
+4.  Un **Cast()** est une fonction SQL appelée CAST nous donne la possibilité de transformer un type de données en un autre.
+
+5.  Une **Requête SQL** s'apparente à une question formulée à la base de données afin d'extraire des informations de celle-ci.
+
+6.  La fonction SQL **COUNT()** est une commande qui nous donne la possibilité de déterminer le nombre de lignes dans un ensemble de résultats. Elle est fréquemment utilisée en conjonction avec la clause GROUP BY pour recenser le nombre d'occurrences d'une valeur spécifique.
+
+7.  La fonction **SUBSTR()** nous donne la possibilité d'extraire une portion d'une chaîne de caractères. Elle est souvent employée dans le domaine du développement pour l'édition de texte dans une ou plusieurs bases de données. 
 
 
 
@@ -218,9 +229,24 @@ En construisant cette table, nous avons fusionné deux tables indépendantes afi
 
 ## 5. Ressources
 
+###  5.1 Ressources sur la Partie Informative
+
 Jean-Luc CARTAULT, CLAIR, B., & KAPP, D. (2025, January 29). INCENDIES : Le phénomène physique. Encyclopædia Universalis. https://www.universalis.fr/encyclopedie/incendies/2-le-phenomene-physique/
 
 Contributeurs aux projets Wikimedia. (2004, July 23). feu violent et destructeur. Wikipedia.org; Fondation Wikimedia, Inc. https://fr.wikipedia.org/wiki/Incendie
+
+Risque incendie : causes, conséquences et moyens de lutte. (2021). Preventica.com. https://www.preventica.com/magazine/dossiers/prevention-du-risque-incendie-comment-garantir-la-securite-des-personnes-et-des-biens-11032021/risque-incendie-causes-consequences-et-moyens-de-lutte
+
+### 5.2 Ressources sur la Partie Informatique 
+
+Cours et Tutoriels sur le Langage SQL. (2025). SQL. https://sql.sh/
+
+Python Software Foundation. (2019). 3.7.3 Documentation. Python.org. https://docs.python.org/3/
+
+Bien démarrer avec la documentation GitHub - Documentation GitHub. (2025). GitHub Docs. https://docs.github.com/fr/get-started
+
+Qu’est-ce qu’une base de données ? Définition et fonctionnement. (2021, July 26). Hubspot.fr. https://blog.hubspot.fr/marketing/base-de-donnees
+
 
 
 

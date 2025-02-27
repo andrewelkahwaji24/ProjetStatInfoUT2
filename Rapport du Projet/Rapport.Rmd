@@ -15,7 +15,12 @@ output:
  
 ## 1. Objectif du Projet
 
-Ce projet qui est liee a l'UE Statistique Inferentielle / Projet Stat-Info qui vise à mieux comprendre les raisons et cause des incendies en analysant des données statistiques. L'idée principale est de voir comment différentes variables influencent l'étendue des incendies, en utilisant des outils statistiques et informatiques. 
+Ce projet qui est liée a l'UE Statistique Inferentielle / Projet Stat-Info qui vise à mieux comprendre les raisons et cause des incendies en analysant des données statistiques. L'idée principale est de voir comment différentes variables influencent l'étendue des incendies, en utilisant des outils statistiques et informatiques. 
+
+Nous avons structuré notre rapport en trois sections principales : la Partie Informative, qui servira à présenter des informations générales afin d'aider le lecteur à comprendre notre projet avant de plonger dans les détails et les spécificités des sections Informatique et Statistique. La section Informatique va examiner minutieusement les techniques que nous avons mises en œuvre dans notre projet, en précisant toutes les informations indispensables. Et pour finir, la section Statistique qui nous aidera à détailler toutes les études que nous avons réalisées avec les diagrammes appropriés, l'interprétation et la solution de nos enjeux.
+
+Finalement, nous avons constitué une section supplémentaire qui nous sert à énumérer tous les sites internet que nous avons consultés pour la rédaction et l'élaboration de notre projet. Il est à noter que les références sont présentées au format APA !
+
 
 ## 2. Partie Informative
 
@@ -223,6 +228,14 @@ En construisant cette table, nous avons fusionné deux tables indépendantes afi
 ## 4. Partie Statistique
 
 ### 4.1 Definitions des concepts statistiques
+
+Avant de commencer à donner des définitions, il est essentiel de nous baser sur le concept initial, c'est-à-dire la définition du terme Statistique. On peut définir ou représenter la statistique comme l'ensemble des méthodes et techniques utilisées pour collecter, analyser, interpréter et présenter des données numériques.
+
+Dans ce projet, nous allons nous concentrer sur la branche des statistiques connue sous le nom de Statistique Inférentielle. 
+
+La statistique inférentielle est une discipline des statistiques qui s'appuie sur les données d'un échantillon pour formuler des déductions ou effectuer des généralisations à propos d'une population plus vaste. 
+
+À l'opposé de la statistique descriptive qui se concentre sur le résumé ou la description des traits d'un ensemble de données, la statistique inférentielle offre la possibilité de réaliser des estimations et des tests concernant les paramètres d'une population basée sur des données issues d'un échantillon. Elle s'appuie sur la théorie des probabilités, ce qui rend possible des inférences rigoureuses et quantifiables.
 
 ### 4.2 Description des donnees
 

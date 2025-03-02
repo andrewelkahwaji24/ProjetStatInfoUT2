@@ -74,15 +74,27 @@ Avant d'initier notre compte-rendu en détaillant les phases et procédures que 
 
 7.  La fonction **SUBSTR()** nous donne la possibilité d'extraire une portion d'une chaîne de caractères. Elle est souvent employée dans le domaine du développement pour l'édition de texte dans une ou plusieurs bases de données. 
 
-Left join , rightjoin , 
+8.  L'opération **RIGHT JOIN** permet d'unir deux tables en préservant l'ensemble des lignes de la table située à droite et en reliant celles se trouvant à gauche lorsqu'elles sont présentes. Des valeurs nulles sont insérées pour combler les colonnes absentes.
+
+9.  L'opération **LEFT JOIN** fusionne deux tables tout en conservant l'ensemble des lignes de la table de gauche, en associant celles de droite uniquement lorsqu'elles sont présentes. Des valeurs nulles sont insérées pour combler les colonnes absentes.
+
 
 ### 2.2 Bibliotheques Utilisees
 
 Dans notre Partie Informatique on a utilisee le Language de Programmation Python de plus pour pouvoir effectuer la manipulation des doneees de la maniere optimale on a utilisee les bibliothèques necessaires:
 
-1. sqlite3
-SQLite3 est une bibliothèque peu aisée qui facilite l'incorporation d'une base de données au sein d'une application, sans nécessiter l'utilisation d'un serveur séparé. Elle offre la possibilité de stocker et de gérer des données grâce aux requêtes SQL, ce qui la rend pratique pour des projets nécessitant une base de données locale. SQLite3 est parfaitement adaptée aux applications simples, car elle offre une gestion aisée des données, que ce soit pour les ajouts, les changements ou les suppressions, tout en restant performante et peu gourmande en ressources.
-2. csv , numpy , random , os 
+1. **SQLite3** est une bibliothèque peu aisée qui facilite l'incorporation d'une base de données au sein d'une application, sans nécessiter l'utilisation d'un serveur séparé. Elle offre la possibilité de stocker et de gérer des données grâce aux requêtes SQL, ce qui la rend pratique pour des projets nécessitant une base de données locale. SQLite3 est parfaitement adaptée aux applications simples, car elle offre une gestion aisée des données, que ce soit pour les ajouts, les changements ou les suppressions, tout en restant performante et peu gourmande en ressources.
+
+2.  La bibliothèque **CSV** de Python facilite la lecture et l'écriture de fichiers CSV, en fournissant des fonctionnalités pour gérer les données sous forme de lignes et de colonnes, tout en prenant en charge les séparateurs et les guillemets.
+
+3.  **NumPy** est une bibliothèque Python performante dédiée au calcul scientifique, proposant des structures de données telles que les arrays multidimensionnels et des fonctions optimisées pour le traitement numérique.
+
+4.  La bibliothèque **random** de Python offre la possibilité de produire des nombres au hasard et d'exécuter des sélections aléatoires à partir de listes ou d'intervalles de valeurs, grâce à des fonctions conçues pour simuler des événements fortuits.
+
+5. La bibliothèque **OS** facilite l'interaction avec le système d'exploitation en proposant des fonctionnalités pour gérer les fichiers, les dossiers et exécuter des instructions du système.
+
+
+
 
 ### 2.3 Création de la base de données
 

@@ -21,8 +21,7 @@ Nous avons structuré notre rapport en trois sections principales : la Partie In
 
 Finalement, nous avons constitué une section supplémentaire qui nous sert à énumérer tous les sites internet que nous avons consultés pour la rédaction et l'élaboration de notre projet. Il est à noter que les références sont présentées au format APA !
 
-*****
-De plus on voudrais indiquer que durant le travail sur notre projet sur les deux parties Informatique et Statistique on avait travailler sur GitHub une plateforme collaborative qui permet qui nous permet de travailler en groupe sur un code ensemble en définissant les etapes de chaque membre du groupe. Enfin cette plateforme nous permet en plus de mixer le code complet en un seul fichier et pas besoin de rassembler les codes ensembles.
+Il faut également noter que lors de notre projet, qui se divisait en deux parties : Informatique et Statistique, nous avons utilisé GitHub. Cette plateforme collaborative nous a permis de travailler collectivement sur un code en définissant les étapes attribuées à chaque membre du groupe. Cette plateforme nous offre aussi la possibilité de fusionner tout le code en un unique fichier, sans nécessité de l'assembler manuellement.
 
 
 ## 2. Partie Informative

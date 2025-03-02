@@ -565,7 +565,7 @@ def menu():
         print("2. 📥 Injecter des données dans les tables")
         print("3. 📊 Afficher des donnees d'une table")
         print("4. 📦Exporter des doneees d'une table")
-        print("5. ❌ Quiiter le Menu")
+        print("5. ❌ Quiter le Menu")
 
         choix = input("Entrez le numero de choix que vous voulez choisir: ")
 

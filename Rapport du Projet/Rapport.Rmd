@@ -21,6 +21,9 @@ Nous avons structuré notre rapport en trois sections principales : la Partie In
 
 Finalement, nous avons constitué une section supplémentaire qui nous sert à énumérer tous les sites internet que nous avons consultés pour la rédaction et l'élaboration de notre projet. Il est à noter que les références sont présentées au format APA !
 
+*****
+De plus on voudrais indiquer que durant le travail sur notre projet sur les deux parties Informatique et Statistique on avait travailler sur GitHub une plateforme collaborative qui permet qui nous permet de travailler en groupe sur un code ensemble en définissant les etapes de chaque membre du groupe. Enfin cette plateforme nous permet en plus de mixer le code complet en un seul fichier et pas besoin de rassembler les codes ensembles.
+
 
 ## 2. Partie Informative
 
@@ -53,11 +56,12 @@ La partie Informatique de notre Projet consiste à effectuer les démarches suiv
 5. Présenter les informations des tables dans la console
 6. Exportation des données dans les tables dans des fichiers CSV
 
+
 ### 2.1 Definition de quelques terme Informatiques
 
 Avant d'initier notre compte-rendu en détaillant les phases et procédures que nous avons mises en place pour l'administration optimale de la section informatique de notre projet, nous allons définir quelques notions qui offriront un socle solide au lecteur.
 
-1.  Une **Base de Données** regroupe un ensemble d'informatins qui est organise pour etre accessible , gere et mise a jour facilement par ses utilisateurs
+1.  Une **Base de Données** regroupe un ensemble d’informations qui est organise pour être accessible , géré et mise a jour facilement par ses utilisateurs
 
 2.  Une **Base de Données Relationnelle**.Il s'agit d'un type de base de données qui se distingue des autres par sa capacité à établir des liens entre diverses données. 
 
@@ -71,7 +75,7 @@ Avant d'initier notre compte-rendu en détaillant les phases et procédures que 
 
 7.  La fonction **SUBSTR()** nous donne la possibilité d'extraire une portion d'une chaîne de caractères. Elle est souvent employée dans le domaine du développement pour l'édition de texte dans une ou plusieurs bases de données. 
 
-
+Left join , rightjoin , 
 
 ### 2.2 Bibliotheques Utilisees
 
@@ -79,7 +83,7 @@ Dans notre Partie Informatique on a utilisee le Language de Programmation Python
 
 1. sqlite3
 SQLite3 est une bibliothèque peu aisée qui facilite l'incorporation d'une base de données au sein d'une application, sans nécessiter l'utilisation d'un serveur séparé. Elle offre la possibilité de stocker et de gérer des données grâce aux requêtes SQL, ce qui la rend pratique pour des projets nécessitant une base de données locale. SQLite3 est parfaitement adaptée aux applications simples, car elle offre une gestion aisée des données, que ce soit pour les ajouts, les changements ou les suppressions, tout en restant performante et peu gourmande en ressources.
-2. csv
+2. csv , numpy , random , os 
 
 ### 2.3 Création de la base de données
 
@@ -237,6 +241,42 @@ La statistique inférentielle est une discipline des statistiques qui s'appuie s
 
 À l'opposé de la statistique descriptive qui se concentre sur le résumé ou la description des traits d'un ensemble de données, la statistique inférentielle offre la possibilité de réaliser des estimations et des tests concernant les paramètres d'une population basée sur des données issues d'un échantillon. Elle s'appuie sur la théorie des probabilités, ce qui rend possible des inférences rigoureuses et quantifiables.
 
+Nous allons définir ci-dessus certains concepts statistiques que nous utiliserons dans notre analyse statistique.
+
+**Définition de la Moyenne**  
+
+La **moyenne arithmétique** d’un ensemble de données est une mesure de tendance centrale qui représente la valeur moyenne autour de laquelle les observations se répartissent. Elle est définie comme le quotient de la somme des valeurs observées par le nombre total d'observations.  
+
+Soit un échantillon \( X = \{x_1, x_2, ..., x_n\} \) de taille \( n \), la moyenne \( \bar{X} \) est donnée par :  
+
+\[
+\bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_i
+\]
+
+Cette mesure est sensible aux valeurs extrêmes et est couramment utilisée en **statistique descriptive** pour résumer un ensemble de données.
+
+**Définition de la Médiane**  
+
+En statistique, la **médiane** est une mesure de tendance centrale qui divise une distribution ordonnée en deux sous-ensembles de même effectif. Elle est définie comme la valeur \( M \) telle que :  
+
+- **50 % des observations sont inférieures ou égales à \( M \)**  
+- **50 % des observations sont supérieures ou égales à \( M \)**  
+
+Mathématiquement, soit un échantillon de taille \( n \) constitué des observations **\( x_1, x_2, ..., x_n \)** classées par ordre croissant :  
+
+- **Si \( n \) est impair** \((n = 2k + 1)\), la médiane est l’élément central :  
+
+\[
+M = x_{k+1}
+\]
+
+- **Si \( n \) est pair** \((n = 2k)\), la médiane est la moyenne des deux valeurs centrales :  
+
+\[
+M = \frac{x_k + x_{k+1}}{2}
+\]
+
+
 ### 4.2 Description des donnees
 
 
@@ -259,6 +299,8 @@ Python Software Foundation. (2019). 3.7.3 Documentation. Python.org. https://doc
 Bien démarrer avec la documentation GitHub - Documentation GitHub. (2025). GitHub Docs. https://docs.github.com/fr/get-started
 
 Qu’est-ce qu’une base de données ? Définition et fonctionnement. (2021, July 26). Hubspot.fr. https://blog.hubspot.fr/marketing/base-de-donnees
+
+### 5.3 Ressources sur la Partie Statistique 
 
 
 

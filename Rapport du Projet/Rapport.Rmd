@@ -290,6 +290,8 @@ M = \frac{x_k + x_{k+1}}{2}
 
 ### 4.2 Description des donnees
 
+Avant de commencer l'étape d'analyse de nos données et leur présentation sous forme de graphiques, nous allons identifier les types de données fournies par notre équipe pédagogique, afin de mener à bien ce projet.
+
 
 ## 5. Ressources
 

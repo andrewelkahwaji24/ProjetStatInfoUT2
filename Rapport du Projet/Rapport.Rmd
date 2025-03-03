@@ -316,3 +316,8 @@ Qu’est-ce qu’une base de données ? Définition et fonctionnement. (2021, Ju
 ### 5.3 Ressources sur la Partie Statistique 
 
 
+Dérobert, N. (2025). Paramètres statistiques - Position et dispersion. Commentprogresser.com. https://commentprogresser.com/statistique-parametre-statistiques-moyenne-mediane-etendue-ecart-type.html
+
+QuestionPro Collaborators. (2023, March 27). Statistiques inférentielles : Définition, types et exemples | QuestionPro. QuestionPro. https://www.questionpro.com/blog/fr/statistiques-inferentielles/
+
+

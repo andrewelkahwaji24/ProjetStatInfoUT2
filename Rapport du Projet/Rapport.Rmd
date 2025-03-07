@@ -5,10 +5,10 @@ date: "09/05/2025"
 output:
   pdf_document: 
     toc: true
-    toc_depth: 3
+    toc_depth: 4
   html_document: 
     toc: true
-    toc_depth: 3
+    toc_depth: 4
 
 
 ---
@@ -306,9 +306,14 @@ Le fichier géographique renferme la latitude, la longitude et l'altitude. Ces i
 
 ### 4.3 Analyse des doneees 
 
-Dans cette partie, une fois que toutes les définitions nécessaires sont établies et que notre base de données est complète, nous serons prêts à analyser les données grâce au langage R. Nous employerons différents types d'histogrammes pour diversifier nos analyses et nous procéderons à une étude approfondie de chaque histogramme.
+Dans cette partie, une fois que toutes les définitions nécessaires sont établies et que notre base de données est complète, nous serons prêts à analyser les données grâce au langage R. Nous emploierons différents types d'histogrammes pour diversifier nos analyses et nous procéderons à une étude approfondie de chaque histogramme.
 
 Nous avons divisé nos problématiques en différentes sections :
+
+#### 4.3.1 Problématiques Géographiques
+#### 4.3.2 Problématiques Géographiques Avancées
+#### 4.3.3 Problématiques Meteo Avancées
+#### 4.3.4 
 
 
 ## 5. Ressources

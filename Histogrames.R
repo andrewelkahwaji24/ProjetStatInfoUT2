@@ -1,12 +1,22 @@
 donnees <- read.csv("../Data/donnees_incendies.csv")
 head(donnees)
 
-hist(donnees$annee,
-     main="Distribution des incendies par année",
-     xlab="Année",
-     col="lightblue",
-     border="black",
-     breaks=10)  # Le nombre de barres (ajustez selon vos besoins)
+# Supprimer les espaces entre les axes et les barres
+
+hist(
+  donnees$annee,
+  main = "Distribution des incendies par année",
+  xlab = "Année",
+  ylab = "Nombre d'incendies",
+  col = "#69b3a2",  # Couleur plus moderne
+  border = "white",  # Contour blanc pour un meilleur rendu
+  breaks = 15,  # Augmenter le nombre de bins si nécessaire
+  las = 1,  # Orientation des labels des axes
+  cex.main = 1.5,  # Taille du titre
+  cex.lab = 1.2,  # Taille des labels des axes
+  cex.axis = 1  # Taille des nombres des axes
+)
+
 
 hist(donnees$mois,
      main="Distribution des incendies par mois",
@@ -49,5 +59,28 @@ plot(density(donnees$surface_parcourue_m2),
      xlab="Surface parcourue (m²)", 
      col="blue")
 
+
+## Évolution des incendies au fil des années
+library(ggplot2)
+
+ggplot(donnees, aes(x = annee)) +
+  geom_histogram(binwidth = 1, fill = "#0073C2FF", color = "white", alpha = 0.8) +  # Bleu pro, bordures blanches
+  geom_vline(aes(xintercept = mean(annee)), color = "red", linetype = "dashed", size = 1) +  # Ligne moyenne
+  labs(
+    title = "Évolution des incendies au fil des années",
+    subtitle = "Analyse de la fréquence des incendies par année",
+    x = "Année",
+    y = "Nombre d'incendies",
+    caption = "Source : Base de données incendies"
+  ) +
+  theme_minimal(base_size = 14) +  # Style épuré
+  theme(
+    plot.title = element_text(face = "bold", size = 16, color = "#333333"),
+    plot.subtitle = element_text(size = 12, color = "#555555"),
+    axis.title = element_text(face = "bold"),
+    axis.text = element_text(size = 12),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_blank()
+  )
 
 

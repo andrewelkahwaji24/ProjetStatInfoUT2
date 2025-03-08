@@ -5,10 +5,10 @@ date: "09/05/2025"
 output:
   pdf_document: 
     toc: true
-    toc_depth: 5
+    toc_depth: 6
   html_document: 
     toc: true
-    toc_depth: 5
+    toc_depth: 6
 
 
 ---
@@ -312,8 +312,7 @@ Dans cette partie, une fois que toutes les définitions nécessaires sont établ
 Nous avons divisé nos problématiques en différentes sections :
 
 #### 4.3.1 Évolution des incendies
-##### 4.3.2.1 Évolution des incendies au fil des années
-
+##### 4.3.1.1 Évolution des incendies au fil des années
 Dans cette problématique, on va interroger sur le nombre d'incendies qui se produisent chaque année sur le territoire français.  Pour répondre à cette question, il est primordial de définir d'abord certains concepts naturels qui faciliteront l'analyse de cette problématique.  Une année se compose de 12 mois et comporte 365 jours. Dans cette étude, nous examinerons l'évolution annuelle du nombre d'incendies à travers tous les départements français, déterminant s'il est en déclin ou en ascension. 
 
 
@@ -363,11 +362,37 @@ Pour conclure notre analyse, l'évolution des incendies de 2012 à 2022 a montr�
 
 Enfin, et c'est crucial, la gestion et la prévention jouent un rôle primordial. Les préfectures, ainsi que les forces de police municipales et nationales, peuvent contribuer à maîtriser ce taux d'incendies attribués à des actes de malveillance ou de négligence.
 
+##### 4.3.1.2 Analyse des heures d’incendie
+##### 4.3.1.3 Évolution décennale des causes d’incendies
+##### 4.3.1.4 Heures critiques de déclenchement
+##### 4.3.1.5 Cyclicité hebdomadaire
+
 #### 4.3.2 Facteurs climatiques et météorologiques
+
+##### 4.3.2.1 Influence de la température sur les incendies
+##### 4.3.2.2 Impact de l'humidité sur les incendies
+##### 4.3.2.3 Relation entre le vent et la propagation des incendies
+##### 4.3.2.4 Impact des conditions météorologiques extrêmes sur les incendies
+##### 4.3.2.5 Effet des radiations solaires sur les incendies
+##### 4.3.2.6 Température et nombre d'incendies par période de la journée
+##### 4.3.2.7 Relation entre la force du vent et la propagation des incendies
+##### 4.3.2.8 Impact de la pression de vapeur sur la vitesse de propagation des incendies
 
 
 #### 4.3.3 Géographie et environnement
+##### 4.3.3.1 Comparaison de la fréquence des incendies dans les régions montagneuses vs basses altitudes
+##### 4.3.3.2 Variation de l'altitude par region
+##### 4.3.3.3 Distance côtière et risque d’incendie
+
+
+
 #### 4.3.4 Urbanisation et activités humaines
+##### 4.3.4.1 Comparaison des incendies entre les zones rurales et urbaines
+##### 4.3.4.2 Activités humaines à risque (travaux/particuliers)
+##### 4.3.4.3 Profil temporel des incendies criminels
+##### 4.3.4.4 Facteurs prédictifs des incendies criminels
+##### 4.3.4.5 Impact cumulé du climat et de l’urbanisation
+
 #### 4.3.5 Vulnérabilité et analyse de survie
 
 ## 5. Ressources

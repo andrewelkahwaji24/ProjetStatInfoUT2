@@ -9,8 +9,6 @@ output:
   html_document: 
     toc: true
     toc_depth: 6
-
-
 ---
  
 ## 1. Objectif du Projet
@@ -69,7 +67,7 @@ La partie Informatique de notre Projet consiste à effectuer les démarches suiv
 6. Exportation des données dans les tables dans des fichiers CSV
 
 
-### 2.1 Definition de quelques terme Informatiques
+### 3.1 Definition de quelques terme Informatiques
 
 Avant d'initier notre compte-rendu en détaillant les phases et procédures que nous avons mises en place pour l'administration optimale de la section informatique de notre projet, nous allons définir quelques notions qui offriront un socle solide au lecteur.
 
@@ -91,8 +89,12 @@ Avant d'initier notre compte-rendu en détaillant les phases et procédures que 
 
 9.  L'opération **LEFT JOIN** fusionne deux tables tout en conservant l'ensemble des lignes de la table de gauche, en associant celles de droite uniquement lorsqu'elles sont présentes. Des valeurs nulles sont insérées pour combler les colonnes absentes.
 
+10. L'unité de mesure de longueur appelée **pouce** (symbole : in ou « ) est utilisée pour quantifier la longueur.
 
-### 2.2 Bibliotheques Utilisees
+11. Un **GeoDataFrame** est une structure de données exploitée dans la librairie GeoPandas afin d'enregistrer des données géospatiales sous forme de tableaux, semblable à un DataFrame de Pandas, mais intégrant des renseignements géométriques additionnels (tels que des points, des lignes ou des polygones).
+
+
+### 3.2 Bibliotheques Utilisees
 
 Dans notre Partie Informatique on a utilisee le Language de Programmation Python de plus pour pouvoir effectuer la manipulation des doneees de la maniere optimale on a utilisee les bibliothèques necessaires:
 
@@ -106,10 +108,14 @@ Dans notre Partie Informatique on a utilisee le Language de Programmation Python
 
 5. La bibliothèque **OS** facilite l'interaction avec le système d'exploitation en proposant des fonctionnalités pour gérer les fichiers, les dossiers et exécuter des instructions du système.
 
+6.  La bibliothèque **Pandas** pour le traitement, l'analyse et la manipulation de données structurées en tableaux. 
+
+7.  **Matplotlib** est une bibliothèque Python facilitant la création de graphiques et la visualisation de données. 
+
+8.  **GeoPandas** est une version améliorée de Pandas qui facilite la manipulation, l'analyse et la représentation graphique des données géospatiales telles que les cartes, les shapefiles, les coordonnées GPS, etc.  Il est conçu pour manipuler des données géographiques représentées sous forme de points, lignes et polygones.
 
 
-
-### 2.3 Création de la base de données
+### 3.3 Création de la base de données
 
 Avant de commencer à travailler sur les données, il est nécessaire de créer une base de données pour les organiser et les structurer de manière efficace. Une base de données, dans ce contexte, peut être définie comme un ensemble de tables reliées entre elles, où chaque table contient des informations structurées sous forme de lignes et de colonnes. 
 
@@ -119,7 +125,7 @@ Une fois le fichier de la base de données créé, il est important de pouvoir y
 
 En résumé, la création de la base de données et la définition de la fonction de connexion permettent de poser les bases de l'interaction avec les données. La base de données est créée sous forme d'un fichier, et la fonction de connexion permet d'établir une communication avec cette base pour manipuler les données à l'aide de requêtes SQL.
 
-### 2.4 Creation des Tables
+### 3.4 Creation des Tables
 Ainsi, nous avons établi un lien entre notre code source et la base de données. Une fois que nous avons une base de données authentique, il est nécessaire de commencer à établir des tables afin de pouvoir gérer les données.
 
 Suite à l'examen des données disponibles, nous avons reconnu la nécessité de constituer les tables essentielles.
@@ -137,7 +143,7 @@ Nous avons intégré le langage SQL Structured Query Language dans notre fonctio
 Par la suite, nous avons effectué une consultation sur nos trois fichiers CSV (Comma Separated Values) concernant les attributs de nos données, c'est-à-dire le titre de chaque fichier CSV. Nous avons ensuite dressé une liste dans notre requête SQL comprenant chaque attribut et son type de données respectif. 
 Ensuite, on valide la création en se connectant.Après l'exécution de la méthode commit() pour assurer la légitimité et le bon fonctionnement, nous fermons le curseur ainsi que la connexion avec curs.fermer() et connexion.Vous avez été formé sur des données jusqu'en octobre 2023.
 
-### 2.5 Injection des donnees
+### 3.5 Injection des donnees
 
 Suite à la création des tables, nous avons établi cinq fonctions distinctes pour chaque table. Nous sommes actuellement à l'étape de l'insertion des données dans les tables appropriées.
 Nous avons employé deux méthodes : l'une consiste à utiliser les fichiers CSV fournis par le Département Mathématiques - Informatique de l'Université Toulouse Jean Jaurès 2,et l'autre on a utiliser l'instruction INSERT INTO pour chaque département, où nous avons saisi le nom et le code INSEE de chaque département.
@@ -173,7 +179,7 @@ Pour conclure notre processus, nous terminons le curseur (qui exécute les comma
 
 Et finalement, s'il y a une erreur d'accès au dictionnaire, un problème de connexion à la base de données ou à la table, on affiche le message d'erreur « Erreur lors de l'insertion des données des départements ». 
 
-### 2.6 Affichage des donnees 
+### 3.6 Affichage des donnees 
 
 Tout comme dans tout programme ou projet informatique, nous développons des fonctionnalités pour illustrer notre tâche ou les modifications effectuées sur les données ou les tables dans notre console ou terminal. 
 
@@ -190,7 +196,7 @@ Puis, pour les rendre visibles, nous exécutons une boucle for sur la variable l
 
 Et finalement, comme pour chaque fonction, on ferme le curseur et la connexion. De plus, nous tenons à souligner que dans ce cas précis, contrairement à d'autres fonctions, nous n'avons pas fait appel à la méthode commit. C'est dû au fait que cette fonction n'a pas impliqué de modifications.
 
-### 2.7 Exportation des donnees sous forme CSV 
+### 3.7 Exportation des donnees sous forme CSV 
 
 Tout d'abord, nous allons expliquer pourquoi cette fonction est importante pour notre projet. Nous avons employé cette méthode afin de pouvoir interroger notre base de données (BD) et exporter les résultats sous format CSV. Ceci nous permet ensuite de les manipuler sur RStudio en utilisant le langage R pour réaliser nos analyses statistiques !
 
@@ -212,7 +218,7 @@ Finalement, on ferme le curseur et on met fin à la connexion avec la base de do
 
 Dans chaque programme, il est indispensable pour les développeurs de gérer les erreurs afin d'améliorer l'expérience client. Ainsi, nous avons mis en place deux types d'erreurs : une erreur liée à la base de données (comme une connexion à la base de données) et une exception telle qu'une erreur liée à la table correspondante. Cette dernière peut être affichée en cas de problème d'accès au fichier, d'encodage, etc. 
  
-### 2.8 Menu du Programme 
+### 3.8 Menu du Programme 
 
 Dans le cadre de notre projet, plus précisément dans la section dédiée à l'informatique, nous avons développé plusieurs méthodes clés pour gérer notre base de données, nos tables, nos informations, etc. 
 
@@ -227,7 +233,7 @@ Pour quitter le menu, ou en d'autres termes, arrêter l'exécution du programme,
 
 De plus, pour clarifier, si l'utilisateur entre un numéro qui n'est pas compris entre 1 et 5, une erreur sera générée sous forme de message dans la console : « Le numéro sélectionné est invalide ou n'existe pas ».
 
-### 2.9 La Table Incendies-Departements
+### 3.9 La Table Incendies-Departements
 
 Pour rester cohérents, nous allons insister sur les tables que nous utiliserons pour expliquer comment nous avons eu l'idée de réaliser cette table en premier lieu. Nous avons une table Incendies qui contient des informations sur tous les incendies qui ont été menés sur le territoire français. Il convient également de souligner que la France est un État-nation depuis 1789, suite à la Révolution française, et qu'elle est reconnue comme une nation souveraine. Ainsi, ce pays est constitué d'une collection de villes, qui elles-mêmes regroupent une série de départements. En d'autres mots, la France est constituée de départements qui sont à leur tour composés de villes.
 
@@ -250,6 +256,62 @@ Après avoir sélectionné tous les termes que nous allons utiliser, il est temp
 **Que gagne-t-on en faisant cette requête ?** 
 
 En construisant cette table, nous avons fusionné deux tables indépendantes afin de centraliser les données souhaitées. Dans cette table , nous avions comptabilisé le nombre d'incendies par département sur le territoire français, nous permettant ainsi d'avoir une représentation plus claire du nombre d'incendies à l'échelle nationale. Par ailleurs, nous allons approfondir notre analyse dans la section Statistique de notre projet.
+
+### 3.10 Initiation de la Carte de France
+
+Dans le cadre de notre projet, nous traitons les incendies sur le sol français. Les données de cette unité d'enseignement contiennent la géolocalisation des incendies sur le territoire français.
+
+Afin de représenter les incendies sur le territoire français de façon abstraite, nous avons utilisé le langage Python accompagné de plusieurs bibliothèques qui nous ont facilité l'élaboration de cette carte. 
+
+Dans cette partie de notre section informatique, nous détaillerons la manière dont nous avons réalisé cette carte. 
+
+**Alors, pour initier, nous avons importé les bibliothèques :**
+
+
+1.  **Geopanda** est une librairie pratique pour manipuler des données géospatiales telles que les fichiers GeoJSON et les cartes. 
+
+2.  **Pandas** est une bibliothèque qui facilite la manipulation de données sous format tabulaire.  Dans notre situation, elle nous donne la possibilité d'importer et de gérer les données relatives aux incendies.
+ 
+3. **matplotlib.pyplot** est une librairie de représentation graphique de données qui facilite la création de graphiques, de cartes et divers autres éléments visuels.  Dans notre situation, elle a été bénéfique pour élaborer la carte et y placer les repères des incidents.
+ 
+
+Une fois que toutes les bibliothèques requises ont été importées, il faut procéder au chargement de la base de données, autrement dit, du fichier CSV.  Le fichier que nous allons importer contient les coordonnées géographiques des incendies, soit la latitude et la longitude. Pandas lira ce fichier sous forme de **DataFrame**, aussi appelé **df**, dans une structure tabulaire. 
+
+Dans ce genre de contexte, nous aurons besoin de télécharger la carte de France, qui offre une vue d'ensemble incluant tous les départements. Nous avons obtenu cette carte depuis data.gouv.fr au format geojson. Afin d'importer ce fichier dans notre programme, nous spécifions le chemin d'accès contenant les contours des départements français.
+
+Pour être plus précis, un fichier **GeoJson** est un format de données géographiques contenant des informations relatives aux formes géographiques et à leurs attributs, dans notre contexte, les départements français. 
+
+Suite au chargement de notre carte en format GeoJSON, nous attribuons une variable afin de permettre la lecture du fichier, ce qui nous amène à utiliser gdp.read_file.  C'est l'une des techniques prédéfinies dans geopandas. Dans cette situation, les informations sont conservées dans un **geodataframe**, une structure de données conçue spécifiquement pour stocker des données spécialisées en matière d'informations géospatiales. 
+
+Après avoir rassemblé toutes les données nécessaires à l'élaboration de notre carte, nous avons intégré les fichiers contenant la localisation des incendies ainsi que le fichier **géospatial**. 
+
+Nous allons maintenant nous concentrer à la création du graphique et à la traçage de l'axe.
+
+**fig, ax = plt.subplots(dpi=150, figsize=(15, 15))** Cette ligne nous autorise à générer une figure et un axe pour le graphique de la carte grâce à **matplotlib**.  L'argument figsize=(15,15) indique que la dimension de l'image sera de 15 pouces par 15 pouces. 
+
+Une fois la carte établie, nous devons débuter le traçage des départements en exploitant les données géospatiales. L'utilisation de la variable **gdf_departements**.plot nous donne la possibilité de représenter les départements sur la carte.
+
+Nous tenons à préciser que **.plot()** est bénéfique pour visualiser les contours des départements à partir du **GeoDataFrame** sur l'axe que nous avons mis en place précédemment.  En outre, l'option **color = « lightgray »** nous donne la possibilité de remplir en une teinte grise claire, tandis que l'option **edgecolor** nous autorise à indiquer que les bordures des départements sont dessinées en noir pour mieux marquer la délimitation de chaque département. 
+
+Après avoir délimité les départements sur la carte, il est nécessaire de marquer, ou autrement dit indiquer, les emplacements des incendies sur le sol français. Pour cela, nous utilisons en premier lieu **ax.scatter()** - l'une des méthodes de **Matplotlib** qui nous permet de créer un nuage de points (ou scatter plot en anglais) sur un graphique. Grâce à cette méthode, nous précisons via le DataFrame les deux colonnes que nous souhaitons utiliser comme longitude et latitude de notre fichier CSV.  Ensuite, on précise que l'on a voulu que la couleur des nuages ou des points soit représentée en rouge, symbolisant le feu ou les incendies, pour être plus précis. 
+
+On précise que l'option **s = 50** signifie que nous modifions la taille des points à 50 pixels, afin de montrer que cette valeur est élevée. Plus cette valeur augmente, plus les points seront grands sur la carte. Finalement, on précise que l'option **label** nous donne la possibilité de définir une légende en identifiant les points qui représentent des incendies. 
+
+Une fois les points ajoutés sur la carte, nous allons déterminer les contours de la carte française à cet endroit.  Les limites territoriales de la France sont fixées par le Traité de Paris du 10 février 1947. De surcroît, depuis la fondation des Nations Unies en 1945, ces frontières sont reconnues au niveau international. 
+
+Ainsi, nous avons délimité les frontières de la France sur la base du traité de Paris du 10 février 1947. La longitude s'étend de -5.5 à 10 et la latitude de 41.5 à 51.5, en employant **ax.set_xlim** et **ax.set_ylim**. 
+
+Une fois les frontières du territoire français tracées, nous allons insérer un titre et une légende en employant **plt.title()** pour attribuer un titre à la carte avec une taille de police de 20 points. Par ailleurs, grâce à **plt.legend()**, nous allons également créer la légende qui associe le label 'Incendies' aux points rouges sur la carte pour signaler que ces derniers représentent des incendies. 
+
+Par la suite, nous allons retirer les axes en employant la technique **ax.set_axis_off()**.
+
+Cette technique va éliminer les axes et les graduations sur les axes x et y afin de rendre la carte plus lisible et plus épurée. 
+
+Ensuite, nous avons deux dernières étapes : la sauvegarde de l'image et l'affichage de la carte. Pour la sauvegarde, nous avons recours à **plt.savefig()** en précisant le nom du fichier et son extension souhaités. Nous y avons également indiqué la résolution de l'image, spécifiant les dpi (points par pouce). Nous avons choisi 600, ce qui représente une qualité très élevée. De surcroît, nous avons activé l'option **bbox_inches = 'tight'**, ce qui élimine tous les espaces superflus autour de la carte pour la rendre plus compacte. 
+
+Pour afficher la carte, nous utilisons la fonction **plt.show()**.  Cette technique nous autorise à présenter la carte, elle est employée pour en faire la visualisation. 
+
+
 
 
 

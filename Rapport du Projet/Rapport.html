@@ -361,34 +361,210 @@ Soobbooroyen</h4>
 <div id="TOC">
 <ul>
 <li><a href="#objectif-du-projet" id="toc-objectif-du-projet">1.
-Objectif du Projet</a></li>
-<li><a href="#partie-informatique" id="toc-partie-informatique">2.
-Partie Informatique</a></li>
-<li><a href="#bibliotheques-utilisees" id="toc-bibliotheques-utilisees">2.1 Bibliotheques Utilisees</a></li>
-<li><a href="#création-de-la-base-de-données" id="toc-création-de-la-base-de-données">2.2 Création de la base de
+Objectif du Projet</a>
+<ul>
+<li><a href="#utilisation-de-github" id="toc-utilisation-de-github">1.1
+Utilisation de GitHub</a></li>
+<li><a href="#utilisation-de-lopendata" id="toc-utilisation-de-lopendata">1.2 Utilisation de l’OpenData</a></li>
+</ul></li>
+<li><a href="#partie-informative" id="toc-partie-informative">2. Partie
+Informative</a>
+<ul>
+<li><a href="#cest-quoi-un-incendie" id="toc-cest-quoi-un-incendie">2.1
+C’est quoi un incendie</a></li>
+<li><a href="#causes-des-incendies" id="toc-causes-des-incendies">2.2
+Causes des Incendies</a></li>
+<li><a href="#consequences-des-incendies" id="toc-consequences-des-incendies">2.3 Consequences des
+Incendies</a></li>
+</ul></li>
+<li><a href="#partie-informatique" id="toc-partie-informatique">3.
+Partie Informatique</a>
+<ul>
+<li><a href="#definition-de-quelques-terme-informatiques" id="toc-definition-de-quelques-terme-informatiques">3.1 Definition de
+quelques terme Informatiques</a></li>
+<li><a href="#bibliotheques-utilisees" id="toc-bibliotheques-utilisees">3.2 Bibliotheques Utilisees</a></li>
+<li><a href="#création-de-la-base-de-données" id="toc-création-de-la-base-de-données">3.3 Création de la base de
 données</a></li>
-<li><a href="#creation-des-tables" id="toc-creation-des-tables">2.3
+<li><a href="#creation-des-tables" id="toc-creation-des-tables">3.4
 Creation des Tables</a></li>
-<li><a href="#injection-des-donnees" id="toc-injection-des-donnees">2.4
+<li><a href="#injection-des-donnees" id="toc-injection-des-donnees">3.5
 Injection des donnees</a></li>
-<li><a href="#partie-statistique" id="toc-partie-statistique">3. Partie
-Statistique</a></li>
+<li><a href="#affichage-des-donnees" id="toc-affichage-des-donnees">3.6
+Affichage des donnees</a></li>
+<li><a href="#exportation-des-donnees-sous-forme-csv" id="toc-exportation-des-donnees-sous-forme-csv">3.7 Exportation des
+donnees sous forme CSV</a></li>
+<li><a href="#menu-du-programme" id="toc-menu-du-programme">3.8 Menu du
+Programme</a></li>
+<li><a href="#la-table-incendies-departements" id="toc-la-table-incendies-departements">3.9 La Table
+Incendies-Departements</a></li>
+<li><a href="#initiation-de-la-carte-de-france" id="toc-initiation-de-la-carte-de-france">3.10 Initiation de la Carte de
+France</a></li>
+</ul></li>
+<li><a href="#partie-statistique" id="toc-partie-statistique">4. Partie
+Statistique</a>
+<ul>
+<li><a href="#definitions-des-concepts-statistiques" id="toc-definitions-des-concepts-statistiques">4.1 Definitions des
+concepts statistiques</a></li>
+<li><a href="#description-des-donnees" id="toc-description-des-donnees">4.2 Description des donnees</a></li>
+<li><a href="#analyse-des-doneees" id="toc-analyse-des-doneees">4.3
+Analyse des doneees</a>
+<ul>
+<li><a href="#évolution-des-incendies" id="toc-évolution-des-incendies">4.3.1 Évolution des incendies</a>
+<ul>
+<li><a href="#évolution-des-incendies-au-fil-des-années" id="toc-évolution-des-incendies-au-fil-des-années">4.3.1.1 Évolution des
+incendies au fil des années</a></li>
+<li><a href="#analyse-des-heures-dincendie" id="toc-analyse-des-heures-dincendie">4.3.1.2 Analyse des heures
+d’incendie</a></li>
+<li><a href="#évolution-décennale-des-causes-dincendies" id="toc-évolution-décennale-des-causes-dincendies">4.3.1.3 Évolution
+décennale des causes d’incendies</a></li>
+<li><a href="#heures-critiques-de-déclenchement" id="toc-heures-critiques-de-déclenchement">4.3.1.4 Heures critiques de
+déclenchement</a></li>
+<li><a href="#cyclicité-hebdomadaire" id="toc-cyclicité-hebdomadaire">4.3.1.5 Cyclicité hebdomadaire</a></li>
+</ul></li>
+<li><a href="#facteurs-climatiques-et-météorologiques" id="toc-facteurs-climatiques-et-météorologiques">4.3.2 Facteurs
+climatiques et météorologiques</a>
+<ul>
+<li><a href="#influence-de-la-température-sur-les-incendies" id="toc-influence-de-la-température-sur-les-incendies">4.3.2.1 Influence
+de la température sur les incendies</a></li>
+<li><a href="#impact-de-lhumidité-sur-les-incendies" id="toc-impact-de-lhumidité-sur-les-incendies">4.3.2.2 Impact de
+l’humidité sur les incendies</a></li>
+<li><a href="#relation-entre-le-vent-et-la-propagation-des-incendies" id="toc-relation-entre-le-vent-et-la-propagation-des-incendies">4.3.2.3
+Relation entre le vent et la propagation des incendies</a></li>
+<li><a href="#impact-des-conditions-météorologiques-extrêmes-sur-les-incendies" id="toc-impact-des-conditions-météorologiques-extrêmes-sur-les-incendies">4.3.2.4
+Impact des conditions météorologiques extrêmes sur les
+incendies</a></li>
+<li><a href="#effet-des-radiations-solaires-sur-les-incendies" id="toc-effet-des-radiations-solaires-sur-les-incendies">4.3.2.5 Effet
+des radiations solaires sur les incendies</a></li>
+<li><a href="#température-et-nombre-dincendies-par-période-de-la-journée" id="toc-température-et-nombre-dincendies-par-période-de-la-journée">4.3.2.6
+Température et nombre d’incendies par période de la journée</a></li>
+<li><a href="#relation-entre-la-force-du-vent-et-la-propagation-des-incendies" id="toc-relation-entre-la-force-du-vent-et-la-propagation-des-incendies">4.3.2.7
+Relation entre la force du vent et la propagation des incendies</a></li>
+<li><a href="#impact-de-la-pression-de-vapeur-sur-la-vitesse-de-propagation-des-incendies" id="toc-impact-de-la-pression-de-vapeur-sur-la-vitesse-de-propagation-des-incendies">4.3.2.8
+Impact de la pression de vapeur sur la vitesse de propagation des
+incendies</a></li>
+</ul></li>
+<li><a href="#géographie-et-environnement" id="toc-géographie-et-environnement">4.3.3 Géographie et
+environnement</a>
+<ul>
+<li><a href="#comparaison-de-la-fréquence-des-incendies-dans-les-régions-montagneuses-vs-basses-altitudes" id="toc-comparaison-de-la-fréquence-des-incendies-dans-les-régions-montagneuses-vs-basses-altitudes">4.3.3.1
+Comparaison de la fréquence des incendies dans les régions montagneuses
+vs basses altitudes</a></li>
+<li><a href="#variation-de-laltitude-par-region" id="toc-variation-de-laltitude-par-region">4.3.3.2 Variation de
+l’altitude par region</a></li>
+<li><a href="#distance-côtière-et-risque-dincendie" id="toc-distance-côtière-et-risque-dincendie">4.3.3.3 Distance côtière
+et risque d’incendie</a></li>
+</ul></li>
+<li><a href="#urbanisation-et-activités-humaines" id="toc-urbanisation-et-activités-humaines">4.3.4 Urbanisation et
+activités humaines</a>
+<ul>
+<li><a href="#comparaison-des-incendies-entre-les-zones-rurales-et-urbaines" id="toc-comparaison-des-incendies-entre-les-zones-rurales-et-urbaines">4.3.4.1
+Comparaison des incendies entre les zones rurales et urbaines</a></li>
+<li><a href="#activités-humaines-à-risque-travauxparticuliers" id="toc-activités-humaines-à-risque-travauxparticuliers">4.3.4.2
+Activités humaines à risque (travaux/particuliers)</a></li>
+<li><a href="#profil-temporel-des-incendies-criminels" id="toc-profil-temporel-des-incendies-criminels">4.3.4.3 Profil temporel
+des incendies criminels</a></li>
+<li><a href="#facteurs-prédictifs-des-incendies-criminels" id="toc-facteurs-prédictifs-des-incendies-criminels">4.3.4.4 Facteurs
+prédictifs des incendies criminels</a></li>
+<li><a href="#impact-cumulé-du-climat-et-de-lurbanisation" id="toc-impact-cumulé-du-climat-et-de-lurbanisation">4.3.4.5 Impact
+cumulé du climat et de l’urbanisation</a></li>
+</ul></li>
+<li><a href="#vulnérabilité-et-analyse-de-survie" id="toc-vulnérabilité-et-analyse-de-survie">4.3.5 Vulnérabilité et
+analyse de survie</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#ressources" id="toc-ressources">5. Ressources</a>
+<ul>
+<li><a href="#ressources-sur-la-partie-informative" id="toc-ressources-sur-la-partie-informative">5.1 Ressources sur la
+Partie Informative</a></li>
+<li><a href="#ressources-sur-la-partie-informatique" id="toc-ressources-sur-la-partie-informatique">5.2 Ressources sur la
+Partie Informatique</a></li>
+<li><a href="#ressources-sur-la-partie-statistique" id="toc-ressources-sur-la-partie-statistique">5.3 Ressources sur la
+Partie Statistique</a></li>
+</ul></li>
 </ul>
 </div>
 
-<div id="objectif-du-projet" class="section level3">
-<h3>1. Objectif du Projet</h3>
-<p>Ce projet qui est liee a l’UE Statistique Inferentielle / Projet
+<div id="objectif-du-projet" class="section level2">
+<h2>1. Objectif du Projet</h2>
+<p>Ce projet qui est liée a l’UE Statistique Inferentielle / Projet
 Stat-Info qui vise à mieux comprendre les raisons et cause des incendies
 en analysant des données statistiques. L’idée principale est de voir
 comment différentes variables influencent l’étendue des incendies, en
 utilisant des outils statistiques et informatiques.</p>
-<p>Nous avons réalisé l’ensemble de notre travail d’équipe en utilisant
-GitHub, un outil de collaboration en ligne.</p>
-<p><a href="https://github.com/andrewelkahwaji24/ProjetStatInfoUT2.git"><strong>GitHub</strong></a></p>
+<p>Nous avons structuré notre rapport en trois sections principales : la
+Partie Informative, qui servira à présenter des informations générales
+afin d’aider le lecteur à comprendre notre projet avant de plonger dans
+les détails et les spécificités des sections Informatique et
+Statistique. La section Informatique va examiner minutieusement les
+techniques que nous avons mises en œuvre dans notre projet, en précisant
+toutes les informations indispensables. Et pour finir, la section
+Statistique qui nous aidera à détailler toutes les études que nous avons
+réalisées avec les diagrammes appropriés, l’interprétation et la
+solution de nos enjeux.</p>
+<p>Finalement, nous avons constitué une section supplémentaire qui nous
+sert à énumérer tous les sites internet que nous avons consultés pour la
+rédaction et l’élaboration de notre projet. Il est à noter que les
+références sont présentées au format APA !</p>
+<div id="utilisation-de-github" class="section level3">
+<h3>1.1 Utilisation de GitHub</h3>
+<p>Il faut également noter que lors de notre projet, qui se divisait en
+deux parties : Informatique et Statistique, nous avons utilisé GitHub.
+Cette plateforme collaborative nous a permis de travailler
+collectivement sur un code en définissant les étapes attribuées à chaque
+membre du groupe. Cette plateforme nous offre aussi la possibilité de
+fusionner tout le code en un unique fichier, sans nécessité de
+l’assembler manuellement.</p>
 </div>
-<div id="partie-informatique" class="section level3">
-<h3>2. Partie Informatique</h3>
+<div id="utilisation-de-lopendata" class="section level3">
+<h3>1.2 Utilisation de l’OpenData</h3>
+<p>Dans le cadre de ce projet, nous avons mené des recherches afin
+d’améliorer notre base de données, ce qui nous a amenés à exploiter les
+données ouvertes. Autrement dit, l’Open data consiste à rendre
+accessibles des données publiques, selon le gouvernement, que les
+utilisateurs peuvent exploiter.</p>
+<p>Les différents secteurs de l’Open Data sont variés et servent à
+assurer la transparence des données.</p>
+<p><strong>Nous avons utilisé les données provenant de ce site
+internet:</strong></p>
+<p><a href="https://bdiff.agriculture.gouv.fr/incendies" class="uri">https://bdiff.agriculture.gouv.fr/incendies</a></p>
+</div>
+</div>
+<div id="partie-informative" class="section level2">
+<h2>2. Partie Informative</h2>
+<p>Dans cette partie, nous allons considérer des données informatives
+avant de passer à la description de notre section Informatique et
+Statistique.</p>
+<div id="cest-quoi-un-incendie" class="section level3">
+<h3>2.1 C’est quoi un incendie</h3>
+<p>L’incendie est un phénomène de combustion incontrôlée dans le temps
+et l’espace, dont la principale caractéristique est sa capacité à se
+propager rapidement.</p>
+<p>Pour qu’une combustion puisse se produire, trois éléments
+habituellement réunis dans le « triangle du feu » sont indispensables :
+un matériau combustible, un agent comburant et une source d’énergie
+d’activation.</p>
+</div>
+<div id="causes-des-incendies" class="section level3">
+<h3>2.2 Causes des Incendies</h3>
+<p>Les raisons des incendies sont multiples, cependant, une grande
+majorité d’entre eux provient d’une action humaine.Comme la négligence,
+malveillance, préparation insuffisante aux catastrophes naturelles comme
+les séismes, les tsunamis</p>
+</div>
+<div id="consequences-des-incendies" class="section level3">
+<h3>2.3 Consequences des Incendies</h3>
+<p>Les effets des incendies sont nombreux et graves. Elles ont des
+conséquences sur l’homme (asphyxie, intoxication due aux fumées,
+brûlures sévères), sur les entreprises (diminution de la production,
+dégâts matériels, licenciements) et sur l’environnement (contamination
+de l’air et de l’eau, ravage du paysage). Les principales causes de
+décès liés aux incendies sont l’intoxication par le monoxyde de carbone
+et la diminution de l’oxygène, plutôt que les flammes elles-mêmes. Pour
+plus d’informations, veuillez consulter l’article intégral ici.</p>
+</div>
+</div>
+<div id="partie-informatique" class="section level2">
+<h2>3. Partie Informatique</h2>
 <p>La partie Informatique de notre Projet consiste à effectuer les
 démarches suivantes :</p>
 <ol style="list-style-type: decimal">
@@ -400,28 +576,89 @@ source</li>
 <li>Présenter les informations des tables dans la console</li>
 <li>Exportation des données dans les tables dans des fichiers CSV</li>
 </ol>
+<div id="definition-de-quelques-terme-informatiques" class="section level3">
+<h3>3.1 Definition de quelques terme Informatiques</h3>
+<p>Avant d’initier notre compte-rendu en détaillant les phases et
+procédures que nous avons mises en place pour l’administration optimale
+de la section informatique de notre projet, nous allons définir quelques
+notions qui offriront un socle solide au lecteur.</p>
+<ol style="list-style-type: decimal">
+<li><p>Une <strong>Base de Données</strong> regroupe un ensemble
+d’informations qui est organise pour être accessible , géré et mise a
+jour facilement par ses utilisateurs</p></li>
+<li><p>Une <strong>Base de Données Relationnelle</strong>.Il s’agit d’un
+type de base de données qui se distingue des autres par sa capacité à
+établir des liens entre diverses données.</p></li>
+<li><p>Un <strong>INNER JOIN</strong> est un type de jointure en SQL
+(Structured Query Language) qui autorise la fusion de lignes issues de
+deux tables basées sur un critère déterminé. L’idée est de ne conserver
+que les lignes qui ont une correspondance dans les deux tables. De plus,
+si une ligne d’une table n’a pas de correspondance dans l’autre table,
+elle ne sera pas intégrée au résultat.</p></li>
+<li><p>Un <strong>Cast()</strong> est une fonction SQL appelée CAST nous
+donne la possibilité de transformer un type de données en un
+autre.</p></li>
+<li><p>Une <strong>Requête SQL</strong> s’apparente à une question
+formulée à la base de données afin d’extraire des informations de
+celle-ci.</p></li>
+<li><p>La fonction SQL <strong>COUNT()</strong> est une commande qui
+nous donne la possibilité de déterminer le nombre de lignes dans un
+ensemble de résultats. Elle est fréquemment utilisée en conjonction avec
+la clause GROUP BY pour recenser le nombre d’occurrences d’une valeur
+spécifique.</p></li>
+<li><p>La fonction <strong>SUBSTR()</strong> nous donne la possibilité
+d’extraire une portion d’une chaîne de caractères. Elle est souvent
+employée dans le domaine du développement pour l’édition de texte dans
+une ou plusieurs bases de données.</p></li>
+<li><p>L’opération <strong>RIGHT JOIN</strong> permet d’unir deux tables
+en préservant l’ensemble des lignes de la table située à droite et en
+reliant celles se trouvant à gauche lorsqu’elles sont présentes. Des
+valeurs nulles sont insérées pour combler les colonnes
+absentes.</p></li>
+<li><p>L’opération <strong>LEFT JOIN</strong> fusionne deux tables tout
+en conservant l’ensemble des lignes de la table de gauche, en associant
+celles de droite uniquement lorsqu’elles sont présentes. Des valeurs
+nulles sont insérées pour combler les colonnes absentes.</p></li>
+</ol>
 </div>
 <div id="bibliotheques-utilisees" class="section level3">
-<h3>2.1 Bibliotheques Utilisees</h3>
+<h3>3.2 Bibliotheques Utilisees</h3>
 <p>Dans notre Partie Informatique on a utilisee le Language de
 Programmation Python de plus pour pouvoir effectuer la manipulation des
 doneees de la maniere optimale on a utilisee les bibliothèques
 necessaires:</p>
 <ol style="list-style-type: decimal">
-<li>sqlite3 SQLite3 est une bibliothèque peu aisée qui facilite
-l’incorporation d’une base de données au sein d’une application, sans
-nécessiter l’utilisation d’un serveur séparé. Elle offre la possibilité
-de stocker et de gérer des données grâce aux requêtes SQL, ce qui la
-rend pratique pour des projets nécessitant une base de données locale.
-SQLite3 est parfaitement adaptée aux applications simples, car elle
-offre une gestion aisée des données, que ce soit pour les ajouts, les
-changements ou les suppressions, tout en restant performante et peu
-gourmande en ressources.</li>
-<li>csv</li>
+<li><p><strong>SQLite3</strong> est une bibliothèque peu aisée qui
+facilite l’incorporation d’une base de données au sein d’une
+application, sans nécessiter l’utilisation d’un serveur séparé. Elle
+offre la possibilité de stocker et de gérer des données grâce aux
+requêtes SQL, ce qui la rend pratique pour des projets nécessitant une
+base de données locale. SQLite3 est parfaitement adaptée aux
+applications simples, car elle offre une gestion aisée des données, que
+ce soit pour les ajouts, les changements ou les suppressions, tout en
+restant performante et peu gourmande en ressources.</p></li>
+<li><p>La bibliothèque <strong>CSV</strong> de Python facilite la
+lecture et l’écriture de fichiers CSV, en fournissant des
+fonctionnalités pour gérer les données sous forme de lignes et de
+colonnes, tout en prenant en charge les séparateurs et les
+guillemets.</p></li>
+<li><p><strong>NumPy</strong> est une bibliothèque Python performante
+dédiée au calcul scientifique, proposant des structures de données
+telles que les arrays multidimensionnels et des fonctions optimisées
+pour le traitement numérique.</p></li>
+<li><p>La bibliothèque <strong>random</strong> de Python offre la
+possibilité de produire des nombres au hasard et d’exécuter des
+sélections aléatoires à partir de listes ou d’intervalles de valeurs,
+grâce à des fonctions conçues pour simuler des événements
+fortuits.</p></li>
+<li><p>La bibliothèque <strong>OS</strong> facilite l’interaction avec
+le système d’exploitation en proposant des fonctionnalités pour gérer
+les fichiers, les dossiers et exécuter des instructions du
+système.</p></li>
 </ol>
 </div>
 <div id="création-de-la-base-de-données" class="section level3">
-<h3>2.2 Création de la base de données</h3>
+<h3>3.3 Création de la base de données</h3>
 <p>Avant de commencer à travailler sur les données, il est nécessaire de
 créer une base de données pour les organiser et les structurer de
 manière efficace. Une base de données, dans ce contexte, peut être
@@ -455,7 +692,7 @@ et la fonction de connexion permet d’établir une communication avec
 cette base pour manipuler les données à l’aide de requêtes SQL.</p>
 </div>
 <div id="creation-des-tables" class="section level3">
-<h3>2.3 Creation des Tables</h3>
+<h3>3.4 Creation des Tables</h3>
 <p>Ainsi, nous avons établi un lien entre notre code source et la base
 de données. Une fois que nous avons une base de données authentique, il
 est nécessaire de commencer à établir des tables afin de pouvoir gérer
@@ -488,7 +725,7 @@ la connexion avec curs.fermer() et connexion.Vous avez été formé sur des
 données jusqu’en octobre 2023.</p>
 </div>
 <div id="injection-des-donnees" class="section level3">
-<h3>2.4 Injection des donnees</h3>
+<h3>3.5 Injection des donnees</h3>
 <p>Suite à la création des tables, nous avons établi cinq fonctions
 distinctes pour chaque table. Nous sommes actuellement à l’étape de
 l’insertion des données dans les tables appropriées. Nous avons employé
@@ -559,8 +796,609 @@ problème de connexion à la base de données ou à la table, on affiche le
 message d’erreur « Erreur lors de l’insertion des données des
 départements ».</p>
 </div>
-<div id="partie-statistique" class="section level3">
-<h3>3. Partie Statistique</h3>
+<div id="affichage-des-donnees" class="section level3">
+<h3>3.6 Affichage des donnees</h3>
+<p>Tout comme dans tout programme ou projet informatique, nous
+développons des fonctionnalités pour illustrer notre tâche ou les
+modifications effectuées sur les données ou les tables dans notre
+console ou terminal.</p>
+<p>Bien que nous travaillions avec une base de données regroupant
+plusieurs tables, nous avons développé diverses fonctions pour pouvoir
+présenter les informations.</p>
+<p>Ainsi, nous employons une méthode explicite et rigoureuse. Tout
+d’abord, nous devons nous connecter à la base de données. Ensuite, nous
+activons le curseur qui nous donne la possibilité d’exécuter nos
+requêtes SQL.</p>
+<p>Nous exécutons notre requête SQL sur la table en utilisant
+l’instruction « Select * from ». Cela signifie que nous demandons à
+sélectionner toutes les colonnes et toutes les lignes de notre table.
+Ensuite, on définit une variable nommée lignes qui prend pour valeur
+curs.fetchall() est une méthode prédéfinie en SQLite qui nous offre la
+possibilité de rassembler toutes les lignes du résultat de la requête
+SQL et de les sauvegarder dans la variable lignes.</p>
+<p>En outre, il est possible d’y définir la variable « lignes », qui est
+une collection de tuples, chaque tuple représentant une ligne de la
+table correspondante.</p>
+<p>Puis, pour les rendre visibles, nous exécutons une boucle for sur la
+variable lignes afin d’afficher chaque ligne contenue dans cette
+variable.</p>
+<p>Et finalement, comme pour chaque fonction, on ferme le curseur et la
+connexion. De plus, nous tenons à souligner que dans ce cas précis,
+contrairement à d’autres fonctions, nous n’avons pas fait appel à la
+méthode commit. C’est dû au fait que cette fonction n’a pas impliqué de
+modifications.</p>
+</div>
+<div id="exportation-des-donnees-sous-forme-csv" class="section level3">
+<h3>3.7 Exportation des donnees sous forme CSV</h3>
+<p>Tout d’abord, nous allons expliquer pourquoi cette fonction est
+importante pour notre projet. Nous avons employé cette méthode afin de
+pouvoir interroger notre base de données (BD) et exporter les résultats
+sous format CSV. Ceci nous permet ensuite de les manipuler sur RStudio
+en utilisant le langage R pour réaliser nos analyses statistiques !</p>
+<p>Ainsi, nous avons mis en place une fonction pour chaque table dans le
+but d’exporter ces données au format CSV. Ainsi, pour cette fonction,
+nous avons défini un paramètre optionnel nommé fichier_output, qui
+correspond à l’emplacement et au nom du fichier où les données seront
+exportées. De plus, nous utilisons un chemin relatif plutôt qu’un chemin
+absolu.</p>
+<p>Ensuite, nous essayons avec l’instruction try de nous connecter à la
+base de données et d’activer le curseur qui facilite l’exécution des
+requêtes SQL. La méthode curs.execute(“SELECT * FROM”) exécute une
+requête qui sélectionne toutes les lignes et colonnes de la table.</p>
+<p>Ensuite, on définit une variable nommée lignes qui prend pour valeur
+curs.fetchall() est une méthode prédéfinie en SQLite qui nous offre la
+possibilité de rassembler toutes les lignes du résultat de la requête
+SQL et de les sauvegarder dans la variable lignes.</p>
+<p>En outre, il est possible d’y définir la variable « lignes », qui est
+une collection de tuples, chaque tuple représentant une ligne de la
+table correspondante.</p>
+<p>De plus, nous utilisons curs.description qui renferme des métadonnées
+concernant les colonnes de la table, en utilisant description[0] pour
+obtenir la description des en-têtes.</p>
+<p>Cette description nous donne la possibilité de récupérer les noms des
+colonnes et de les conserver dans une liste appelée ‘colonnes’, qui
+servira d’en-tête pour le fichier CSV.</p>
+<p>À présent, nous devons accéder au fichier CSV pour écrire les données
+que nous possédons. Nous ouvrons donc le fichier en mode écriture (‘w’)
+avec un encodage UTF-8. L’outil csv.writer(fichier) est utilisé pour
+générer un objet qui permet d’écrire dans le fichier CSV. La méthode
+writerow(colonnes) écrit les en-têtes des colonnes tandis que
+writerows(lignes) écrit toutes les informations ligne par ligne.</p>
+<p>Finalement, on ferme le curseur et on met fin à la connexion avec la
+base de données.</p>
+<p>Dans chaque programme, il est indispensable pour les développeurs de
+gérer les erreurs afin d’améliorer l’expérience client. Ainsi, nous
+avons mis en place deux types d’erreurs : une erreur liée à la base de
+données (comme une connexion à la base de données) et une exception
+telle qu’une erreur liée à la table correspondante. Cette dernière peut
+être affichée en cas de problème d’accès au fichier, d’encodage,
+etc.</p>
+</div>
+<div id="menu-du-programme" class="section level3">
+<h3>3.8 Menu du Programme</h3>
+<p>Dans le cadre de notre projet, plus précisément dans la section
+dédiée à l’informatique, nous avons développé plusieurs méthodes clés
+pour gérer notre base de données, nos tables, nos informations, etc.</p>
+<p>Ainsi, si chaque méthode doit être appelée manuellement chaque fois,
+cela devient compliqué à long terme et pèse davantage sur le
+processeur.</p>
+<p>Dans notre projet, nous avons conçu un menu intégrant toutes les
+procédures nécessaires. Ce choix vise à faciliter l’exécution de toutes
+les opérations en les regroupant au sein d’un unique menu.</p>
+<p>Donc, la première étape consiste à exécuter notre code en Python.
+Donc, en premier lieu, nous effectuons une série d’affichages pour
+présenter différentes options à l’utilisateur. Ensuite, nous lui
+demandons quelle option il préfère. En fonction de son choix, par
+exemple, s’il opte pour la première option, il peut sélectionner la
+table qu’il souhaite créer. Si le choix est le deuxième, il sera dirigé
+vers le module d’injection où il pourra choisir la table à injecter.
+S’il sélectionne la troisième option, il aura la possibilité de choisir
+la table qu’il veut afficher. Enfin, si le choix se porte sur la
+quatrième option, il sera dirigé vers le module d’exportation des tables
+où il pourra sélectionner la table à exporter.</p>
+<p>Pour quitter le menu, ou en d’autres termes, arrêter l’exécution du
+programme, on appuie sur le chiffre 5. Ensuite, le programme demandera à
+l’utilisateur de confirmer s’il est sûr de vouloir faire cela. Pour
+faciliter cette confirmation, il a quatre options : « o », « ok », « yes
+» ou « oui » ou encore « si ». Si l’une des valeurs est atteinte, nous
+afficherons un message d’adieu et ensuite nous ferons une pause, sinon
+nous retournerons au menu.</p>
+<p>De plus, pour clarifier, si l’utilisateur entre un numéro qui n’est
+pas compris entre 1 et 5, une erreur sera générée sous forme de message
+dans la console : « Le numéro sélectionné est invalide ou n’existe pas
+».</p>
+</div>
+<div id="la-table-incendies-departements" class="section level3">
+<h3>3.9 La Table Incendies-Departements</h3>
+<p>Pour rester cohérents, nous allons insister sur les tables que nous
+utiliserons pour expliquer comment nous avons eu l’idée de réaliser
+cette table en premier lieu. Nous avons une table Incendies qui contient
+des informations sur tous les incendies qui ont été menés sur le
+territoire français. Il convient également de souligner que la France
+est un État-nation depuis 1789, suite à la Révolution française, et
+qu’elle est reconnue comme une nation souveraine. Ainsi, ce pays est
+constitué d’une collection de villes, qui elles-mêmes regroupent une
+série de départements. En d’autres mots, la France est constituée de
+départements qui sont à leur tour composés de villes.</p>
+<p>Ainsi, l’idée initiale que nous avons eue était de créer une table
+nommée « Départements » qui rassemblerait l’ensemble des départements
+présents sur le territoire français dans une seule table avec leur
+code_INSEE.</p>
+<p><strong>Pourquoi est-il nécessaire de créer cette table des
+départements ?</strong></p>
+<p>Cette table nous donne la possibilité de réaliser des analyses
+quantitatives concernant le nombre d’incendies dans un département.</p>
+<p><strong>Explication du code concernant l’injection des donnees dans
+la Table:</strong></p>
+<p>Comme habituellement, nous allons d’abord établir une connexion avec
+la base de données en utilisant la fonction que nous avons définie dans
+notre programme, nommée connecterdb(). Ensuite, nous allons activer le
+curseur et exécuter une requête SQL qui fusionne deux tables en une
+seule grâce à l’utilisation de l’<strong>Inner Join</strong>.</p>
+<p>En d’autres termes, nous allons insérer trois éléments dans la table
+Incendies Departement : le numéro du département, le nom du département
+et le nombre d’incidents. Pour commencer, nous allons sélectionner le
+numéro du département. Étant donné que notre table Incendies contient
+des codes INSEE qui ne représentent pas seulement le numéro du
+département, mais également celui de la commune, nous utiliserons
+SUBSTR(i.code_INSEE , 1 , 2) comme numéro du département. Cela signifie
+que nous allons extraire les deux premiers chiffres du code INSEE de
+l’incendie qui correspondent au numéro du département. Nous récupérerons
+d’autre part le nom du département à partir de la table Départements.
+Enfin, nous compterons le nombre total d’incendies pour chaque
+département à l’aide de la fonction préétablie en SQL COUNT.</p>
+<p>Après avoir sélectionné tous les termes que nous allons utiliser, il
+est temps de mettre en œuvre la jointure définie précédemment. Nous
+devons associer chaque incendie à son département en liant le numéro de
+département dérivé du code INSEE au code départemental dans la table
+Départements. De plus, nous allons regrouper les incendies par
+département afin d’obtenir un total pour chaque département.</p>
+<p><strong>Que gagne-t-on en faisant cette requête ?</strong></p>
+<p>En construisant cette table, nous avons fusionné deux tables
+indépendantes afin de centraliser les données souhaitées. Dans cette
+table , nous avions comptabilisé le nombre d’incendies par département
+sur le territoire français, nous permettant ainsi d’avoir une
+représentation plus claire du nombre d’incendies à l’échelle nationale.
+Par ailleurs, nous allons approfondir notre analyse dans la section
+Statistique de notre projet.</p>
+</div>
+<div id="initiation-de-la-carte-de-france" class="section level3">
+<h3>3.10 Initiation de la Carte de France</h3>
+<p>Dans le cadre de notre projet, nous traitons les incendies sur le sol
+français. Les données de cette unité d’enseignement contiennent la
+géolocalisation des incendies sur le territoire français.</p>
+<p>Afin de représenter les incendies sur le territoire français de façon
+abstraite, nous avons utilisé le langage Python accompagné de plusieurs
+bibliothèques qui nous ont facilité l’élaboration de cette carte.</p>
+<p>Dans cette partie de notre section informatique, nous détaillerons la
+manière dont nous avons réalisé cette carte.</p>
+<p><strong>Alors, pour initier, nous avons importé les bibliothèques
+:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Geopanda</strong> est une librairie pratique pour
+manipuler des données géospatiales telles que les fichiers GeoJSON et
+les cartes.</p></li>
+<li><p><strong>Pandas</strong> est une bibliothèque qui facilite la
+manipulation de données sous format tabulaire. Dans notre situation,
+elle nous donne la possibilité d’importer et de gérer les données
+relatives aux incendies.</p></li>
+<li><p><strong>matplotlib.pyplot</strong> est une librairie de
+représentation graphique de données qui facilite la création de
+graphiques, de cartes et divers autres éléments visuels. Dans notre
+situation, elle a été bénéfique pour élaborer la carte et y placer les
+repères des incidents.</p></li>
+</ol>
+<p>Une fois que toutes les bibliothèques requises ont été importées, il
+faut procéder au chargement de la base de données, autrement dit, du
+fichier CSV. Le fichier que nous allons importer contient les
+coordonnées géographiques des incendies, soit la latitude et la
+longitude. Pandas lira ce fichier sous forme de
+<strong>DataFrame</strong>, aussi appelé <strong>df</strong>, dans une
+structure tabulaire.</p>
+<p>Dans ce genre de contexte, nous aurons besoin de télécharger la carte
+de France, qui offre une vue d’ensemble incluant tous les départements.
+Nous avons obtenu cette carte depuis data.gouv.fr au format geojson.
+Afin d’importer ce fichier dans notre programme, nous spécifions le
+chemin d’accès contenant les contours des départements français.</p>
+<p>Pour être plus précis, un fichier GeoJson est un format de données
+géographiques contenant des informations relatives aux formes
+géographiques et à leurs attributs, dans notre contexte, les
+départements français.</p>
+<p>Suite au chargement de notre carte en format GeoJSON, nous attribuons
+une variable afin de permettre la lecture du fichier, ce qui nous amène
+à utiliser gdp.read_file. C’est l’une des techniques prédéfinies dans
+geopandas. Dans cette situation, les informations sont conservées dans
+un geodataframe, une structure de données conçue spécifiquement pour
+stocker des données spécialisées en matière d’informations
+géospatiales.</p>
+<p>Après avoir rassemblé toutes les données nécessaires à l’élaboration
+de notre carte, nous avons intégré les fichiers contenant la
+localisation des incendies ainsi que le fichier géospatial.</p>
+<p>Nous allons maintenant nous concentrer à la création du graphique et
+à la traçage de l’axe.</p>
+<p><strong>fig, ax = plt.subplots(dpi=150, figsize=(15, 15))</strong>
+Cette ligne nous autorise à générer une figure et un axe pour le
+graphique de la carte grâce à matplotlib. L’argument figsize=(15,15)
+indique que la dimension de l’image sera de 15 pouces par 15 pouces.</p>
+<p>Une fois la carte établie, nous devons débuter le traçage des
+départements en exploitant les données géospatiales. L’utilisation de la
+variable gdf_departements.plot nous donne la possibilité de représenter
+les départements sur la carte.</p>
+<p>Nous tenons à préciser que .plot() est bénéfique pour visualiser les
+contours des départements à partir du GeoDataFrame sur l’axe que nous
+avons mis en place précédemment. En outre, l’option color = « lightgray
+» nous donne la possibilité de remplir en une teinte grise claire,
+tandis que l’option edgecolor nous autorise à indiquer que les bordures
+des départements sont dessinées en noir pour mieux marquer la
+délimitation de chaque département.</p>
+<p>Après avoir délimité les départements sur la carte, il est nécessaire
+de marquer, ou autrement dit indiquer, les emplacements des incendies
+sur le sol français. Pour cela, nous utilisons en premier lieu
+ax.scatter() - l’une des méthodes de Matplotlib qui nous permet de créer
+un nuage de points (ou scatter plot en anglais) sur un graphique. Grâce
+à cette méthode, nous précisons via le DataFrame les deux colonnes que
+nous souhaitons utiliser comme longitude et latitude de notre fichier
+CSV. Ensuite, on précise que l’on a voulu que la couleur des nuages ou
+des points soit représentée en rouge, symbolisant le feu ou les
+incendies, pour être plus précis.</p>
+<p>On précise que l’option s = 50 signifie que nous modifions la taille
+des points à 50 pixels, afin de montrer que cette valeur est élevée.
+Plus cette valeur augmente, plus les points seront grands sur la carte.
+Finalement, on précise que l’option label nous donne la possibilité de
+définir une légende en identifiant les points qui représentent des
+incendies.</p>
+<p>Une fois les points ajoutés sur la carte, nous allons déterminer les
+contours de la carte française à cet endroit. Les limites territoriales
+de la France sont fixées par le Traité de Paris du 10 février 1947. De
+surcroît, depuis la fondation des Nations Unies en 1945, ces frontières
+sont reconnues au niveau international.</p>
+<p>Ainsi, nous avons délimité les frontières de la France sur la base du
+traité de Paris du 10 février 1947. La longitude s’étend de -5.5 à 10 et
+la latitude de 41.5 à 51.5, en employant ax.set_xlim et ax.set_ylim.</p>
+<p>Une fois les frontières du territoire français tracées, nous allons
+insérer un titre et une légende en employant plt.title() pour attribuer
+un titre à la carte avec une taille de police de 20 points. Par
+ailleurs, grâce à plt.legend(), nous allons également créer la légende
+qui associe le label ‘Incendies’ aux points rouges sur la carte pour
+signaler que ces derniers représentent des incendies.</p>
+<p>Par la suite, nous allons retirer les axes en employant la technique
+ax.set_axis_off(). Cette technique va éliminer les axes et les
+graduations sur les axes x et y afin de rendre la carte plus lisible et
+plus épurée.</p>
+<p>Ensuite, nous avons deux dernières étapes : la sauvegarde de l’image
+et l’affichage de la carte. Pour la sauvegarde, nous avons recours à
+eplt.savefig() en précisant le nom du fichier et son extension
+souhaités. Nous y avons également indiqué la résolution de l’image,
+spécifiant les dpi (points par pouce). Nous avons choisi 600, ce qui
+représente une qualité très élevée. De surcroît, nous avons activé
+l’option bbox_inches = ‘tight’, ce qui élimine tous les espaces
+superflus autour de la carte pour la rendre plus compacte.</p>
+<p>Pour afficher la carte, nous utilisons la fonction plt.show(). Cette
+technique nous autorise à présenter la carte, elle est employée pour en
+faire la visualisation.</p>
+</div>
+</div>
+<div id="partie-statistique" class="section level2">
+<h2>4. Partie Statistique</h2>
+<div id="definitions-des-concepts-statistiques" class="section level3">
+<h3>4.1 Definitions des concepts statistiques</h3>
+<p>Avant de commencer à donner des définitions, il est essentiel de nous
+baser sur le concept initial, c’est-à-dire la définition du terme
+Statistique. On peut définir ou représenter la statistique comme
+l’ensemble des méthodes et techniques utilisées pour collecter,
+analyser, interpréter et présenter des données numériques.</p>
+<p>Dans ce projet, nous allons nous concentrer sur la branche des
+statistiques connue sous le nom de Statistique Inférentielle.</p>
+<p>La statistique inférentielle est une discipline des statistiques qui
+s’appuie sur les données d’un échantillon pour formuler des déductions
+ou effectuer des généralisations à propos d’une population plus
+vaste.</p>
+<p>À l’opposé de la statistique descriptive qui se concentre sur le
+résumé ou la description des traits d’un ensemble de données, la
+statistique inférentielle offre la possibilité de réaliser des
+estimations et des tests concernant les paramètres d’une population
+basée sur des données issues d’un échantillon. Elle s’appuie sur la
+théorie des probabilités, ce qui rend possible des inférences
+rigoureuses et quantifiables.</p>
+<p>Nous allons définir ci-dessus certains concepts statistiques que nous
+utiliserons dans notre analyse statistique.</p>
+<p><strong>Définition de la Moyenne</strong></p>
+<p>La <strong>moyenne arithmétique</strong> d’un ensemble de données est
+une mesure de tendance centrale qui représente la valeur moyenne autour
+de laquelle les observations se répartissent. Elle est définie comme le
+quotient de la somme des valeurs observées par le nombre total
+d’observations.</p>
+<p>Soit un échantillon <span class="math inline">\(X = \{x_1, x_2, ...,
+x_n\}\)</span> de taille <span class="math inline">\(n\)</span>, la
+moyenne <span class="math inline">\(\bar{X}\)</span> est donnée par
+:</p>
+<p><span class="math display">\[
+\bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_i
+\]</span></p>
+<p>Cette mesure est sensible aux valeurs extrêmes et est couramment
+utilisée en <strong>statistique descriptive</strong> pour résumer un
+ensemble de données.</p>
+<p><strong>Définition de la Médiane</strong></p>
+<p>En statistique, la <strong>médiane</strong> est une mesure de
+tendance centrale qui divise une distribution ordonnée en deux
+sous-ensembles de même effectif. Elle est définie comme la valeur <span class="math inline">\(M\)</span> telle que :</p>
+<ul>
+<li><strong>50 % des observations sont inférieures ou égales à <span class="math inline">\(M\)</span></strong><br />
+</li>
+<li><strong>50 % des observations sont supérieures ou égales à <span class="math inline">\(M\)</span></strong></li>
+</ul>
+<p>Mathématiquement, soit un échantillon de taille <span class="math inline">\(n\)</span> constitué des observations
+<strong><span class="math inline">\(x_1, x_2, ..., x_n\)</span></strong>
+classées par ordre croissant :</p>
+<ul>
+<li><strong>Si <span class="math inline">\(n\)</span> est
+impair</strong> <span class="math inline">\((n = 2k + 1)\)</span>, la
+médiane est l’élément central :</li>
+</ul>
+<p><span class="math display">\[
+M = x_{k+1}
+\]</span></p>
+<ul>
+<li><strong>Si <span class="math inline">\(n\)</span> est pair</strong>
+<span class="math inline">\((n = 2k)\)</span>, la médiane est la moyenne
+des deux valeurs centrales :</li>
+</ul>
+<p><span class="math display">\[
+M = \frac{x_k + x_{k+1}}{2}
+\]</span></p>
+</div>
+<div id="description-des-donnees" class="section level3">
+<h3>4.2 Description des donnees</h3>
+<p>Avant de commencer l’étape d’analyse de nos données et leur
+présentation sous forme de graphiques, nous allons identifier les types
+de données fournies par notre équipe pédagogique, afin de mener à bien
+ce projet.</p>
+<p>Donc pour cette UE on a eu 3 fichiers CSV contenant des donnees
+importants ou dans ce rapport on va se baser pour poser notre
+analyse.</p>
+<p>Le fichier incendies renferme des attributs tels que le nom de la
+commune, le code de la commune, l’année de l’incendie, le mois de
+l’incendie, la date et l’heure à laquelle l’incendie a été signalé ainsi
+que les causes principales et secondaires de l’incendie. Ces
+informations nous seront utiles pour examiner nos données et
+caractériser ces phénomènes en fonction des problématiques que nous
+mettrons en place bientôt dans ce rapport.</p>
+<p>Le fichier géographique renferme la latitude, la longitude et
+l’altitude. Ces informations peuvent nous donner l’emplacement précis du
+lieu de l’incendie, ce qui nous permettra de procéder à des analyses en
+posant nos questions.</p>
+<p>Le dossier Météorologique nous fournira des caractéristiques liées
+aux conditions météorologiques, ce qui nous permettra de distinguer les
+divers types de météo au moment de l’incendie.</p>
+</div>
+<div id="analyse-des-doneees" class="section level3">
+<h3>4.3 Analyse des doneees</h3>
+<p>Dans cette partie, une fois que toutes les définitions nécessaires
+sont établies et que notre base de données est complète, nous serons
+prêts à analyser les données grâce au langage R. Nous emploierons
+différents types d’histogrammes pour diversifier nos analyses et nous
+procéderons à une étude approfondie de chaque histogramme.</p>
+<p>Nous avons divisé nos problématiques en différentes sections :</p>
+<div id="évolution-des-incendies" class="section level4">
+<h4>4.3.1 Évolution des incendies</h4>
+<div id="évolution-des-incendies-au-fil-des-années" class="section level5">
+<h5>4.3.1.1 Évolution des incendies au fil des années</h5>
+<p>Dans cette problématique, on va interroger sur le nombre d’incendies
+qui se produisent chaque année sur le territoire français. Pour répondre
+à cette question, il est primordial de définir d’abord certains concepts
+naturels qui faciliteront l’analyse de cette problématique. Une année se
+compose de 12 mois et comporte 365 jours. Dans cette étude, nous
+examinerons l’évolution annuelle du nombre d’incendies à travers tous
+les départements français, déterminant s’il est en déclin ou en
+ascension.</p>
+<p>Pour réaliser cette analyse statistique, il faut utiliser la table
+des <strong>incendies</strong>.Pour réaliser l’histogramme, nous devons
+utiliser le langage R. Nous avons précisé le chemin d’accès au fichier
+CSV grâce à une variable que nous avons définie, une variable donnée qui
+va recevoir la fonction read.csv et le chemin du fichier. Cela permettra
+à la variable d’accéder au fichier CSV. De plus, pour vérifier notre
+travail, nous utiliserons la méthode head qui nous donnera les six
+premières entrées de notre fichier CSV afin de nous assurer que nous
+travaillons sur le bon fichier et de vérifier également l’en-tête avec
+les attributs à utiliser.</p>
+<p>Pour réaliser cette analyse, nous avons adopté cette technique qui
+consiste à déterminer la fréquence des incendies par année. En d’autres
+termes, nous comptabilisons le nombre d’incendies pour chaque année dans
+la colonne « année » du jeu de données. Cela va nous permettre de créer
+un tableau qui associe chaque année à son nombre d’incendies.</p>
+<p>De plus, nous avons élaboré ce genre de graphique en utilisant un
+graphique linéaire. Nous avons exploité la fonction « plot() » avec les
+fréquences obtenues. L’option « o » a été utilisée pour indiquer que
+nous allions visualiser l’évolution des incendies à la fois par des
+points et des lignes sur la période donnée.</p>
+<p>Pour adapter notre graphique à nos besoins, nous avons opté pour la
+couleur bleue afin de le rendre plus personnalisable et lisible. De
+plus, nous avons défini les titres des axes du graphique en utilisant
+les paramètres xlab, ylab et main.</p>
+<pre class="r"><code># Charger les données
+donnees &lt;- read.csv(&quot;../Data/donnees_incendies.csv&quot;)
+
+annee_freq &lt;- table(donnees$annee)
+
+# Créer un graphique en ligne
+plot(annee_freq, 
+     type=&quot;o&quot;,  # &quot;o&quot; pour un graphique avec des points et des lignes
+     col=&quot;blue&quot;, 
+     main=&quot;Évolution des incendies au fil des années&quot;, 
+     xlab=&quot;Année&quot;, 
+     ylab=&quot;Nombre d&#39;incendies&quot;)</code></pre>
+<p><img role="img" src="data:image/png;base64,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KqDrD8etj3Iunuo9AQGFd0MB9TEtmCiugK5X52pCF09078hEQOFdz94mO6CxiiygG6vPF+enp6dPLt4J7mdHQOFff0D9TAumiS+gGrIevqcJ6OxvsgMaLQIKuNYXUF/TgkliDejq08XbL/q/RkARgNYeJzug8YopoN8vd8n8WN5YefELbyIhRt2A+psWTBFRQKvPva/e1O/D691PmYAiCI1ksgMasRgDepaX8+fT00d5QuO9Iz3S1Wgm/YxYhAG92mSzPHbPP8rJHekRISWa7IDGLMKAntU3EMlvJsId6REfpZr0M2bxBbRxY3puZ4c4EdB5iC+gjXsoc0NlxKnKJkfwUSOggAdVN+ln1OIL6PpMuQfot2MCiigdKHxPC8TiCujin+vivGf1xhHnQBEp+jkLcQV049a/vPtrtQvK98IjTgfsgM5DdAEtFcftqz+OuQ4UUTqgoPMQUUDzW4GePzquA5oXVe8rkQgognBwQEHnIaqAFoqK7gJ6+P7Gn28goAhBEU0COgPxBbS2+g/NfBJQhIGAzkXMARUgoAjANpoHVUd9TxCkCCjgXNlMAho/Ago4d1AVlI8ixY2AAs5xN7u5IKCAc/VbR7yJFDcCCrjHZaAzQUAB9+jnTBBQwAf6OQsEFPCCfs4BAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIEFACECCgACBFQABAioAAgREABQIiAAoAQAQUAIQIKAEIRBnR1+eni4uLt5VfB7xJQAObEFtDPL7LavXe6v05AAZgTV0CvH2ZNh6/1noCAAjAnqoBeHefRPDkt3cn/snim9QwEFIA5MQX0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" width="672" /></p>
+<p>Alors, débutons par cette étude ; nous allons mener notre analyse sur
+une période de 11 ans, de 2012 à 2022.</p>
+<p>Nous allons donc commencer à dresser le bilan de nos effectifs
+d’incendies. En 2012, nous avons enregistré 122 incidents, en 2013, 59
+incendies, en 2014, 65 incendies, en 2015, le nombre a grimpé à 107. En
+2016, nous avons eu 104 incendies. Pour l’année suivante, en 2017, nous
+avons connu une augmentation avec 146 incidents. Puis en 2018, le
+chiffre est redescendu à 42 incendies. En 2019, nous avons rapporté 135
+incendies et pour l’année suivante, en 2020 nous avions enregistré 102
+incidents. Enfin pour2021 ,nous avons comptabilisé 79 incendies et
+pour2022 ,le nombre d’incendies a fortement augmenté atteignant
+241incendies .</p>
+<p>Il est possible d’observer que la moyenne générale des incendies en
+France sur une durée de 11 ans s’élève à 109,27. Maintenant que nous
+avons compilé les totaux des onze années consécutives, nous allons
+détailler notre analyse. En démarrant de 2012, nous constatons un total
+de 122 incendies, ce qui pourrait être considéré comme « bon ».
+Cependant, cette comparaison est prématurée tant que nous n’avons pas
+répertorié les autres chiffres pour une évaluation plus approfondie.
+Après une baisse de 63 incendies en 2013, on a constaté une augmentation
+de 6 incendies en 2014 lors de la comparaison entre 2013 et 2014.</p>
+<p>Cependant, en 2015, le nombre d’incendies a considérablement
+augmenté, atteignant 107 incendies pour l’année 2015, ce qui représente
+un chiffre élevé mais pas le plus élevé que nous ayons connu. En
+comparaison avec 2012, nous avons atteint un taux qui est le deuxième
+record maximal. Puis en 2016, ce taux a baissé de trois incendies par
+rapport à l’année précédente.</p>
+<p>En 2017, on a observé une hausse remarquable du taux d’incendies qui
+a atteint un nouveau sommet à 146, soit une augmentation de 42 incendies
+par rapport à 2016. Si l’on compare avec l’année 2012, cela représente
+une différence de 24 incendries. En 2018, on constate une baisse rapide
+du nombre d’incendies, enregistrant un taux de 42 qui, selon les données
+de 2018, représente le plus bas enregistré depuis 2012. En 2019, on a
+noté une hausse significative du nombre d’incendies, atteignant 135,
+soit une différence de 93 incendies par rapport à 2018.</p>
+<p>En 2020, une baisse du nombre d’incendies entraîne une variation de
+33 incendies par rapport à l’année 2029. Ensuite, on observe une baisse
+en 2021 avec une différence de 23 incendies par rapport à l’année 2020.
+Finalement, un chiffre très élevé en 2022 a été atteint, atteignant le
+nombre record de 241 incendies. De plus, cela représente une différence
+de 162 incendres par rapport à l’année 2021.</p>
+<p>On peut résumer qu’au cours de ces 11 années, l’année où le nombre
+d’incendies est le plus élevé est 2022 avec un total de 241 incendies,
+tandis que l’année où ce nombre est le plus bas est 2018.</p>
+<p>En 2022, on a observé une augmentation atypique, avec un total de 241
+incendies. Divers éléments peuvent expliquer cette augmentation, tels
+que les modifications extrêmes des conditions météorologiques. En 2022,
+des vagues de chaleur sévères et une sécheresse persistante ont
+contribué à cet accroissement. De plus, les actions humaines, notamment
+la négligence, ont influencé cette hausse.</p>
+<p>Pour conclure notre analyse, l’évolution des incendies de 2012 à 2022
+a montré des tendances significatives et atypiques. Cela souligne
+l’importance d’examiner l’impact des facteurs climatiques, humains et
+socio-économiques sur le nombre d’incendies. On peut conclure que
+l’année 2022 a été exceptionnelle, affichant le plus haut nombre
+d’incendies. De plus, nous avons observé une variabilité des tendances,
+comme démontré souvent avec les années 2017, 2014 et 2013 où les taux
+étaient remarquablement bas comparés à ceux de 2022. Il est essentiel de
+noter que le changement climatique a une grande importance.</p>
+<p>Enfin, et c’est crucial, la gestion et la prévention jouent un rôle
+primordial. Les préfectures, ainsi que les forces de police municipales
+et nationales, peuvent contribuer à maîtriser ce taux d’incendies
+attribués à des actes de malveillance ou de négligence.</p>
+</div>
+<div id="analyse-des-heures-dincendie" class="section level5">
+<h5>4.3.1.2 Analyse des heures d’incendie</h5>
+</div>
+<div id="évolution-décennale-des-causes-dincendies" class="section level5">
+<h5>4.3.1.3 Évolution décennale des causes d’incendies</h5>
+</div>
+<div id="heures-critiques-de-déclenchement" class="section level5">
+<h5>4.3.1.4 Heures critiques de déclenchement</h5>
+</div>
+<div id="cyclicité-hebdomadaire" class="section level5">
+<h5>4.3.1.5 Cyclicité hebdomadaire</h5>
+</div>
+</div>
+<div id="facteurs-climatiques-et-météorologiques" class="section level4">
+<h4>4.3.2 Facteurs climatiques et météorologiques</h4>
+<div id="influence-de-la-température-sur-les-incendies" class="section level5">
+<h5>4.3.2.1 Influence de la température sur les incendies</h5>
+</div>
+<div id="impact-de-lhumidité-sur-les-incendies" class="section level5">
+<h5>4.3.2.2 Impact de l’humidité sur les incendies</h5>
+</div>
+<div id="relation-entre-le-vent-et-la-propagation-des-incendies" class="section level5">
+<h5>4.3.2.3 Relation entre le vent et la propagation des incendies</h5>
+</div>
+<div id="impact-des-conditions-météorologiques-extrêmes-sur-les-incendies" class="section level5">
+<h5>4.3.2.4 Impact des conditions météorologiques extrêmes sur les
+incendies</h5>
+</div>
+<div id="effet-des-radiations-solaires-sur-les-incendies" class="section level5">
+<h5>4.3.2.5 Effet des radiations solaires sur les incendies</h5>
+</div>
+<div id="température-et-nombre-dincendies-par-période-de-la-journée" class="section level5">
+<h5>4.3.2.6 Température et nombre d’incendies par période de la
+journée</h5>
+</div>
+<div id="relation-entre-la-force-du-vent-et-la-propagation-des-incendies" class="section level5">
+<h5>4.3.2.7 Relation entre la force du vent et la propagation des
+incendies</h5>
+</div>
+<div id="impact-de-la-pression-de-vapeur-sur-la-vitesse-de-propagation-des-incendies" class="section level5">
+<h5>4.3.2.8 Impact de la pression de vapeur sur la vitesse de
+propagation des incendies</h5>
+</div>
+</div>
+<div id="géographie-et-environnement" class="section level4">
+<h4>4.3.3 Géographie et environnement</h4>
+<div id="comparaison-de-la-fréquence-des-incendies-dans-les-régions-montagneuses-vs-basses-altitudes" class="section level5">
+<h5>4.3.3.1 Comparaison de la fréquence des incendies dans les régions
+montagneuses vs basses altitudes</h5>
+</div>
+<div id="variation-de-laltitude-par-region" class="section level5">
+<h5>4.3.3.2 Variation de l’altitude par region</h5>
+</div>
+<div id="distance-côtière-et-risque-dincendie" class="section level5">
+<h5>4.3.3.3 Distance côtière et risque d’incendie</h5>
+</div>
+</div>
+<div id="urbanisation-et-activités-humaines" class="section level4">
+<h4>4.3.4 Urbanisation et activités humaines</h4>
+<div id="comparaison-des-incendies-entre-les-zones-rurales-et-urbaines" class="section level5">
+<h5>4.3.4.1 Comparaison des incendies entre les zones rurales et
+urbaines</h5>
+</div>
+<div id="activités-humaines-à-risque-travauxparticuliers" class="section level5">
+<h5>4.3.4.2 Activités humaines à risque (travaux/particuliers)</h5>
+</div>
+<div id="profil-temporel-des-incendies-criminels" class="section level5">
+<h5>4.3.4.3 Profil temporel des incendies criminels</h5>
+</div>
+<div id="facteurs-prédictifs-des-incendies-criminels" class="section level5">
+<h5>4.3.4.4 Facteurs prédictifs des incendies criminels</h5>
+</div>
+<div id="impact-cumulé-du-climat-et-de-lurbanisation" class="section level5">
+<h5>4.3.4.5 Impact cumulé du climat et de l’urbanisation</h5>
+</div>
+</div>
+<div id="vulnérabilité-et-analyse-de-survie" class="section level4">
+<h4>4.3.5 Vulnérabilité et analyse de survie</h4>
+</div>
+</div>
+</div>
+<div id="ressources" class="section level2">
+<h2>5. Ressources</h2>
+<div id="ressources-sur-la-partie-informative" class="section level3">
+<h3>5.1 Ressources sur la Partie Informative</h3>
+<p>Jean-Luc CARTAULT, CLAIR, B., &amp; KAPP, D. (2025, January 29).
+INCENDIES : Le phénomène physique. Encyclopædia Universalis. <a href="https://www.universalis.fr/encyclopedie/incendies/2-le-phenomene-physique/" class="uri">https://www.universalis.fr/encyclopedie/incendies/2-le-phenomene-physique/</a></p>
+<p>Contributeurs aux projets Wikimedia. (2004, July 23). feu violent et
+destructeur. Wikipedia.org; Fondation Wikimedia, Inc. <a href="https://fr.wikipedia.org/wiki/Incendie" class="uri">https://fr.wikipedia.org/wiki/Incendie</a></p>
+<p>Risque incendie : causes, conséquences et moyens de lutte. (2021).
+Preventica.com. <a href="https://www.preventica.com/magazine/dossiers/prevention-du-risque-incendie-comment-garantir-la-securite-des-personnes-et-des-biens-11032021/risque-incendie-causes-consequences-et-moyens-de-lutte" class="uri">https://www.preventica.com/magazine/dossiers/prevention-du-risque-incendie-comment-garantir-la-securite-des-personnes-et-des-biens-11032021/risque-incendie-causes-consequences-et-moyens-de-lutte</a></p>
+</div>
+<div id="ressources-sur-la-partie-informatique" class="section level3">
+<h3>5.2 Ressources sur la Partie Informatique</h3>
+<p>Cours et Tutoriels sur le Langage SQL. (2025). SQL. <a href="https://sql.sh/" class="uri">https://sql.sh/</a></p>
+<p>Python Software Foundation. (2019). 3.7.3 Documentation. Python.org.
+<a href="https://docs.python.org/3/" class="uri">https://docs.python.org/3/</a></p>
+<p>Bien démarrer avec la documentation GitHub - Documentation GitHub.
+(2025). GitHub Docs. <a href="https://docs.github.com/fr/get-started" class="uri">https://docs.github.com/fr/get-started</a></p>
+<p>Qu’est-ce qu’une base de données ? Définition et fonctionnement.
+(2021, July 26). Hubspot.fr. <a href="https://blog.hubspot.fr/marketing/base-de-donnees" class="uri">https://blog.hubspot.fr/marketing/base-de-donnees</a></p>
+</div>
+<div id="ressources-sur-la-partie-statistique" class="section level3">
+<h3>5.3 Ressources sur la Partie Statistique</h3>
+<p>Dérobert, N. (2025). Paramètres statistiques - Position et
+dispersion. Commentprogresser.com. <a href="https://commentprogresser.com/statistique-parametre-statistiques-moyenne-mediane-etendue-ecart-type.html" class="uri">https://commentprogresser.com/statistique-parametre-statistiques-moyenne-mediane-etendue-ecart-type.html</a></p>
+</div>
 </div>
 
 

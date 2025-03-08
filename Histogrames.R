@@ -83,4 +83,27 @@ ggplot(donnees, aes(x = annee)) +
     panel.grid.minor = element_blank()
   )
 
+library(ggplot2)
+
+# Convertir la table en dataframe pour ggplot
+library(ggplot2)
+
+# Convertir la table en dataframe pour ggplot
+donnees_freq <- as.data.frame(annee_freq)
+colnames(donnees_freq) <- c("Annee", "Nombre_incendies")
+
+# Trier les données par année (pour s'assurer que la ligne est tracée dans l'ordre chronologique)
+donnees_freq <- donnees_freq[order(donnees_freq$Annee), ]
+
+# Créer le graphique avec une ligne qui relie les points
+ggplot(donnees_freq, aes(x = Annee, y = Nombre_incendies)) +
+  geom_line(color = "blue", size = 1) +  # Ligne bleue
+  geom_point(color = "red", size = 2) +   # Points rouges
+  labs(
+    title = "Évolution des incendies par année",
+    x = "Année",
+    y = "Nombre d'incendies"
+  ) +
+  theme_minimal()
+
 

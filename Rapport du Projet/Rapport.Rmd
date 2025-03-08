@@ -10,7 +10,7 @@ output:
     toc: true
     toc_depth: 6
 ---
- 
+
 ## 1. Objectif du Projet
 
 Ce projet qui est liée a l'UE Statistique Inferentielle / Projet Stat-Info qui vise à mieux comprendre les raisons et cause des incendies en analysant des données statistiques. L'idée principale est de voir comment différentes variables influencent l'étendue des incendies, en utilisant des outils statistiques et informatiques. 
@@ -456,9 +456,98 @@ Enfin, et c'est crucial, la gestion et la prévention jouent un rôle primordial
 
 
 #### 4.3.3 Géographie et environnement
-##### 4.3.3.1 Comparaison de la fréquence des incendies dans les régions montagneuses vs basses altitudes
-##### 4.3.3.2 Variation de l'altitude par region
-##### 4.3.3.3 Distance côtière et risque d’incendie
+##### 4.3.3.1 Propagation des incendies sur le territoire Francais
+```{python}
+import geopandas as gpd
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("../Data/donnees_geo.csv")
+
+chemin_fichier_geojson = "../Data/contour-des-departements.geojson"  
+gdf_departements = gpd.read_file(chemin_fichier_geojson)
+
+fig, ax = plt.subplots(figsize=(15, 15))  
+
+# Tracer les départements de la France
+gdf_departements.plot(ax=ax, color="lightgray", edgecolor="black")
+
+ax.scatter(df["longitude"], df["latitude"], color="red", s=50, label="Incendies")  
+
+
+ax.set_xlim([ -5.5, 10 ])
+ax.set_ylim([41.5, 51.5])   
+
+plt.title("Carte des Incendies par Département", fontsize=20)
+plt.legend()
+
+ax.set_axis_off()
+
+plt.savefig("carte_incendies_departements_geojson_grande_avec_points_agrandis.png", dpi=600, bbox_inches='tight')
+
+plt.show()
+```
+
+
+Nous allons examiner l'analyse de la propagation des incendies à travers le territoire français après avoir utilisé ces informations sur la carte nationale de France. 
+
+Décomposons la France, qui est reconnue comme un État composé de régions. Ces régions sont elles-mêmes constituées de sous-régions, qui à leur tour regroupent des départements, et ces derniers, des communes. 
+
+En France, on compte 13 régions spécifiquement dans la partie métropolitaine. Nous allons d'abord les nommer, puis commencer leur énumération et enfin procéder à leur analyse.
+
+1.  Auvergne-Rhône-Alpes
+2.  Bourgogne-Franche-Comté
+3.  Bretagne
+4.  Centre-Val de Loire
+5.  Corse
+6.  Grand Est
+7.  Hauts-de-France
+8.  Île-de-France
+9.  Normandie
+10. Nouvelle-Aquitaine
+11. Occitanie
+12. Pays de la Loire
+13. Provence-Alpes-Côte d'Azur
+
+Nous procéderons à l'examen de ces 13 régions individuellement, pour finalement en arriver à une conclusion. 
+
+La région **Auvergne Rhône-Alpes** présente un taux d'incendies relativement bas, l'une des raisons étant qu'elle jouit d'un climat plus diversifié que celui d'autres régions du sud.Cette région a des altitudes plus élevées qui entraînent une température plus fraîche et un climat plus humide, ce qui diminue le danger d'incendies de grande envergure. 
+
+Le climat tempéré de la région **Bourgogne Franche Comté**, caractérisé par des hivers rigoureux et des étés modérés, explique son taux d'incendies inférieur comparativement à la région Auvergne Rhône-Alpes. Cette région abrite des montagnes et des collines comme le Jura et les Vosges, qui sont habituellement plus humides et moins prédisposées aux incendies forestiers. De plus, cette zone est surtout composée de forêts de feuillus (chênes, hêtres, érables) et de prairies qui présentent une moindre inflammabilité par rapport aux résineux ou aux maquis méditerranéens. 
+
+La région de **Bretagne**, en raison de son climat océanique et de ses températures modérées tout au long de l'année, présente un taux réduit d'incendies.Les hivers sont tempérés et les étés restent frais, accompagnés d'une humidité importante. En outre, les précipitations régulières et l'humidité persistante durant toute l'année préservent la végétation plus verdoyante et moins aride, contribuant ainsi à réduire le danger d'incendies.
+
+Il y a effectivement certains incendies dans la région **Centre-Val de Loire**.Cette région jouit d'un climat continental, caractérisé par des hivers rigoureux et des étés plus tempérés en comparaison avec les régions du sud de la France.  La région se compose de plaines et de collines, ce qui réduit la probabilité d'incidents majeurs et fait baisser le taux d'incendies dans le centre du Val de Loire. 
+
+**La Corse** est une des zones sensibles aux incendies en raison de divers éléments géographiques, climatiques, etc.La Corse jouit d'un climat méditerranéen marqué par des étés extrêmement chauds et arides, ce qui favorise l'apparition aisée d'incendies.Les températures estivales peuvent atteindre des sommets extrêmes, créant un environnement propice à la diffusion rapide des incendies.  Cette zone peut être exposée à des rafales puissantes comme le Mistral qui facilitent la diffusion des feux.Ces courants d'air puissants et généralement secs peuvent propulser les flammes sur de vastes étendues, compliquant ainsi l'éradication des incendies.
+
+
+La région **Grand-est** présente une moindre susceptibilité aux incidents, mais elle n'est pas totalement épargnée.Cette région jouit d'un climat diversifié qui subit des influences à la fois océaniques et continentales.Les hivers sont rigoureux, les étés sont torrides, cependant ils ne parviennent pas à égaler ceux du sud de la France en termes de températures.L'incidence des périodes de sécheresse est en baisse, diminuant ainsi le danger des incendies.  En outre, cette région est dotée de magnifiques zones montagneuses et de vastes plaines. Cette région bénéficie d'une pluviométrie plutôt stable, surtout en automne et en février. Ces précipitations contribuent à conserver un certain degré d'humidité dans le sol et la végétation, ce qui diminue les risques d'incendies.
+
+Le climat humide, la présence de forêts de feuillus, le relief plat et les vents modérés contribuent à rendre la région des **Hauts-de-France** relativement moins vulnérable aux incendies.Ainsi, les conditions météorologiques et géographiques sont généralement moins favorables aux incendies sévères que d'autres zones situées au sud. 
+
+
+**L'Île-de-France**, étant la région où se trouve la **capitale**, est la plus densément peuplée et urbanisée de France. Elle est moins sujette aux grands incendies que les régions situées au sud du pays.  En revanche, cette région n'est pas entièrement protégée contre les incendies. Cette région jouit d'un climat océanique tempéré caractérisé par des hivers rigoureux et des étés doux.  En outre, la topographie de l'Ile-de-France est principalement plane ou légèrement vallonnée, en contraste avec les régions montagneuses telles que les Alpes ou les Pyrénées.
+
+
+La région de **Normandie** affiche un taux réduit d'incendies.Grace à son climat océanique tempéré, son niveau de précipitations constant, sa topographie relativement plane et sa végétation essentiellement feuillue, la Normandie est moins sujette aux incendies que d'autres zones en France.Ces facteurs contribuent à une augmentation de l'humidité dans l'environnement, réduisant par conséquent le risque d'incendies. Néanmoins, des incendies sporadiques peuvent encore survenir, principalement dans les régions boisées et rurales pendant les périodes de sécheresse ou de chaleur intense, même s'ils restent relativement peu fréquents par rapport aux zones plus chaudes et sèches du pays.
+
+La région **Nouvelle Aquitaine**, située dans le sud-ouest, est susceptible de subir des incendies, notamment à cause de son climat et de sa végétation.  Cette région présente un climat plutôt océanique à l'ouest et méditerranéen à l'est, ce qui signifie que les étés peuvent être particulièrement chauds et secs, surtout dans les zones limitrophes de l'Espagne et du Pays Basque.  Par ailleurs, les vagues de chaleur peuvent entraîner des phases d'aridité prolongées qui créent un environnement propice aux incendies.
+
+**L'Occitanie** est une des régions les plus vulnérables aux incendies en raison de divers facteurs géographiques, climatiques et écologiques.Dans sa partie méridionale et sud, cette région jouit d'un climat méditerranéen avec des étés chauds et secs.Durant l'été, les températures peuvent grimper à des sommets élevés et la région est susceptible de connaître des phases d'aridité prolongées, des circonstances propices aux incendies. Dans la propagation des incendies, le vent, notamment le Mistral et la Tramontane qui balaye occasionnellement la zone, a un impact crucial.
+
+
+La région du **Pays de la Loire** présente une exposition moindre aux incendies par rapport à d'autres régions.  Le climat de cette zone est océanique, c'est-à-dire qu'il offre des hivers doux et des étés tempérés, avec des précipitations régulières tout au long de l'année.  Les vagues de chaleur se produisent généralement dans d'autres zones, comme le sud-est de la France, ce qui rend la région moins susceptible aux incendies liés à la canicule. 
+
+
+Pour conclure, la dernière région est la **Provence Alpes Côte d'Azur**, qui se trouve dans le sud-est et subit une forte influence de divers facteurs climatiques et géographiques.Cette région jouit d'un climat méditerranéen, marqué par des étés très chauds et secs ainsi que des hivers doux et humides.  Durant l'été, les températures peuvent atteindre des niveaux extrêmement élevés avec des vagues de chaleur qui se produisent fréquemment. On peut également observer que cette zone est celle où le taux d'incendies est le plus élevé. 
+
+
+Suite à l'étude de la progression du taux d'incendies sur la carte nationale que nous avons réalisée, il est évident que la région où le taux d'incendies est le plus élevé est la **Côte d'Azur**. En revanche, les zones où le taux d'incendies est le plus faible incluent des régions telles que les **Pays de la Loire**, **Normandie**, etc.  Il est donc clair que les conditions météorologiques et la localisation géographique de la ville ou de la région ont un impact crucial, surtout lorsque les conditions climatiques sont particulièrement propices aux incendies. De même, la nature des forêts situées dans les zones urbaines a une incidence significative sur l'expansion des feux.Bien qu'il existe une différence de taux d'incendies entre la ville et la montagne, cette question sera examinée dans le cadre d'une autre problèmatique.
+
+##### 4.3.3.2 Comparaison de la fréquence des incendies dans les régions montagneuses vs basses altitudes
+##### 4.3.3.3 Variation de l'altitude par region
+##### 4.3.3.4 Distance côtière et risque d’incendie
 
 
 

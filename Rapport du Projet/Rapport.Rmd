@@ -457,6 +457,7 @@ Enfin, et c'est crucial, la gestion et la prévention jouent un rôle primordial
 
 #### 4.3.3 Géographie et environnement
 ##### 4.3.3.1 Propagation des incendies sur le territoire Francais
+
 ```{python}
 import geopandas as gpd
 import pandas as pd

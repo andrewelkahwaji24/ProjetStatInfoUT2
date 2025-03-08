@@ -94,7 +94,7 @@ def creer_table_Departements():
     print("La Table Departements creer avec succees")
 
 
-#Creation de la Table Incendies_Departements HANS and Andrew TASK
+#Creation de la Table Incendies_Departements
 
 def creer_table_incendiesdepartements():
     connexion , curs = connecterdb()
@@ -112,6 +112,44 @@ def creer_table_incendiesdepartements():
     curs.close()
     connexion.close()
     print("La Table Incendies Departements a ete creer avec succees")
+
+#Creation de la Table Incendies 2023
+
+def creer_table_incendies2023():
+    connexion, curs = connecterdb()
+    curs.execute(
+        """
+        CREATE TABLE IF NOT EXISTS Incendies_Departements2023 (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            annee INTEGER NOT NULL,
+            numero_departement TEXT NOT NULL,
+            code_insee TEXT NOT NULL,
+            nom_commune TEXT NOT NULL,
+            date_premiere_alerte TEXT NOT NULL,
+            surface_parcourue REAL NOT NULL,
+            surface_foret REAL NOT NULL,
+            surface_maquis_garrigues REAL NOT NULL,
+            autres_surfaces_naturelles_hors_foret REAL NOT NULL,
+            surfaces_agricoles REAL NOT NULL,
+            autres_surfaces REAL NOT NULL,
+            surface_autres_terres_boisées REAL NOT NULL,
+            surfaces_non_boisées_naturelles REAL NOT NULL,
+            surfaces_non_boisées_artificialisées REAL NOT NULL,
+            surfaces_non_boisées REAL NOT NULL,
+            precision_surfaces TEXT NOT NULL,
+            type_peuplement TEXT NOT NULL,
+            nature TEXT NOT NULL,
+            deces_ou_batiments_touchés TEXT NOT NULL,
+            nombre_deces INTEGER NOT NULL,
+            nombre_batiments_totalement_détruits INTEGER NOT NULL,
+            nombre_batiments_partiellement_détruits INTEGER NOT NULL,
+            precision_donnee TEXT NOT NULL
+        )
+        """
+    )
+    connexion.commit()
+    curs.close()
+    connexion.close()
 
 
 #Phase d'injection des donees
@@ -375,6 +413,56 @@ def injection_table_incendies_departements():
     connexion.close()
     print("Les données des incendies par département ont été insérées avec succès.")
 
+def injecter_donnees_incendies_2023():
+    connexion, curs = connecterdb()
+    fichier = "Data/incendies_2023.csv"  # Remplacez par le chemin réel de votre fichier CSV
+    try:
+        with open(fichier, 'r', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                curs.execute(
+                    '''
+                    INSERT INTO Incendies_Departements2023 (
+                        annee, numero_departement, code_insee, nom_commune, date_premiere_alerte, surface_parcourue,
+                        surface_foret, surface_maquis_garrigues, autres_surfaces_naturelles_hors_foret, surfaces_agricoles,
+                        autres_surfaces, surface_autres_terres_boisées, surfaces_non_boisées_naturelles,
+                        surfaces_non_boisées_artificialisées, surfaces_non_boisées, precision_surfaces, type_peuplement,
+                        nature, deces_ou_batiments_touchés, nombre_deces, nombre_batiments_totalement_détruits,
+                        nombre_batiments_partiellement_détruits, precision_donnee
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ''',
+                    (
+                        int(row['annee']),
+                        row['numero_departement'],
+                        row['code_insee'],
+                        row['nom_commune'],
+                        row['date_premiere_alerte'],
+                        float(row['surface_parcourue']),
+                        float(row['surface_foret']),
+                        float(row['surface_maquis_garrigues']),
+                        float(row['autres_surfaces_naturelles_hors_foret']),
+                        float(row['surfaces_agricoles']),
+                        float(row['autres_surfaces']),
+                        float(row['surface_autres_terres_boisées']),
+                        float(row['surfaces_non_boisées_naturelles']),
+                        float(row['surfaces_non_boisées_artificialisées']),
+                        float(row['surfaces_non_boisées']),
+                        row['precision_surfaces'],
+                        row['type_peuplement'],
+                        row['nature'],
+                        row['deces_ou_batiments_touchés'],
+                        int(row['nombre_deces']),
+                        int(row['nombre_batiments_totalement_détruits']),
+                        int(row['nombre_batiments_partiellement_détruits']),
+                        row['precision_donnee']
+                    )
+                )
+        connexion.commit()
+        curs.close()
+        connexion.close()
+        print("Les données des incendies 2023 ont été importées avec succès.")
+    except Exception as e:
+        print(f"Erreur lors de l'importation des données : {e}")
 
 #Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
@@ -576,6 +664,7 @@ def menu():
             print('3. Creer table donnees geo')
             print('4. Creer Table Departements')
             print('5. Creer Table Incendies_Departements')
+            print('6. Creer la Table Incendies 2023')
 
             choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
@@ -599,16 +688,21 @@ def menu():
                 print("Creation de la Table Incendies_Departements")
                 creer_table_incendiesdepartements()
                 print("La Creation de la Table Incendies_Departements a ete creer avec succees ")
+            elif choix1 == 6:
+                print("Creation de la Table Incendies 2023")
+                creer_table_incendiesdepartements()
+                print("La Creation de la Table Incendies 2023 a ete creer avec succees ")
             else:
                 print(" Le numero choisi est invalide ou n'existe pas   ")
 
         elif choix == "2":
             print("   Bienvenue dans le Module de l'injection des tables avec des donnees   ")
-            print('1.    Injecter des donnees dans la table incendies')
-            print('2.    Injecter des donnees dans la table meteo')
-            print('3.    Injecter des donnees dans la table geo')
-            print('4.    Injection des donees dans la Table Departements')
-            print('5.    Injection des donees dans la Table Incendies_Departements')
+            print('1.Injecter des donnees dans la table incendies')
+            print('2.Injecter des donnees dans la table meteo')
+            print('3.Injecter des donnees dans la table geo')
+            print('4.Injection des donees dans la Table Departements')
+            print('5.Injection des donees dans la Table Incendies_Departements')
+            print('6.Injection des donees dans la Table Incendies 2023')
 
             choix2 = int(input("Veuillez choisir une option: "))
 
@@ -632,6 +726,10 @@ def menu():
                 print("   Injection des donnes dans la Table Incendies_Departements")
                 injection_table_incendies_departements()
                 print("Injection effectue avec succees dans la Table Incendies_Departements   ")
+            elif choix2 == 6:
+                print("Injection de la Table Incendies 2023")
+                injecter_donnees_incendies_2023()
+                print("L'injection de la Table Incendies 2023 a ete creer avec succees ")
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 

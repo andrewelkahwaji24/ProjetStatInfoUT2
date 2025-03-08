@@ -21,7 +21,20 @@ Nous avons structuré notre rapport en trois sections principales : la Partie In
 
 Finalement, nous avons constitué une section supplémentaire qui nous sert à énumérer tous les sites internet que nous avons consultés pour la rédaction et l'élaboration de notre projet. Il est à noter que les références sont présentées au format APA !
 
+### 1.1 Utilisation de GitHub 
+
 Il faut également noter que lors de notre projet, qui se divisait en deux parties : Informatique et Statistique, nous avons utilisé GitHub. Cette plateforme collaborative nous a permis de travailler collectivement sur un code en définissant les étapes attribuées à chaque membre du groupe. Cette plateforme nous offre aussi la possibilité de fusionner tout le code en un unique fichier, sans nécessité de l'assembler manuellement.
+
+### 1.2 Utilisation de l'OpenData 
+
+Dans le cadre de ce projet, nous avons mené des recherches afin d’améliorer notre base de données, ce qui nous a amenés à exploiter les données ouvertes.  Autrement dit, l'Open data consiste à rendre accessibles des données publiques, selon le gouvernement, que les utilisateurs peuvent exploiter.
+
+Les différents secteurs de l'Open Data sont variés et servent à assurer la transparence des données. 
+
+**Nous avons utilisé les données provenant de ce site internet:**
+
+
+https://bdiff.agriculture.gouv.fr/incendies
 
 
 ## 2. Partie Informative

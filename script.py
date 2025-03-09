@@ -582,6 +582,7 @@ def afficher_donees_Departements():
     connexion.close()
 
 
+# Affiche des donnees dans la Table Incendies-Dep
 def afficher_doneees_IncendiesDep():
     connexion, curs = connecterdb()
     curs.execute("SELECT * FROM Incendies_Departements")
@@ -593,6 +594,18 @@ def afficher_doneees_IncendiesDep():
     curs.close()
     connexion.close()
 
+# Affiche les donnees dans la Table Humidites
+
+def afficher_doneees_humidites():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM humidites")
+    lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
 
 # Phase d'exportation des doneees en CSV Comma Separated Values
 
@@ -849,23 +862,27 @@ def menu():
             if choix3 == 1:
                 print("  Afficher les donnees de la table Incendies")
                 afficher_donnees_incendies()
-                print("Affichage de la Table Incendies completes avec succees   ")
+                print("Affichage de la Table Incendies completes avec succees  ")
             elif choix3 == 2:
                 print("  Afficher les donnees de la table Meteo")
                 afficher_donnees_meteo()
-                print("Affichage de la Table Meteo completes avec succees   ")
+                print("Affichage de la Table Meteo completes avec succees  ")
             elif choix3 == 3:
                 print("  Afficher les donnees de la table Geo")
                 afficher_donnees_geo()
-                print("Affichage de la Table Geo completes avec succees   ")
+                print("Affichage de la Table Geo completes avec succees  ")
             elif choix3 == 4:
                 print('  Afficher les doneees de la Table Departements')
                 afficher_donees_Departements()
-                print("Affichage de la Table Departements completes avec succees   ")
+                print("Affichage de la Table Departements completes avec succees  ")
             elif choix3 == 5:
                 print('  Afficher les donnees de la Table Incidenes_Departements')
                 afficher_doneees_IncendiesDep()
-                print("Affichage de la Table Incendies_Departements completes avec succees   ")
+                print("Affichage de la Table Incendies_Departements completes avec succees  ")
+            elif choix3 == 6:
+                print('Afficher les donnes de la Table Humidites')
+                afficher_doneees_humidites()
+                print('Afficher de la Table Humidites completes avec succes')
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
         elif choix == "4":

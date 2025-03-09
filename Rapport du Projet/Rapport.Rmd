@@ -257,6 +257,16 @@ Après avoir sélectionné tous les termes que nous allons utiliser, il est temp
 
 En construisant cette table, nous avons fusionné deux tables indépendantes afin de centraliser les données souhaitées. Dans cette table , nous avions comptabilisé le nombre d'incendies par département sur le territoire français, nous permettant ainsi d'avoir une représentation plus claire du nombre d'incendies à l'échelle nationale. Par ailleurs, nous allons approfondir notre analyse dans la section Statistique de notre projet.
 
+### 3.11 La Table Humidites
+Afin d'étudier la question de l'impact de l'humidité sur les incendies, il est nécessaire de fusionner deux fichiers CSV.  
+
+Ainsi, nous avons deux méthodes : soit on les fusionne en utilisant le langage R, soit on utilise le langage Python et SQLITE3.  Dans cette problématique on a decide d'utilise le language Python donc ce qu'on a effectue est qu'on a créer la Table Humidités avec les champs qu'on veut , et qui sont nécessaires pour les deux tables.
+
+Après avoir établi la table, nous avons réalisé une autre opération pour introduire les informations des deux tableaux en ayant recours à une *INNER JOIN* sur les attributs désirés, en les fusionnant par l’égalité de code_INSEE entre ces deux ensembles de données.
+
+Avec cette approche, nous obtiendrons une table qui regroupe les informations nécessaires, permettant ainsi une analyse plus aisée.
+
+
 ### 3.10 Initiation de la Carte de France
 
 Dans le cadre de notre projet, nous traitons les incendies sur le sol français. Les données de cette unité d'enseignement contiennent la géolocalisation des incendies sur le territoire français.
@@ -447,6 +457,136 @@ Enfin, et c'est crucial, la gestion et la prévention jouent un rôle primordial
 
 ##### 4.3.2.1 Influence de la température sur les incendies
 ##### 4.3.2.2 Impact de l'humidité sur les incendies
+
+Pour mener l'analyse de l'influence de l'humidité sur les incendies, il est nécessaire de constituer notre base d'analyse.  Il est nécessaire d'utiliser les deux tables que nous avons mises en place dans notre Base de données, à savoir la Table Incendies et la Table donnees_meteo. 
+
+Afin de réaliser une jointure entre ces deux tables, nous avons fait appel à une troisième table nommée humidite qui regroupe les champs des deux tables visées, partageant un élément en commun : le « Code_INSEE ». Nous avons détaillé la méthode utilisée pour cela dans la section Informatique de notre rapport.
+
+
+Avant d'approfondir dans les détails de notre étude, nous allons d'abord définir les termes clés que nous utiliserons dans notre analyse. L'humidité se réfère à la présence de vapeur d'eau dans l'air.
+
+Le but de notre analyse est d'étudier le lien entre l'humidité atmosphérique et les incendies.  Pour accomplir cela, nous devons étudier la relation entre l'humidité et la dimension des incendies.
+
+*Il est essentiel de mettre en évidence deux attributs importants.*
+
+
+1.  **Tens_vap_med**: Cet attribut évalue la pression de vaporisation moyenne, qui est une autre façon de dire qu'il s'agit d'un indicateur de l'humidité de l'air. 
+
+
+2.  **surface_parcourue_m2**: Cette caractéristique présente la superficie ravagée par un feu, ce qui en fait un instrument pour évaluer l'intensité du feu. 
+
+Dans cette étude, nous allons créer et analyser deux graphes indispensables à notre problématique.
+
+1.  **Histogramme de l'humidité**
+
+Le diagramme de l'humidité nous aidera à examiner et à saisir la distribution des taux d'humidité dans l'échantillon de données. 
+
+ L'humidité joue un rôle crucial dans l'analyse des incendies en raison de son impact sur la rapidité de leur avancement. Cependant, avant d'examiner toute relation avec la surface incendiée, nous devons d'abord comprendre comment l'humidité fluctue dans les données. 
+
+
+```{r}
+library(ggplot2)
+data <- read.csv("../Exports/export_Humidites.csv")
+ggplot(data, aes(x = Tens_vap_med)) +
+  geom_histogram(binwidth = 0.5, fill = "#1f77b4", color = "white", alpha = 0.7) +
+  labs(title = "Distribution de l'humidité de l'air (Tens_vap_med)", 
+       x = "Humidité de l'air (Tens_vap_med)", 
+       y = "Fréquence") +
+  theme_minimal()
+```
+
+L'axe des abscisses illustre l'humidité de l'air, déterminée par la pression de vapeur moyenne. Les chiffres se situent approximativement entre 0 et 25.On présume que les valeurs sont exprimées en hPa. C'est une unité utilisée pour évaluer la pression de la vapeur. 
+
+L'axe ordonnes illustre la fréquence, c'est-à-dire le total des observations pour chaque plage de tension de vapeur. Il a atteint une fréquence maximale de 200.
+
+D'après les informations intégrées, cet histogramme révèle une distribution asymétrique avec une importante concentration de valeurs faibles en matière d'humidité de l'air, allant de 5 à 15 hPa.
+
+L'histogramme présente une asymétrie vers la droite, avec un grand nombre d'observations ayant de faibles valeurs de tension de vapeur, indiquant une humidité faible à modérée, et quelques observations à des valeurs plus élevées, traduisant une humidité supérieure. 
+
+On pourrait affirmer que la classe modale de cet histogramme se situe approximativement entre 10 et 12 hPa. 
+
+La portée de cet histogramme s'étend de 0 à 25 hPa. Néanmoins, on remarque qu'il existe très peu de données entre 20 et 25 hPa. De plus, il est évident qu'au-delà de 22 hPa, aucune observation n'est présente.
+
+Dans notre histogramme, on peut observer la présence d'une longue queue, bien qu'elle soit peu dense.  Autrement dit, cela nous indique que les valeurs élevées de tension de vapeur sont peu fréquentes dans cet ensemble de données. 
+
+ Nous allons déterminer les interprétations des intervalles concernant le taux d'humidité. 
+
+1.  **0 a 5 hPa**: Cette plage indique un taux d'humidité très bas. 
+2.  **5 a 15 hPa**: C'est la zone où est rassemblée la plupart des données.  La fréquence s'accroît rapidement dès que l'on atteint 5 hPa, atteignant un maximum aux alentours de 10 à 12 hPa avant de redescendre. Cela signifie que le niveau d'humidité est modéré. 
+3.  **15 a 20 hPa**:Dans cette période, nous observons une réduction qui est associée à des conditions plus humides.
+4.  **20 a 25 hPa**:Les observations sont peu fréquentes.  La fréquence étant pratiquement de 0, on peut observer que nous avons des conditions hors du commun, telles que des climats tropicaux. 
+
+Dans un cadre météorologique, la tension de vapeur représente une évaluation de la pression partielle de la vapeur d'eau dans l'atmosphère, liée directement à l'humidité.  Selon notre histogramme, une pression de vapeur de 10 hPa est associée à une humidité relative modérée, tandis qu'une pression de vapeur avoisinant les 20 hPa indique un niveau d'humidité considérablement plus élevé, potentiellement proche de la saturation. 
+
+ Cet histogramme indiquant une concentration autour de 10-12 hPA suggère un climat tempéré, caractérisé par une humidité généralement modérée la majorité du temps, mais avec des périodes plus humides de manière sporadique. 
+
+2.  **Diagrame de dispersion**
+
+Ce schéma nous offre la possibilité d'examiner s'il y a une relation entre l'humidité atmosphérique et l'étendue des incendies (autrement dit, la superficie qu'ils couvrent).
+
+L'objectif est d'observer comment l'humidité influe sur la taille des incendies de manière perceptible. 
+
+
+```{r}
+library(ggplot2)
+data <- read.csv("../Exports/export_Humidites.csv")
+ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(aes(color = surface_parcourue_m2), size = 2, alpha = 0.7) + 
+  scale_color_gradient(low = "blue", high = "red") + 
+  labs(title = "Relation entre l'humidité de l'air et la surface parcourue par les incendies", 
+       x = "Humidité de l'air (Tens_vap_med)", 
+       y = "Surface parcourue par les incendies (m²)") +
+  theme_minimal()
+
+```
+
+Dans ce diagramme, seul l'axe des X représente l'air mesuré par la tension de vapeur moyenne.  Les valeurs varient de 0 à 25 hPa. L'axe des Y représente la superficie parcourue par les incendies, exprimée en mètres carrés.
+
+Nous avons choisi d'utiliser un graphique de type nuage de points, également appelé **scatter plot**, où chaque point représente une observation (incendie) associée à deux variables.  Premièrement, il s'agit de l'humidité atmosphérique au moment du sinistre, et en second lieu, de la superficie affectée par cet incendie (Y).
+
+La couleur des points varie du bleu au rouge, conformément à l'échelle indiquée sur la droite.  Les points bleus représentent des surfaces inférieures à 250 000 m², alors que les points rouges sont associés à des surfaces supérieures. 
+
+Débutons par l'étude de la répartition des points, en mettant d'abord l'accent sur leur concentration. La plupart des points se regroupent dans la plage d'humidité de 0 à 15 hPa, avec une densité particulièrement élevée entre 5 et 12 hPa.  Cela entraîne des niveaux d'humidité modérés.
+
+On remarque également que le nombre de points au-delà de 20 hPa est très limité, ce qui suggère que les incendies dans des conditions extrêmement humides sont rares. 
+
+En ce qui concerne la superficie affectée par les incendies, allant de 0 à 250 000 m², on remarque que la majorité d'entre eux ont une portée assez restreinte. Pour les surfaces allant jusqu'à 1 000 000 m2, le graphique semble indiquer que les incendies de plus grande ampleur sont moins communs.
+ 
+Concernant le lien entre l'humidité et la surface parcourue, on remarque une concentration de points bleus dans l'intervalle d'humidité de 5 à 15 hPa.  Cela indique que les incendies de faible envergure se produisent plus souvent dans des conditions d'humidité modérées.  En ce qui concerne les points rouges, ils sont plus éparpillés et se situent dans la même fourchette, bien qu'il existe des points rouges dans des zones où l'humidité est à la fois plus basse et plus élevée. 
+
+On ne constate pas de lien clair et direct entre le taux d'humidité de l'air et la superficie touchée par les feux.  Les feux de grande envergure (indiqués par des points rouges) surviennent à divers niveaux d'humidité, toutefois, la plupart d'entre eux (qu'ils soient petits ou grands) se regroupent dans l'intervalle de 5 à 15 hPa.
+
+ Cependant, une tendance mineure peut être observée : les incendies de plus grande envergure (près de 1 000 000 m²) ont l'air de survenir un peu plus fréquemment dans des conditions d'humidité plus basse (environ 5 hPa ou moins), où l'air est plus sec, ce qui facilite la diffusion des flammes.  Néanmoins, cette tendance n'est pas très prononcée.
+
+3.  **Comparaison avec l'histograme precedent:**
+
+L'histogramme précédent nous indiquait que la pression de vapeur moyenne se situait approximativement entre 5 et 15 hPa, avec un sommet autour de 10-12 hPa.  Cette distribution est confirmée par ce nuage de points.
+
+ Les quelques rares points au-delà de 20 hPa dans l'histogramme témoignent de la confirmation que les incendies sont peu fréquents dans des conditions très humides.
+
+4. **Analyse Statistique**
+
+Après avoir réalisé l'analyse des deux graphiques, nous sommes en mesure d'effectuer une analyse statistique.
+
+Nous allons effectuer un calcul de corrélation.Elle nous offrira la possibilité d'évaluer l'intensité et le sens de la corrélation linéaire entre l'humidité atmosphérique et les dimensions des feux. 
+
+Avant tout, définissons les choses. Il s'agit d'une mesure statistique qui illustre la force et la direction d'un lien entre deux variables.  Elle nous aide, de manière simple, à saisir comment deux variables se déplacent l'une par rapport à l'autre. On utilise le coefficient de corrélation de Pearson, qui se situe entre -1 et 1, pour quantifier la corrélation.  Avec 1 représentant une corrélation parfaitement positive, -1 une corrélation parfaitement négative et 0 signifiant aucune corrélation.
+
+```{r}
+correlation <- cor(data$Tens_vap_med, data$surface_parcourue_m2, use = "complete.obs")
+print(paste("Corrélation entre Tens_vap_med et surface_parcourue_m2: ", correlation))
+```
+
+Dans ce code, nous avons fait appel à la fonction « cor() » afin de déterminer la corrélation de Pearson entre Tens_vap_med et surface_parcourue_m2, en omettant les variables manquantes.  La méthode cor() nous donnera un coefficient de corrélation, comme expliqué précédemment. 
+
+1.  Si la corrélation est haute, proche de 1, cela nous permet d'affirmer qu'une hausse de l'humidité est liée à une extension des incendies.
+
+2.  Si la corrélation est négative (proche de -1), cela implique qu'une hausse de l'humidité est liée à une réduction de la grandeur des feux.
+
+3.  Une corrélation proche de 0 suggère l'absence d'une relation linéaire manifeste.
+
+L'analyse de corrélation révèle qu'il n'existe pas de lien linéaire prononcé entre le taux d'humidité et l'ampleur des feux dans vos informations.  Selon cette étude, l'humidité semble avoir une influence marginale sur l'ampleur des incendies.
+
 ##### 4.3.2.3 Relation entre le vent et la propagation des incendies
 ##### 4.3.2.4 Impact des conditions météorologiques extrêmes sur les incendies
 ##### 4.3.2.5 Effet des radiations solaires sur les incendies
@@ -470,7 +610,6 @@ gdf_departements = gpd.read_file(chemin_fichier_geojson)
 
 fig, ax = plt.subplots(figsize=(15, 15))  
 
-# Tracer les départements de la France
 gdf_departements.plot(ax=ax, color="lightgray", edgecolor="black")
 
 ax.scatter(df["longitude"], df["latitude"], color="red", s=50, label="Incendies")  

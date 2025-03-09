@@ -261,7 +261,7 @@ Après avoir sélectionné tous les termes que nous allons utiliser, il est temp
 
 En construisant cette table, nous avons fusionné deux tables indépendantes afin de centraliser les données souhaitées. Dans cette table , nous avions comptabilisé le nombre d'incendies par département sur le territoire français, nous permettant ainsi d'avoir une représentation plus claire du nombre d'incendies à l'échelle nationale. Par ailleurs, nous allons approfondir notre analyse dans la section Statistique de notre projet.
 
-### 3.11 La Table Humidites
+### 3.10 La Table Humidites
 Afin d'étudier la question de l'impact de l'humidité sur les incendies, il est nécessaire de fusionner deux fichiers CSV.  
 
 Ainsi, nous avons deux méthodes : soit on les fusionne en utilisant le langage R, soit on utilise le langage Python et SQLITE3.  Dans cette problématique on a decide d'utilise le language Python donc ce qu'on a effectue est qu'on a créer la Table Humidités avec les champs qu'on veut , et qui sont nécessaires pour les deux tables.
@@ -270,8 +270,18 @@ Après avoir établi la table, nous avons réalisé une autre opération pour in
 
 Avec cette approche, nous obtiendrons une table qui regroupe les informations nécessaires, permettant ainsi une analyse plus aisée.
 
+### 3.11 La Table Vents 
 
-### 3.10 Initiation de la Carte de France
+Afin d'etudier la problematique qui se concentrent sur la Relation entre le vent et la propagation des incendies on a eu recours a la methode pour creer la Table Vents car on a besoin de fussionner deux fichiers CSV.
+
+Ainsi, nous avons deux méthodes : soit on les fusionne en utilisant le langage R, soit on utilise le langage Python et SQLITE3.  Dans cette problématique on a decide d'utilise le language Python donc ce qu'on a effectue est qu'on a créer la Table Vents avec les champs qu'on veut , et qui sont nécessaires pour les deux tables.
+
+Après avoir établi la table, nous avons réalisé une autre opération pour introduire les informations des deux tableaux en ayant recours à une *INNER JOIN* sur les attributs désirés, en les fusionnant par l’égalité de code_INSEE entre ces deux ensembles de données.
+
+Avec cette approche, nous obtiendrons une table qui regroupe les informations nécessaires, permettant ainsi une analyse plus aisée.
+
+
+### 3.12 Initiation de la Carte de France
 
 Dans le cadre de notre projet, nous traitons les incendies sur le sol français. Les données de cette unité d'enseignement contiennent la géolocalisation des incendies sur le territoire français.
 
@@ -617,6 +627,52 @@ Dans ce code, nous avons fait appel à la fonction « cor() » afin de détermin
 L'analyse de corrélation révèle qu'il n'existe pas de lien linéaire prononcé entre le taux d'humidité et l'ampleur des feux dans vos informations.  Selon cette étude, l'humidité semble avoir une influence marginale sur l'ampleur des incendies.
 
 ##### 4.3.2.3 Relation entre le vent et la propagation des incendies
+
+Pour examiner la question relative à la corrélation entre le vent et la diffusion des incendies sur le sol français, nous adopterons une approche distincte en segmentant ce sujet en cinq sous-questions.
+
+C'est pourquoi, pour aborder ce problème, on devrait considérer ces cinq enjeux :
+
+1.  Force du vent
+2.  Surface parcourue par le feu
+3.  Surface parcourue par le feu en fonction de la Force du vent
+4.  Force du vent par zone géographique
+5.  Surface parcourue par le feu par zone géographique
+
+###### 4.3.2.3.1 Force du vent
+
+Dans cette sous-problematique on va analyser la force du vent:
+
+```{r}
+library(ggplot2)
+data <- read.csv("../Exports/export_vents.csv")
+ggplot(data, aes(x = Force_vent_med)) +
+  geom_histogram(binwidth = 1, fill = "red", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la Force du Vent", x = "Force du Vent", y = "Fréquence") +
+  theme_minimal()
+```
+
+On présume que la force du vent est évaluée en kilomètres par heure. 
+
+Cette histograme represente la distribution de la force du vent mesure en Km/h. L'échelle horizontale montre la puissance du vent, avec des valeurs variant de 0 à 10,5.L'axe des y symbolise la fréquence, soit le nombre d'apparitions de chaque plage de force du vent, avec des valeurs se situant approximativement entre 0 et 400.
+
+L'histogramme indique une distribution asymétrique vers la droite, ce qui implique une concentration accrue de données pour des valeurs faibles de la force du vent, avec une longue traîne vers les valeurs plus élevées. 
+ 
+Le sommet de l'histogramme se trouve approximativement dans la gamme de 3.5 à 4.0 pour la force du vent, avec une fréquence avoisinant les 400. Cela nous indique que dans cet échantillon, la force du vent la plus courante se situe dans cette plage. 
+
+Concernant la portée des valeurs, la force du vent varie approximativement de 0 à 10,5. Toutefois, les occurrences de valeurs dépassant 8 sont extrêmement rares, ce qui indique que de très forts vents sont peu fréquents dans cet ensemble de données.
+
+Presque 80% des données se regroupent entre 0 et 5.5 environ, ce qui indique que cet échantillon est principalement dominé par les vents légers à modérés. 
+
+La moyenne de cet histogramme se situe légèrement au-dessus du mode, estimée approximativement entre 4.0 et 4.5.Concernant la médiane, elle se positionne probablement autour de 3.5, car la distribution penche vers la droite, divisant l'échantillon en deux segments égaux. 
+
+Cet histogramme pourrait illustrer des relevés de la puissance du vent sur une période déterminée.La prévalence de brises légères à modérées (0.0 à 5.5) indique un climat plutôt paisible, avec la présence exceptionnelle de vents puissants au-delà de 8, qui pourraient survenir lors d'événements rares associés à des phénomènes météorologiques tels que des tempêtes.
+
+###### 4.3.2.3.2 Surface parcourue par le feu en fonction de la Force du vent
+###### 4.3.2.3.3 Force du vent par zone géographique
+###### 4.3.2.3.4 Surface parcourue par le feu par zone géographique
+
+
+
 ##### 4.3.2.4 Impact des conditions météorologiques extrêmes sur les incendies
 ##### 4.3.2.5 Effet des radiations solaires sur les incendies
 ##### 4.3.2.6 Température et nombre d'incendies par période de la journée

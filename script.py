@@ -176,6 +176,24 @@ def create_table_humidites():
     connexion.close()
     print("La Table humidites a été créée avec succès.")
 
+# Creation de la Table Vent
+def create_table_vents():
+    connexion , curs = connecterdb()
+    curs.execute(
+        """
+        CREATE TABLE vents (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,   
+        code_INSEE TEXT NOT NULL,               
+        surface_parcourue_m2 REAL NOT NULL,     
+        Force_vent_med REAL NOT NULL              
+        )
+        """
+    )
+    connexion.commit()
+    curs.close()
+    connexion.close()
+    print("La Table Vent a été créée avec succès.")
+
 # Phase d'injection des donees
 # Injection des donees dans la Table Incendies
 def injecter_donnees_incendies():
@@ -527,6 +545,43 @@ def injecter_donnees_humidites():
         curs.close()
         connexion.close()
 
+#Injection des donnees dans la Table Vents
+def injecter_donnees_vents():
+    # Connexion à la base de données
+    connexion, curs = connecterdb()
+
+    try:
+        # Faire un INNER JOIN entre les tables donnees_incendies et donnees_meteo
+        curs.execute(
+            """
+            INSERT INTO vents (code_INSEE, surface_parcourue_m2, Force_vent_med)
+            SELECT 
+                i.code_INSEE, 
+                i.surface_parcourue_m2, 
+                m.Force_vent_med
+            FROM 
+                incendies i
+            INNER JOIN 
+                donnees_meteo m 
+            ON 
+                i.code_INSEE = m.code_INSEE
+            """
+        )
+
+        # Commit des changements dans la base de données
+        connexion.commit()
+        print("Les données ont été insérées avec succès.")
+
+    except Exception as e:
+        print(f"Une erreur s'est produite : {e}")
+        raise ValueError("Erreur lors de l'importation des données.")
+
+    finally:
+        # Fermeture de la connexion et du curseur
+        curs.close()
+        connexion.close()
+
+
 # Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
     connexion, curs = connecterdb()
@@ -613,6 +668,19 @@ def afficher_doneees_incendies2023():
 def afficher_doneees_humidites():
     connexion, curs = connecterdb()
     curs.execute("SELECT * FROM humidites")
+    lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
+# Affiche les donnees dans la Table Vents
+
+def afficher_doneees_vents():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM vents")
     lignes = curs.fetchall()
 
     for ligne in lignes:
@@ -790,6 +858,30 @@ def export_donnees_incendies2023(fichier_output="Exports/export_Incendies2023.cs
     except Exception as e:
         print("Erreur lors de l'exportation des données :", e)
 
+#Exportation des donnees de la Table Vents
+
+def export_donnees_vents(fichier_output="Exports/export_vents.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM vents")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Vents ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite :", e)
+    except Exception as e:
+        print("Erreur lors de l'exportation des données :", e)
+
 # Menu de notre Programme
 def menu():
     while True:
@@ -812,6 +904,7 @@ def menu():
             print('5. Creer Table Incendies_Departements')
             print('6. Creer la Table Incendies 2023')
             print('7. Creation de la Table Humidites')
+            print('8. Creation de la Table Vents')
 
             choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
@@ -843,6 +936,10 @@ def menu():
                 print("Creation de la Table Humidites")
                 create_table_humidites()
                 print("La Creation de la Table Humidites a ete creer avec succees ")
+            elif choix1 == 8:
+                print("Creation de la Table Vents")
+                create_table_vents()
+                print("La Creation de la Table Vents a ete creer avec succees ")
             else:
                 print(" Le numero choisi est invalide ou n'existe pas   ")
 
@@ -855,6 +952,7 @@ def menu():
             print('5.Injection des donees dans la Table Incendies_Departements')
             print('6.Injection des donees dans la Table Incendies 2023')
             print('7. Injection des donees de la Table Humidites')
+            print('8; Injection des donnees de la Table Vents')
 
             choix2 = int(input("Veuillez choisir une option: "))
 
@@ -885,7 +983,11 @@ def menu():
             elif choix2 == 7:
                 print("Injection de la Table Humidites")
                 injecter_donnees_humidites()
-                print("Injection effectue avec succees dans la Table Incendies_Departements")
+                print("Injection effectue avec succees dans la Table Humidites")
+            elif choix2 == 8:
+                print("Injection de la Table Vents")
+                injecter_donnees_vents()
+                print("Injection effectue avec succees dans la Table Vents")
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
@@ -925,6 +1027,10 @@ def menu():
                 print('Afficher les donnes de la Table Incendies2023')
                 afficher_doneees_incendies2023()
                 print('Afficher de la Table Incendies2023 completes avec succes')
+            elif choix3 == 8:
+                print('Afficher les donnes de la Table Vents')
+                afficher_doneees_vents()
+                print('Afficher de la Table Vents completes avec succes')
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
         elif choix == "4":
@@ -936,6 +1042,7 @@ def menu():
             print("5.Exportation des donnees de la Table Incendies_Departements")
             print("6.Exportation des donnees de la Table Humidites")
             print("7.Exportation des donnees de la Table Incendies2023")
+            print("8. Exportation des donnees de la Table Vents")
             choix4 = int(input("Veuillez choisir une option"))
             if choix4 == 1:
                 print("La procedure de l'exportation des donees pour la Table Incendies a commencee")
@@ -958,6 +1065,9 @@ def menu():
             elif choix4 == 7:
                 print("La procedure de l'exportation des donnees pour la Table Incendies2023 a commencee")
                 export_donnees_incendies2023()
+            elif choix4 == 8:
+                print("La procedure de l'exportation des donnees pour la Table Incendies2023 a commencee")
+                export_donnees_vents()
             else:
                 print("Le numero choisi est invalide ou n'existe pas")
 

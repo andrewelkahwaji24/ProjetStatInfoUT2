@@ -182,5 +182,32 @@ ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
     panel.grid.minor = element_line(color = "gray", size = 0.25)
   )
 
+# Histogramme de Tens_vap_med (humidité de l'air)
+ggplot(data, aes(x = Tens_vap_med)) +
+  geom_histogram(binwidth = 0.5, fill = "#1f77b4", color = "white", alpha = 0.7) +
+  labs(title = "Distribution de l'humidité de l'air (Tens_vap_med)", 
+       x = "Humidité de l'air (Tens_vap_med)", 
+       y = "Fréquence") +
+  theme_minimal()
+
+# Histogramme de Tens_vap_med (humidité de l'air)
+ggplot(data, aes(x = Tens_vap_med)) +
+  geom_histogram(binwidth = 0.5, fill = "#1f77b4", color = "white", alpha = 0.7) +
+  labs(title = "Distribution de l'humidité de l'air (Tens_vap_med)", 
+       x = "Humidité de l'air (Tens_vap_med)", 
+       y = "Fréquence") +
+  theme_minimal()
+# Diagramme de dispersion entre Tens_vap_med et surface_parcourue_m2
+ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(aes(color = surface_parcourue_m2), size = 2, alpha = 0.7) + 
+  scale_color_gradient(low = "blue", high = "red") + 
+  labs(title = "Relation entre l'humidité de l'air et la surface parcourue par les incendies", 
+       x = "Humidité de l'air (Tens_vap_med)", 
+       y = "Surface parcourue par les incendies (m²)") +
+  theme_minimal()
+
+# Calcul de la corrélation entre Tens_vap_med et surface_parcourue_m2
+correlation <- cor(data$Tens_vap_med, data$surface_parcourue_m2, use = "complete.obs")
+print(paste("Corrélation entre Tens_vap_med et surface_parcourue_m2: ", correlation))
 
 

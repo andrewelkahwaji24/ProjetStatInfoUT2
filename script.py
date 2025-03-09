@@ -156,6 +156,24 @@ def creer_table_incendies2023():
     curs.close()
     connexion.close()
 
+#  Creation de la Table Humidites Incendies
+
+def create_table_humidites():
+    connexion , curs = connecterdb()
+    curs.execute(
+        """
+        CREATE TABLE humidites (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,   
+        code_INSEE TEXT NOT NULL,               
+        surface_parcourue_m2 REAL NOT NULL,     
+        Tens_vap_med REAL NOT NULL              
+        )
+        """
+    )
+    connexion.commit()
+    curs.close()
+    connexion.close()
+    print("La Table humidites a été créée avec succès.")
 
 # Phase d'injection des donees
 # Injection des donees dans la Table Incendies
@@ -471,6 +489,42 @@ def injecter_donnees_incendies_2023():
     except Exception as e:
         print(f"Erreur lors de l'importation des données : {e}")
 
+# Injection des donneees dans la Table Humidites
+
+def injecter_donnees_humidites():
+    # Connexion à la base de données
+    connexion, curs = connecterdb()
+
+    try:
+        # Faire un INNER JOIN entre les tables donnees_incendies et donnees_meteo
+        curs.execute(
+            """
+            INSERT INTO humidites (code_INSEE, surface_parcourue_m2, Tens_vap_med)
+            SELECT 
+                i.code_INSEE, 
+                i.surface_parcourue_m2, 
+                m.Tens_vap_med
+            FROM 
+                incendies i
+            INNER JOIN 
+                donnees_meteo m 
+            ON 
+                i.code_INSEE = m.code_INSEE
+            """
+        )
+
+        # Commit des changements dans la base de données
+        connexion.commit()
+        print("Les données ont été insérées avec succès.")
+
+    except Exception as e:
+        print(f"Une erreur s'est produite : {e}")
+        raise ValueError("Erreur lors de l'importation des données.")
+
+    finally:
+        # Fermeture de la connexion et du curseur
+        curs.close()
+        connexion.close()
 
 # Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
@@ -661,6 +715,29 @@ def export_doneees_incendies_dep(fichier_output="Exports/export_Incendies_Depart
     except Exception as e:
         print("Erreur lors de l'exportation des données")
 
+# Exportation des donnees de la Table Humidites
+
+def export_donnees_humidites(fichier_output="Exports/export_Humidites.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM humidites")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Humidites ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite :", e)
+    except Exception as e:
+        print("Erreur lors de l'exportation des données :", e)
 
 # Menu de notre Programme
 def menu():
@@ -683,6 +760,7 @@ def menu():
             print('4. Creer Table Departements')
             print('5. Creer Table Incendies_Departements')
             print('6. Creer la Table Incendies 2023')
+            print('7. Creation de la Table Humidites')
 
             choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
@@ -710,17 +788,22 @@ def menu():
                 print("Creation de la Table Incendies 2023")
                 creer_table_incendiesdepartements()
                 print("La Creation de la Table Incendies 2023 a ete creer avec succees ")
+            elif choix1 == 7:
+                print("Creation de la Table Humidites")
+                create_table_humidites()
+                print("La Creation de la Table Humidites a ete creer avec succees ")
             else:
                 print(" Le numero choisi est invalide ou n'existe pas   ")
 
         elif choix == "2":
-            print("   Bienvenue dans le Module de l'injection des tables avec des donnees   ")
+            print("Bienvenue dans le Module de l'injection des tables avec des donnees   ")
             print('1.Injecter des donnees dans la table incendies')
             print('2.Injecter des donnees dans la table meteo')
             print('3.Injecter des donnees dans la table geo')
             print('4.Injection des donees dans la Table Departements')
             print('5.Injection des donees dans la Table Incendies_Departements')
             print('6.Injection des donees dans la Table Incendies 2023')
+            print('7. Injection des donees de la Table Humidites')
 
             choix2 = int(input("Veuillez choisir une option: "))
 
@@ -731,23 +814,27 @@ def menu():
             elif choix2 == 2:
                 print("   Injection des données dans la table meteo")
                 injecter_donnees_meteo()
-                print("Injection effectue avec succees dans la Table Meteos   ")
+                print("Injection effectue avec succees dans la Table Meteos ")
             elif choix2 == 3:
                 print("   Injection des données dans la table geo")
                 injecter_donnees_geo()
-                print("Injection effectue avec succees dans la Table Geo   ")
+                print("Injection effectue avec succees dans la Table Geo ")
             elif choix2 == 4:
                 print("   Injection des donees dans la Table Departements")
                 injection_table_departements()
-                print("Injection effectue avec succees dans la Table Departements   ")
+                print("Injection effectue avec succees dans la Table Departements  ")
             elif choix2 == 5:
                 print("   Injection des donnes dans la Table Incendies_Departements")
                 injection_table_incendies_departements()
-                print("Injection effectue avec succees dans la Table Incendies_Departements   ")
+                print("Injection effectue avec succees dans la Table Incendies_Departements ")
             elif choix2 == 6:
                 print("Injection de la Table Incendies 2023")
                 injecter_donnees_incendies_2023()
-                print("L'injection de la Table Incendies 2023 a ete creer avec succees ")
+                print("L'injection de la Table Incendies 2023 a ete creer avec succees")
+            elif choix2 == 7:
+                print("Injection de la Table Humidites")
+                injecter_donnees_humidites()
+                print("Injection effectue avec succees dans la Table Incendies_Departements")
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
@@ -757,8 +844,7 @@ def menu():
             print('2.   Afficher les donnees de la table Meteo')
             print('3.   Afficher les donnees de la table Geo')
             print('4.   Afficher les donnees de la table Departements')
-            print(
-                '5.   Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
+            print('5.   Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
             choix3 = int(input("Veuillez choisir une option: "))
             if choix3 == 1:
                 print("  Afficher les donnees de la table Incendies")
@@ -789,6 +875,7 @@ def menu():
             print("3.   Exporter les donees de la Table Geo")
             print("4.   Exporter les donees de la Table Departements")
             print("5.   Exporter les donees de la Table Incendies_Departements")
+            print("6. Exportation des donnees de la Table Humidites")
             choix4 = int(input("Veuillez choisir une option"))
             if choix4 == 1:
                 print("La procedure de l'exportation des donees pour la Table Incendies a commencee")
@@ -805,6 +892,9 @@ def menu():
             elif choix4 == 5:
                 print("La procedure de l'exportation des donees pour la Table Incendies_Departements a commencee")
                 export_doneees_incendies_dep()
+            elif choix4==6:
+                print("La procedure de l'exportation des donees pour la Table Humidites a commencee")
+                export_donnees_humidites()
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 

@@ -108,31 +108,33 @@ ggplot(donnees_freq, aes(x = Annee, y = Nombre_incendies)) +
 
 
 ##### Impact de l'humidité sur les incendies
-# Charger les bibliothèques nécessaires
+# Étape 1 : Charger les bibliothèques nécessaires
 library(ggplot2)
-library(dplyr)
 
-# Lire les fichiers CSV en ajustant le séparateur
-humidite <- read.csv("../Data/donnees_meteo.csv", sep=";", header=TRUE)
-incendies <- read.csv("../Data/donnees_incendies.csv", sep=";", header=TRUE)
+# Étape 2 : Importer les données
+data <- read.csv("../Exports/export_Humidites.csv")
 
-# Fusionner les données sur code_INSEE
-data <- merge(humidite, incendies, by="code_INSEE")
+# Étape 3 : Inspecter les données (vérifiez les premières lignes et les colonnes)
+head(data)
 
-# Histogramme de l'humidité de l'air (Tens_vap_med)
-hist(data$Tens_vap_med, 
-     breaks=20, 
-     col="lightblue", 
-     main="Distribution de l'humidité de l'air", 
-     xlab="Tension de vapeur moyenne (hPa)", 
-     border="black")
+# Étape 4 : Assurez-vous que les colonnes sont correctes et ne contiennent pas de valeurs manquantes
+summary(data)
 
-humidite <- read.csv("../Data/donnees_meteo.csv", sep=";", header=TRUE, stringsAsFactors=FALSE)
-incendies <- read.csv("../Data/donnees_incendies.csv", sep=";", header=TRUE, stringsAsFactors=FALSE)
+# Étape 5 : Créer un histogramme pour Tens_vap_med
+ggplot(data, aes(x = Tens_vap_med)) +
+  geom_histogram(binwidth = 0.5, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de Tens_vap_med",
+       x = "Tens_vap_med (Humidité de l'air)",
+       y = "Fréquence") +
+  theme_minimal()
 
-# Vérifier les noms de colonnes
-colnames(humidite)
-colnames(incendies)
+# Étape 6 : Si vous voulez voir l'impact de la surface parcourue par l'incendie
+ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue") +
+  labs(title = "Impact de l'humidité sur la surface parcourue par les incendies",
+       x = "Tens_vap_med (Humidité de l'air)",
+       y = "Surface parcourue par les incendies (m2)") +
+  theme_minimal()
 
 
 

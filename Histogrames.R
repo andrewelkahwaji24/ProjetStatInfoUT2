@@ -107,3 +107,32 @@ ggplot(donnees_freq, aes(x = Annee, y = Nombre_incendies)) +
   theme_minimal()
 
 
+##### Impact de l'humidité sur les incendies
+# Charger les bibliothèques nécessaires
+library(ggplot2)
+library(dplyr)
+
+# Lire les fichiers CSV en ajustant le séparateur
+humidite <- read.csv("../Data/donnees_meteo.csv", sep=";", header=TRUE)
+incendies <- read.csv("../Data/donnees_incendies.csv", sep=";", header=TRUE)
+
+# Fusionner les données sur code_INSEE
+data <- merge(humidite, incendies, by="code_INSEE")
+
+# Histogramme de l'humidité de l'air (Tens_vap_med)
+hist(data$Tens_vap_med, 
+     breaks=20, 
+     col="lightblue", 
+     main="Distribution de l'humidité de l'air", 
+     xlab="Tension de vapeur moyenne (hPa)", 
+     border="black")
+
+humidite <- read.csv("../Data/donnees_meteo.csv", sep=";", header=TRUE, stringsAsFactors=FALSE)
+incendies <- read.csv("../Data/donnees_incendies.csv", sep=";", header=TRUE, stringsAsFactors=FALSE)
+
+# Vérifier les noms de colonnes
+colnames(humidite)
+colnames(incendies)
+
+
+

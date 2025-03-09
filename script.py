@@ -1,16 +1,17 @@
-import sqlite3 , numpy as np , os , random, csv
+import sqlite3, numpy as np, os, random, csv
 
 
-#creation d'une base de donnée
-#creation d'une connexion avec la base de donnees
+# creation d'une base de donnée
+# creation d'une connexion avec la base de donnees
 def connecterdb(database="data.db"):
-    connexion=sqlite3.connect(database)
-    curs=connexion.cursor()
+    connexion = sqlite3.connect(database)
+    curs = connexion.cursor()
     return connexion, curs
 
-#Creation des Tables
 
-#Creation de la Table Incendies
+# Creation des Tables
+
+# Creation de la Table Incendies
 def creer_table_incendies():
     connexion, curs = connecterdb()
     curs.execute(
@@ -36,7 +37,8 @@ def creer_table_incendies():
     connexion.close()
     print("La Table des Icendies a ete creer avec succees")
 
-#Creation de la Table de Donees Meteo
+
+# Creation de la Table de Donees Meteo
 def creer_table_donnees_meteo():
     connexion, curs = connecterdb()
     curs.execute(
@@ -61,7 +63,8 @@ def creer_table_donnees_meteo():
     connexion.close()
     print("La Table donnees meteo creer avec succees")
 
-#Creation de la Table Donnees Geo
+
+# Creation de la Table Donnees Geo
 def creer_table_donnees_geo():
     connexion, curs = connecterdb()
     curs.execute(
@@ -79,6 +82,7 @@ def creer_table_donnees_geo():
     connexion.close()
     print("La Table donnees geo creer avec succees")
 
+
 # Création de la table Departements - WAEL TASK
 def creer_table_Departements():
     connexion, curs = connecterdb()
@@ -94,10 +98,10 @@ def creer_table_Departements():
     print("La Table Departements creer avec succees")
 
 
-#Creation de la Table Incendies_Departements
+# Creation de la Table Incendies_Departements
 
 def creer_table_incendiesdepartements():
-    connexion , curs = connecterdb()
+    connexion, curs = connecterdb()
     curs.execute(
         """
         CREATE TABLE IF NOT EXISTS Incendies_Departements (
@@ -113,7 +117,8 @@ def creer_table_incendiesdepartements():
     connexion.close()
     print("La Table Incendies Departements a ete creer avec succees")
 
-#Creation de la Table Incendies 2023
+
+# Creation de la Table Incendies 2023
 
 def creer_table_incendies2023():
     connexion, curs = connecterdb()
@@ -152,14 +157,14 @@ def creer_table_incendies2023():
     connexion.close()
 
 
-#Phase d'injection des donees
-#Injection des donees dans la Table Incendies
+# Phase d'injection des donees
+# Injection des donees dans la Table Incendies
 def injecter_donnees_incendies():
     connexion, curs = connecterdb()
-    fichier="Data/donnees_incendies.csv"
+    fichier = "Data/donnees_incendies.csv"
     try:
         with open(fichier, 'r') as csvfile:
-            reader=csv.DictReader(csvfile)
+            reader = csv.DictReader(csvfile)
             for row in reader:
                 curs.execute(
                     '''
@@ -189,7 +194,7 @@ def injecter_donnees_incendies():
         raise ValueError("Erreur lors de l'importation des données.")
 
 
-#Injection des donees dans la Table Geo
+# Injection des donees dans la Table Geo
 def injecter_donnees_geo():
     connexion, curs = connecterdb()
     fichier = "Data/donnees_geo.csv"
@@ -218,7 +223,7 @@ def injecter_donnees_geo():
         raise ValueError("Erreur lors de l'importation des données.")
 
 
-#Injection dans la table Meteo
+# Injection dans la table Meteo
 def injecter_donnees_meteo():
     connexion, curs = connecterdb()
     fichier = "Data/donnees_meteo.csv"
@@ -262,8 +267,9 @@ def injecter_donnees_meteo():
 
     except Exception as e:
         raise ValueError("Erreur lors de l'importation des données.")
- 
-#Injection des donees dans la Table Departements WAEL TASK
+
+
+# Injection des donees dans la Table Departements WAEL TASK
 
 def injection_table_departements():
     # Liste des départements et leurs codes INSEE
@@ -393,7 +399,7 @@ def injection_table_departements():
         print("Erreur lors de l'insertion des données des départements :")
 
 
-#Injection des donees dans la table Incendies_Departements HANS and Andrew TASK
+# Injection des donees dans la table Incendies_Departements HANS and Andrew TASK
 def injection_table_incendies_departements():
     connexion, curs = connecterdb()
 
@@ -412,6 +418,7 @@ def injection_table_incendies_departements():
     curs.close()
     connexion.close()
     print("Les données des incendies par département ont été insérées avec succès.")
+
 
 def injecter_donnees_incendies_2023():
     connexion, curs = connecterdb()
@@ -464,7 +471,8 @@ def injecter_donnees_incendies_2023():
     except Exception as e:
         print(f"Erreur lors de l'importation des données : {e}")
 
-#Affichage des donees de la table Incendies
+
+# Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
     connexion, curs = connecterdb()
 
@@ -477,7 +485,8 @@ def afficher_donnees_incendies():
     curs.close()
     connexion.close()
 
-#Affichage des donees de la table Geo
+
+# Affichage des donees de la table Geo
 def afficher_donnees_geo():
     connexion, curs = connecterdb()
 
@@ -490,7 +499,8 @@ def afficher_donnees_geo():
     curs.close()
     connexion.close()
 
-#Affichage des donees de la Table Meteo
+
+# Affichage des donees de la Table Meteo
 def afficher_donnees_meteo():
     connexion, curs = connecterdb()
 
@@ -503,23 +513,25 @@ def afficher_donnees_meteo():
     curs.close()
     connexion.close()
 
-#Affiche des doneees dans la Table Departements
+
+# Affiche des doneees dans la Table Departements
 
 def afficher_donees_Departements():
     connexion, curs = connecterdb()
     curs.execute("SELECT * FROM Departements")
-    lignes=curs.fetchall()
+    lignes = curs.fetchall()
 
     for ligne in lignes:
         print(ligne)
 
     curs.close()
     connexion.close()
+
 
 def afficher_doneees_IncendiesDep():
     connexion, curs = connecterdb()
     curs.execute("SELECT * FROM Incendies_Departements")
-    lignes=curs.fetchall()
+    lignes = curs.fetchall()
 
     for ligne in lignes:
         print(ligne)
@@ -528,9 +540,9 @@ def afficher_doneees_IncendiesDep():
     connexion.close()
 
 
-#Phase d'exportation des doneees en CSV Comma Separated Values
+# Phase d'exportation des doneees en CSV Comma Separated Values
 
-#Exportation des donees de la Table Incendies
+# Exportation des donees de la Table Incendies
 def export_doneees_incendies(fichier_output="Exports/export_incendies.csv"):
     try:
         connexion, curs = connecterdb()
@@ -553,7 +565,8 @@ def export_doneees_incendies(fichier_output="Exports/export_incendies.csv"):
     except Exception as e:
         print("Erreur lors de l'exportation des données")
 
-#Exportation des doneees de la Table Meteo
+
+# Exportation des doneees de la Table Meteo
 def export_doneees_meteo(fichier_output="Exports/export_meteo.csv"):
     try:
         connexion, curs = connecterdb()
@@ -576,7 +589,8 @@ def export_doneees_meteo(fichier_output="Exports/export_meteo.csv"):
     except Exception as e:
         print("Erreur lors de l'exportation des données")
 
-#Exportation des donnees de la Table Geo
+
+# Exportation des donnees de la Table Geo
 def export_doneees_geo(fichier_output="Exports/export_geo.csv"):
     try:
         connexion, curs = connecterdb()
@@ -599,7 +613,8 @@ def export_doneees_geo(fichier_output="Exports/export_geo.csv"):
     except Exception as e:
         print("Erreur lors de l'exportation des données")
 
-#Exportarion des donnees de la Table Departements
+
+# Exportarion des donnees de la Table Departements
 def export_doneees_departements(fichier_output="Exports/export_departements.csv"):
     try:
         connexion, curs = connecterdb()
@@ -622,7 +637,8 @@ def export_doneees_departements(fichier_output="Exports/export_departements.csv"
     except Exception as e:
         print("Erreur lors de l'exportation des données")
 
-#Exportation des donees de la Table Incendies_Departements
+
+# Exportation des donees de la Table Incendies_Departements
 def export_doneees_incendies_dep(fichier_output="Exports/export_Incendies_Departements.csv"):
     try:
         connexion, curs = connecterdb()
@@ -644,7 +660,9 @@ def export_doneees_incendies_dep(fichier_output="Exports/export_Incendies_Depart
         print("Erreur avec la base de données SQLite")
     except Exception as e:
         print("Erreur lors de l'exportation des données")
-#Menu de notre Programme
+
+
+# Menu de notre Programme
 def menu():
     while True:
         print("Bienvenue dans le Menu du Programme du Projet Stat Info")
@@ -722,7 +740,7 @@ def menu():
                 print("   Injection des donees dans la Table Departements")
                 injection_table_departements()
                 print("Injection effectue avec succees dans la Table Departements   ")
-            elif choix2==5:
+            elif choix2 == 5:
                 print("   Injection des donnes dans la Table Incendies_Departements")
                 injection_table_incendies_departements()
                 print("Injection effectue avec succees dans la Table Incendies_Departements   ")
@@ -733,13 +751,14 @@ def menu():
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
-        elif choix=="3":
+        elif choix == "3":
             print("Bienvenue dans le module de l'affichage des tables")
             print('1.   Afficher les doneees de la table Incendies')
             print('2.   Afficher les donnees de la table Meteo')
             print('3.   Afficher les donnees de la table Geo')
             print('4.   Afficher les donnees de la table Departements')
-            print('5.   Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
+            print(
+                '5.   Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
             choix3 = int(input("Veuillez choisir une option: "))
             if choix3 == 1:
                 print("  Afficher les donnees de la table Incendies")
@@ -753,11 +772,11 @@ def menu():
                 print("  Afficher les donnees de la table Geo")
                 afficher_donnees_geo()
                 print("Affichage de la Table Geo completes avec succees   ")
-            elif choix3== 4:
+            elif choix3 == 4:
                 print('  Afficher les doneees de la Table Departements')
                 afficher_donees_Departements()
                 print("Affichage de la Table Departements completes avec succees   ")
-            elif choix3==5:
+            elif choix3 == 5:
                 print('  Afficher les donnees de la Table Incidenes_Departements')
                 afficher_doneees_IncendiesDep()
                 print("Affichage de la Table Incendies_Departements completes avec succees   ")
@@ -789,7 +808,7 @@ def menu():
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
-        elif choix=="5":
+        elif choix == "5":
             confirmation = input("Etes vous sur de vouloir quiiter le menu du Projet Stat Info?")
             if confirmation == "o" or confirmation == "ok" or confirmation == "yes" or confirmation == "Oui" or confirmation == "si" or confirmation == "oui":
                 print("👋 Merci d'avoir d'utilise le programme A bientot!")

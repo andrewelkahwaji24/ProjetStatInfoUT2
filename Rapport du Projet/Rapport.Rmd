@@ -93,6 +93,10 @@ Avant d'initier notre compte-rendu en détaillant les phases et procédures que 
 
 11. Un **GeoDataFrame** est une structure de données exploitée dans la librairie GeoPandas afin d'enregistrer des données géospatiales sous forme de tableaux, semblable à un DataFrame de Pandas, mais intégrant des renseignements géométriques additionnels (tels que des points, des lignes ou des polygones).
 
+12. Un **langage de programmation** est un ensemble de règles et normes employées pour la création de logiciels informatiques.Ces programmes autorisent l'émission d'instructions à un ordinateur pour accomplir des tâches spécifiques.Un langage de programmation établit la syntaxe et la sémantique des instructions que peut comprendre une machine.
+
+13. 
+
 
 ### 3.2 Bibliotheques Utilisees
 
@@ -372,8 +376,33 @@ M = x_{k+1}
 M = \frac{x_k + x_{k+1}}{2}
 \]
 
+**Définition de la Classe Modale**
 
+La **classe modale** est l'intervalle de valeurs qui renferme le plus fort effectif dans une distribution organisée en classes.  Autrement dit, c'est la classe qui se manifeste le plus souvent dans un histogramme.
 
+**Définition de ggplot2**
+
+ggplot est une des librairies du langage R. Elle fait partie du package plotnine, qui facilite la création de graphiques.
+
+**Définition de la Population**
+
+En statistique, la population se réfère à l'ensemble de tous les individus, objets ou événements qui sont sujets à une étude.
+
+**Définition d'un Échantillon**
+
+Un échantillon représente une partie de la population étudiée.  On fait appel à lui quand il est nécessaire d'analyser l'ensemble de la population en raison de sa complexité.
+
+**Définition d'une Variable**
+
+Une variable est un attribut quantifiable qui peut varier d'un individu à l'autre. 
+
+**Définition d'une variable qualitative**
+
+Une variable qualitative représente une caractéristique ou une catégorie qui ne peut pas être quantifiée. 
+
+**Définition d'une variable quantitative**
+
+Une Variable Quantitative représente une évaluation numérique et peut être l'objet d'opérations mathématiques. 
 
 ### 4.2 Description des donnees
 

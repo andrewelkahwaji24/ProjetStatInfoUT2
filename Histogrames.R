@@ -209,5 +209,19 @@ ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
 # Calcul de la corrélation entre Tens_vap_med et surface_parcourue_m2
 correlation <- cor(data$Tens_vap_med, data$surface_parcourue_m2, use = "complete.obs")
 print(paste("Corrélation entre Tens_vap_med et surface_parcourue_m2: ", correlation))
+# Étape 1 : Charger les bibliothèques nécessaires
+library(ggplot2)
 
+# Étape 2 : Importer les données
+data <- read.csv("../Exports/export_Humidites.csv")
 
+# Étape 3 : Vérification rapide des données (pour s'assurer que tout est correct)
+head(data)
+summary(data)
+# Histogramme de Tens_vap_med (humidité de l'air)
+ggplot(data, aes(x = Tens_vap_med)) +
+  geom_histogram(binwidth = 0.5, fill = "#1f77b4", color = "white", alpha = 0.7) +
+  labs(title = "Distribution de l'humidité de l'air (Tens_vap_med)", 
+       x = "Humidité de l'air (Tens_vap_med)", 
+       y = "Fréquence") +
+  theme_minimal()

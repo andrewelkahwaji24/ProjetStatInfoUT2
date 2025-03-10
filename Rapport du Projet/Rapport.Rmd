@@ -638,7 +638,7 @@ C'est pourquoi, pour aborder ce problème, on devrait considérer ces cinq enjeu
 4.  Force du vent par zone géographique
 5.  Surface parcourue par le feu par zone géographique
 
-###### 4.3.2.3.1 Force du vent
+1.  Force du vent
 
 Dans cette sous-problematique on va analyser la force du vent:
 
@@ -666,6 +666,20 @@ Presque 80% des données se regroupent entre 0 et 5.5 environ, ce qui indique qu
 La moyenne de cet histogramme se situe légèrement au-dessus du mode, estimée approximativement entre 4.0 et 4.5.Concernant la médiane, elle se positionne probablement autour de 3.5, car la distribution penche vers la droite, divisant l'échantillon en deux segments égaux. 
 
 Cet histogramme pourrait illustrer des relevés de la puissance du vent sur une période déterminée.La prévalence de brises légères à modérées (0.0 à 5.5) indique un climat plutôt paisible, avec la présence exceptionnelle de vents puissants au-delà de 8, qui pourraient survenir lors d'événements rares associés à des phénomènes météorologiques tels que des tempêtes.
+
+2.  Surface parcourue par le feu
+
+Dans cette sous-problmatique on va analyser la surface parcourure par le feu pour en pouvoir arrive a notre but et a anlayser la relation entre le vent et la propagation des incendies donc pour ce qui concerne la propagation ca ve dire en d'autres terme c'est la surface parcourue par le feu c'est ce qu'on va analyser maintenant dans cette sous-problematique 
+
+```{r}
+library(ggplot2)
+data <- read.csv("../Exports/export_vents.csv")
+ggplot(data, aes(x = surface_parcourue_m2)) +
+  geom_histogram(binwidth = 1, fill = "violet", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la Surface Parcourut par les Incendies", x = "Surface Parcourue", y = "Fréquence") +
+  theme_minimal()
+```
+
 
 ###### 4.3.2.3.2 Surface parcourue par le feu en fonction de la Force du vent
 ###### 4.3.2.3.3 Force du vent par zone géographique

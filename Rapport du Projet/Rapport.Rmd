@@ -633,10 +633,9 @@ Pour examiner la question relative à la corrélation entre le vent et la diffus
 C'est pourquoi, pour aborder ce problème, on devrait considérer ces cinq enjeux :
 
 1.  Force du vent
-2.  Surface parcourue par le feu
-3.  Surface parcourue par le feu en fonction de la Force du vent
-4.  Force du vent par zone géographique
-5.  Surface parcourue par le feu par zone géographique
+2.  Surface parcourue par le feu en fonction de la Force du vent
+3.  Force du vent par zone géographique
+4.  Surface parcourue par le feu par zone géographique
 
 1.  Force du vent
 
@@ -667,23 +666,45 @@ La moyenne de cet histogramme se situe légèrement au-dessus du mode, estimée 
 
 Cet histogramme pourrait illustrer des relevés de la puissance du vent sur une période déterminée.La prévalence de brises légères à modérées (0.0 à 5.5) indique un climat plutôt paisible, avec la présence exceptionnelle de vents puissants au-delà de 8, qui pourraient survenir lors d'événements rares associés à des phénomènes météorologiques tels que des tempêtes.
 
-2.  Surface parcourue par le feu
-
-Dans cette sous-problmatique on va analyser la surface parcourure par le feu pour en pouvoir arrive a notre but et a anlayser la relation entre le vent et la propagation des incendies donc pour ce qui concerne la propagation ca ve dire en d'autres terme c'est la surface parcourue par le feu c'est ce qu'on va analyser maintenant dans cette sous-problematique 
+2. Surface parcourue par le feu en fonction de la force du vent 
 
 ```{r}
 library(ggplot2)
+
+# Charger le jeu de données (remplacez par le chemin de votre fichier CSV)
 data <- read.csv("../Exports/export_vents.csv")
-ggplot(data, aes(x = surface_parcourue_m2)) +
-  geom_histogram(binwidth = 1, fill = "violet", color = "black", alpha = 0.7) +
-  labs(title = "Histogramme de la Surface Parcourut par les Incendies", x = "Surface Parcourue", y = "Fréquence") +
-  theme_minimal()
+
+# Diagramme de dispersion simple
+ggplot(data, aes(x = Force_vent_med, y = surface_parcourue_m2)) +
+  geom_point(color = "black", size = 2) +  # Points noirs simples
+  labs(title = "Surface Parcourue par le Feu en fonction de la Force du Vent", 
+       x = "Force du Vent", 
+       y = "Surface Parcourue (m²)") +
+  theme_minimal() +  # Thème minimal pour une présentation épurée
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Incliner les labels de l'axe X pour une meilleure lisibilité
+    axis.text.y = element_text(size = 12),  # Lisibilité des valeurs sur l'axe Y
+    axis.title = element_text(size = 14, face = "bold"),  # Titre des axes en gras
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5)  # Titre du graphique en gras et centré
+  )
+
 ```
 
+Commençons par examiner ce sous-problème qui se focalise sur la superficie que couvre le feu en relation avec l'intensité du vent.  Tout d'abord, on remarque que la force du vent varie entre 0 et 10 unités. De plus, la superficie affectée par le feu ou les incendies est presque de 0 à 1 000 000. 
 
-###### 4.3.2.3.2 Surface parcourue par le feu en fonction de la Force du vent
-###### 4.3.2.3.3 Force du vent par zone géographique
-###### 4.3.2.3.4 Surface parcourue par le feu par zone géographique
+On remarque une concentration significative de points entre 0 et 5 unités de force du vent, avec une superficie allant de 0 à environ 750 000 m².
+
+Il est également possible de conclure qu'au-delà de cinq unités, les points commencent à devenir rares et la surface parcourue tend à se stabiliser tout en réduisant légèrement. 
+
+L'accumulation de points indique qu'une intensification du vent a tendance à élargir la portée du feu, particulièrement dans le cas de vents faibles à modérés.Toutefois, ce lien n'est pas rigoureusement linéaire, étant donné la large répartition des points.
+
+Au-delà d'une certaine intensité de vent (approximativement 7-8 unités), la surface couverte ne paraît pas s'accroître de manière proportionnelle, ce qui pourrait suggérer un phénomène de saturation ou des éléments restrictifs (tels que la disponibilité du combustible, l'humidité ou la topographie).
+
+
+Il est également important de souligner que la puissance du vent joue un rôle crucial dans la diffusion des incendies, puisqu'elle transporte de l'oxygène et les particules embrasées amplifient ainsi la vitesse de propagation et l'étendue touchée.  Ceci justifie l'orientation initiale à la hausse. 
+
+
+
 
 
 

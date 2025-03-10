@@ -225,3 +225,130 @@ ggplot(data, aes(x = Tens_vap_med)) +
        x = "Humidité de l'air (Tens_vap_med)", 
        y = "Fréquence") +
   theme_minimal()
+
+
+
+
+# Charger les bibliothèques nécessaires
+library(ggplot2)
+
+# Charger le jeu de données (remplacez par le chemin de votre fichier CSV)
+data <- read.csv("../Exports/export_Humidites.csv")
+
+# Histogramme empilé (groupé par code_INSEE)
+ggplot(data, aes(x = surface_parcourue_m2, fill = factor(code_INSEE))) +
+  geom_histogram(position = "stack", binwidth = 500, color = "black", alpha = 0.7) +
+  labs(title = "Surface Parcourue par le Feu par Zone Géographique (Code INSEE)", 
+       x = "Surface Parcourue (m²)", 
+       y = "Fréquence") +
+  scale_fill_brewer(palette = "Set3") +  # Palette de couleurs agréables
+  theme_light() +  # Thème clair
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Incliner les labels de l'axe X
+
+
+
+
+# Charger les bibliothèques nécessaires
+library(ggplot2)
+
+# Charger le jeu de données (remplacez par le chemin de votre fichier CSV)
+data <- read.csv("../Exports/export_vents.csv")
+
+# Histogramme de la Surface Parcourue par le Feu groupé par Force du Vent
+ggplot(data, aes(x = surface_parcourue_m2, fill = factor(Force_vent_med))) +
+  geom_histogram(position = "dodge", binwidth = 1000, color = "white", alpha = 0.85) +  # Barres avec un contour blanc et plus d'opacité
+  labs(title = "Surface Parcourue par le Feu selon la Force du Vent", 
+       x = "Surface Parcourue (m²)", 
+       y = "Fréquence") +
+  scale_fill_brewer(palette = "Pastel1", name = "Force du Vent") +  # Palette pastel subtile
+  theme_light() +  # Thème léger pour un fond plus lumineux
+  theme(
+    axis.text.x = element_text(size = 12, angle = 45, hjust = 1),  # Meilleure lisibilité des labels de l'axe X
+    axis.text.y = element_text(size = 12),  # Taille de police de l'axe Y
+    axis.title = element_text(size = 14, face = "bold"),  # Titres des axes en gras
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Titre du graphique en gras et centré
+    legend.title = element_text(size = 12, face = "bold"),  # Titre de la légende en gras
+    legend.text = element_text(size = 11)  # Texte de la légende en taille normale
+  )
+
+
+library(ggplot2)
+library(plotly)
+
+data <- read.csv("../Exports/export_vents.csv")
+
+# Création de l'histogramme avec hist()
+hist(data$surface_parcourue_m2, 
+     breaks = 30,  # Ajustez le nombre de classes pour une meilleure lisibilité
+     col = "violet",  # Couleur des barres
+     border = "black",  # Bordure des barres
+     main = "Histogramme de la Surface Parcourue par les Incendies dhdhdh", 
+     xlab = "Surface Parcourue (m²)", 
+     ylab = "Fréquence",
+     freq = TRUE)  # Garde l'affichage en fréquence
+
+
+# Convertir ggplot en graphique interactif
+ggplotly(p)
+
+# Charger les bibliothèques nécessaires
+# Charger les bibliothèques nécessaires
+# Charger les bibliothèques nécessaires
+library(ggplot2)
+library(dplyr)
+
+# Charger le jeu de données (remplacez par le chemin de votre fichier CSV)
+# Charger les bibliothèques nécessaires
+library(ggplot2)
+
+# Charger le jeu de données (remplacez par le chemin de votre fichier CSV)
+data <- read.csv("../Exports/export_vents.csv")
+
+# Diagramme de dispersion simple
+ggplot(data, aes(x = Force_vent_med, y = surface_parcourue_m2)) +
+  geom_point(color = "black", size = 2) +  # Points noirs simples
+  labs(title = "Surface Parcourue par le Feu en fonction de la Force du Vent", 
+       x = "Force du Vent", 
+       y = "Surface Parcourue (m²)") +
+  theme_minimal() +  # Thème minimal pour une présentation épurée
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Incliner les labels de l'axe X pour une meilleure lisibilité
+    axis.text.y = element_text(size = 12),  # Lisibilité des valeurs sur l'axe Y
+    axis.title = element_text(size = 14, face = "bold"),  # Titre des axes en gras
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5)  # Titre du graphique en gras et centré
+  )
+
+
+# Charger les bibliothèques nécessaires
+
+# Charger les bibliothèques nécessaires
+library(dplyr)
+
+# Charger le jeu de données (remplacez par le chemin de votre fichier CSV)
+data <- read.csv("../Exports/export_vents.csv")
+
+# Diviser la Force du Vent en catégories (Faible, Moyenne, Forte)
+data$Force_vent_cat <- cut(data$Force_vent_med, 
+                           breaks = c(-Inf, 10, 20, Inf), 
+                           labels = c("Faible", "Moyenne", "Forte"))
+
+# Calculer les moyennes et les écarts types par catégorie de force du vent
+summary_stats <- data %>%
+  group_by(Force_vent_cat) %>%
+  summarise(
+    Moyenne = mean(surface_parcourue_m2, na.rm = TRUE),
+    Ecart_type = sd(surface_parcourue_m2, na.rm = TRUE),
+    N = n()
+  )
+
+print(summary_stats)
+
+# Test t de Student pour comparer les moyennes entre "Faible" et "Forte"
+group_faible <- subset(data, Force_vent_cat == "Faible")
+group_forte <- subset(data, Force_vent_cat == "Forte")
+
+# Test t pour comparer les moyennes des surfaces parcourues entre les deux groupes
+t_test_result <- t.test(group_faible$surface_parcourue_m2, group_forte$surface_parcourue_m2)
+
+# Affichage des résultats du test t
+print(t_test_result)

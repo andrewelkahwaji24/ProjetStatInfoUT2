@@ -428,7 +428,6 @@ Le fichier géographique renferme la latitude, la longitude et l'altitude. Ces i
  Le dossier Météorologique nous fournira des caractéristiques liées aux conditions météorologiques, ce qui nous permettra de distinguer les divers types de météo au moment de l'incendie.
  
 
-
 ### 4.3 Analyse des doneees 
 
 Dans cette partie, une fois que toutes les définitions nécessaires sont établies et que notre base de données est complète, nous serons prêts à analyser les données grâce au langage R. Nous emploierons différents types d'histogrammes pour diversifier nos analyses et nous procéderons à une étude approfondie de chaque histogramme.
@@ -452,12 +451,10 @@ De plus, nous avons élaboré ce genre de graphique en utilisant un graphique li
 Pour adapter notre graphique à nos besoins, nous avons opté pour la couleur bleue afin de le rendre plus personnalisable et lisible. De plus, nous avons défini les titres des axes du graphique en utilisant les paramètres xlab, ylab et main. 
 
 ```{r setup, include=TRUE}
-# Charger les données
 donnees <- read.csv("../Data/donnees_incendies.csv")
 
 annee_freq <- table(donnees$annee)
 
-# Créer un graphique en ligne
 plot(annee_freq, 
      type="o",  # "o" pour un graphique avec des points et des lignes
      col="blue", 
@@ -465,6 +462,18 @@ plot(annee_freq,
      xlab="Année", 
      ylab="Nombre d'incendies")
 ```
+
+1.  **Analyse Informatique:**
+
+Nous allons détailler le processus de développement du code pour structurer notre graphique. Pour cela, nous avons importé les données du fichier grâce à la méthode **read.csv()**. Dans cette méthode, nous avons spécifié le chemin relatif du fichier csv.Par la suite, nous avons déterminé la fréquence des incendies par an en optant pour la colonne **donneees$annee**.En employant la méthode **table()**, nous dénombrons le nombre d'incendies survenant par année. 
+
+Cela nous autorisera à constituer un tableau où les indices représentent les années et les valeurs correspondent aux occurrences des incendies.
+
+ À présent, nous passons à la création du graphique à l'aide de la méthode **plot()**. Nous avons indiqué la variable **annee_freq** et dans cette méthode, nous avons précisé le type 'o' pour indiquer que les points doivent être affichés et reliés par une ligne. De plus, nous avons défini l'option couleur afin de spécifier que le graphique doit être en bleu.
+
+Avec l'option **main**, nous désignons le titre du diagramme. Ensuite, grâce à xlab et ylab, nous définissons les étiquettes des axes x et y, où x représente l'**année** et y représente le **nombre d'incendies**.
+
+2.  **Analyse Statistique:**
 
 Alors, débutons par cette étude ; nous allons mener notre analyse sur une période de 11 ans, de 2012 à 2022.
 
@@ -533,6 +542,20 @@ ggplot(data, aes(x = Tens_vap_med)) +
        y = "Fréquence") +
   theme_minimal()
 ```
+
+1.  **Analyse Informatique:**
+
+Dans notre code destiné à la création du graphique, nous avons employé le langage R pour sa réalisation. Tout d'abord, nous avons importé le fichier en utilisant la méthode **read.csv()**.
+
+Par la suite, on procède à l'initialisation du graphique que l'on souhaite concevoir avec la méthode **ggplot()**.On passe en paramètres de cette méthode les données ainsi que l'**aes**,qui nous permet de spécifier que l'axe des x sera représenté par **Tens_vap_med**.
+
+On définit ensuite une autre méthode **geom_histogram()** pour intégrer un histogramme au graphique. Dans cette méthode, on spécifie des paramètres pour déterminer la largeur des barres de l'histogramme, et par la suite, on remplit les barres en bleu. Nous définissons la bordure en blanc et rendons les barres davantage transparentes.
+
+On détermine les titres et étiquettes en faisant appel à la méthode **labs()**, en exploitant les paramètres title, x et y.Le titre indique le sujet du graphique, 'x' correspond à l'étiquette de l'axe horizontal et 'y' correspond à l'étiquette de l'axe vertical. 
+
+Et pour donner un aspect minimaliste au thème, nous avons employé la méthode **theme_minimal()** afin d'incorporer un style plus contemporain.
+
+2.  **Analyse Statistique:**
 
 L'axe des abscisses illustre l'humidité de l'air, déterminée par la pression de vapeur moyenne. Les chiffres se situent approximativement entre 0 et 25.On présume que les valeurs sont exprimées en hPa. C'est une unité utilisée pour évaluer la pression de la vapeur. 
 
@@ -637,7 +660,7 @@ C'est pourquoi, pour aborder ce problème, on devrait considérer ces cinq enjeu
 3.  Force du vent par zone géographique
 4.  Surface parcourue par le feu par zone géographique
 
-1.  Force du vent
+1.  **Force du vent**
 
 Dans cette sous-problematique on va analyser la force du vent:
 
@@ -649,6 +672,23 @@ ggplot(data, aes(x = Force_vent_med)) +
   labs(title = "Histogramme de la Force du Vent", x = "Force du Vent", y = "Fréquence") +
   theme_minimal()
 ```
+
+1. **Analyse Informatique:**
+
+Tout d'abord, nous allons détailler la méthode de construction de notre graphique. Nous avons utilisé la bibliothèque ggplot du langage R pour élaborer cet histogramme.Ensuite, nous avons importé nos données en spécifiant le chemin relatif du fichier CSV que nous avons conçu et développé à l'aide du langage Python et de la gestion des fichiers.
+
+Dans le processus de chargement du fichier, nous avons employé la méthode read.csv pour interpréter le fichier CSV, et nous avons enregistré ces informations dans la variable data.
+
+
+Par la suite, nous avons fait appel à la méthode, définie dans la bibliothèque ggplot2, soit la méthode ggplot. Nous lui avons précisé l'emplacement des données stockées et mis en place une autre méthode aes, signifiant **aesthetics**, pour indiquer quelles colonnes de données devraient être visualisées sur les axes. Dans notre situation, nous attribuons l'axe des x à la variable Force_vent_med qui va symboliser l'intensité du vent mesurée. 
+
+
+Par la suite, nous employons la méthode **geom_histogram()** pour intégrer l'histogramme à la représentation graphique. Nous spécifions la largeur des barres, la teinte que nous voulons utiliser pour leur remplissage, la nuance du contour et également le degré de transparence des barres. 
+
+
+On termine par la définition des étiquettes et des titres de notre histogramme grâce à la méthode **labs()**. On y inclut le titre du graphique ainsi que les libellés pour les deux axes, x et y. De plus, comme nous avons opté pour un style minimaliste, nous avons utilisé la méthode **theme_minimal()** afin de conférer un aspect plus contemporain au graphique.
+
+2.  **Analyse Statistique:**
 
 On présume que la force du vent est évaluée en kilomètres par heure. 
 
@@ -666,29 +706,45 @@ La moyenne de cet histogramme se situe légèrement au-dessus du mode, estimée 
 
 Cet histogramme pourrait illustrer des relevés de la puissance du vent sur une période déterminée.La prévalence de brises légères à modérées (0.0 à 5.5) indique un climat plutôt paisible, avec la présence exceptionnelle de vents puissants au-delà de 8, qui pourraient survenir lors d'événements rares associés à des phénomènes météorologiques tels que des tempêtes.
 
-2. Surface parcourue par le feu en fonction de la force du vent 
+2. **Surface parcourue par le feu en fonction de la force du vent** 
 
 ```{r}
 library(ggplot2)
 
-# Charger le jeu de données (remplacez par le chemin de votre fichier CSV)
 data <- read.csv("../Exports/export_vents.csv")
 
-# Diagramme de dispersion simple
 ggplot(data, aes(x = Force_vent_med, y = surface_parcourue_m2)) +
-  geom_point(color = "black", size = 2) +  # Points noirs simples
+  geom_point(color = "black", size = 2) + 
   labs(title = "Surface Parcourue par le Feu en fonction de la Force du Vent", 
        x = "Force du Vent", 
        y = "Surface Parcourue (m²)") +
   theme_minimal() +  # Thème minimal pour une présentation épurée
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Incliner les labels de l'axe X pour une meilleure lisibilité
-    axis.text.y = element_text(size = 12),  # Lisibilité des valeurs sur l'axe Y
-    axis.title = element_text(size = 14, face = "bold"),  # Titre des axes en gras
-    plot.title = element_text(size = 16, face = "bold", hjust = 0.5)  # Titre du graphique en gras et centré
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 12),
+    axis.title = element_text(size = 14, face = "bold"),
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5)
   )
 
 ```
+
+1.  **Analyse Informatique:** 
+
+Tout d'abord, nous allons décrire comment nous avons développé notre code. Pour commencer, nous avons importé notre bibliothèque ggplot2 afin de créer des visualisations complexes en langage R.  Par la suite, nous avons chargé notre fichier contenant les données grâce à la méthode **read.csv()** et avons assigné le résultat à une variable nommée data. Cette variable data représente l'objet où nous conservons ces informations.
+
+Ensuite, nous élaborons notre diagramme de dispersion en utilisant la méthode **ggplot()**, qui intègre les données. Par ailleurs, l'axe des x, déterminé par l'aes, représentera la force du vent alors que l'axe des y illustrera la surface parcourue en m².
+
+Actuellement, nous sommes dans la phase où nous ajoutons des points pour pouvoir représenter les données. Nous utilisons la méthode **geom_point()** pour ce faire. Nous avons spécifié la couleur des points en noir et aussi déterminé la taille des points pour une visibilité optimale en utilisant l'option size = 2.
+
+Pour une lecture optimale du graphique, nous avons utilisé la fonction **labs()**.  Nous avons ajouté le titre au graphique et précisé les noms des deux axes en recourant à x et y.
+
+Comme le graphe precedent on a utilise la methode du **theme_minimal()** pour le mettre dans un desin plus minimaliste 
+
+À l'instar du graphique précédent, nous avons employé la technique du **theme_minimal()** afin de le présenter dans une design plus épuré. 
+
+Pour accroître la clarté des axes et du titre, nous faisons appel à la fonction **theme()**. En manipulant **axis.text.x** et **axis.text.y**, nous avons employé l'option **element_text** pour le rendre incliné, modifier sa taille, etc. Quant aux attributs des deux axes, nous avons utilisé axis.title pour mettre le texte en gras grâce à l'attribut **face**.Pour le titre principal du graphique, on utilise **plot.title** pour ajuster ses caractéristiques à l'aide de **size**, **face** et **hjust**.L'utilisation de **hjust** permet de positionner le titre au centre.
+
+2.  **Analyse Statistique:**  
 
 Commençons par examiner ce sous-problème qui se focalise sur la superficie que couvre le feu en relation avec l'intensité du vent.  Tout d'abord, on remarque que la force du vent varie entre 0 et 10 unités. De plus, la superficie affectée par le feu ou les incendies est presque de 0 à 1 000 000. 
 
@@ -703,8 +759,7 @@ Au-delà d'une certaine intensité de vent (approximativement 7-8 unités), la s
 
 Il est également important de souligner que la puissance du vent joue un rôle crucial dans la diffusion des incendies, puisqu'elle transporte de l'oxygène et les particules embrasées amplifient ainsi la vitesse de propagation et l'étendue touchée.  Ceci justifie l'orientation initiale à la hausse. 
 
-
-
+3.  Force du vent par zone géographique
 
 
 

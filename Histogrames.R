@@ -352,3 +352,34 @@ t_test_result <- t.test(group_faible$surface_parcourue_m2, group_forte$surface_p
 
 # Affichage des résultats du test t
 print(t_test_result)
+
+
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(ggplot2)
+
+# Charger le jeu de données (remplacez par le chemin de votre fichier CSV)
+data <- read.csv("../Exports/export_vents.csv")
+
+# Calcul des statistiques de la Force du Vent par code INSEE
+stats_vent_par_zone <- data %>%
+  group_by(code_INSEE) %>%
+  summarise(
+    Moyenne_vent = mean(Force_vent_med, na.rm = TRUE),
+    Ecart_type_vent = sd(Force_vent_med, na.rm = TRUE),
+    Vent_min = min(Force_vent_med, na.rm = TRUE),
+    Vent_max = max(Force_vent_med, na.rm = TRUE),
+    N = n()
+  )
+
+# Affichage des résultats
+print(stats_vent_par_zone)
+
+# Visualisation de la Force du Vent par zone géographique (Code INSEE)
+ggplot(stats_vent_par_zone, aes(x = reorder(code_INSEE, Moyenne_vent), y = Moyenne_vent)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black") +
+  labs(title = "Force du Vent par Zone Géographique (Code INSEE)", 
+       x = "Code INSEE", 
+       y = "Moyenne de la Force du Vent") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +  # Incliner les labels de l'axe X pour lisibilité
+  theme_minimal()

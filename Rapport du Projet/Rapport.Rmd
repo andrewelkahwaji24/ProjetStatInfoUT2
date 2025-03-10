@@ -651,7 +651,7 @@ L'analyse de corrélation révèle qu'il n'existe pas de lien linéaire prononc�
 
 ##### 4.3.2.3 Relation entre le vent et la propagation des incendies
 
-Pour examiner la question relative à la corrélation entre le vent et la diffusion des incendies sur le sol français, nous adopterons une approche distincte en segmentant ce sujet en cinq sous-questions.
+Pour examiner la question relative à la corrélation entre le vent et la diffusion des incendies sur le sol français, nous adopterons une approche distincte en segmentant ce sujet en quatres sous-questions.
 
 C'est pourquoi, pour aborder ce problème, on devrait considérer ces cinq enjeux :
 
@@ -659,6 +659,18 @@ C'est pourquoi, pour aborder ce problème, on devrait considérer ces cinq enjeu
 2.  Surface parcourue par le feu en fonction de la Force du vent
 3.  Force du vent par zone géographique
 4.  Surface parcourue par le feu par zone géographique
+
+Avant d'examiner les quatre sous-problèmes, nous allons inspecter la corrélation.Nous pourrions vérifier la corrélation entre la puissance du vent et la surface parcourue en mètres carrés. En procédant ainsi, nous pourrions déterminer s'il existe une relation linéaire entre ces deux variables. 
+
+On remarque donc que si le coefficient de corrélation se rapproche de -1 ou 1, cela signifie qu'il existe une relation linéaire significative entre ces deux variables. 
+
+
+```{r}
+data <- read.csv("../Exports/export_vents.csv")
+cor(data$Force_vent_med, data$surface_parcourue_m2, use = "complete.obs")
+```
+
+Puisque le coefficient de corrélation de Pearson est proche de 0, cela indique qu'il n'existe pas de relation linéaire significative entre les deux variables. 
 
 1.  **Force du vent**
 
@@ -760,6 +772,8 @@ Au-delà d'une certaine intensité de vent (approximativement 7-8 unités), la s
 Il est également important de souligner que la puissance du vent joue un rôle crucial dans la diffusion des incendies, puisqu'elle transporte de l'oxygène et les particules embrasées amplifient ainsi la vitesse de propagation et l'étendue touchée.  Ceci justifie l'orientation initiale à la hausse. 
 
 3.  Force du vent par zone géographique
+
+Dans cette section on va analyser comment la force du vent est influence par zone geoegraphique sur les incendies 
 
 
 

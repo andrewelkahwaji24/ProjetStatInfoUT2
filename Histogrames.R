@@ -383,3 +383,55 @@ ggplot(stats_vent_par_zone, aes(x = reorder(code_INSEE, Moyenne_vent), y = Moyen
        y = "Moyenne de la Force du Vent") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +  # Incliner les labels de l'axe X pour lisibilité
   theme_minimal()
+
+
+library(ggplot2)
+library(dplyr)
+
+# Charger les données
+data <- read.csv("../Exports/export_vents.csv")
+library(dplyr)
+
+# Sélectionner un sous-ensemble des données (par exemple, 100 premières lignes)
+data_sample <- data[1:100, ]
+
+# Regrouper et créer le graphique avec les données réduites
+data_summary <- data_sample %>%
+  group_by(code_INSEE) %>%
+  summarise(Force_vent_moyenne = mean(Force_vent_med, na.rm = TRUE))
+
+ggplot(data_summary, aes(x = factor(code_INSEE), y = Force_vent_moyenne)) + 
+  geom_bar(stat = "identity", fill = "blue") + 
+  labs(title = "Force du vent par zone géographique",
+       x = "Code INSEE",
+       y = "Force du vent moyenne (m/s)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+
+library(ggplot2)
+library(dplyr)
+
+# Charger les données
+data <- read.csv("../Exports/export_vents.csv")
+# Calcul de la corrélation entre Force du Vent et Surface Parcourue
+cor(data$Force_vent_med, data$surface_parcourue_m2, use = "complete.obs")
+
+
+
+
+# Trier les données par surface parcourue et garder les 10 premières zones
+top_10_zones <- data_summary %>%
+  arrange(desc(Surface_parcourue_total)) %>%
+  head(10)
+
+# Créer le graphique avec ces 10 zones
+ggplot(top_10_zones, aes(x = factor(code_INSEE), y = Surface_parcourue_total)) + 
+  geom_bar(stat = "identity", fill = "red") + 
+  labs(title = "Top 10 des zones avec la plus grande surface parcourue par le feu",
+       x = "Code INSEE",
+       y = "Surface parcourue (m²)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotation des labels pour plus de lisibilité

@@ -775,6 +775,113 @@ Il est également important de souligner que la puissance du vent joue un rôle 
 
 Dans cette section on va analyser comment la force du vent est influence par zone geoegraphique sur les incendies 
 
+```{r}
+# Charger les librairies
+library(ggplot2)
+library(dplyr)
+library(gridExtra)  # Pour afficher plusieurs graphiques
+
+# Charger les données
+data <- read.csv("../Exports/export_vents.csv")
+
+# Sélectionner un sous-ensemble des données (100 premières lignes)
+data_sample <- data[1:100, ]
+
+# Vérifier si les colonnes existent
+if (!("code_INSEE" %in% colnames(data_sample)) | !("Force_vent_med" %in% colnames(data_sample))) {
+  stop("Les colonnes 'code_INSEE' ou 'Force_vent_med' sont absentes du dataset.")
+}
+
+# Regrouper et calculer la moyenne de la force du vent
+data_summary <- data_sample %>%
+  group_by(code_INSEE) %>%
+  summarise(Force_vent_moyenne = mean(Force_vent_med, na.rm = TRUE))
+
+# Vérifier que data_summary n'est pas vide
+if (nrow(data_summary) == 0) {
+  stop("data_summary est vide. Vérifiez vos données.")
+}
+
+# Diviser les données en 4 groupes égaux
+n <- nrow(data_summary)
+quart <- ceiling(n / 4)
+
+data_part1 <- data_summary[1:quart, ]
+data_part2 <- data_summary[(quart + 1):(2 * quart), ]
+data_part3 <- data_summary[(2 * quart + 1):(3 * quart), ]
+data_part4 <- data_summary[(3 * quart + 1):n, ]
+
+# Fonction pour créer un graphique
+plot_wind <- function(data, title) {
+  ggplot(data, aes(x = factor(code_INSEE), y = Force_vent_moyenne)) + 
+    geom_bar(stat = "identity", fill = "blue") + 
+    labs(title = title, x = "Code INSEE", y = "Force du vent moyenne (m/s)") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+# Générer les 4 graphiques
+p1 <- plot_wind(data_part1, "Force du vent (Quart 1)")
+p2 <- plot_wind(data_part2, "Force du vent (Quart 2)")
+p3 <- plot_wind(data_part3, "Force du vent (Quart 3)")
+p4 <- plot_wind(data_part4, "Force du vent (Quart 4)")
+
+# Afficher les 4 graphiques en 2x2
+grid.arrange(p1)
+
+```
+
+1.  **Analyse Informatique**
+
+Pour cette sous-question, nous avons adopté une méthode unique consistant à segmenter notre graphe en quatre sous-parties en raison du volume considérable de données, mesuré par le code INSEE.Ainsi, nous procédons à cette division en quatre parties.Nous allons détailler une fois l'analyse informatique du code tandis que les autres seront consacrées aux analyses statistiques. 
+
+
+Dans ce graphique, nous examinons la force moyenne du vent enregistrée pour diverses municipalités, ces dernières étant identifiées par leur code INSEE. 
+
+Nous avons utilisé diverses bibliothèques pour réaliser ce graphique, notamment **ggplot2** pour sa conception, **dplyr** pour le traitement des données et **gridextra**afin de présenter plusieurs graphiques dans une seule figure. 
+
+Par la suite, nous importons les données à partir d'un fichier CSV nommé vents.csv. 
+
+Pour cette analyse, un sous-ensemble des 100 premières lignes a été utilisé, étant donné le volume important de données. 
+
+
+Pour garantir une analyse précise et des données complètes, nous procédons d'abord à un test conditionnel via une instruction 'if' pour les colonnes d'attributs **Code_INSEE** et **Force_vent_med**.Si les données des deux colonnes sont absentes, nous interrompons le script et montrons un message d'erreur. 
+ 
+Par la suite, on procède à l'agrégation des données par le **Code_INSEE** et on calcule la moyenne de la colonne **Force_vent_md**,en omettant les valeurs manquantes.En d'autres termes, nous les regroupons selon le **Code_INSEE**.
+
+Par la suite, si le groupement de notre table ne donne qu'une table vide, nous aurons une erreur. 
+
+
+Comme le volume des données est énorme, nous avons décidé de les segmenter en plusieurs groupes, chacun contenant quatre éléments. 
+
+Pour déterminer le nombre de lignes dans le DataFrame lors du regroupement des graphes en quatre catégories, nous avons utilisé la méthode **nrow**. 
+
+Par la suite, nous avons divisé le nombre de lignes par 4, puis utilisé la méthode **ceiling** pour arrondir le résultat de cette division vers le haut.  Cela nous permettra, sur le plan mathématique, de garantir que si le nombre n'est pas divisible par 4, le dernier groupe comportera moins de lignes, tandis que les groupes précédents auront un nombre identique ou supérieur de lignes. 
+
+Il est maintenant temps de les répartir en quatre groupes, ce qui nous amène à définir quatre variables : 
+
+1.  Pour le groupe initial, nous avons employé **1:quart**, ce qui nous autorise à choisir les lignes de 1 jusqu'à quartsummary.
+
+
+2.  Pour le second groupe, nous avons utilisé **(quart + 1) : (2*quart)**Ainsi, ce groupe inclura les lignes de quart+1 jusqu'à 2*quart. 
+ 
+
+3.  Pour le troisième groupe, nous avons utilisé **(2 * quart + 1) : (3 fois le quart) donc ce groupe inclura les lignes de 2*quart+1 jusqu'à 3*quart.
+
+
+4.  Pour le quatrième groupe, nous avons employé **(3*quart+1):n**, qui englobera les lignes de 3*quart+1 jusqu'à n.  Pour indiquer que n n'est pas divisible par 4, ce groupe comprendra moins de lignes, mais inclura toutes les lignes restantes.
+
+Suite à la segmentation des groupes, l'étape suivante consiste à créer les graphiques. Pour ce faire, nous utilisons la méthode **plot_wind()**, qui nous permet de produire des diagrammes en barres illustrant la force moyenne du vent selon le **code_INSEE**.
+
+Nous commençons par la mise en place du graphique où l'axe X représente le Code_INSEE et l'axe Y reflète la force moyenne du vent. 
+
+Pour l'ajout des barres, nous utilisons la fonction **geom_bar**. Pour insérer un titre et des étiquettes sur les axes, nous nous basons sur la méthode **labs()**. Comme toujours, nous utilisons **theme_minimal** pour donner un style épuré et en ce qui concerne le graphique, nous inclinons les étiquettes de l'axe des X afin d'améliorer leur lisibilité. 
+
+Pour l'affichage des graphiques, nous assignons 4 variables correspondant aux 4 graphiques en utilisant la méthode plot_wind, qui inclut les groupes de données **DataFrame** ainsi que le titre du graphique.
+
+Dans notre cas actuel, pour afficher uniquement le premier graphique, nous utilisons **grid.arrange()**.On place la variable du graphique que l'on souhaite afficher entre parenthèses.
+
+
 
 
 ##### 4.3.2.4 Impact des conditions météorologiques extrêmes sur les incendies

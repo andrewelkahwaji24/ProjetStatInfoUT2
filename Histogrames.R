@@ -411,8 +411,7 @@ ggplot(data_summary, aes(x = factor(code_INSEE), y = Force_vent_moyenne)) +
 
 
 
-library(ggplot2)
-library(dplyr)
+
 
 # Charger les données
 data <- read.csv("../Exports/export_vents.csv")
@@ -420,7 +419,8 @@ data <- read.csv("../Exports/export_vents.csv")
 cor(data$Force_vent_med, data$surface_parcourue_m2, use = "complete.obs")
 
 
-
+library(ggplot2)
+library(dplyr)
 
 # Trier les données par surface parcourue et garder les 10 premières zones
 top_10_zones <- data_summary %>%
@@ -435,3 +435,36 @@ ggplot(top_10_zones, aes(x = factor(code_INSEE), y = Surface_parcourue_total)) +
        y = "Surface parcourue (m²)") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotation des labels pour plus de lisibilité
+
+
+data <- read.csv("../Exports/export_vents.csv")
+# Vérifier les valeurs manquantes
+sum(is.na(data$Tens_vap_med))  # Nombre de NA dans Tens_vap_med
+sum(is.na(data$surface_parcourue_m2))  # Nombre de NA dans surface_parcourue_m2
+# Vérifier la longueur des deux variables
+length(data$Tens_vap_med)
+length(data$surface_parcourue_m2)
+data <- read.csv("../Exports/export_vents.csv")
+
+# Tracer un graphique de dispersion pour visualiser la relation
+plot(data$Force_vent_med, data$surface_parcourue_m2,
+     main = "Relation entre Tens_vap_med et surface_parcourue_m2",
+     xlab = "Force_vent_med", ylab = "Surface parcourue (m²)",
+     pch = 19, col = "blue")
+
+# Ajouter une ligne de régression (si besoin)
+abline(lm(surface_parcourue_m2 ~ Force_vent_med, data = data), col = "red")
+
+
+
+# Désactiver la notation scientifique
+options(scipen = 999)
+
+# Tracer le graphique de dispersion avec les données nettoyées
+plot(data$Force_vent_med, data$surface_parcourue_m2,
+     main = "Relation entre Force_vent_med et surface_parcourue_m2",
+     xlab = "Force du vent (m/s)", ylab = "Surface parcourue (m²)",
+     pch = 19, col = "blue")
+
+# Ajouter une ligne de régression
+abline(lm(surface_parcourue_m2 ~ Force_vent_med, data = data), col = "red")

@@ -635,7 +635,7 @@ Nous allons effectuer un calcul de corrélation.Elle nous offrira la possibilit�
 Avant tout, définissons les choses. Il s'agit d'une mesure statistique qui illustre la force et la direction d'un lien entre deux variables.  Elle nous aide, de manière simple, à saisir comment deux variables se déplacent l'une par rapport à l'autre. On utilise le coefficient de corrélation de Pearson, qui se situe entre -1 et 1, pour quantifier la corrélation.  Avec 1 représentant une corrélation parfaitement positive, -1 une corrélation parfaitement négative et 0 signifiant aucune corrélation.
 
 ```{r}
-correlation <- cor(data$Tens_vap_med, data$surface_parcourue_m2, use = "complete.obs")
+correlation <- cor(data$Force_vent_med, data$surface_parcourue_m2, use = "complete.obs")
 print(paste("Corrélation entre Tens_vap_med et surface_parcourue_m2: ", correlation))
 ```
 
@@ -671,6 +671,41 @@ cor(data$Force_vent_med, data$surface_parcourue_m2, use = "complete.obs")
 ```
 
 Puisque le coefficient de corrélation de Pearson est proche de 0, cela indique qu'il n'existe pas de relation linéaire significative entre les deux variables. 
+
+Pour une perspective plus statistique, nous allons essayer la régression polynomiale.C'est une technique employée pour modéliser le lien entre une variable indépendante, comme dans notre situation la puissance du véhicule, et une variable dépendante, ici la distance parcourue par le feu, à condition que ce lien ne soit pas linéaire.  Cela s'applique à notre situation.
+
+Cela nous offre la possibilité de mieux saisir les courbures ou les tendances complexes des données, contrairement à une régression linéaire simple qui postule une relation proportionnelle constante entre les deux variables. 
+
+Dans ce contexte, nous employons une régression polynomiale de degré 2, que l'on peut également qualifier de régression quadratique.Cette dernière intègre finalement le terme linéaire (force du vent) ainsi que le terme quadratique (force du vent au carré). 
+ 
+On va détailler davantage pourquoi nous avons opté pour une régression polynomiale, étant donné qu'elle nous offre la possibilité de saisir des relations non linéaires entre les variables.Une condition est établie si le lien entre la puissance du vent et la superficie touchée par le feu suit une courbe, comme c'est le cas dans notre scénario, avec une accélération rapide initiale qui se ralentit à mesure que la force du vent s'intensifie.Dans ce contexte, une régression polynomiale serait plus appropriée qu'une régression linéaire simple.
+
+
+```{r}
+library(ggplot2)
+
+# Charger les données
+data <- read.csv("../Exports/export_vents.csv")
+
+# Créer un graphique avec régression polynomial
+ggplot(data, aes(x = Force_vent_med, y = surface_parcourue_m2)) +
+  geom_point(color = "black", size = 2) + 
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), color = "blue", se = FALSE) + 
+  labs(title = "Régression Polynomial", 
+       x = "Force du Vent", 
+       y = "Surface Parcourue (m²)") +
+  theme_minimal()
+
+```
+
+Nous allons détailler, à travers une analyse informatique, la manière dont nous avons réalisé la régression polynomiale.Pour cela, nous avons utilisé la méthode **geom_smooth()**, accompagnée de l'argument **method = "lm"** qui indique que nous sommes en présence d'un modèle de régression.La formule = y ~ poly(x, 2) précise qu'il s'agit d'une régression polynomiale de degré 2 (quadratique).
+
+Nous allons pouvoir intégrer une courbe de régression linéaire grâce à la méthode **geom_smooth(method = "lm")**. L'indication précise que le modèle repose sur une analyse de régression linéaire. 
+
+Cette spécification, **formula = y ~ poly(x, 2)**, indique au langage R que nous souhaitons un modèle polynomial du second degré. **poly(x, 2)** est une fonction qui produit les termes x et x^2, représentant respectivement la vitesse du vent et son carré.Cela permettra à la régression de s'ajuster à la fois à une pente linéaire et à une courbure quadratique des données.
+
+L'attribut **color="blue"** nous offre la possibilité de peindre la courbe de régression en bleu, ce qui permet une distinction claire avec les autres éléments du graphe.  Et en outre, **se=FALSE** nous permettra de désactiver l'affichage de la marge d'erreur autour de la courbe de régression.
+
 
 1.  **Force du vent**
 
@@ -717,6 +752,41 @@ Presque 80% des données se regroupent entre 0 et 5.5 environ, ce qui indique qu
 La moyenne de cet histogramme se situe légèrement au-dessus du mode, estimée approximativement entre 4.0 et 4.5.Concernant la médiane, elle se positionne probablement autour de 3.5, car la distribution penche vers la droite, divisant l'échantillon en deux segments égaux. 
 
 Cet histogramme pourrait illustrer des relevés de la puissance du vent sur une période déterminée.La prévalence de brises légères à modérées (0.0 à 5.5) indique un climat plutôt paisible, avec la présence exceptionnelle de vents puissants au-delà de 8, qui pourraient survenir lors d'événements rares associés à des phénomènes météorologiques tels que des tempêtes.
+
+Maintenant on va tracer une courbe de densite:
+
+```{r}
+# Histogramme avec courbe de densité pour la Force du Vent
+data <- read.csv("../Exports/export_vents.csv")
+ggplot(data, aes(x = Force_vent_med)) +
+  geom_histogram(aes(y = ..density..), binwidth = 1, fill = "red", color = "black", alpha = 0.7) +
+  geom_density(color = "blue", size = 1) + 
+  labs(title = "Distribution de la Force du Vent avec Courbe de Densité", x = "Force du Vent", y = "Densité") +
+  theme_minimal()
+
+```
+
+Dans ce graphique, nous avons tracé une courbe de densité pour illustrer la répartition de la puissance du vent dans nos données.Ainsi, l'axe des X reflète la force du vent tandis que l'axe des Y indique la densité, c'est-à-dire en d'autres termes,la fréquence relative plutôt que le nombre absolu. 
+
+La densité sert à normaliser l'histogramme afin qu'il présente une surface totale de 1, ce qui simplifie la comparaison entre différentes distributions ayant des échantillons variés. 
+ 
+La courbe de densité représente une estimation non paramétrique de la fonction de densité des probabilités.  Elle est fluide et représente la probabilité que les observations prennent une valeur dans une certaine plage de force du vent.
+
+La courbe de densité fournit une indication sur la structure globale de la distribution des données.
+
+Si la courbe est centrée sur une certaine valeur, cela signifie que la plupart des données sont groupées autour de cette valeur.
+
+Si la courbe est plate ou étendue, cela suggère une plus grande variabilité des données. 
+
+Nous allons également décrire la manière dont nous avons réalisé la partie informatique en utilisant la fonction **geom_histogram(aes(y = ..density..))**, ce qui nous a permis de construire l'histogramme.  L'argument **aes(y = ..density..)** spécifie que l'axe des ordonnées doit refléter la densité plutôt que la fréquence brute.  Cela nous permettra de standardiser les données afin que l'aire totale sous l'histogramme soit de 1.
+
+La commande **geom_density(color = "blue", size = 1)** nous offre la possibilité d'intégrer la courbe de densité.
+
+La fonction **labs(title = "Distribution de la Force du Vent avec Courbe de Densité", x = "Force du Vent", y = "Densité")** nous donne la possibilité de spécifier le titre du diagramme ainsi que les étiquettes des axes X et Y.
+
+La fonction **theme_minimal()** applique un style épuré au graphique, éliminant les éléments visuels superflus. 
+
+
 
 2. **Surface parcourue par le feu en fonction de la force du vent** 
 
@@ -771,117 +841,17 @@ Au-delà d'une certaine intensité de vent (approximativement 7-8 unités), la s
 
 Il est également important de souligner que la puissance du vent joue un rôle crucial dans la diffusion des incendies, puisqu'elle transporte de l'oxygène et les particules embrasées amplifient ainsi la vitesse de propagation et l'étendue touchée.  Ceci justifie l'orientation initiale à la hausse. 
 
-3.  Force du vent par zone géographique
+**Synthese de la Problematique**
 
-Dans cette section on va analyser comment la force du vent est influence par zone geoegraphique sur les incendies 
-
-```{r}
-# Charger les librairies
-library(ggplot2)
-library(dplyr)
-library(gridExtra)  # Pour afficher plusieurs graphiques
-
-# Charger les données
-data <- read.csv("../Exports/export_vents.csv")
-
-# Sélectionner un sous-ensemble des données (100 premières lignes)
-data_sample <- data[1:100, ]
-
-# Vérifier si les colonnes existent
-if (!("code_INSEE" %in% colnames(data_sample)) | !("Force_vent_med" %in% colnames(data_sample))) {
-  stop("Les colonnes 'code_INSEE' ou 'Force_vent_med' sont absentes du dataset.")
-}
-
-# Regrouper et calculer la moyenne de la force du vent
-data_summary <- data_sample %>%
-  group_by(code_INSEE) %>%
-  summarise(Force_vent_moyenne = mean(Force_vent_med, na.rm = TRUE))
-
-# Vérifier que data_summary n'est pas vide
-if (nrow(data_summary) == 0) {
-  stop("data_summary est vide. Vérifiez vos données.")
-}
-
-# Diviser les données en 4 groupes égaux
-n <- nrow(data_summary)
-quart <- ceiling(n / 4)
-
-data_part1 <- data_summary[1:quart, ]
-data_part2 <- data_summary[(quart + 1):(2 * quart), ]
-data_part3 <- data_summary[(2 * quart + 1):(3 * quart), ]
-data_part4 <- data_summary[(3 * quart + 1):n, ]
-
-# Fonction pour créer un graphique
-plot_wind <- function(data, title) {
-  ggplot(data, aes(x = factor(code_INSEE), y = Force_vent_moyenne)) + 
-    geom_bar(stat = "identity", fill = "blue") + 
-    labs(title = title, x = "Code INSEE", y = "Force du vent moyenne (m/s)") +
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
-}
-
-# Générer les 4 graphiques
-p1 <- plot_wind(data_part1, "Force du vent (Quart 1)")
-p2 <- plot_wind(data_part2, "Force du vent (Quart 2)")
-p3 <- plot_wind(data_part3, "Force du vent (Quart 3)")
-p4 <- plot_wind(data_part4, "Force du vent (Quart 4)")
-
-# Afficher les 4 graphiques en 2x2
-grid.arrange(p1)
-
-```
-
-1.  **Analyse Informatique**
-
-Pour cette sous-question, nous avons adopté une méthode unique consistant à segmenter notre graphe en quatre sous-parties en raison du volume considérable de données, mesuré par le code INSEE.Ainsi, nous procédons à cette division en quatre parties.Nous allons détailler une fois l'analyse informatique du code tandis que les autres seront consacrées aux analyses statistiques. 
+Ainsi, pour résumer cette question, nous avons d'abord établi une corrélation entre la force du vent et la superficie touchée par le feu.Nous avons constaté qu'il n'y a pas de relation linéaire entre ces deux facteurs. Pour saisir plus fidèlement la complexité de la relation, nous avons réalisé une régression polynomiale de degré 2. Cette méthode nous a autorisé à noter que la surface affectée par l'incendie a tendance à croître plus significativement à des niveaux faibles de la force du vent avant de diminuer à mesure que cette dernière devient plus intense.Cela indique qu'il y a une dynamique non linéaire entre ces deux éléments,avec un effet d'accélération initial suivi d'un processus de plafonnement.
 
 
-Dans ce graphique, nous examinons la force moyenne du vent enregistrée pour diverses municipalités, ces dernières étant identifiées par leur code INSEE. 
-
-Nous avons utilisé diverses bibliothèques pour réaliser ce graphique, notamment **ggplot2** pour sa conception, **dplyr** pour le traitement des données et **gridextra**afin de présenter plusieurs graphiques dans une seule figure. 
-
-Par la suite, nous importons les données à partir d'un fichier CSV nommé vents.csv. 
-
-Pour cette analyse, un sous-ensemble des 100 premières lignes a été utilisé, étant donné le volume important de données. 
+L'analyse effectuée sur l'histogramme et la courbe de densité a montré que la majorité des forces du vent se concentre autour de valeurs basses à modérées, avec une queue notable vers les valeurs plus hautes.Cela indique que, dans notre échantillon,les vents de faible à moyenne intensité sont prédominants, tandis que les vents de très haute intensité sont plutôt rares.
 
 
-Pour garantir une analyse précise et des données complètes, nous procédons d'abord à un test conditionnel via une instruction 'if' pour les colonnes d'attributs **Code_INSEE** et **Force_vent_med**.Si les données des deux colonnes sont absentes, nous interrompons le script et montrons un message d'erreur. 
- 
-Par la suite, on procède à l'agrégation des données par le **Code_INSEE** et on calcule la moyenne de la colonne **Force_vent_md**,en omettant les valeurs manquantes.En d'autres termes, nous les regroupons selon le **Code_INSEE**.
+Le diagramme de dispersion a révélé une tendance à l'augmentation de la superficie brûlée avec la puissance du vent, bien que cette corrélation ne soit pas entièrement linéaire.  Les informations suggèrent que, face à des vents de faible à modéré (jusqu'à environ 5 unités de force),la superficie touchée par le feu s'accroît rapidement.Toutefois, au-delà d'un certain seuil de force du vent, l'expansion de la zone parcourue semble se stabiliser, indiquant d'autres facteurs limitants que'il ne s'agit pas seulement du vent, comme la disponibilité du carburant ou la configuration du terrain.
 
-Par la suite, si le groupement de notre table ne donne qu'une table vide, nous aurons une erreur. 
-
-
-Comme le volume des données est énorme, nous avons décidé de les segmenter en plusieurs groupes, chacun contenant quatre éléments. 
-
-Pour déterminer le nombre de lignes dans le DataFrame lors du regroupement des graphes en quatre catégories, nous avons utilisé la méthode **nrow**. 
-
-Par la suite, nous avons divisé le nombre de lignes par 4, puis utilisé la méthode **ceiling** pour arrondir le résultat de cette division vers le haut.  Cela nous permettra, sur le plan mathématique, de garantir que si le nombre n'est pas divisible par 4, le dernier groupe comportera moins de lignes, tandis que les groupes précédents auront un nombre identique ou supérieur de lignes. 
-
-Il est maintenant temps de les répartir en quatre groupes, ce qui nous amène à définir quatre variables : 
-
-1.  Pour le groupe initial, nous avons employé **1:quart**, ce qui nous autorise à choisir les lignes de 1 jusqu'à quartsummary.
-
-
-2.  Pour le second groupe, nous avons utilisé **(quart + 1) : (2*quart)**Ainsi, ce groupe inclura les lignes de quart+1 jusqu'à 2*quart. 
- 
-
-3.  Pour le troisième groupe, nous avons utilisé **(2 * quart + 1) : (3 fois le quart) donc ce groupe inclura les lignes de 2*quart+1 jusqu'à 3*quart.
-
-
-4.  Pour le quatrième groupe, nous avons employé **(3*quart+1):n**, qui englobera les lignes de 3*quart+1 jusqu'à n.  Pour indiquer que n n'est pas divisible par 4, ce groupe comprendra moins de lignes, mais inclura toutes les lignes restantes.
-
-Suite à la segmentation des groupes, l'étape suivante consiste à créer les graphiques. Pour ce faire, nous utilisons la méthode **plot_wind()**, qui nous permet de produire des diagrammes en barres illustrant la force moyenne du vent selon le **code_INSEE**.
-
-Nous commençons par la mise en place du graphique où l'axe X représente le Code_INSEE et l'axe Y reflète la force moyenne du vent. 
-
-Pour l'ajout des barres, nous utilisons la fonction **geom_bar**. Pour insérer un titre et des étiquettes sur les axes, nous nous basons sur la méthode **labs()**. Comme toujours, nous utilisons **theme_minimal** pour donner un style épuré et en ce qui concerne le graphique, nous inclinons les étiquettes de l'axe des X afin d'améliorer leur lisibilité. 
-
-Pour l'affichage des graphiques, nous assignons 4 variables correspondant aux 4 graphiques en utilisant la méthode plot_wind, qui inclut les groupes de données **DataFrame** ainsi que le titre du graphique.
-
-Dans notre cas actuel, pour afficher uniquement le premier graphique, nous utilisons **grid.arrange()**.On place la variable du graphique que l'on souhaite afficher entre parenthèses.
-
-
+Les données recueillies indiquent que même si la puissance du vent a un impact significatif sur l'expansion des incendies, elle ne constitue pas le seul élément décisif.D'autres facteurs tels que la disponibilité des carburants, l'humidité du sol et la topographie locale ont aussi un impact sur la diffusion du feu.Ainsi, même si une augmentation de la vitesse du vent peut effectivement favoriser la diffusion des incendies, cette corrélation devient moins directe et plus complexe lorsque le vent atteint des intensités plus extrêmes.
 
 
 ##### 4.3.2.4 Impact des conditions météorologiques extrêmes sur les incendies

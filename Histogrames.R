@@ -455,7 +455,8 @@ plot(data$Force_vent_med, data$surface_parcourue_m2,
 # Ajouter une ligne de régression (si besoin)
 abline(lm(surface_parcourue_m2 ~ Force_vent_med, data = data), col = "red")
 
-
+correlation <- cor(data$Force_vent_med, data$surface_parcourue_m2, use = "complete.obs")
+print(paste("Corrélation entre Tens_vap_med et surface_parcourue_m2: ", correlation))
 
 # Désactiver la notation scientifique
 options(scipen = 999)
@@ -468,3 +469,53 @@ plot(data$Force_vent_med, data$surface_parcourue_m2,
 
 # Ajouter une ligne de régression
 abline(lm(surface_parcourue_m2 ~ Force_vent_med, data = data), col = "red")
+
+
+# Tracer le graphique de dispersion pour Force_vent_med et surface_parcourue_m2
+plot(data$Force_vent_med, data$surface_parcourue_m2,
+     main = "Relation entre Force_vent_med et surface_parcourue_m2",
+     xlab = "Force du vent médiane (m/s)", ylab = "Surface parcourue (m²)",
+     pch = 19, col = "blue")
+
+# Ajouter une ligne de régression
+abline(lm(surface_parcourue_m2 ~ Force_vent_med, data = data), col = "red")
+
+
+
+
+
+
+
+library(ggplot2)
+
+# Charger les données
+data <- read.csv("../Exports/export_vents.csv")
+
+# Créer un graphique avec régression polynomial
+ggplot(data, aes(x = Force_vent_med, y = surface_parcourue_m2)) +
+  geom_point(color = "black", size = 2) + 
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), color = "blue", se = FALSE) + 
+  labs(title = "Régression Polynomial", 
+       x = "Force du Vent", 
+       y = "Surface Parcourue (m²)") +
+  theme_minimal()
+
+
+
+# Histogramme avec courbe de densité pour la Force du Vent
+data <- read.csv("../Exports/export_vents.csv")
+ggplot(data, aes(x = Force_vent_med)) +
+  geom_histogram(aes(y = ..density..), binwidth = 1, fill = "red", color = "black", alpha = 0.7) +
+  geom_density(color = "blue", size = 1) + 
+  labs(title = "Distribution de la Force du Vent avec Courbe de Densité", x = "Force du Vent", y = "Densité") +
+  theme_minimal()
+
+
+# Créer une variable catégorielle pour la force du vent
+data$vent_categorie <- cut(data$Force_vent_med, breaks = c(0, 3, 5, 10), labels = c("Faible", "Modéré", "Fort"))
+
+# Graphique pour comparer la surface parcourue par le feu selon la catégorie de vent
+ggplot(data, aes(x = vent_categorie, y = surface_parcourue_m2)) +
+  geom_boxplot(fill = "lightblue", color = "black") + 
+  labs(title = "Surface Parcourue par le Feu en fonction de la Force du Vent", x = "Catégorie de Vent", y = "Surface Parcourue (m²)") +
+  theme_minimal()

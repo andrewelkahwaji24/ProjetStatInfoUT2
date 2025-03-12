@@ -519,3 +519,15 @@ ggplot(data, aes(x = vent_categorie, y = surface_parcourue_m2)) +
   geom_boxplot(fill = "lightblue", color = "black") + 
   labs(title = "Surface Parcourue par le Feu en fonction de la Force du Vent", x = "Catégorie de Vent", y = "Surface Parcourue (m²)") +
   theme_minimal()
+str(data)
+
+
+library(ggplot2)
+data <- read.csv("../Exports/export_Humidites.csv")
+ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue", alpha = 0.6) +  # Ajoute les points
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Ajoute la droite de régression
+  labs(title = "Corrélation entre Force du Vent et Surface Parcourue",
+       x = "Force du Vent (moyenne)",
+       y = "Surface Parcourue (m²)") +
+  theme_minimal()

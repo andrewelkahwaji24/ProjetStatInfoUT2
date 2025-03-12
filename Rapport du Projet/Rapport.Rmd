@@ -635,9 +635,11 @@ Nous allons effectuer un calcul de corrélation.Elle nous offrira la possibilit�
 Avant tout, définissons les choses. Il s'agit d'une mesure statistique qui illustre la force et la direction d'un lien entre deux variables.  Elle nous aide, de manière simple, à saisir comment deux variables se déplacent l'une par rapport à l'autre. On utilise le coefficient de corrélation de Pearson, qui se situe entre -1 et 1, pour quantifier la corrélation.  Avec 1 représentant une corrélation parfaitement positive, -1 une corrélation parfaitement négative et 0 signifiant aucune corrélation.
 
 ```{r}
-correlation <- cor(data$Force_vent_med, data$surface_parcourue_m2, use = "complete.obs")
+correlation <- cor(data$Tens_vap_med, data$surface_parcourue_m2, use = "complete.obs")
 print(paste("Corrélation entre Tens_vap_med et surface_parcourue_m2: ", correlation))
 ```
+
+
 
 Dans ce code, nous avons fait appel à la fonction « cor() » afin de déterminer la corrélation de Pearson entre Tens_vap_med et surface_parcourue_m2, en omettant les variables manquantes.  La méthode cor() nous donnera un coefficient de corrélation, comme expliqué précédemment. 
 
@@ -648,6 +650,21 @@ Dans ce code, nous avons fait appel à la fonction « cor() » afin de détermin
 3.  Une corrélation proche de 0 suggère l'absence d'une relation linéaire manifeste.
 
 L'analyse de corrélation révèle qu'il n'existe pas de lien linéaire prononcé entre le taux d'humidité et l'ampleur des feux dans vos informations.  Selon cette étude, l'humidité semble avoir une influence marginale sur l'ampleur des incendies.
+
+Apres avoir calcule la correlation on va y tracer le graphe de cette correlation 
+
+```{r}
+library(ggplot2)
+data <- read.csv("../Exports/export_Humidites.csv")
+ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue", alpha = 0.6) +  # Ajoute les points
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Ajoute la droite de régression
+  labs(title = "Corrélation entre Force du Vent et Surface Parcourue",
+       x = "Tens_vap_med (moyenne)",
+       y = "Surface Parcourue (m²)") +
+  theme_minimal()
+```
+
 
 ##### 4.3.2.3 Relation entre le vent et la propagation des incendies
 

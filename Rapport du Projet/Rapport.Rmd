@@ -1070,6 +1070,82 @@ La régression des points correspond à l'analyse antérieure du graphique, pré
 
 La courbe de régression polynomiale est une ligne légèrement montante.
 
+Après avoir effectué ces deux calculs, nous passerons à l'étape d'analyse approfondie de nos données.Nous commencerons par examiner la surface d'altitude par zone d'altitude. 
+
+Pour ce faire, nous allons construire notre histogramme puis réaliser deux types d'analyses : une analyse informatique et une autre statistique.
+
+```{r}
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = surface_parcourue_m2, fill = altitude_zone)) +
+  geom_histogram(binwidth = 5000, position = "dodge", alpha = 0.7) +
+  labs(title = "Distribution de la surface des incendies par zone d'altitude",
+       x = "Surface des incendies (m²)", y = "Fréquence") +
+  theme_minimal()
+```
+
+1-  **Analyse Informatique:**
+
+Pour dessiner cet histogramme, nous avons utilisé la bibliothèque **ggplot2**.Dans un premier temps, nous avons importé les données du fichier CSV dans une variable sous forme de DataFrame.
+
+Par la suite, nous avons utilisé la méthode ggplot().Cette dernière nécessite en paramètres la variable où les données sont entreposées ainsi que l'aes où nous spécifions nos deux axes, x et y, le x représentant ici la surface des incendies. Nous avons ensuite coloré les barres de l'histogramme en fonction des différentes zones d'altitude.
+
+Pour intégrer l'histogramme, nous avons utilisé la méthode **geom_histogram** qui nécessite plusieurs paramètres. Parmi ces paramètres, nous indiquons la largeur des classes ou en d'autres termes, le **binwidth**, qui sera fixé à 5000 m² pour agrégater les incendies en segments de 5000 m². Nous spécifions également que les barres seront disposées en mode **dodge**, c'est-à-dire côte à côte pour chaque zone afin de faciliter la comparaison entre les différentes catégories.Et finalement, nous précisons que la transparence des couleurs sera de **0,7**, afin de simplifier l'interprétation de notre histogramme.
+
+Ensuite, nous intégrons le titre et les étiquettes à notre histogramme en utilisant la méthode prédéfinie **labs()**. Cette dernière nécessite deux paramètres : title pour attribuer un titre au graphique, ainsi que x et y pour nommer respectivement les axes des abscisses et des ordonnées. 
+
+Pour personnaliser le thème, nous avons employé la méthode prédéfinie **theme_minimal()** pour conférer un style contemporain.
+
+2- **Analyse Statistique:**
+
+Les incendies constituent un défi majeur pour la gestion des risques liés à l'environnement, aux personnes et à la sécurité.  Comprendre leur distribution spatiale, en particulier par rapport à l'altitude, nous aide à repérer les zones sensibles et à ajuster nos stratégies de prévention. 
+
+Cette étude vise à examiner les informations fournies sur les surfaces brouillées dans quatre zones d'altitude, allant de la basse à la haute altitude. 
+
+Nous visons à identifier les tendances et à examiner leurs causes potentielles.
+
+La description des données mentionne quatre valeurs principales qui correspondent aux zones brûlées.
+
+La plupart des feux dans ces deux zones se situent sur des surfaces plutôt réduites, allant de 0 à 250 000 m². Cela est signalé par les fréquences élevées. 
+
+Alors que la superficie s'accroît au-delà de 250,000 m², le taux d'incendies chute rapidement pour les deux zones, avec très peu d'entre elles dépassant les 500,000 m².
+
+Nous allons maintenant présenter la comparaison entre les deux principales zones, Zone Basse et Zone Haute.
+
+Nous allons débuter avec la Zone Basse.  Cette région affiche une occurrence nettement supérieure, en particulier pour les petites surfaces, avec un sommet frôlant les 100.On peut donc supposer que les incendies de petite à moyenne envergure se produisent beaucoup plus souvent en zone basse.En d'autres termes,on peut constater que les incendies surviennent plus souvent dans les villes ou les communes situées à une altitude basse. 
+
+Concernant la région à altitude élevée.La survenue de ces incendies est moins fréquente,avec des sommets pouvant aller jusqu'à 10 - 20 sur une même étendue de terrain.
+
+Cela suggère que les incendies sont moins courants dans les zones élevées, ou que leur portée est plus restreinte. 
+
+Pour le dire autrement, on peut affirmer que la fréquence des incendies est plus élevée dans les villes ou communes situées à une altitude importante.
+
+Suite à l'étude des deux régions en altitude, nous allons discuter de la tendance globale. 
+
+La distribution présente une forme d'atténuation exponentielle que l'on pourrait qualifier de queue lourde selon les statistiques, pour ces deux zones. 
+
+On peut également affirmer que la probabilité de voir se produire des incendies de grande ampleur dépassant les 500,000 m2 est extrêmement faible. 
+
+Il est à noter que, au-delà de **750,000 m2**, les incendies d'une très grande envergure sont peu fréquents dans ces deux régions. 
+
+Le mode en statistique, représentant la valeur la plus courante dans nos données, est positionné sur la première barre pour les deux zones. Cependant, son accentuation est davantage marquée en zone basse. 
+
+La variation des surfaces brûlées est plus significative dans les zones où les incendies englobent une vaste étendue de terrain avec une fréquence remarquée.  Dans les zones élevées, la dispersion est moindre avec une concentration autour des petites surfaces. 
+
+La distribution présente une forte asymétrie à droite (avec une biais positif) et possède une longue queue pour les grandes superficies, même si cette dernière est pratiquement nulle au-delà de 500,000 m2.
+
+Il est probable que les incendies dans les zones basses soient plus courants en raison des conditions environnementales propices (végétation dense, températures élevées, accès humain facilité).
+
+La fréquence des incendies en zones élevées pourrait être due à des éléments tels qu'une végétation moins dense, un climat plus frais ou une accessibilité restreinte. 
+
+L'occurrence rare de vastes incendies dépassant les 500,000 m2 dans ces deux régions pourrait témoigner de mesures efficaces ou de barrières naturelles (comme la topographie et l'humidité).
+
+On pourrait finalement convenir que ce graphique indique une fréquence et une variété nettement plus grandes des incendies en termes de superficie dans les zones de basse altitude, avec une prédominance marquée des petits incendies qui se propagent entre 0 et 250,000 m².  
+
+Dans les zones élevées, les incendies sont moins fréquents et se restreignent généralement aux petites superficies. 
+
+
+
+
 
 
 

@@ -637,3 +637,12 @@ ggplot(incendiesregions, aes(x = altitude_med, y = surface_parcourue_m2)) +
        x = "Altitude (m)", y = "Surface parcourue des incendies (m²)") +
   theme_minimal() +
   geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = TRUE, color = "red")
+
+
+
+# Histogramme de la surface des incendies par zone d'altitude
+ggplot(incendiesregions, aes(x = surface_parcourue_m2, fill = altitude_zone)) +
+  geom_histogram(binwidth = 5000, position = "dodge", alpha = 0.7) +
+  labs(title = "Distribution de la surface des incendies par zone d'altitude",
+       x = "Surface des incendies (m²)", y = "Fréquence") +
+  theme_minimal()

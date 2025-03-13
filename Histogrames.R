@@ -542,3 +542,98 @@ ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
        x = "Force du vent (médiane)",
        y = "Surface parcourue (m²)") +
   theme_minimal()
+
+correlation <- cor(incendiesregions$surface_parcourue_m2, incendiesregions$altitude_med, use = "complete.obs")
+print(paste("Corrélation de Pearson entre la surface des incendies et l'altitude : ", round(correlation, 2)))
+
+
+# Créer un graphique boxplot pour comparer les surfaces des incendies selon la zone d'altitude
+library(ggplot2)
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+# Comparer la surface des incendies entre les zones haute et basse altitude
+ggplot(incendiesregions, aes(x = altitude_zone, y = surface_parcourue_m2)) +
+  geom_boxplot(fill = c("lightblue", "lightgreen")) +
+  labs(title = "Surface des incendies par zone d'altitude", 
+       x = "Zone d'altitude", 
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+
+
+# Créer un graphique de comptage pour comparer le nombre d'incendies selon la zone d'altitude
+ggplot(incendiesregions, aes(x = altitude_zone)) +
+  geom_bar(fill = c("lightblue", "lightgreen")) +
+  labs(title = "Nombre d'incendies par zone d'altitude", 
+       x = "Zone d'altitude", 
+       y = "Nombre d'incendies") +
+  theme_minimal()
+
+
+# Visualisation de la corrélation avec un graphique de type scatter plot (nuage de points)
+ggplot(incendiesregions, aes(x = altitude_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Corrélation entre l'altitude et la surface des incendies",
+       x = "Altitude (m)", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal() +
+  geom_smooth(method = "lm", se = FALSE, color = "red")
+
+
+# Visualisation du modèle de régression polynomiale
+ggplot(incendiesregions, aes(x = altitude_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Régression Polynomiale entre Altitude et Surface des Incendies",
+       x = "Altitude (m)", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal() +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE, color = "red")
+
+
+# Histogramme de la surface des incendies par zone d'altitude
+ggplot(incendiesregions, aes(x = surface_parcourue_m2, fill = altitude_zone)) +
+  geom_histogram(binwidth = 5000, position = "dodge", alpha = 0.7) +
+  labs(title = "Distribution de la surface des incendies par zone d'altitude",
+       x = "Surface des incendies (m²)", y = "Fréquence") +
+  theme_minimal()
+
+# Boxplot pour comparer la surface des incendies entre haute et basse altitude
+ggplot(incendiesregions, aes(x = altitude_zone, y = surface_parcourue_m2)) +
+  geom_boxplot(fill = c("lightblue", "lightgreen")) +
+  labs(title = "Surface des incendies par zone d'altitude", 
+       x = "Zone d'altitude", 
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+
+# Graphique de ligne pour la variation de la surface des incendies au fil des années
+ggplot(incendiesregions, aes(x = annee, y = surface_parcourue_m2, color = altitude_zone)) +
+  geom_line() +
+  labs(title = "Variation de la surface des incendies au fil des années",
+       x = "Année", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal()
+
+# Diagramme en barres empilées pour la nature des incendies par zone d'altitude
+ggplot(incendiesregions, aes(x = altitude_zone, fill = nature_inc_prim)) +
+  geom_bar(position = "stack") +
+  labs(title = "Répartition des types d'incendies par zone d'altitude",
+       x = "Zone d'altitude", y = "Nombre d'incendies") +
+  theme_minimal()
+
+
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+# Visualisation de la corrélation avec un graphique de type scatter plot (nuage de points)
+ggplot(incendiesregions, aes(x = altitude_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Corrélation entre l'altitude et la surface des incendies",
+       x = "Altitude (m)", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal() +
+  geom_smooth(method = "lm", se = FALSE, color = "red")
+
+correlation <- cor(incendiesregions$surface_parcourue_m2, incendiesregions$altitude_med, use = "complete.obs")
+print(paste("Corrélation de Pearson entre la surface des incendies et l'altitude : ", round(correlation, 2)))
+
+
+
+# Visualisation du modèle de régression polynomiale
+ggplot(incendiesregions, aes(x = altitude_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Régression Polynomiale entre Altitude et Surface des Incendies",
+       x = "Altitude (m)", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal() +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = TRUE, color = "red")

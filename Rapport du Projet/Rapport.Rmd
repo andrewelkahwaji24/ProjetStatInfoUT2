@@ -969,6 +969,110 @@ Pour conclure, la dernière région est la **Provence Alpes Côte d'Azur**, qui 
 Suite à l'étude de la progression du taux d'incendies sur la carte nationale que nous avons réalisée, il est évident que la région où le taux d'incendies est le plus élevé est la **Côte d'Azur**. En revanche, les zones où le taux d'incendies est le plus faible incluent des régions telles que les **Pays de la Loire**, **Normandie**, etc.  Il est donc clair que les conditions météorologiques et la localisation géographique de la ville ou de la région ont un impact crucial, surtout lorsque les conditions climatiques sont particulièrement propices aux incendies. De même, la nature des forêts situées dans les zones urbaines a une incidence significative sur l'expansion des feux.Bien qu'il existe une différence de taux d'incendies entre la ville et la montagne, cette question sera examinée dans le cadre d'une autre problèmatique.
 
 ##### 4.3.3.2 Comparaison de la fréquence des incendies dans les régions montagneuses vs basses altitudes
+
+L'objectif de cette étude est d'examiner et de comparer le lien entre les incendies et l'altitude dans diverses régions et départements en France.
+
+Les données utilisées sont issues de deux sources majeures.  Un fichier CSV contient divers attributs, parmi lesquels nous avons choisi ceux qui nous intéressent, à savoir les données concernant la superficie des terrains brûlés, la nature de ces feux, ainsi qu'un fichier géographique comprenant des renseignements sur l'altitude moyenne de chaque municipalité.
+
+Cette analyse vise à déterminer si les incidents ont tendance à être plus fréquents ou plus graves aux altitudes élevées comparativement aux altitudes inférieures.
+
+**Avant de procéder à l'analyse, nous allons décrire nos données.**
+
+Les informations sur les incendies incluent des données concernant la superficie des incendies exprimées en **surface_parcourue_m2**, ainsi que le type d'incendie principal et secondaire indiqué soit par **nature_inc_prim**, soit par **nature_inc_sec**. De plus, nous disposons de détails chronologiques tels que **année, mois, jour, heure**. 
+
+Le fichier **donnes_geo** nous donne des renseignements sur la hauteur moyenne de chaque commune, illustrée en **altitude_med**, ce qui nous aidera à catégoriser les incendies selon leur altitude en deux options : soit **haute**, soit **basse** altitude.
+
+Dans cette analyse cruciale, nous avons utilisé une variable catégorielle **altitude_zone** qui classe chaque commune selon son altitude moyenne : soit en zones de **basse altitude** en utilisant une délimitation de **moins de 1000 mètres** que nous avons employée pour les altitudes inférieures, soit en zones de **haute altitude** grâce à une dénomination **au-dessus de 1000 mètres.**
+
+Apres avoir decrits touts els donnees qu'on possede pour cette anaylyse on va commencer a calculer la **correlation de Pearson**. On va calculer la correlation entre la surface des incendies et l'altitude. Le but de cella la est de voir si il existe **une relation lineaire** entre la surface des incendies et l'altitude.
+
+On va y calculer la correlation et apres on va analyser le graphe de la correlation de Pearson 
+
+```{r}
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+correlation <- cor(incendiesregions$surface_parcourue_m2, incendiesregions$altitude_med, use = "complete.obs")
+
+print(paste("Corrélation de Pearson entre la surface des incendies et l'altitude : ", round(correlation, 2)))
+
+```
+
+Nous observons une corrélation de 0, ce qui indique qu'il n'y a pas de lien linéaire entre les deux variables. Nous concluons donc qu'elles sont indépendantes l'une de l'autre. 
+
+
+```{r}
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = altitude_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Corrélation entre l'altitude et la surface des incendies",
+       x = "Altitude (m)", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal() +
+  geom_smooth(method = "lm", se = FALSE, color = "red")
+
+```
+
+1-  **Analyse Informatique du Graphe de Corrélation **
+
+On a commencé par charger le fichier CSV (valeurs séparées par des virgules) en utilisant la méthode prédéfinie **read.csv**. Nous avons également eu recours à la bibliothèque ggplot2 pour réaliser le graphique qui sera ensuite soumis à une analyse statistique. 
+
+De plus, nous avons précisé dans la méthode **ggplot** le paramètre contenant le fichier CSV ainsi que l'**aesthetics** d'où nous indiquons les axes X et Y.
+
+Par la suite, on utilise geom-point() pour intégrer des points (**scatter plot**) au diagramme.Dans notre schéma, chaque duo illustre une paire de valeurs.L'option color donne la faculté de changer la couleur des points en bleu, tandis que l'option alpha permet de définir leur degré de transparence.
+
+Un **alpha** de 1 signifierait une opacité totale, alors qu'un alpha de 0 indiquerait une transparence totale. 
+
+Par la suite, nous employons la fonction **labs()** pour attribuer des étiquettes au graphique et nous intégrons la méthode **theme_minimal** afin d'appliquer un style contemporain à notre diagramme. 
+
+Pour appliquer le graphique de corrélation, nous employons la méthode **geom_smooth()** qui nous donne l'opportunité d'intégrer la ligne de tendance, également connue sous le nom de courbe de régression, sur le graphique.Cela vise à mettre en évidence une tendance globale entre les variables.
+
+Nous aimerions faire un récapitulatif des options disponibles dans la méthode geom_smooth() :
+
+- L'option **method = "lm"** indique qu'une régression linéaire est employée. Cette régression va nous révéler le lien linéaire entre l'altitude et la superficie des feux de forêt.
+
+- L'option **se=FALSE** nous permet d'éviter l'affichage de l'intervalle de confiance. 
+ 
+- L'option **color = "red"** sert à définir la couleur de la courbe de régression en rouge.
+
+2-  **Analyse Statistique:**
+
+En examinant notre diagramme de façon statistique, nous notons que l'Axe des X illustrant l'altitude s'étend de 0 à 2000 mètres. Concernant l'axe des Y, il indique la superficie des incendies allant de 0 à 1 000 000 m², même si la plupart des points se regroupent sous les 750 000 m².  Nous précisons que les points bleus sur notre graphique correspondent aux observations individuelles de la superficie des incendies à diverses altitudes.
+
+On note une importante densité de points à des altitudes faibles (proches du niveau de la mer), accompagnée d'une grande variabilité dans la superficie des incendies, qui peut atteindre environ 750 000 m². Quand l'altitude dépasse 500m, la quantité de points diminue et l'étendue des incendies paraît généralement moins importante avec très peu de cas où les feux excèdent 250,000 m2 au-delà de 1000m. La ligne rouge horizontale, placée autour de 250,000 m², représente une référence ou, pour dire autrement, la moyenne.
+
+On observe une tendance à la baisse de la superficie des incendies lorsque l'altitude augmente.  On pourrait également affirmer que le taux d'incendies en montagne sera inférieur à celui observé en milieu urbain.  Il est crucial de noter que l'écart entre les points est significatif, surtout à basse altitude, ce qui suggère que le lien n'est pas fortement linéaire.  Cela peut être influencé par divers éléments tels que le climat, la végétation, l'activité humaine, etc., qui pourraient affecter l'étendue des incendies.
+
+Une fois la corrélation de Pearson calculée, nous allons maintenant procéder à la mise en œuvre d'une régression polynomiale, à condition que nous admettions que les deux variables sont indépendantes linéairement. 
+
+```{r}
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = altitude_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Régression Polynomiale entre Altitude et Surface des Incendies",
+       x = "Altitude (m)", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal() +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE, color = "red")
+```
+
+**On va en premier analyser en premier une Analyse Informatique et puis une Analyse Statistique:**
+
+1-  **Analyse Informatique:**
+
+Nous utilisons également la bibliothèque **ggplot2** ici. Nous commençons à construire notre graphique en invoquant la méthode **ggplot()**, tout en précisant le DataFrame. En définissant l'**aes**, nous déterminons les axes x et y. Ensuite, nous traçons les points sur le graphique en spécifiant leurs couleurs et transparences. Par la suite, nous ajoutons les étiquettes à notre graphique et appliquons le **theme_minimal()** afin de lui conférer une apparence moderne. 
+
+On finit par tracer la courbe de la régression polynomiale en employant la méthode **geom_smooth()**.  Il est précisé que la méthode employée sera la régression linéaire, puis on note le score de la formule de régression polynomiale en utilisant poly(x,2).  On indique que l'on souhaite x et x2, pas seulement x. **Se** implique que nous masquons l'intervalle de confiance.
+
+2-  **Analyse Statistique:**
+
+Nous allons examiner le graphique de la régression polynomiale entre l'altitude et la superficie des feux de forêt. L'axe des x va de 0 à 2000 mètres, tandis que l'axe des y s'étend de 0 à 1 000 000 m², avec une grande partie des points situés au-dessus de 750 000 m².
+
+Les observations individuelles sont représentées (la superficie des incendies à diverses altitudes).En outre, la ligne rouge qui entoure environ 250,000 m² représente la régression polynomiale.
+
+La régression des points correspond à l'analyse antérieure du graphique, présentant une altitude basse de 0 à 500m avec une large variabilité allant jusqu'à 750,000 m2. On observe une diminution graduelle de la densité des points et des surfaces à mesure que l'altitude s'accroît. 
+
+La courbe de régression polynomiale est une ligne légèrement montante.
+
+
+
+
 ##### 4.3.3.3 Variation de l'altitude par region
 ##### 4.3.3.4 Distance côtière et risque d’incendie
 

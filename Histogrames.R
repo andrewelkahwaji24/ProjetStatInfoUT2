@@ -531,3 +531,14 @@ ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
        x = "Force du Vent (moyenne)",
        y = "Surface Parcourue (m²)") +
   theme_minimal()
+
+
+library(ggplot2)
+data <- read.csv("../Exports/export_Humidites.csv")
+ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(alpha = 0.6, color = "blue") +  # Points du nuage
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Régression linéaire
+  labs(title = "Corrélation entre Force_vent_med et surface_parcourue_m2",
+       x = "Force du vent (médiane)",
+       y = "Surface parcourue (m²)") +
+  theme_minimal()

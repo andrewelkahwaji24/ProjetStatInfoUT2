@@ -194,6 +194,35 @@ def create_table_vents():
     connexion.close()
     print("La Table Vent a été créée avec succès.")
 
+#Creation de la Table Incendies-Regions
+
+def create_table_incendiesregions():
+    connexion, curs = connecterdb()  # Connexion à la base de données
+    curs.execute(
+        """
+        CREATE TABLE incendiesregions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,       
+        code_INSEE TEXT NOT NULL,                    
+        surface_parcourue_m2 REAL NOT NULL,         
+        annee INTEGER NOT NULL,                     
+        mois INTEGER NOT NULL,                      
+        jour INTEGER NOT NULL,                      
+        heure INTEGER NOT NULL,                     
+        nature_inc_prim TEXT NOT NULL,              
+        nature_inc_sec TEXT,                        
+        altitude_med REAL,                         -- Ajout de la colonne altitude_med
+        altitude_zone TEXT NOT NULL                 -- Ajout de la colonne altitude_zone
+        )
+        """
+    )
+    connexion.commit()  # Sauvegarde de la table créée
+    curs.close()  # Fermeture du curseur
+    connexion.close()  # Fermeture de la connexion
+    print("La table incendiesregions a été créée avec succès.")
+
+
+
+
 # Phase d'injection des donees
 # Injection des donees dans la Table Incendies
 def injecter_donnees_incendies():
@@ -581,6 +610,48 @@ def injecter_donnees_vents():
         curs.close()
         connexion.close()
 
+#Injection des doneees dans la Table Incendies-Regions
+
+def injecter_donnees_incendiesregions():
+    connexion, curs = connecterdb()  # Connexion à la base de données
+    try:
+        curs.execute(
+            """
+            INSERT INTO incendiesregions (code_INSEE, surface_parcourue_m2, annee, mois, jour, heure, nature_inc_prim, nature_inc_sec, altitude_med, altitude_zone)
+            SELECT 
+                i.code_INSEE, 
+                i.surface_parcourue_m2, 
+                i.annee, 
+                i.mois, 
+                i.jour, 
+                i.heure, 
+                i.nature_inc_prim, 
+                i.nature_inc_sec, 
+                g.altitude_med,      -- Récupère altitude_med de la table donnees_geo
+                CASE 
+                    WHEN g.altitude_med >= 1000 THEN 'Haute'   -- Classe les zones en fonction de l'altitude
+                    ELSE 'Basse'
+                END AS altitude_zone
+            FROM 
+                incendies i
+            INNER JOIN 
+                donnees_geo g
+            ON 
+                i.code_INSEE = g.code_INSEE
+            """
+        )
+        connexion.commit()  # Sauvegarde des données
+        print("Les données ont été insérées avec succès dans incendiesregions.")
+
+    except Exception as e:
+        print(f"Une erreur s'est produite : {e}")
+        raise ValueError("Erreur lors de l'insertion des données d'altitude.")
+
+    finally:
+        curs.close()  # Fermeture du curseur
+        connexion.close()  # Fermeture de la connexion
+
+
 
 # Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
@@ -882,6 +953,77 @@ def export_donnees_vents(fichier_output="Exports/export_vents.csv"):
     except Exception as e:
         print("Erreur lors de l'exportation des données :", e)
 
+#Exportation de la Table Incendies Regions
+def export_donnees_incendiesregions(fichier_output="Exports/export_incendiesregions.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM incendiesregions")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table IncendiesRegions ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite :", e)
+    except Exception as e:
+        print("Erreur lors de l'exportation des données :", e)
+
+
+#Fonctions Speciales:
+
+def ajouter_colonne_altitude_zone():
+    connexion, curs = connecterdb()
+    try:
+        # Ajouter la colonne altitude_zone à la table incendiesregions
+        curs.execute(
+            """
+            ALTER TABLE incendiesregions
+            ADD COLUMN altitude_zone TEXT;
+            """
+        )
+        connexion.commit()
+        print("La colonne 'altitude_zone' a été ajoutée avec succès.")
+
+    except Exception as e:
+        print(f"Une erreur s'est produite : {e}")
+        raise ValueError("Erreur lors de l'ajout de la colonne 'altitude_zone'.")
+
+    finally:
+        curs.close()  # Fermeture du curseur
+        connexion.close()  # Fermeture de la connexion
+
+def mettre_a_jour_altitude_zone():
+    connexion, curs = connecterdb()
+    try:
+        # Mise à jour de la colonne altitude_zone selon la valeur de altitude_med
+        curs.execute(
+            """
+            UPDATE incendiesregions
+            SET altitude_zone = CASE
+                WHEN altitude_med >= 1000 THEN 'Haute Altitude'
+                ELSE 'Basse Altitude'
+            END;
+            """
+        )
+        connexion.commit()
+        print("La colonne 'altitude_zone' a été mise à jour avec succès.")
+
+    except Exception as e:
+        print(f"Une erreur s'est produite : {e}")
+        raise ValueError("Erreur lors de la mise à jour de la colonne 'altitude_zone'.")
+
+    finally:
+        curs.close()  # Fermeture du curseur
+        connexion.close()  # Fermeture de la connexion
+
 # Menu de notre Programme
 def menu():
     while True:
@@ -905,6 +1047,7 @@ def menu():
             print('6. Creer la Table Incendies 2023')
             print('7. Creation de la Table Humidites')
             print('8. Creation de la Table Vents')
+            print('9. Creation de la Table Incendies-Regions')
 
             choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
@@ -940,6 +1083,10 @@ def menu():
                 print("Creation de la Table Vents")
                 create_table_vents()
                 print("La Creation de la Table Vents a ete creer avec succees ")
+            elif choix1 == 9:
+                print("Creation de la Table Incendies-Regions")
+                create_table_incendiesregions()
+                print("La Creation de la Table Incendies-Regions a ete creer avec succees ")
             else:
                 print(" Le numero choisi est invalide ou n'existe pas   ")
 
@@ -953,6 +1100,7 @@ def menu():
             print('6.Injection des donees dans la Table Incendies 2023')
             print('7. Injection des donees de la Table Humidites')
             print('8; Injection des donnees de la Table Vents')
+            print('9. Injections des donees dans la Table Incendies-Regions')
 
             choix2 = int(input("Veuillez choisir une option: "))
 
@@ -988,6 +1136,10 @@ def menu():
                 print("Injection de la Table Vents")
                 injecter_donnees_vents()
                 print("Injection effectue avec succees dans la Table Vents")
+            elif choix2 == 9:
+                print("Injection de la Table IncendiesRegions")
+                injecter_donnees_incendiesregions()
+                print("Injection effectue avec succees dans la Table IncedniesRegions")
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
@@ -1043,6 +1195,7 @@ def menu():
             print("6.Exportation des donnees de la Table Humidites")
             print("7.Exportation des donnees de la Table Incendies2023")
             print("8. Exportation des donnees de la Table Vents")
+            print("9. Exportation des donnees de la Table IncendiesRegions")
             choix4 = int(input("Veuillez choisir une option"))
             if choix4 == 1:
                 print("La procedure de l'exportation des donees pour la Table Incendies a commencee")
@@ -1066,8 +1219,11 @@ def menu():
                 print("La procedure de l'exportation des donnees pour la Table Incendies2023 a commencee")
                 export_donnees_incendies2023()
             elif choix4 == 8:
-                print("La procedure de l'exportation des donnees pour la Table Incendies2023 a commencee")
+                print("La procedure de l'exportation des donnees pour la Table Vents a commencee")
                 export_donnees_vents()
+            elif choix4 == 9:
+                print("La procedure de l'exportation des donnees pour la Table Incendiesregions a commencee")
+                export_donnees_incendiesregions()
             else:
                 print("Le numero choisi est invalide ou n'existe pas")
 
@@ -1084,3 +1240,4 @@ def menu():
 
 # Appel de la fonction menu
 menu()
+

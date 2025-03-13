@@ -3,10 +3,10 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  pdf_document: 
+  html_document: 
     toc: true
     toc_depth: 6
-  html_document: 
+  pdf_document: 
     toc: true
     toc_depth: 6
 ---
@@ -1072,6 +1072,8 @@ La courbe de régression polynomiale est une ligne légèrement montante.
 
 Après avoir effectué ces deux calculs, nous passerons à l'étape d'analyse approfondie de nos données.Nous commencerons par examiner la surface d'altitude par zone d'altitude. 
 
+1.  **L'analyse de la surface des incendies par zone d'altitude**
+
 Pour ce faire, nous allons construire notre histogramme puis réaliser deux types d'analyses : une analyse informatique et une autre statistique.
 
 ```{r}
@@ -1143,11 +1145,99 @@ On pourrait finalement convenir que ce graphique indique une fréquence et une v
 
 Dans les zones élevées, les incendies sont moins fréquents et se restreignent généralement aux petites superficies. 
 
+2.  **La surface des incendies par zone haute et baisse des altitudes**
 
+Donc en premier on va dresser notre **boxplot**. On indique que le boxplot il est utile pour pouvoir visualiser la repartition des donnees. 
 
+```{r}
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = altitude_zone, y = surface_parcourue_m2)) +
+  geom_boxplot(fill = c("lightblue", "lightgreen")) +
+  labs(title = "Surface des incendies par zone d'altitude", 
+       x = "Zone d'altitude", 
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+```
 
+1- **Analyse Informatique:**
 
+D'abord, nous soulignons que ce diagramme en boîte, également connu sous le nom de **boxplot** en anglais, nous donnera la possibilité d'observer la répartition des surfaces brûlées dues à des feux dans deux principales zones.
 
+Comme à l'accoutumée, nous importons les données dans une variable sous forme de DataFrame en spécifiant le chemin relatif du fichier contenant ces données. 
+
+Par la suite, on utilise la méthode **ggplot** pour créer un graphique initial à l'aide du package **ggplot2**.Ainsi, dans cette approche, on recourt à la variable qui contient les données précédemment stockées comme paramètre.Ensuite, nous définissons l'altitude comme l'axe des x et nous alignons les ordonnées sur l'axe des y. 
+
+On précise que **altitude_zone** fait référence aux catégories d'altitudes, qu'elles soient basses ou élevées, et que **surface_parcourue_m2** représente la superficie brûlée en mètres carrés. 
+
+Pour intégrer le graphique dans le box, on emploie la méthode préétablie de la bibliothèque **geom_boxplot()**.  qui va produire un boxplot, une forme de représentation graphique qui permet d'illustrer la dispersion des données, y compris la valeur médiane, etc. Par ailleurs, l'option fill nous autorisera à spécifier les teintes pour remplir les boutes. 
+
+On attribue finalement des titres et des étiquettes aux axes ainsi qu'au graphique en utilisant la fonction prédéfinie **labs()**.  Pour personnaliser et moderniser le thème, comme à l'accoutumée, nous utilisons la fonction prédéfinie **theme_minimal**.
+
+2- **Analyse Statistique**
+
+Nous allons procéder à une analyse statistique de notre graphique qui est illustré par un **diagramme en boîte**.Nous allons comparer la répartition de la superficie des incendies exprimée en m² dans deux régions d'altitude : basse et haute. 
+
+Nous débutons la présentation des composantes de notre graphique avec l'axe Y, qui illustre la superficie parcourue en m² sur une échelle allant de 0 à 1 000 000 m².L'axe X dépeint quant à lui les deux catégories : Basse et Haute. 
+
+Notre graphique présente deux boîtes, chacune d'elles illustrant la répartition des données avec des moustaches et des points qui symbolisent les valeurs extrêmes.  Il est à noter que la zone **Basse** est indiquée en **bleu clair** et la zone **Haute** en **vert pâle**.
+
+Nous allons définir un **BoxPlot** comme contenant les informations suivantes : 
+
+- La ligne médiane dans la boîte est un indicateur de la **Médiane**.
+
+- Les **Quartiles** sont les extrémités de la boîte qui illustrent le premier quartile. 
+
+- Les **Moustaches** s'étendent habituellement jusqu'aux valeurs extrêmes, maximales et minimales. 
+
+- Les **Points** symbolisent les valeurs extrêmes qui dépassent les moustaches.
+
+La Zone Basse englobe la région médiatique où elle semble se déployer sur environ 200,000 m2. Les moustaches de cette zone basse s'étendent jusqu'à 50,000 m en profondeur et 500,000 m2 en hauteur. 
+
+De plus, on peut observer une multitude de points entre 500,000 et 1,000,000 qui signalent des incendies d'une ampleur exceptionnelle. 
+
+Concernant la Zone Haute, sa superficie s'étend approximativement de 100,000 m2 à 250,000 m2. 
+
+De plus, elle semble légèrement inférieure à celle de la Zone Basse qui est d'environ 150,000 - 175,000 m2.  
+
+Les moustaches se déploient sur une superficie d'environ 50 000 m² en bas et de 500 000 m² en haut. 
+
+On constate que moints de points abeerant que dans la Zone Basse avec quelques valeurs entre 500,000 et 750,000 m2.
+
+En observant les deux zones, on remarque :
+
+- On constate que la **mediane** est supérieure dans la **Zone Basse**, avoisinant les 200,000 m2, par rapport à la zone Haute, où elle se situe entre 150,000 et 175,000 m2. Cela indique que les incendies ont tendance à occuper une superficie plus importante en altitude inférieure.
+
+- Les deux boîtes sont asymétriques du côté droit.
+
+- La Zone Basse présente davantage de valeurs extrêmes jusqu'à 1,000,000 m2 comparativement à la Zone Haute qui atteint jusqu'à 750,000 m2. Cela pourrait indiquer que les conditions sont propices à des incendies hors du commun en basse altitude.
+
+Il est possible que les incendies plus importants en basse altitude soient attribuables à une abondance accrue de combustible (forêts denses, broussailles) ou à une facilité d'accès pour des facteurs humains (déclenchements de feu).  
+
+À haute altitude, les conditions plus sévères pourraient entraver la propagation. 
+
+Il est possible de déduire à partir de cette sous-problématique que ce graphique illustre une disparité dans l'étendue des incendies en fonction de l'altitude.  
+
+Les régions de basse altitude présentent une superficie parcourue nettement plus grande que les zones situées en haute altitude.  
+
+Cette variation est biologiquement justifiée par l'augmentation de la densité de végétation combustibles, une intervention humaine plus prononcée ou même des conditions météorologiques plus favorables au déclenchement d'incendies dans les zones basses.
+
+3-  **La variation de la surface des incendies au fils des années:**
+
+1-  **Analyse Informatique:**
+
+2-  **Analyse Statistique:**
+
+4-  **Les Catégories des Incendies par zone d'altitude:**
+
+1-  **Analyse Informatique:**
+
+2-  **Analyse Statistique:**
+
+5-  **Les Catégories des Incendies au fils des années:**
+
+1-  **Analyse Informatique:**
+
+2-  **Analyse Statistique:**
 
 ##### 4.3.3.3 Variation de l'altitude par region
 ##### 4.3.3.4 Distance côtière et risque d’incendie

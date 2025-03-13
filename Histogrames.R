@@ -646,3 +646,56 @@ ggplot(incendiesregions, aes(x = surface_parcourue_m2, fill = altitude_zone)) +
   labs(title = "Distribution de la surface des incendies par zone d'altitude",
        x = "Surface des incendies (m²)", y = "Fréquence") +
   theme_minimal()
+
+
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = altitude_zone, y = surface_parcourue_m2)) +
+  geom_boxplot(fill = c("lightblue", "lightgreen")) +
+  labs(title = "Surface des incendies par zone d'altitude", 
+       x = "Zone d'altitude", 
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+
+# Graphique de ligne pour la variation de la surface des incendies au fil des années
+ggplot(incendiesregions, aes(x = annee, y = surface_parcourue_m2, color = altitude_zone)) +
+  geom_line() +
+  labs(title = "Variation de la surface des incendies au fil des années",
+       x = "Année", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal()
+
+# Diagramme en barres empilées pour la nature des incendies par zone d'altitude
+ggplot(incendiesregions, aes(x = altitude_zone, fill = nature_inc_prim)) +
+  geom_bar(position = "stack") +
+  labs(title = "Répartition des types d'incendies par zone d'altitude",
+       x = "Zone d'altitude", y = "Nombre d'incendies") +
+  theme_minimal()
+
+ggplot(incendiesregions, aes(x = annee, fill = nature_inc_prim)) +
+  geom_bar(position = "fill") +  
+  labs(title = "Repartition des types d'incendies par annee",  # Sans accents
+       x = "Annee",
+       y = "Proportion",
+       fill = "Type d'incendie") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set2")
+
+install.packages("dplyr")  # Exécuter une seule fois si le package n'est pas installé
+library(dplyr)  # Charger le package
+
+incendies_summarized <- incendiesregions %>%
+  group_by(annee, nature_inc_prim) %>%
+  summarise(nombre = n(), .groups = 'drop') %>%
+  group_by(annee) %>%
+  mutate(proportion = nombre / sum(nombre))  # Calcul des proportions
+
+# Création du graphique en courbes
+ggplot(incendies_summarized, aes(x = annee, y = proportion, color = nature_inc_prim, group = nature_inc_prim)) +
+  geom_line(linewidth = 1.2) +  # Utilisation de linewidth au lieu de size
+  geom_point(size = 3) +   # Ajouter des points pour mieux voir les données
+  labs(title = "Évolution des types d'incendies par année",
+       x = "Année",
+       y = "Proportion",
+       color = "Type d'incendie") +
+  scale_color_brewer(palette = "Set2") +  # Palette de couleurs pour différencier les catégories
+  theme_minimal() +
+  theme(legend.position = "bottom")  # Déplacer la légende en bas

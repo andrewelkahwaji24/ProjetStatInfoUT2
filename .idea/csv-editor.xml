@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\Data\donnees_geo.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Data\donnees_meteo.csv">
           <value>
             <Attribute>
@@ -38,7 +45,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Exports\export_incendiesregions.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Exports\export_meteo.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Exports\export_vents.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

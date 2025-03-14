@@ -1345,11 +1345,246 @@ Et finalement, pour l'application d'un thème moderne au style épuré, nous uti
 
 2-  **Analyse Statistique:**
 
+En guise d'introduction, voici un histogramme empilé qui illustre le total des incendies dans deux zones distinctes, Basse et Haute. 
+
+Dans cette étude, on considère que la basse altitude est inférieure à 1000 mètres et la haute altitude, supérieure à 1000 mètres.  
+
+L'axe horizontal (X) illustre les zones d'altitudes, tandis que l'axe vertical (Y) représente le nombre d'incendies, allant approximativement de 0 à 1200. 
+
+
+Pour les types d'incendies, nous avons quatre catégories : accidentel représenté en rouge, involontaire en vert, malveillance en cyan et naturel en violet. 
+
+**Dans la Zone Basse la repartittion est estimee en :**
+
+On fait une estimation d'environ **1200 incendies** dans **la région basse**.
+
+- **Maveillance** représente la plus grande proportion, soit environ **40 à 45%**, ce qui équivaut approximativement à **500 incidents**.
+
+- Environ **30 à 50%** des incendies, soit approximativement **400**, sont d'origine **involontaire**. 
+
+- De manière **accidentelle**, environ **15 à 20 %**, soit approximativement **200 incendies**. 
+
+ - **Naturelle** pas très faible, environ **5%**, soit approximativement **50 incendies**. 
+
+**Dans la Zone Basse, on estime la répartition à : **
+
+On estime que le nombre d'incendies dans la Zone **Haute** se situe entre **150 et 200**. 
+
+- La **majorité**, soit environ **50%**, représente approximativement entre **80 et 100 incendies involontaires. **
+
+ - **Maveillance** dénote environ **30%** de près de **50** incendies. 
+
+ - Environ **15%** des incendies sont approximativement dus à une **négligence** ou un accident, soit environ **25** cas. 
+
+ - Environ **5%** de la partie **naturelle** correspondent approximativement à une **dizaine d'incendies**. 
+ 
+Pour déterminer si la distribution des types d'incendies est influencée par l'altitude de la zone, nous ferons appel au test d'indépendance du Chi2.  
+
+Ce tableau a été élaboré sur la base d'estimations des données.
+
+
+| **Type d’incendie** | **Basse** | **Haute** | **Total** |
+|---------------------|-----------|-----------|-----------|
+| Accidentelle        | 200       | 30        | 230       |
+| Involontaire        | 400       | 100       | 500       |
+| Malveillance        | 500       | 50        | 550       |
+| Naturelle           | 50        | 10        | 60        |
+| **Total**           | 1200      | 200       | 1400      |
+
+On établit l'**Hypothèse Nulle (H0)** selon laquelle la distribution des types d'incendies est indépendante de la zone d'altitude. 
+
+**Hypothèse Alternative (H1)**La distribution est influencée par la zone d'altitude. 
+
+Nous allons effectuer le calcul en employant le langage R. 
+
+```{r}
+observed <- matrix(c(200, 400, 500, 50,  # Zone Basse
+                     30, 100, 50, 10),   # Zone Haute
+                   nrow = 4, byrow = FALSE)
+rownames(observed) <- c("Accidentelle", "Involontaire", "Malveillance", "Naturelle")
+colnames(observed) <- c("Basse", "Haute")
+
+print("Fréquences observées :")
+print(observed)
+
+row_totals <- rowSums(observed)
+col_totals <- colSums(observed)
+grand_total <- sum(observed)
+
+expected <- matrix(0, nrow = 4, ncol = 2)
+for (i in 1:4) {
+  for (j in 1:2) {
+    expected[i, j] <- (row_totals[i] * col_totals[j]) / grand_total
+  }
+}
+rownames(expected) <- rownames(observed)
+colnames(expected) <- colnames(observed)
+
+print("Fréquences attendues :")
+print(round(expected, 2))
+
+chi2_contrib <- matrix(0, nrow = 4, ncol = 2)
+for (i in 1:4) {
+  for (j in 1:2) {
+    chi2_contrib[i, j] <- (observed[i, j] - expected[i, j])^2 / expected[i, j]
+  }
+}
+chi2_stat <- sum(chi2_contrib)
+
+print("Contributions au Chi² :")
+print(round(chi2_contrib, 4))
+
+print("Statistique Chi² :")
+print(chi2_stat)
+
+df <- (nrow(observed) - 1) * (ncol(observed) - 1)
+print("Degré de liberté :")
+print(df)
+
+critical_value <- qchisq(0.95, df)
+print("Valeur critique (alpha = 0.05) :")
+print(critical_value)
+```
+
+La statistique du $\chi^2$ calculée est **26.03**, avec **3 degrés de liberté** $(4-1) \times (2-1) = 3$.  
+À un seuil de signification $\alpha = 0.05$, la valeur critique est **7.815**.
+
+Puisque la statistique observée $26.03$ dépasse la valeur critique $7.815$, nous **rejetons l’hypothèse nulle** $H_0$,  
+ce qui indique que la répartition des types d’incendies **dépend de la zone d’altitude**.
+
+On en déduit que les **plus grandes contributions** à la statistique du $\chi^2$ proviennent des catégories suivantes :
+
+- **Involontaire (Zone Haute) – 11.43 :**  
+  → Les incendies involontaires sont **surreprésentés** en haute altitude par rapport aux attentes sous $H_0$.  
+
+- **Malveillance (Zone Haute) – 10.39 :**  
+  → Les incendies de malveillance sont **sous-représentés** en haute altitude.  
+
+- **Involontaire (Zone Basse) – 1.90** et **Malveillance (Zone Basse) – 1.73 :**  
+  → Ces deux catégories contribuent également, mais de manière **moins marquée**.  
+
+Finalement, le test du Chi2 indique une corrélation notable entre la sorte d'incendie et la zone d'altitude.  Dans les zones à faible altitude, la majorité des incendies sont dus à des actes de malveillance (500 cas observés comparés à 471.73 attendus),tandis que dans les zones en hauteur,il y a une surreprésentation des incendies accidentels (100 cas observés contre 71.43 attendus). 
+
+Ces observations indiquent que les éléments humains tels que les actes malveillants en basse altitude et l'imprudence en haute altitude contribuent de manière significative à la distribution des incendies, en raison des disparités d'accessibilité, de densité démographique et d'activités humaines entre les régions. 
+
+Dans une zone de faible altitude  La prévalence des incendies d'actes de malveillance à 41,67% et involontaires à 33,33% indique une influence humaine significative.  
+
+Ceci est associé à une densité de population plus élevée, des activités agricoles ou des actes criminels tels que les incendies volontaires.  
+
+Le faible pourcentage d'incendies naturels, soit 4.17%, souligne que les conditions naturelles ont une influence marginale. 
+
+Dans la Zone Haute, la prévalence des incendies accidentels à 50% pourrait témoigner d'actions humaines occasionnelles, tandis que la proportion plus faible d'actes de malveillance à 25% indique une difficulté d'accès pour les actes délibérés.  
+
+Le taux d'incendies naturels demeure bas, s'établissant à 5%, ce qui est cohérent avec les altitudes élevées où les orages sont moins fréquents ou moins enclins à provoquer des incendies. 
+
+L'analyse comparative des deux zones suggère que la **surreprésentation des incendies de malveillance en basse altitude**  
+pourrait être liée à des facteurs **sociaux et économiques**, tels que :  
+
+- **Conflits locaux** ou **vandalisme**,  
+- **Activités agricoles**, notamment le **défrichement illégal**.  
+
+À l'inverse, en haute altitude, la **prédominance des incendies involontaires** peut refléter des **erreurs humaines**,  
+souvent associées à des activités comme les **loisirs en plein air** ou des **travaux occasionnels**.
+
 5-  **Les Catégories des Incendies au fils des années:**
+```{r}
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = annee, fill = nature_inc_prim)) +
+  geom_bar(position = "fill") +  
+  labs(title = "Repartition des types d'incendies par annee",
+       x = "Annee",
+       y = "Proportion",
+       fill = "Type d'incendie") +
+  theme_minimal() +  
+  scale_fill_brewer(palette = "Set2")
+```
 
 1-  **Analyse Informatique:**
 
+Pour en pouvoir creer ce graphe on a en premier charger les donnees dans une variable en utilisant la methode **read.csv** en specifiant en parametre le chemin relatif du fichier CSV 
+
+Apres cela en utilisant la methode **gpplot()** en indiqyant dans cette methode deux parametres principals la variables contenant la donneeee sous format de DataFrame et l'aes aesthetics n specifiant l'axe des x qui sera represente en anneee et on specifie que la barre des graphes seront remplies par **nature_inc_prim** en specifiant le type des incendies.
+
+Apres cela en utilisant la methode predefine **geom_bar()** en mettant en parametre la position fill pour pouvoir normaliser les hauteurs de barres pour que chaque barre represente une proportion et non une valeur absolue. 
+
+Chaque barre est donc echeloneee de 0 a 1 ou chaque couleur qui est remplie par **nature_inc_prim** represente une proportion au total.
+
+Pour pouvoir personaliser notre graphique en utilisant la methode predefinie **labs()** on specifie le titre principale de notre graphe et le titre des deux axes x et y respectivement , afin de rendre le theme de notre graphe plus coherent et plus moderne on tuilise la methode predefinei **theme_minimal()**.
+
+On utilise la methode predefinie **scale_fill_brewer()** pour appliquer une pqlette de couleurs pre-definies par **RColorBrewer**.La palette **Set2** est utilise pour permet de colorier differentes categories de **nature_inc_prim** de maniere distincte.
+
+
 2-  **Analyse Statistique:**
+
+Dans ce diagramme, nous procéderons à une analyse statistique de notre graphique. 
+
+Tout d'abord, on précise que l'axe des X couvre la période de **2012 à 2023** avec une **échelle continue** et des intervalles d'à peu près **0,5 an**. Quant à l'axe des Y, il est illustré par le ratio des incendies allant de **0 à 1 (100%)**.
+
+**Il existe quatre catégories d'incendies :**
+
+- Représenté par **Vert Clai**r, les incendies sont causés par des **accidents**. 
+
+- **Involontaires** sont représentés par des incendies causés par des **négligence**s ou des facteurs **non intentionnels**. 
+ 
+- **Malveillance** dépeinte par **Bleu** incendies **volontaires**.
+
+- **Rose** représente les incendies provoqués par des **phénomènes naturels**.
+
+Il est à noter que chaque histogramme annuel illustre la répartition proportionnelle des types d'incendies, avec une somme de ces proportions pour chaque année qui s'élève toujours à 1, soit 100%.
+
+**Nous allons examiner de façon descriptive les tendances dans le temps.**
+
+- **Acte malveillant** :Cette catégorie prédomine presque tout au long de la période, avec des proportions variant entre 40 et 60%, un sommet remarquable vers **2015-2016** où la proportion s'approche d'environ **60%**. On a constaté une **légère baisse** après 2020, atteignant environ **40 %** en **2022-2023**.
+
+- **Involontaire**:Durant la période, on observe une proportion notable oscillant entre **20 et 40%**. Un pic est enregistré autour de **2013-2014 et 2019-2020**, où cette proportion **grimpe** jusqu'à atteindre les **40%**.On note une diminution d'environ **20%** autour de **2015-2016**, coïncidant avec un pic de **malveillance**. 
+
+- La proportion **accidentelle** varie de manière modérée entre **10% et 20%**. On note un pic significatif en **2017-2018** avec environ **20%**, suivi d'une tendance plutôt stable avec une légère hausse vers **2022-2023**, atteignant environ **15 à 20%**. 
+
+- Sur toute la période, on observe une faible proportion **naturelle**, inférieure à **5%**. Quelques années, comme **2015 et 2020**, indiquent une **légère augmentation**, mais celle-ci demeure **marginale**, se situant autour de **5%**. 
+
+**Allons à la description des tendances globales :**
+
+On observe une prévalence de **malveillance**, avec des incidents délibérés.La malveillance constitue la raison prédominante durant toute cette période, représentant en moyenne près de **50% des incendies**.  
+
+Cela indique une influence humaine significative qui pourrait être associée à des crimes, des conflits régionaux ou des activités de **déchiffrement illégal**. 
+
+En outre, même si les proportions varient **d'année en année**, on constate une stabilité relative par rapport aux autres années. 
+
+Il n'y a pas de modification radicale dans la distribution globale des **types d'incendies**.
+
+Les causes **malveillantes** demeurent **prédominantes**, suivies des causes **involontaires et accidentelles**, tandis que les causes **naturelles** ont une contribution **négligeable**. 
+
+Concernant la **relation temporelle**, lorsqu'on observe une **augmentation** de la malveillance, comme en **2015-2016** par exemple, le nombre **d'incendies involontaires** semble **diminuer**, suggérant une potentielle relation inverse entre ces deux catégories. 
+
+**Interprétation écologique et sociologique:**
+
+L'**omniprésence** de la **malveillance** : La prévalence élevée d'**incendies délibérés**, entre 40 et 60% durant toute la période, indique des influences humaines significatives comme des **délits criminels**, des **disputes relatives à la terre** ou des **méthodes de culture prohibées**. Le sommet de 2015-2016 pourrait être lié à une période de **tensions sociales** ou **économiques**.
+
+Concernant les **incendies accidentels** : Une proportion notable entre 20 et 40% reflète des **défaillances humaines** telles que deux feux mal éteints, des travaux insuffisamment supervisés ou même des cigarettes abandonnées. Le déclin vers 2015-2016 reflète une **surreprésentation des actions intentionnelles** cette année-là.
+
+Concernant les **incendies accidentels**, leur proportion modérée entre 10 et 20 % suggère que des incidents tels que les **défaillances électriques** ou les **feux de camp mal maîtrisés** ont un rôle secondaire mais constant.
+
+Concernant les **incendies naturels**, le taux est extrêmement bas. Près de 5% mentionnent que les phénomènes naturels (comme la **foudre** ou les **éruptions volcaniques**) sont peu fréquents dans cette région ou à cette époque. Ceci nous donne la possibilité de représenter un environnement peu enclin aux feux de forêt, par exemple une **activité orageuse réduite**.
+
+Concernant l'évolution **post-2020**, on constate une **baisse de la malveillance de 55% à 40%**, et une **hausse des incendies accidentels de 15% à 20%**. 
+
+**Ces deux aspects pourraient suggérer plusieurs choses:**
+
+- Des efforts de prévention 
+- Des changements dans les activités humaines 
+
+**Conclusion de la Problematique:**
+
+Cette problématique indique que les feux sont plus courants et vastes en **zones basses** (plus petit 1000 m), principalement à cause de comportements de **mauvaise foi** (41,7 %) et d'oublis (33,3 %).
+
+En revanche, en **zones hautes** (plus grand 1000 m), leur occurrence est moins fréquente et souvent **accidentelle** (50 %), associée à des actions humaines.
+
+La corrélation de Pearson ne révèle **aucun rapport linéaire** entre l'altitude et la surface brûlée, cependant, le test du Chi² établit que la distribution des causes est liée à l'altitude ($\chi^2$ = 26.03, p < 0.05).
+
+Les sommets atteints en 2016-2017 indiquent des conditions climatiques extrêmes, tandis que la diminution après 2020 pourrait être le résultat de mesures de prévention efficaces.
+
+Il est donc nécessaire d'ajuster les stratégies : combattre la malfaisance dans les zones basses et gérer les risques associés aux activités humaines dans les zones hautes.
+
 
 ##### 4.3.3.3 Variation de l'altitude par region
 ##### 4.3.3.4 Distance côtière et risque d’incendie

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagramme de Gantt - Projet Analyse des Incendies</title>
+  <link rel="stylesheet" href="gantt-chart.css">
+</head>
+<body>
+  <div class="gantt-container">
+    <h2>Diagramme de Gantt - Projet Analyse des Incendies</h2>
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Tâches</th>
+            <th>Responsable</th>
+            <th class="session-header">1</th>
+            <th class="session-header">2</th>
+            <th class="session-header">3</th>
+            <th class="session-header">4</th>
+            <th class="session-header">5</th>
+            <th class="session-header">6</th>
+            <th class="session-header">7</th>
+            <th class="session-header">8</th>
+            <th class="session-header">9</th>
+            <th class="session-header">10</th>
+            <th class="session-header">11</th>
+            <th class="session-header">12</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Phase 1 -->
+          <tr>
+            <td colspan="14" class="phase-header">Phase 1: Introduction et Organisation</td>
+          </tr>
+          <tr>
+            <td>Prise en main des bases de données</td>
+            <td style="text-align: center;">Toute l'équipe</td>
+            <td class="phase1 active-cell">✓</td>
+            <td class="phase1 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Présentation des données incendies</td>
+            <td style="text-align: center;">Toute l'équipe</td>
+            <td class="phase1 active-cell">✓</td>
+            <td class="phase1 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Répartition des rôles</td>
+            <td style="text-align: center;">Toute l'équipe</td>
+            <td class="phase1 active-cell">✓</td>
+            <td class="phase1 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          
+          <!-- Phase 2 -->
+          <tr>
+            <td colspan="14" class="phase-header">Phase 2: Apprentissage des outils</td>
+          </tr>
+          <tr>
+            <td>Rappels sur R et RStudio</td>
+            <td style="text-align: center;">Toute l'équipe</td>
+            <td></td><td></td>
+            <td class="phase2 active-cell">✓</td>
+            <td class="phase2 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Introduction à RMarkdown</td>
+            <td style="text-align: center;">Toute l'équipe</td>
+            <td></td><td></td>
+            <td class="phase2 active-cell">✓</td>
+            <td class="phase2 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          
+          <!-- Phase 3 -->
+          <tr>
+            <td colspan="14" class="phase-header">Phase 3: Construction de la BDD</td>
+          </tr>
+          <tr>
+            <td>Structuration de la BDD</td>
+            <td style="text-align: center;">A.K</td>
+            <td></td><td></td><td></td><td></td>
+            <td class="phase3 active-cell">✓</td>
+            <td class="phase3 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Extraction des tables</td>
+            <td style="text-align: center;">W.A</td>
+            <td></td><td></td><td></td><td></td>
+            <td class="phase3 active-cell">✓</td>
+            <td class="phase3 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Validation</td>
+            <td style="text-align: center;">H.S</td>
+            <td></td><td></td><td></td><td></td>
+            <td class="phase3 active-cell">✓</td>
+            <td class="phase3 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          
+          <!-- Phase 4 -->
+          <tr>
+            <td colspan="14" class="phase-header">Phase 4: Étude statistique descriptive</td>
+          </tr>
+          <tr>
+            <td>Analyse univariée</td>
+            <td style="text-align: center;">A.K</td>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td class="phase4 active-cell">✓</td>
+            <td class="phase4 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Vérification</td>
+            <td style="text-align: center;">W.A</td>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td class="phase4 active-cell">✓</td>
+            <td class="phase4 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Synthèse</td>
+            <td style="text-align: center;">H.S</td>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td class="phase4 active-cell">✓</td>
+            <td class="phase4 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          
+          <!-- Phase 5 -->
+          <tr>
+            <td colspan="14" class="phase-header">Phase 5: Présentation intermédiaire</td>
+          </tr>
+          <tr>
+            <td>Préparation PowerPoint</td>
+            <td style="text-align: center;">Toute l'équipe</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase5 active-cell">✓</td>
+            <td class="phase5 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Élaboration diagramme de Gantt</td>
+            <td style="text-align: center;">Toute l'équipe</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase5 active-cell">✓</td>
+            <td class="phase5 active-cell">✓</td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          
+          <!-- Phase 6 -->
+          <tr>
+            <td colspan="14" class="phase-header">Phase 6: Analyse approfondie</td>
+          </tr>
+          <tr>
+            <td>Calculs</td>
+            <td style="text-align: center;">A.K</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase6 active-cell">✓</td>
+            <td class="phase6 active-cell">✓</td>
+            <td></td><td></td>
+          </tr>
+          <tr>
+            <td>Visualisation</td>
+            <td style="text-align: center;">W.A</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase6 active-cell">✓</td>
+            <td class="phase6 active-cell">✓</td>
+            <td></td><td></td>
+          </tr>
+          <tr>
+            <td>Interprétation</td>
+            <td style="text-align: center;">H.S</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase6 active-cell">✓</td>
+            <td class="phase6 active-cell">✓</td>
+            <td></td><td></td>
+          </tr>
+          
+          <!-- Phase 7 -->
+          <tr>
+            <td colspan="14" class="phase-header">Phase 7: Rédaction du rapport</td>
+          </tr>
+          <tr>
+            <td>Texte</td>
+            <td style="text-align: center;">A.K</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase7 active-cell">✓</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Graphiques</td>
+            <td style="text-align: center;">W.A</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase7 active-cell">✓</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Relecture</td>
+            <td style="text-align: center;">H.S</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase7 active-cell">✓</td>
+            <td></td>
+          </tr>
+          
+          <!-- Phase 8 -->
+          <tr>
+            <td colspan="14" class="phase-header">Phase 8: Finalisation</td>
+          </tr>
+          <tr>
+            <td>Vérifications finales</td>
+            <td style="text-align: center;">Toute l'équipe</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase8 active-cell">✓</td>
+          </tr>
+          <tr>
+            <td>Remise du rapport</td>
+            <td style="text-align: center;">Toute l'équipe</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td class="phase8 active-cell">✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="legend">
+      <p>Légende des responsabilités:</p>
+      <p>A.K = Base de données, Analyses, Rédaction</p>
+      <p>W.A = Extraction, Vérification, Visualisation</p>
+      <p>H.S = Validation, Synthèse, Interprétation, Relecture</p>
+    </div>
+  </div>
+</body>
+</html>

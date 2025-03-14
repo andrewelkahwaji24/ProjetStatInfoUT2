@@ -1,0 +1,66 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+.gantt-container {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.phase-header {
+  background-color: #f9f9f9;
+  font-weight: bold;
+  padding: 8px;
+}
+
+.session-header {
+  width: 30px;
+  text-align: center;
+  background-color: #f2f2f2;
+}
+
+.active-cell {
+  font-weight: bold;
+  text-align: center;
+}
+
+.legend {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Phase colors */
+.phase1 { background-color: #FF9AA2; }
+.phase2 { background-color: #FFB7B2; }
+.phase3 { background-color: #FFDAC1; }
+.phase4 { background-color: #E2F0CB; }
+.phase5 { background-color: #B5EAD7; }
+.phase6 { background-color: #C7CEEA; }
+.phase7 { background-color: #D9D9F3; }
+.phase8 { background-color: #CDB4DB; }

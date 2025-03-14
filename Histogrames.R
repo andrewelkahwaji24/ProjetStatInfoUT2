@@ -666,7 +666,7 @@ ggplot(incendiesregions, aes(x = annee, y = surface_parcourue_m2, color = altitu
 # Diagramme en barres empilées pour la nature des incendies par zone d'altitude
 ggplot(incendiesregions, aes(x = altitude_zone, fill = nature_inc_prim)) +
   geom_bar(position = "stack") +
-  labs(title = "Répartition des types d'incendies par zone d'altitude",
+  labs(title = "Repartition des types d'incendies par zone d'altitude",
        x = "Zone d'altitude", y = "Nombre d'incendies") +
   theme_minimal()
 
@@ -699,3 +699,17 @@ ggplot(incendies_summarized, aes(x = annee, y = proportion, color = nature_inc_p
   scale_color_brewer(palette = "Set2") +  # Palette de couleurs pour différencier les catégories
   theme_minimal() +
   theme(legend.position = "bottom")  # Déplacer la légende en bas
+
+
+# Graphique de ligne pour la variation de la surface des incendies au fil des années
+ggplot(incendiesregions, aes(x = annee, y = surface_parcourue_m2, color = altitude_zone)) +
+  geom_line() +
+  labs(title = "Variation de la surface des incendies au fil des années",
+       x = "Année", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal()
+
+ggplot(incendiesregions, aes(x = altitude_zone, fill = nature_inc_prim)) +
+  geom_bar(position = "fill") +
+  labs(title = "Repartition des types d'incendies par zone d'altitude",
+       x = "Zone d'altitude", y = "Nombre d'incendies") +
+  theme_minimal()

@@ -3,10 +3,10 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  html_document: 
+  pdf_document: 
     toc: true
     toc_depth: 6
-  pdf_document: 
+  html_document: 
     toc: true
     toc_depth: 6
 ---
@@ -1223,13 +1223,125 @@ Cette variation est biologiquement justifiée par l'augmentation de la densité 
 
 3-  **La variation de la surface des incendies au fils des années:**
 
+```{r}
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = annee, y = surface_parcourue_m2, color = altitude_zone)) +
+  geom_line() +
+  labs(title = "Variation de la surface des incendies au fil des années",
+       x = "Année", y = "Surface parcourue des incendies (m²)") +
+  theme_minimal()
+```
+
+
 1-  **Analyse Informatique:**
+
+Nous commencerons par réaliser une analyse informatique en détaillant la façon dont nous avons programmé ce graphique, puis nous passerons à l'analyse scientifique. 
+
+Dans un premier temps, nous avons assigné les données sous forme de tableau DataFrame à une variable qui utilise la méthode prédéfinie **read.csv** pour permettre la lecture des données. 
+
+Par la suite, nous avons créé le graphique en utilisant la méthode ggplot, qui prend deux arguments majeurs :la variable contenant les données et l'aes aesthetics qui va représenter les axes x et y. 
+
+De plus, il est précisé que chaque zone d'altitude sera illustrée par une couleur distincte. 
+
+Par la suite, une ligne est dessinée pour relier les points de données correspondant à chaque zone d'altitude. 
+
+Nous précisons que chaque courbe indique une altitude distincte, ce qui nous permet d'examiner la progression des incendies en fonction des années et de l'altitude. 
+
+Pour accomplir cela, nous avons utilisé la méthode **geom-line()**.
+
+Pour personnaliser notre graphique, nous allons attribuer des noms aux étiquettes et aux titres en utilisant la méthode prédéfinie **labs()**. 
+
+De plus, afin d'appliquer un thème moderne de style épuré à chaque graphique, nous utilisons la méthode **theme_minimal()**.
+
 
 2-  **Analyse Statistique:**
 
+Ce graphique présente une série temporelle avec des divisions annuelles sur l'axe horizontal (X) couvrant la période de 2012 à 2023, et représente la superficie affectée par les incendies en mètres carrés sur l'axe vertical (Y), allant de 0 à 1 million de m².
+
+Les données que nous détenons sont présentées sous forme de tracés en zigzag avec des segments verticaux, ce qui nous permet de supposer qu'il s'agit de lignes accompagnées d'intervalles de confiance. 
+
+Deux zones en altitude y sont présentes.   
+La région supérieure, illustrée en cyan, représente les zones brûlées à **haute altitude**, tandis que la zone inférieure, signalée en rouge, dénote les surfaces incendiées à **basse altitude.**
+
+Chaque point sur la ligne représente une **estimation annuelle**, tandis que les segments verticaux illustrent une **variabilité**. 
+
+**Par rapport à la zone Basse :**
+
+- **De 2012 à 2014**, la superficie couverte reste assez limitée, oscillant autour de 100 000 m² avec des sommets avoisinant à peu près 250 000 m².Les segments verticaux montrent une **variabilité modérée**, avec des sommets avoisinant les 500,000 m² en 2013.
+
+
+- **Entre 2015 et 2017**, on a observé une hausse notable avec des valeurs moyennes avoisinant les 200,000 m². Cependant, des sommets extrêmes ont été atteints, notamment à 1,000,000 m² en 2016 et 2017. Cela nous conduit à interpréter qu'il y a eu des incendies d'une **ampleur exceptionnelle.**
+
+- **De 2018 à 2020**, la superficie moyenne connaît une légère baisse oscillant entre 50,000 et 150,000 m². Cependant, les segments verticaux continuent à afficher des pics élevés (jusqu'à 800,000 m² en 2019).  Au cours de cette période, la variabilité demeure significative. 
+
+- **De 2021 à 2023**, on observe une tendance générale à la diminution, avec des moyennes se situant autour de 50 000 m². Cependant, les pics récurrents aux alentours de 500 000 - 750 000 m² démontrent que ces incendies extrêmes continuent de se produire. 
+
+**Pour ce qui est de la Zone Haute :**
+
+- **De 2012 à 2014**, les zones ravagées par le feu sont généralement très petites, rarement supérieures à 50 000 m², avec des pics ne dépassant pas 100 000 m². On en conclut que la fluctuation entre 2012 et 2014 est restreinte. 
+
+- On remarque une hausse abrupte entre **2015 et 2016**, culminant en 2016 avec une moyenne d'environ 300 000 m2 et un record proche de 750 000 m2. Cela suggère qu'un phénomène atypique a eu lieu en haute altitude. 
+
+- **De 2017 à 2020**, suite à ce pic, les superficies retombent à des niveaux faibles, que l'on peut estimer à une moyenne de 50 000 m². Des pics occasionnels peuvent atteindre environ 500 000 m² en 2019. 
+
+
+- **De 2021 à 2023**, la tendance demeure constante avec des superficies moyennes faibles avoisinant les 50 000 m² et des pics plus modestes atteignant jusqu'à 250 000 m², suggérant une diminution des incendies extrêmes en haute altitude. 
+
+
+Les deux zones montrent une grande variabilité d'année en année, mais on remarque que la Zone Basse affiche constamment des superficies brûlées plus importantes et des extrêmes plus prononcés que la Zone Haute.  
+
+Cela confirme l'interprétation du diagramme en boîte précédent, où les incendies en altitude basse étaient plus répandus et plus variables. 
+
+On observe une correspondance entre les deux régions, particulièrement aux alentours de 2016-2017 où les deux présentent des pics. 
+
+On peut en déduire que cela découle de facteurs climatiques et environnementaux partagés. 
+
+Les segments verticaux s'étendent bien plus haut que bas, ce qui nous autorise à conclure qu'il s'agit d'une distribution asymétrique vers la droite. 
+
+La concordance des deux zones, approximativement entre 2016 et 2017,pourrait être attribuée à des conditions météorologiques telles qu'une sécheresse prolongée ou des températures élevées qui facilitent la diffusion des incendies.  
+
+La région basse présentant systématiquement des superficies plus étendues est vulnérable à ces circonstances en raison d'une densité de végétation plus importante ou d'une accessibilité humaine accrue.
+
+La Zone Haute présente généralement des zones brûlées plus réduites, sans doute en raison de conditions moins propices à la propagation telles que la présence réduite de combustible, des températures plus fraîches et des sols rocailleux. 
+
+Cependant, le record de 2016 indique que des phénomènes rares comme les vents violents ou les éclairs peuvent causer des incendies conséquents même à haute altitude.
+
+Concernant les tendances récentes, la baisse des zones incendiées après 2020 dans les deux régions pourrait témoigner d'initiatives de prévention telles que la gestion forestière,la lutte anti-incendie ou encore des modifications climatiques comme une augmentation de la fréquence des précipitations. 
 4-  **Les Catégories des Incendies par zone d'altitude:**
 
+```{r}
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = altitude_zone, fill = nature_inc_prim)) +
+  geom_bar(position = "stack") +
+  labs(title = "Repartition des types d'incendies par zone d'altitude",
+       x = "Zone d'altitude", y = "Nombre d'incendies") +
+  theme_minimal()
+```
+
 1-  **Analyse Informatique:**
+
+On a d'abord chargé les données dans une variable qui contient les données sous la forme d'un tableau dataframe provenant du fichier CSV contenant toutes les informations requises.
+
+Par la suite, on emploie la méthode **gplot** qui est prédéfinie dans la bibliothèque **ggplot2**.  Pour générer le graphique basé sur les informations du fichier CSV, elle nécessite deux paramètres clés : le premier est la variable qui contient les données et l'autre est l'**aes aesthetics** où l'on spécifie l'axe des x qui illustrera les différentes zones d'altitude. Nous activons également l'option **fill** pour permettre une coloration en fonction du type d'incendie indiqué dans la variable **nature_inc-_prim**.
+
+Ensuite, nous ajoutons les barres empilées au graphique en utilisant la méthode prédéfinie **geom_bar**. Nous précisons que la position sera **stack**, ce qui signifie que les barres seront superposées et chaque couleur représentera une catégorie distincte de **nature_insc_prim**. La hauteur totale de la barre indiquera le nombre total d'incendies dans chaque zone d'altitude. 
+
+Si l'on souhaite se baser sur la proportion des différents types d'incendies plutôt que sur les valeurs absolues, on pourrait recourir à la valeur **fill**. Cela nous aidera à normaliser les barres afin qu'elles aient toutes la même hauteur, illustrant ainsi la proportion de chaque type d'incendie.
+
+**Nous allons insérer le graphique joint, cependant, nous ne procéderons pas à l'analyse de la position fill, mais plutôt à celle de la position stack**
+
+```{r}
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = altitude_zone, fill = nature_inc_prim)) +
+  geom_bar(position = "fill") +
+  labs(title = "Repartition des types d'incendies par zone d'altitude",
+       x = "Zone d'altitude", y = "Nombre d'incendies") +
+  theme_minimal()
+```
+
+Par la suite, nous intégrons les étiquettes et le titre en employant la méthode prédéfinie **labs()**, en précisant les deux axes x et y ainsi que le titre principal de notre graphique. 
+
+Et finalement, pour l'application d'un thème moderne au style épuré, nous utilisons la méthode prédéfinie **theme_minimal()**.
 
 2-  **Analyse Statistique:**
 

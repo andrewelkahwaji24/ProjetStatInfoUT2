@@ -412,7 +412,13 @@ Une variable qualitative représente une caractéristique ou une catégorie qui 
 
 **Définition d'une variable quantitative**
 
-Une Variable Quantitative représente une évaluation numérique et peut être l'objet d'opérations mathématiques. 
+Une Variable Quantitative représente une évaluation numérique et peut être l'objet d'opérations mathématiques.
+
+**Définition d'un Intervalle de Confiance**
+
+Un intervalle de confiance c'est l'outil qui nous permet d'estimer une plage dans laquelle une valeur inconnue comme une moyenne ou une proportion se situe avec un certain niveau de confiance.
+
+
 
 ### 4.2 Description des donnees
 

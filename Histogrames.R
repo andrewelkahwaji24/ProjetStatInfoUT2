@@ -713,3 +713,92 @@ ggplot(incendiesregions, aes(x = altitude_zone, fill = nature_inc_prim)) +
   labs(title = "Repartition des types d'incendies par zone d'altitude",
        x = "Zone d'altitude", y = "Nombre d'incendies") +
   theme_minimal()
+
+
+# Créer la matrice des fréquences observées (sans les totaux)
+observed <- matrix(c(200, 400, 500, 50,  # Zone Basse
+                     30, 100, 50, 10),   # Zone Haute
+                   nrow = 4, byrow = FALSE)
+rownames(observed) <- c("Accidentelle", "Involontaire", "Malveillance", "Naturelle")
+colnames(observed) <- c("Basse", "Haute")
+
+# Afficher les fréquences observées
+print("Fréquences observées :")
+print(observed)
+
+# Calculer les totaux des lignes et des colonnes
+row_totals <- rowSums(observed)
+col_totals <- colSums(observed)
+grand_total <- sum(observed)
+
+# Calculer les fréquences attendues
+expected <- matrix(0, nrow = 4, ncol = 2)
+for (i in 1:4) {
+  for (j in 1:2) {
+    expected[i, j] <- (row_totals[i] * col_totals[j]) / grand_total
+  }
+}
+rownames(expected) <- rownames(observed)
+colnames(expected) <- colnames(observed)
+
+# Afficher les fréquences attendues
+print("Fréquences attendues :")
+print(round(expected, 2))
+
+# Calculer le Chi²
+chi2_contrib <- matrix(0, nrow = 4, ncol = 2)
+for (i in 1:4) {
+  for (j in 1:2) {
+    chi2_contrib[i, j] <- (observed[i, j] - expected[i, j])^2 / expected[i, j]
+  }
+}
+chi2_stat <- sum(chi2_contrib)
+
+# Afficher les contributions au Chi²
+print("Contributions au Chi² :")
+print(round(chi2_contrib, 4))
+
+# Afficher la statistique Chi²
+print("Statistique Chi² :")
+print(chi2_stat)
+
+# Degré de liberté
+df <- (nrow(observed) - 1) * (ncol(observed) - 1)
+print("Degré de liberté :")
+print(df)
+
+# Valeur critique (pour alpha = 0.05)
+critical_value <- qchisq(0.95, df)
+print("Valeur critique (alpha = 0.05) :")
+print(critical_value)
+
+
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+ggplot(incendiesregions, aes(x = annee, y = surface_parcourue_m2, color = altitude_zone)) +
+  geom_line() +
+  labs(title = "Variation de la surface des incendies au fil des annees",
+       x = "Annee", y = "Surface parcourue des incendies") +
+  theme_minimal()
+
+
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+
+# Diagramme en barres empilées pour la nature des incendies par zone d'altitude
+ggplot(incendiesregions, aes(x = altitude_zone, fill = nature_inc_prim)) +
+  geom_bar(position = "stack") +
+  labs(title = "Repartition des types d'incendies par zone d'altitude",
+       x = "Zone d'altitude", y = "Nombre d'incendies") +
+  theme_minimal()
+
+
+
+incendiesregions <- read.csv("../Exports/export_incendiesregions.csv")
+
+ggplot(incendiesregions, aes(x = annee, fill = nature_inc_prim)) +
+  geom_bar(position = "fill") +  # Position "fill" pour montrer les proportions
+  labs(title = "Repartition des types d'incendies par annee",
+       x = "Annee",
+       y = "Proportion",
+       fill = "Type d'incendie") +
+  theme_minimal() +  # Thème minimal pour rendre le graphique plus clair
+  scale_fill_brewer(palette = "Set2")  # Palette de couleurs pour différencier les types d'incendies

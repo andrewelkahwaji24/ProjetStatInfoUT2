@@ -4,6 +4,7 @@ author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
   pdf_document: 
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
   html_document: 
@@ -117,7 +118,6 @@ Dans notre Partie Informatique on a utilisee le Language de Programmation Python
 7.  **Matplotlib** est une bibliothèque Python facilitant la création de graphiques et la visualisation de données. 
 
 8.  **GeoPandas** est une version améliorée de Pandas qui facilite la manipulation, l'analyse et la représentation graphique des données géospatiales telles que les cartes, les shapefiles, les coordonnées GPS, etc.  Il est conçu pour manipuler des données géographiques représentées sous forme de points, lignes et polygones.
-
 
 ### 3.3 Création de la base de données
 
@@ -336,6 +336,27 @@ Ensuite, nous avons deux dernières étapes : la sauvegarde de l'image et l'affi
 Pour afficher la carte, nous utilisons la fonction **plt.show()**.  Cette technique nous autorise à présenter la carte, elle est employée pour en faire la visualisation. 
 
 
+### 3.13 Creation du Diagrame du GANT
+
+Un diagramme de GANT est un instrument de gestion de projet qui permet d'afficher de manière graphique la planification des tâches au fil du temps. 
+
+Il dispose de diverses types de graphiques.  Dans le contexte de cette unité d'enseignement, nous avons élaboré le diagramme de GANT, non seulement en faisant appel à un schéma prédéfini sur un site commercial ou à un diagramme de GANT existant en ligne.
+
+Nous avons élaboré notre propre diagramme de GANT en nous servant principalement de deux langages informatiques : HTML et CSS.
+
+Le code HTML sert à générer un tableau de Gantt pour faciliter l'organisation et le suivi des diverses tâches d'un projet.  
+
+Il est organisé de façon cohérente en plusieurs parties, y compris un titre, un corps principal et une légende descriptive.
+
+Le tableau comporte un en-tête qui précise les différentes colonnes, la première partie indiquant les noms des tâches et des responsables, suivie d'une série de colonnes correspondant aux semaines du projet.  
+
+L'agencement du tableau est structuré en phases, chaque phase comprenant différentes tâches liées à des intervalles de temps particuliers pour leur exécution.  
+
+Les périodes actives des tâches sont visuellement indiquées par les cellules marquées d'un ✓, en utilisant des classes CSS (**phaseX active-cell**) qui offrent une représentation structurée et distincte.
+
+Le fichier CSS associé **(gantt.css)** est utilisé pour optimiser la présentation du tableau, en particulier pour mettre en évidence les différentes étapes et pour accroître la clarté des informations.  
+
+De plus, une légende est insérée sous le tableau pour clarifier la distribution des tâches entre les membres de l'équipe, ce qui facilite une meilleure compréhension de la structure du travail.
 
 
 
@@ -503,6 +524,92 @@ Pour conclure notre analyse, l'évolution des incendies de 2012 à 2022 a montr�
 Enfin, et c'est crucial, la gestion et la prévention jouent un rôle primordial. Les préfectures, ainsi que les forces de police municipales et nationales, peuvent contribuer à maîtriser ce taux d'incendies attribués à des actes de malveillance ou de négligence.
 
 ##### 4.3.1.2 Analyse des heures d’incendie
+
+```{r}
+incendies <- read.csv("../Exports/export_incendies.csv")
+incendies$heure <- as.character(incendies$heure)
+incendies$heure <- as.integer(sub(":.*", "", incendies$heure))
+hist(
+  incendies$heure, 
+  main = "Nombre d'incendies par heure", 
+  xlab = "Heure", 
+  ylab = "Nombre d'incendies", 
+  col = "red", 
+  border = "black", 
+  breaks = seq(0, 23, 1), 
+  xaxt = "n",
+  cex.axis = 0.8
+)
+axis(1, at = seq(0, 23, 1), labels = seq(0, 23, 1), cex.axis = 0.8)
+```
+
+1-  **Analyse Informatique**:
+
+Le code débute en chargeant les données à partir du fichier CSV via l'instruction **incendies <- read.csv("donnees_incendies.csv")**. 
+
+Cette étape est indispensable pour importer les données relatives aux incendies et les organisent sous forme de tableau, un format utilisé par R pour gérer les informations structurées.
+
+Par la suite, nous **convertissons** la colonne de l'heure des incendies : **incendies$heure = as.character(incendies$heure)**
+
+La **colonne** doit être convertie en **chaîne de caractères**, car certaines opérations de traitement textuel ne peuvent se faire qu'avec ce format de données. 
+
+L'instruction suivante, **incendies$heure = as.integer(sub(":.", "", incendies$heure))**, utilise la fonction **sub(":.", "", incendies$heure)** pour éliminer tout ce qui suit les deux-points « : », ne conservant ainsi que l'heure entière. 
+
+La fonction **as.integer()** transforme par la suite cette valeur en entier, facilitant ainsi son emploi dans **des calculs statistiques et l'élaboration de l'histogramme.**
+
+Par la suite, la fonction **hist()** est employée pour **créer l'histogramme**, en utilisant **hist(incendies$heure,...)**. 
+
+L'argument **main="Nombre d'incendies par heure"** attribue un titre au diagramme, alors que **xlab="Heure*"** et **ylab="Nombre d'incendies"** déterminent les désignations des axes pour spécifier les données présentées. 
+
+L'option **col="red"** permet de remplir les barres avec une teinte rouge pour une distinction colorimétrique plus efficace tandis que **border="black"** génère des bordures noires pour délimiter visuellement les barres. 
+
+L'option **breaks=seq(0, 23, 1)** segmente l'axe des heures en intervalles d'une unité par barre dans le graphique, chaque barre symbolisant une heure.
+
+Pour finir, la commande **axis(1,at=seq(0,23,1),labels=seq(0,23,1))** permet de personnaliser l'axe des x. Initialement, l'option **xaxt="n"** dans **hist()** avait éliminé l'affichage automatique des étiquettes sur cet axe. 
+
+Cette ligne finale ajoute **manuellement les vingt-quatre heures** afin d'améliorer l'harmonie esthétique. 
+
+Cela garantit une clarté accrue du graphique et facilite une interprétation optimale des données.
+
+2-  **Analyse Statistique** :
+
+Ce graphique montre une analyse du nombre d'incendies à des heures précises sur le **territoire français.**
+
+On analyse la fréquence des feux sur une durée de **24 heures.**  
+
+L'axe X illustre l'ensemble des heures, de **0 à 23**, tandis que l'axe Y représente le total des incendies, avec une portée d'environ **0 à près de 200.**
+
+Nous avons développé **un histogramme** comme type de graphique. 
+
+On observe un pic significatif **entre 11 heures et 14 heures**, atteignant son maximum aux alentours de **12-13** heures avec environ **200 incendies**.  
+**Après le pic du midi**, l'occurrence des incendies commence à décroître graduellement jusqu'à **23 heures**, avec quelques variations mineures, comme un léger rebound autour de **18-19 heures.**
+
+Cette répartition des données est asymétrique, montrant une queue à droite après le pic principal de **12-13 h**, car la **fréquence** diminue plus progressivement vers les heures tardives **14-23 h** qu'elle ne s'accroît avant le pic.
+
+Cette répartition indique une connexion forte entre les **actions humaines** et les incendies.  
+
+En effet, les moments où les incendies sont le plus courants correspondent à des périodes **d'activité humaine intense**, particulièrement entre **midi et 16h.**
+
+Ceci pourrait être attribué à une utilisation croissante d'équipements électriques, de cuisines ou encore de travaux dans l'industrie ou l'agriculture, augmentant ainsi les dangers d'incendie.
+
+L'explication de la **rareté des incendies** durant la nuit et le matin réside dans la diminution des interactions humaines et l'utilisation limitée de sources de chaleur et d'énergie.  
+
+Par contre, l'augmentation en pleine journée pourrait résulter des températures estivales chaudes et de l'intensification des activités humaines durant cette tranche horaire.
+
+Par après 16 heures, le nombre d’incendies commence à baisser peu à peu, ce qui peut être attribué à un ralentissement des occupations à risque et à une prise de conscience accrue des dangers suite au pic observé.
+
+Cependant, on note un léger rebond vers **20 heures**, probablement associé aux tâches de fin de journée telles que la cuisine ou l’utilisation d’appareils électriques avant le coucher.
+
+En définitive, cette répartition horaire des incendies met en exergue l’influence des comportements humains sur leur fréquence. 
+
+Ces données pourraient s’avérer utiles pour optimiser la prévention et l’intervention des services d’urgence en ciblant les périodes critiques de la journée.
+
+Le **mode** principale se situe autour de 12-123 heures, moment où le nombre d'incendies atteint approximativement 200.
+
+Il est probable que **la médiane**, c'est-à-dire le moment où **50% des incendies** se produisent, se situe aux alentours de **11-12 heures**, car la majorité d'entre eux ont lieu **après 14h.**
+
+
+
 ##### 4.3.1.3 Évolution décennale des causes d’incendies
 ##### 4.3.1.4 Heures critiques de déclenchement
 ##### 4.3.1.5 Cyclicité hebdomadaire

@@ -24,6 +24,10 @@ Finalement, nous avons constitué une section supplémentaire qui nous sert à �
 
 Il faut également noter que lors de notre projet, qui se divisait en deux parties : Informatique et Statistique, nous avons utilisé GitHub. Cette plateforme collaborative nous a permis de travailler collectivement sur un code en définissant les étapes attribuées à chaque membre du groupe. Cette plateforme nous offre aussi la possibilité de fusionner tout le code en un unique fichier, sans nécessité de l'assembler manuellement.
 
+**Lien de GitHub**
+
+https://github.com/andrewelkahwaji24/ProjetStatInfoUT2.git
+
 ### 1.2 Utilisation de l'OpenData 
 
 Dans le cadre de ce projet, nous avons mené des recherches afin d’améliorer notre base de données, ce qui nous a amenés à exploiter les données ouvertes.  Autrement dit, l'Open data consiste à rendre accessibles des données publiques, selon le gouvernement, que les utilisateurs peuvent exploiter.
@@ -358,7 +362,9 @@ Le fichier CSS associé **(gantt.css)** est utilisé pour optimiser la présenta
 
 De plus, une légende est insérée sous le tableau pour clarifier la distribution des tâches entre les membres de l'équipe, ce qui facilite une meilleure compréhension de la structure du travail.
 
+Pour donner plus de visibilité à notre projet, nous avons affiché notre diagramme de GANT sur un site web afin de le rendre facilement consultable.
 
+https://gantstatinfo.netlify.app/
 
 ## 4. Partie Statistique
 

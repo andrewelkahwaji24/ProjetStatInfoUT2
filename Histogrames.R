@@ -802,3 +802,23 @@ ggplot(incendiesregions, aes(x = annee, fill = nature_inc_prim)) +
        fill = "Type d'incendie") +
   theme_minimal() +  # Thème minimal pour rendre le graphique plus clair
   scale_fill_brewer(palette = "Set2")  # Palette de couleurs pour différencier les types d'incendies
+
+incendies <- read.csv("../Exports/export_incendies.csv")
+
+# Convert 'heure' column to integer (extract hour from time)
+incendies$heure <- as.character(incendies$heure)
+incendies$heure <- as.integer(sub(":.*", "", incendies$heure))
+
+# Plot histogram
+hist(
+  incendies$heure, 
+  main = "Nombre d'incendies par heure", 
+  xlab = "Heure", 
+  ylab = "Nombre d'incendies", 
+  col = "red", 
+  border = "black", 
+  breaks = seq(0, 23, 1), 
+  xaxt = "n",  # Hide default x-axis
+  cex.axis = 0.8
+)
+axis(1, at = seq(0, 23, 1), labels = seq(0, 23, 1), cex.axis = 0.8)

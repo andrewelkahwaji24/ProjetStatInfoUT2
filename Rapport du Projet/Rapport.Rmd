@@ -140,10 +140,10 @@ Suite à l'examen des données disponibles, nous avons reconnu la nécessité de
 
 
 1. Table des Incendies
-2. Table des doneees Geographiques
-3. Table des donees Meteo
-4. Table Departements
-5. Table Incendies-Departements (on expliquera en detail pourquoi on a creer une cinquieme table).
+2. Table des donnes Geographiques
+3. Table des donnes Meteo
+4. Table Départements
+5. Table Incendies-Départements (on expliquera en détail pourquoi on a créer une cinquième table).
 
 Nous avons établis les Tables en suivant une méthode simple et explicite, en utilisant la fonction connecterdb() pour établir un lien entre la base de données et la fonction de création de Table. 
 Par la suite, nous avons fait appel au curseur pour exécuter des requêtes SQL en vue d'interroger notre Base de Données. 
@@ -339,8 +339,27 @@ Ensuite, nous avons deux dernières étapes : la sauvegarde de l'image et l'affi
 
 Pour afficher la carte, nous utilisons la fonction **plt.show()**.  Cette technique nous autorise à présenter la carte, elle est employée pour en faire la visualisation. 
 
+### 3.13 Creation de la Carte du Monde 
 
-### 3.13 Creation du Diagrame du GANT
+Dans le cadre de notre projet, nous avons conçu une carte spécifique pour le territoire français. De plus, nous avons également élaboré une carte du monde qui indique les incendies sur l'ensemble du territoire français. 
+
+Ainsi, afin de concevoir et réaliser la Carte de France, nous avons fait appel à la bibliothèque **Folium** pour représenter géographiquement les incendies à l'aide des coordonnées GPS.  De surcroît, nous avons employé la bibliothèque **pandas** pour faciliter la manipulation et la lecture des données contenues dans le fichier CSV. 
+
+La bibliothèque **folium** nous offre la possibilité de manipuler des cartes interactives, basées sur **Leaflet.js**.
+
+Après l'importation des bibliothèques, nous procédons à l'importation des données et créons une variable. Suite à cela, nous assignons les données à cette variable et les enregistrons sous forme de DataFrame.
+
+Une fois cela fait, nous créons la carte et la centrons sur la France Métropolitaine avec un zoom de niveau 6, ce qui nous donne une vision globale du territoire national d'une manière ou d'une autre. 
+
+Ensuite, on passe à l'étape d'ajout de marqueurs pour chaque feu sur la carte.
+
+Nous allons désormais passer en revue chaque ligne de la DataFrame à l'aide de la méthode **itemrows()**. Pour chaque feu recensé, nous positionnerons un indicateur rouge sous forme d'icône de feu grâce à **FontAwesome**.
+
+Un petit message contextuel apparaîtra par un clic lorsque l'on clique en précisant le code INSEE qui correspond à l'identifiant de la commune concernée et l'altitude moyenne de la région en mètres. 
+
+Finalement, nous enregistrons cette carte interactive sous le nom de **carte_incendies.html**, d'où elle sera accessible dans l'archive ZIP du projet fourni. 
+
+### 3.14 Creation du Diagrame du GANT
 
 Un diagramme de GANT est un instrument de gestion de projet qui permet d'afficher de manière graphique la planification des tâches au fil du temps. 
 

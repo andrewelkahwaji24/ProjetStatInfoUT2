@@ -822,3 +822,73 @@ hist(
   cex.axis = 0.8
 )
 axis(1, at = seq(0, 23, 1), labels = seq(0, 23, 1), cex.axis = 0.8)
+
+
+
+library(ggplot2)
+library(dplyr)
+
+# Charger les données
+agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
+
+# Calculer le nombre d'incendies par jour (regroupement par an, mois, jour)
+agg_data_daily <- agg_data %>%
+  group_by(annee, mois, jour) %>%
+  summarise(nb_incendies = n(),   # Nombre d'incendies par jour
+            tmax_med = mean(tmax_med, na.rm = TRUE))   # Température maximale moyenne par jour
+
+# Créer un graphique en nuage de points avec ggplot2
+ggplot(agg_data_daily, aes(x = tmax_med, y = nb_incendies)) +
+  geom_point(color = "#1f77b4", size = 3, alpha = 0.7) +  # Points de données (couleur et opacité ajustées)
+  geom_smooth(method = "lm", color = "red", se = FALSE, linetype = "dashed", size = 1.2) +  # Ligne de régression (ajout de type de ligne et taille)
+  labs(
+    title = "Relation entre la température maximale quotidienne et le nombre d'incendies",
+    subtitle = "Analyse de la température maximale (°C) et des incendies par jour",
+    x = "Température Maximale Quotidienne (°C)",
+    y = "Nombre d'Incendies",
+    caption = "Source: Données d'incendies et température"
+  ) +
+  theme_minimal(base_size = 14) +  # Thème minimal avec taille de base augmentée pour meilleure lisibilité
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),  # Centrer et formater le titre
+    plot.subtitle = element_text(hjust = 0.5, size = 12),               # Centrer et formater le sous-titre
+    axis.title = element_text(size = 14),                                # Taille des titres des axes
+    axis.text = element_text(size = 12),                                 # Taille des labels des axes
+    plot.caption = element_text(size = 10, hjust = 1)                    # Taille et alignement de la légende
+  )
+
+
+library(ggplot2)
+library(dplyr)
+
+# Charger les données
+agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
+
+# Aggréger les données pour obtenir le nombre d'incendies, la température et l'heure
+agg_data_combined <- agg_data %>%
+  group_by(annee, mois, jour, heure) %>%
+  summarise(
+    nb_incendies = n(),
+    tmax_med = mean(tmax_med, na.rm = TRUE)
+  )
+
+# Créer un graphique de chaleur (heatmap) pour l'impact combiné de la température et de l'heure
+ggplot(agg_data_combined, aes(x = tmax_med, y = heure, fill = nb_incendies)) +
+  geom_tile() +  # Créer une carte de chaleur (tiles)
+  scale_fill_gradient(low = "white", high = "red") +  # Définir les couleurs de la carte de chaleur
+  labs(
+    title = "Impact combiné de la température maximale et de l'heure sur les incendies",
+    x = "Température Maximale Quotidienne (°C)",
+    y = "Heure de la Journée",
+    fill = "Nombre d'Incendies"
+  ) +
+  theme_minimal(base_size = 14) +  # Appliquer un thème minimal
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),  # Centrer et formater le titre
+    axis.title = element_text(size = 14),                               # Taille des titres des axes
+    axis.text = element_text(size = 12),                                # Taille des labels des axes
+    plot.caption = element_text(size = 10, hjust = 1)                   # Taille et alignement de la légende
+  )
+
+
+

@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  html_document: 
-    toc: true
-    toc_depth: 6
   pdf_document: 
     latex_engine: xelatex
+    toc: true
+    toc_depth: 6
+  html_document: 
     toc: true
     toc_depth: 6
 ---
@@ -1012,6 +1012,206 @@ Les données recueillies indiquent que même si la puissance du vent a un impact
 ##### 4.3.2.4 Impact des conditions météorologiques extrêmes sur les incendies
 ##### 4.3.2.5 Effet des radiations solaires sur les incendies
 ##### 4.3.2.6 Température et nombre d'incendies par période de la journée
+
+Pour pouvoir analyser notre problemarique qui se concerne sur la temperature et le nombre des incendies par periode journee on va diviser notre problematique en des sous problematiques: 
+
+- Relation entre la température maximale quotidienne et le nombre d'incendies
+- Impact combiné de la température et de l'heure de la journée sur les incendies
+- Comparaison entre différentes zones géographiques (code_INSEE)
+- Tendances saisonnières des incendies et de la température
+- Seuils de température critique pour l'émergence des incendies
+- Identification des périodes à risque élevé d'incendie
+
+1-  **Relation entre la température maximale quotidienne et le nombre d'incendies:**
+
+```{r}
+library(ggplot2)
+library(dplyr)
+agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
+
+# Calculer le nombre d'incendies par jour (regroupement par an, mois, jour)
+agg_data_daily <- agg_data %>%
+  group_by(annee, mois, jour) %>%
+  summarise(nb_incendies = n(),   # Nombre d'incendies par jour
+            tmax_med = mean(tmax_med, na.rm = TRUE))   # Température maximale moyenne par jour
+
+# Créer un graphique en nuage de points avec ggplot2
+ggplot(agg_data_daily, aes(x = tmax_med, y = nb_incendies)) +
+  geom_point(color = "#1f77b4", size = 3, alpha = 0.7) +  # Points de données (couleur et opacité ajustées)
+  geom_smooth(method = "lm", color = "red", se = FALSE, linetype = "dashed", size = 1.2) +  # Ligne de régression (ajout de type de ligne et taille)
+  labs(
+    title = "Relation entre la température maximale quotidienne et le nombre d'incendies",
+    subtitle = "Analyse de la température maximale (°C) et des incendies par jour",
+    x = "Température Maximale Quotidienne (°C)",
+    y = "Nombre d'Incendies",
+    caption = "Source: Données d'incendies et température"
+  ) +
+  theme_minimal(base_size = 14) +  # Thème minimal avec taille de base augmentée pour meilleure lisibilité
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),  # Centrer et formater le titre
+    plot.subtitle = element_text(hjust = 0.5, size = 12),               # Centrer et formater le sous-titre
+    axis.title = element_text(size = 14),                                # Taille des titres des axes
+    axis.text = element_text(size = 12),                                 # Taille des labels des axes
+    plot.caption = element_text(size = 10, hjust = 1)                    # Taille et alignement de la légende
+  )
+```
+
+**Analyse Informatique**
+
+Pour réaliser notre graphique, nous avons eu recours à deux bibliothèques : la bibliothèque **ggplot2**, qui nous offre la possibilité de créer des représentations graphiques en utilisant le langage R, et **dplyr**.Cette bibliothèque est intégrée au **tidyverse**, facilitant une manipulation efficace des données.Elle offre la possibilité de sélectionner, filtrer, grouper et résumer les données de manière performante. 
+
+Par la suite, nous utilisons la méthode **read.csv** pour charger les données contenues dans le fichier CSV dans une variable nommée **agg_data**.
+
+Par la suite, on effectue les statistiques journalières **%>%** en utilisant l'opérateur pipe de la bibliothèque **dplyr**, ce qui nous permet d'enchaîner plusieurs opérations.  Ensuite, nous utilisons la fonction **groupby()** qui nous autorise à regrouper les données par année, mois et jour.  
+
+Ceci nous autorisera à effectuer des calculs statistiques sur une base quotidienne. En outre, la technique **summarise** nous offre la possibilité d'effectuer des résumés statistiques grâce à l'utilisation de la méthode **n()**, qui permet de déterminer le nombre d'incendies par jour en comptant le nombre d'observations pour chaque groupe, soit ici, chaque jour.  
+
+En outre, on fait appel à la technique **mean** pour déterminer la température maximale moyenne quotidienne en omettant les valeurs absentes grâce à **na.rm = True**.
+
+Après avoir effectué le calcul des statistiques journalières, nous créons le graphique en employant la fonction **ggplot()** de la librairie **ggplot2**. 
+
+Nous l'élaborons en utilisant les données regroupées de la variable contenant les informations. Grâce à la méthode **aes()**, nous définissons les axes. 
+
+Par la suite, nous matérialisons les points de données sous forme de nuages de points grâce à l'usage du procédé **geom_point()**.
+
+Après l'utilisation de **geom_smooth()**, on superpose à ce graphique une ligne de régression linéaire pour mettre en évidence le lien entre la température et le nombre d'incendies, en précisant l'option method="lm" pour indiquer la méthode utilisée afin d'ajouter une régression linéaire.  
+
+La fonction labs() est employée pour définir les titres des axes, tandis que **theme_minimal()** est utilisée pour appliquer un style minimaliste.
+
+**Analyse Statistique:**
+
+On précise que l'axe horizontal indique la température maximale variant de 0 à 35 degrés et l'axe vertical dénote le nombre d'incendies oscillant entre 0 et 7,5. 
+
+Par ailleurs, on note que les points bleus symbolisent les observations. 
+
+En d'autres termes, chaque point représente un jour avec une température maximale spécifique et un nombre précis d'incendies. 
+
+Dans une échelle de 0 à 7,5, on détermine que les points bleus illustrent les observations. En d'autres termes, chaque point correspond à un jour donné avec une température maximale spécifique et un nombre déterminé d'incendies. 
+
+Il s'agit probablement d'une régression qui trace la relation moyenne entre la température et le nombre d'incendies. 
+
+Bien que les points soient éparpillés, on remarque une concentration plus importante de données entre 15 et 25 degrés, avec une prédominance d'incendies se situant généralement entre 0 et 3 
+
+On note des températures plus extrêmes, mais les données sont moins abondantes.
+
+Dans notre graphique, la courbe rouge indique une corrélation non linéaire entre la température maximale et le nombre d'incendies.  
+
+De zéro à environ quinze, le nombre d'incendies paraît légèrement en hausse, mais il reste faible, oscillant entre 1 et 2 par jour en moyenne. 
+
+Entre 15 et 25, la courbe connaît un sommet avec une moyenne de 2 à 3 incendies.  
+
+C'est dans cette fourchette de températures que l'on observe le plus grand nombre d'incendies. 
+ 
+Au-delà de 25 degrés, la courbe diminue progressivement, signalant une réduction du nombre moyen d'incendies lorsque les températures excèdent 25 degrés. 
+
+La dispersion des points autour de la courbe de régression indique une variabilité importante, comme on peut le voir dans notre graphique où à 20 degrés le nombre d'incendies fluctue entre 0 et 5.  
+
+Cette fluctuation indique que la température seule ne peut rendre compte du nombre d'incendies.
+
+Le lien constaté est en accord avec nos connaissances sur les feux de forêt : des températures plutôt élevées (15-25 °C) peuvent contribuer à l'éclosion de ces derniers en déshydratant la végétation, particulièrement si elles sont associées à une faible humidité ou à des vents.  
+
+Toutefois, dans des conditions de chaleur extrême (supérieure à 25 °C), d'autres paramètres tels qu'une diminution de l'humidité ou des actions préventives (interdiction de feux, vigilance renforcée) pourraient faire baisser le nombre d'incendies.
+
+Il est compréhensible que le nombre d’incendies à des températures extrêmement basses (proches de 0 °C) soit réduit, étant donné que les conditions ne favorisent pas la dissémination des flammes (végétation humide, gel, etc.).
+
+2-  **Impact combiné de la température et de l'heure de la journée sur les incendies**
+
+```{r}
+library(ggplot2)
+library(dplyr)
+agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
+
+# Aggréger les données pour obtenir le nombre d'incendies, la température et l'heure
+agg_data_combined <- agg_data %>%
+  group_by(annee, mois, jour, heure) %>%
+  summarise(
+    nb_incendies = n(),
+    tmax_med = mean(tmax_med, na.rm = TRUE)
+  )
+
+# Créer un graphique de chaleur (heatmap) pour l'impact combiné de la température et de l'heure
+ggplot(agg_data_combined, aes(x = tmax_med, y = heure, fill = nb_incendies)) +
+  geom_tile() +  # Créer une carte de chaleur (tiles)
+  scale_fill_gradient(low = "white", high = "red") +  # Définir les couleurs de la carte de chaleur
+  labs(
+    title = "Impact combiné de la température maximale et de l'heure sur les incendies",
+    x = "Température Maximale Quotidienne (°C)",
+    y = "Heure de la Journée",
+    fill = "Nombre d'Incendies"
+  ) +
+  theme_minimal(base_size = 14) +  # Appliquer un thème minimal
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),  # Centrer et formater le titre
+    axis.title = element_text(size = 14),                               # Taille des titres des axes
+    axis.text = element_text(size = 12),                                # Taille des labels des axes
+    plot.caption = element_text(size = 10, hjust = 1)                   # Taille et alignement de la légende
+  )
+```
+
+**Analyse Informatique:**
+
+Pour réaliser ce diagramme, deux bibliothèques majeures ont été employées, à savoir **ggplot2** et **dplyr**.  Les données ont été importées à l'aide d'un DataFrame, puis nous avons consolidé ces données en utilisant l'opérateur **pipe**, qui nous permet d'enchaîner les opérations de manière claire et cohérente. 
+
+ Par la suite, nous les organisons en utilisant la méthode **group_by()**, ce qui nous permettra de les réagencer par année, mois, jour et heure.  
+ 
+Cela nous donnera la possibilité de calculer des statistiques spécifiques pour chaque combinaison de ces périodes.
+
+On a également employé la méthode **summarise** et la fonction **n()** pour déterminer le nombre d'incendies pour chaque combinaison d'année, mois, jour et heure.  
+
+Cette technique va dénombrer les éléments présents dans chaque groupe. Par la suite, on détermine la température moyenne maximale pour chaque groupe sur une base quotidienne et horaire. 
+
+L'argument **na.Rm = True** nous autorise à faire abstraction des valeurs absentes lors de la réalisation du calcul. 
+
+Par la suite, on procède à l'élaboration du graphique en employant la méthode **ggplot()** qui permettra de le réaliser en se basant sur les données agrégées. On spécifie les variables à représenter sur les deux axes grâce à la méthode **aes()**. 
+
+Suite à cela, **geom_title()** nous offre la possibilité de construire la carte où chaque cellule représente une combinaison d'heure et de température.  
+
+Chaque case comportant un grand nombre d'incendies sera teintée en rouge. 
+
+Suite à cela, la méthode **scale_fill_gradient** nous autorisera à établir une palette de couleurs employée dans le diagramme de chaleur.  
+
+Les tuiles avec un faible nombre d'incendies seront en couleur blanche pour indiquer une faible occurrence d'incendies, tandis que celles avec un nombre élevé d'incendies seront en rouge. 
+
+La fonction labs() est employée pour définir les titres des axes, tandis que **theme_minimal()** est utilisée pour appliquer un style minimaliste.
+
+**Analyse Statistique:**
+
+En observant ce graphique, on détermine la température maximale de chaque jour à l'aide de l'axe horizontal, tandis que l'axe vertical indique l'heure de la journée.
+
+Les points dépeignent les incendies avec une couleur qui indique le volume des incendies en fonction de l'échelle chromatique. 
+
+Notre gamme de couleurs va du rose clair 1.0 au rouge sombre 3.0.  
+
+Ainsi, chaque point représente un incendie qui s'est produit à une température maximale et à un moment précis, avec une intensité (indiquée par la couleur) correspondant au nombre d'incendies. 
+ 
+Bien que les points sur le graphique soient éparpillés, on remarque une densité plus importante dans certaines zones. La plupart des incendies se regroupent entre 15 et 25, ce qui a du sens. On peut également noter que les incendidés ont tendance à se déclencher surtout entre 10 et 18 heures, avec un pic visible autour de midi à seize heures.
+
+On constate très peu de points hors de ces plages, par exemple, il y a rarement des incendies avant 5h ou après 18h, et très peu à des températures inférieures à 10 ou supérieures à 30 degrés.
+
+Les incendies se produisent généralement en milieu de journée, entre 10 et 18 heures, avec une intensification autour de midi à 16 heures. Cela s'explique par divers facteurs tels que des températures élevées en cours de journée, une activité humaine plus importante (comme des brûlages déclenchés volontairement ou accidentellement) ou des conditions climatiques spécifiques (vent fort, humidité faible) qui favorisent la propagation des incendies pendant ces plages horaires.
+
+Il est constaté qu'il y a très peu d'incendies signalés tôt le matin ou en soirée, ce qui pourrait être attribué à des températures plus fraîches, une humidité accrue ou éventuellement une activité réduite. 
+
+Les zones les plus sombres semblent surtout se situer entre 15 et 25 degrés, et entre midi et seize heures, ce qui indique que les conditions dans ce créneau horaire et cette plage de température sont particulièrement défavorables pour la survenue d'incendies. 
+
+Les points les plus distincts sont davantage dispersés, mais on en observe plus hors de ces plages critiques de température et d'heure. 
+
+Il est observé qu'il existe une corrélation entre la température maximale et le moment de la journée dans l'apparition des feux.  La plupart des incendies ont lieu lorsque la température est modérément élevée, entre 15 et 25 degrés, en milieu de journée.  
+
+Cela indique que l'accroissement de ces deux éléments accroît le danger des incendies. 
+
+L'éparpillement des points indique une variation dans le nombre d'incendies, même au sein des créneaux horaires et des plages de température les plus critiques.
+
+Température : Il a été confirmé que la fourchette de 15 °C à 25 °C est celle qui favorise le plus les incendies, probablement à cause de conditions sèches et chaudes qui stimulent l'inflammation de la végétation.
+
+**Le pic des incendies entre midi et seize heures est associé aux facteurs suivants :**
+
+- Les températures les plus élevées sont fréquemment enregistrées en début d'après-midi, ce qui contribue à la dessiccation de la végétation.
+- L'activité humaine (comme les feux de camp, les barbecues ou les mégots de cigarettes mal éteints) est plus courante à ces moments-là.
+- Les conditions climatiques (comme le vent ou une humidité faible) peuvent favoriser la diffusion des feux en plein jour.
+
+Les régions affichant le plus grand nombre d'incendies (indiquées par des points rouges foncés) sont celles où les conditions sont les plus critiques, ce qui pourrait orienter les actions de prévention (par exemple, imposer des interdictions de feux de plein air entre midi et 16h lorsque la température excède 15 °C).
+
 ##### 4.3.2.7 Relation entre la force du vent et la propagation des incendies
 ##### 4.3.2.8 Impact de la pression de vapeur sur la vitesse de propagation des incendies
 

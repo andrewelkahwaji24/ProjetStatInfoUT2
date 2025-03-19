@@ -1095,6 +1095,28 @@ def mettre_a_jour_altitude_zone():
         curs.close()  # Fermeture du curseur
         connexion.close()  # Fermeture de la connexion
 
+def supprimer_colonne_nb_incendies():
+    connexion, curs = connecterdb()
+    try:
+        # Supprimer la colonne nb_incendies de la table incendies_temp_heure
+        curs.execute(
+            """
+            ALTER TABLE incendies_temp_heure
+            DROP COLUMN nb_incendies;
+            """
+        )
+        connexion.commit()
+        print("La colonne 'nb_incendies' a été supprimée avec succès.")
+
+    except Exception as e:
+        print(f"Une erreur s'est produite : {e}")
+        raise ValueError("Erreur lors de la suppression de la colonne 'nb_incendies'.")
+
+    finally:
+        curs.close()  # Fermeture du curseur
+        connexion.close()  # Fermeture de la connexion
+
+
 # Menu de notre Programme
 def menu():
     while True:

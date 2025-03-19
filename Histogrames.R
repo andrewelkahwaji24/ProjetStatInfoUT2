@@ -858,37 +858,35 @@ ggplot(agg_data_daily, aes(x = tmax_med, y = nb_incendies)) +
   )
 
 
+
 library(ggplot2)
 library(dplyr)
 
 # Charger les données
 agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
 
-# Aggréger les données pour obtenir le nombre d'incendies, la température et l'heure
-agg_data_combined <- agg_data %>%
-  group_by(annee, mois, jour, heure) %>%
-  summarise(
-    nb_incendies = n(),
-    tmax_med = mean(tmax_med, na.rm = TRUE)
-  )
+# Créer des classes de température (par ex. tous les 2°C)
+agg_data_bins <- agg_data %>%
+  mutate(
+    tmax_bin = cut(tmax_med, breaks = seq(0, max(tmax_med, na.rm = TRUE) + 2, by = 2), right = FALSE)
+  ) %>%
+  group_by(tmax_bin) %>%
+  summarise(nb_incendies = n())
 
-# Créer un graphique de chaleur (heatmap) pour l'impact combiné de la température et de l'heure
-ggplot(agg_data_combined, aes(x = tmax_med, y = heure, fill = nb_incendies)) +
-  geom_tile() +  # Créer une carte de chaleur (tiles)
-  scale_fill_gradient(low = "white", high = "red") +  # Définir les couleurs de la carte de chaleur
+# Visualiser : Histogramme des incendies par classe de température
+ggplot(agg_data_bins, aes(x = tmax_bin, y = nb_incendies)) +
+  geom_col(fill = "#FF5733", alpha = 0.8) +
+  geom_vline(xintercept = which(agg_data_bins$nb_incendies == max(agg_data_bins$nb_incendies)), 
+             linetype = "dashed", color = "blue", size = 1) +
   labs(
-    title = "Impact combiné de la température maximale et de l'heure sur les incendies",
-    x = "Température Maximale Quotidienne (°C)",
-    y = "Heure de la Journée",
-    fill = "Nombre d'Incendies"
+    title = "Seuils de température critique pour l'émergence des incendies",
+    x = "Température maximale quotidienne (par classes de 2°C)",
+    y = "Nombre total d'incendies",
+    caption = "Source: Données incendies et température"
   ) +
-  theme_minimal(base_size = 14) +  # Appliquer un thème minimal
+  theme_minimal(base_size = 14) +
   theme(
-    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),  # Centrer et formater le titre
-    axis.title = element_text(size = 14),                               # Taille des titres des axes
-    axis.text = element_text(size = 12),                                # Taille des labels des axes
-    plot.caption = element_text(size = 10, hjust = 1)                   # Taille et alignement de la légende
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
   )
-
-
 

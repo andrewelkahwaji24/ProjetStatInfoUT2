@@ -1017,8 +1017,6 @@ Pour pouvoir analyser notre problemarique qui se concerne sur la temperature et 
 
 - Relation entre la température maximale quotidienne et le nombre d'incendies
 - Impact combiné de la température et de l'heure de la journée sur les incendies
-- Comparaison entre différentes zones géographiques (code_INSEE)
-- Tendances saisonnières des incendies et de la température
 - Seuils de température critique pour l'émergence des incendies
 - Identification des périodes à risque élevé d'incendie
 
@@ -1211,6 +1209,108 @@ Température : Il a été confirmé que la fourchette de 15 °C à 25 °C est ce
 - Les conditions climatiques (comme le vent ou une humidité faible) peuvent favoriser la diffusion des feux en plein jour.
 
 Les régions affichant le plus grand nombre d'incendies (indiquées par des points rouges foncés) sont celles où les conditions sont les plus critiques, ce qui pourrait orienter les actions de prévention (par exemple, imposer des interdictions de feux de plein air entre midi et 16h lorsque la température excède 15 °C).
+
+**3-  Seuils de température critique pour l'émergence des incendies:**
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Charger les données
+agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
+
+# Créer des classes de température (par ex. tous les 2°C)
+agg_data_bins <- agg_data %>%
+  mutate(
+    tmax_bin = cut(tmax_med, breaks = seq(0, max(tmax_med, na.rm = TRUE) + 2, by = 2), right = FALSE)
+  ) %>%
+  group_by(tmax_bin) %>%
+  summarise(nb_incendies = n())
+
+# Visualiser : Histogramme des incendies par classe de température
+ggplot(agg_data_bins, aes(x = tmax_bin, y = nb_incendies)) +
+  geom_col(fill = "#FF5733", alpha = 0.8) +
+  geom_vline(xintercept = which(agg_data_bins$nb_incendies == max(agg_data_bins$nb_incendies)), 
+             linetype = "dashed", color = "blue", size = 1) +
+  labs(
+    title = "Seuils de température critique pour l'émergence des incendies",
+    x = "Température maximale quotidienne (par classes de 2°C)",
+    y = "Nombre total d'incendies",
+    caption = "Source: Données incendies et température"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+**Analyse Informatique**
+
+D'abord, on importe les deux bibliothèques indispensables : **dplyr** pour le traitement des données et l'agrégation, et **ggplot2** pour la représentation graphique de ces dernières. 
+
+**Par la suite, les données sont importées dans une dataframe.**
+
+Nous passons ensuite à l'étape de création de classes de température en utilisant la méthode **cut()** qui nous permet de segmenter la variable **tmax_med** en intervalles de 2 degrés, comme par exemple entre 0 et 2 degrés, entre 2 et 4 degrés.
+
+En outre, **seq(0 , max())** nous aidera à établir les limites des classes, allant de 0 jusqu'à la température maximale enregistrée augmentée de 2 degrés.  
+
+Ensuite, nous regroupons les données par catégorie de température en employant la méthode **group_by(tmax_bin)**. Par la suite, nous employons **summarise(nb_incendies=n())** afin de déterminer le nombre total d'incendies pour chaque catégorie de température.
+
+Une fois les données prêtes, nous devons passer à la phase de visualisation de l'histogramme des incendies en fonction des classes de température. 
+
+Pour ce faire, nous utilisons la méthode **ggplot()**. 
+
+Nous construisons un histogramme à barres verticales où chaque barre illustre le nombre d'incendies pour une classe de température donnée en utilisant la technique **geom_col()**.
+
+On choisit l'option de **remplissage** pour assembler les barres.
+
+On insère une ligne verticale en pointillés bleus dénotant la classe ou le nombre d'incendies est au maximum, en employant la fonction prédéfinie **geom_vline()**.
+
+Ensuite, nous utilisons la méthode prédéfinie **labs()**, où nous ajoutons un titre, les libellés des axes et une référence pour le graphique.
+
+On utilise **theme_minimal()** pour donner un aspect sobre et professionnel, et l'on incline les labels de l'axe des X à 45 degrés pour améliorer la clarté en mettant en œuvre la méthode **element_text()**.
+
+**Analyse Statistique**
+
+Ce graphique vise à nous aider à analyser et à illustrer la distribution des températures maximales journalières, exprimées en degrés Celsius, liées à des incendies. 
+
+L'axe des abscisses illustre les températures maximales journalières réparties en catégories de 2 degrés. 
+
+L'axe Y indique le total des incendies recensés pour chaque catégorie de température.
+
+Une ligne en pointillés bleus est dessinée autour de 20 degrés, probablement pour indiquer un seuil critique de température.
+
+La distribution présente une **unicité du mode** et est fortement décalée vers la droite.  Le maximum est observé dans la tranche **18-20** avec approximativement 500 incendies, ce qui suggère que c'est à cette température qu'un nombre optimal d'incendies se déclenche. 
+
+Sur la gauche du sommet, le nombre d'incendies commence à croître graduellement dès que l'on atteint 12 degrés.  Après le pic, on observe une chute rapide du nombre d'incendies dès 20 degrés, avec très peu d'incendies au-delà de 28 degrés.
+
+Notre gamme de températures va de 2 à 34 degrés.  Toutefois, la plupart de nos incendies se produisent lorsque la température est comprise entre 12 et 26 degrés. 
+
+Il est possible d'affirmer que 80% des incendies se déclenchent lorsque la température se situe entre 16 et 22 degrés, atteignant un paroxysme à 18-20 degrés.  Les classes 16-18 et 20-22 comptent aussi un nombre élevé de sinistres, approximativement 300 et 200 respectivement. 
+
+**La ligne en pointillés à 20 degrés indique une limite critique pour le déclenchement des incendies :** 
+
+- Jusqu'à 20 degrés, le nombre d'incendies s'accroît avec la hausse de la température, signalant une relation positive entre la température et le danger d'incendie jusqu'à ce point critique.
+
+- Au-delà de 20 degrés, la fréquence des incendies chute rapidement, indiquant que des températures plus élevées ne sont pas forcément liées à un risque accru d'incendie.
+
+On pourrait affirmer que 20 degrés représente un seuil critique, où les incendies sont particulièrement courants juste avant et à ce point, mais tendent à diminuer au-delà. 
+
+Il est probable que la **moyenne** se situe autour de 18-20 degrés, car c'est là que le pic de la distribution est localisé. 
+
+La **mediane** représente la valeur qui sépare les données en deux segments égaux.  La température est proche de 18 degrés. 
+
+La majorité des données se situe entre 16 et 22 degrés, comme l'indique l'**écart-type**.  L'écart type est sans doute entre 2 et 3 degrés. 
+
+La **répartition** présente une asymétrie vers la droite, caractéristique des données de températures liées à des phénomènes naturels tels que les incendies.
+
+Nous allons procéder à une interprétation en rapport avec les incendies.  Les températures aux alentours de 18-20 degrés semblent être les plus déterminantes pour la naissance des feux.  
+
+Ceci peut être dû à un ensemble de facteurs tels que la chaleur adéquate pour assécher la végétation, mais également trop intense pour contrarier des conditions indispensables comme une humidité trop basse ou des vents particuliers. 
+
+Au-delà de 20 degrés, le danger diminue dans certains scénarios où la végétation devient trop sèche pour une combustion efficace ou lorsque d'autres facteurs météorologiques, comme des précipitations accompagnées de températures plus élevées, atténuent le risque.
+
 
 ##### 4.3.2.7 Relation entre la force du vent et la propagation des incendies
 ##### 4.3.2.8 Impact de la pression de vapeur sur la vitesse de propagation des incendies

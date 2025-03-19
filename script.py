@@ -808,6 +808,33 @@ def afficher_doneees_vents():
     curs.close()
     connexion.close()
 
+#Affiche les donnees dans la Table Incendies-regions
+
+def afficher_doneees_incendiesregions():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM incendiesregions")
+    lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
+# Affiche les donnees dans la Table Incendies-Temp-Heure
+
+def afficher_doneees_incendies_tem_heure():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM incendies_tem_heure")
+    lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
+
 # Phase d'exportation des doneees en CSV Comma Separated Values
 
 # Exportation des donees de la Table Incendies
@@ -1126,7 +1153,8 @@ def menu():
         print("2. Injecter des données dans les tables")
         print("3. Afficher des donnees d'une table")
         print("4. Exporter des doneees d'une table")
-        print("5. Quiter le Menu")
+        print("5. Fonctions Speciales")
+        print("6. Quiter le Menu")
 
         choix = input("Entrez le numero de choix que vous voulez choisir: ")
 
@@ -1253,6 +1281,12 @@ def menu():
             print('3.   Afficher les donnees de la table Geo')
             print('4.   Afficher les donnees de la table Departements')
             print('5.   Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
+            print('6.   Afficher les donnes de la Table Humidites')
+            print('7.   Afficher les donnes de la Table Incendies2023')
+            print('8.   Afficher les donnes de la Table Vents')
+            print('9.   Afficher les donnes de la Table Incendies-regions')
+            print('10.   Afficher les donnes de la Table Incendies-temp-heure')
+
             choix3 = int(input("Veuillez choisir une option: "))
             if choix3 == 1:
                 print("  Afficher les donnees de la table Incendies")
@@ -1286,8 +1320,17 @@ def menu():
                 print('Afficher les donnes de la Table Vents')
                 afficher_doneees_vents()
                 print('Afficher de la Table Vents completes avec succes')
+            elif choix3 == 9:
+                print("Afficher les donne de la Table Incendies-regions")
+                afficher_doneees_incendiesregions()
+                print('Afficher de la Table Incendiesregions completes avec succes')
+            elif choix3 == 10:
+                print("Afficher les donne de la Table Incendies-temp-heure")
+                afficher_doneees_incendies_tem_heure()
+                print('Afficher de la Table Incendies-temp-heure completes avec succes')
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
+
         elif choix == "4":
             print("Bienvenue dans le module de l'exportation des donees d'une table")
             print("1.Exportation des donnees de la Table Incendies")
@@ -1300,7 +1343,6 @@ def menu():
             print("8. Exportation des donnees de la Table Vents")
             print("9. Exportation des donnees de la Table IncendiesRegions")
             print("10. Exportation des donnees de la Table Incendies_temp_heure")
-
             choix4 = int(input("Veuillez choisir une option"))
             if choix4 == 1:
                 print("La procedure de l'exportation des donees pour la Table Incendies a commencee")
@@ -1336,6 +1378,26 @@ def menu():
                 print("Le numero choisi est invalide ou n'existe pas")
 
         elif choix == "5":
+            print("Bienvenue dans le Module Fonctions Speciales")
+            print("1. Ajouter une colonne altitude zone")
+            print("2. Mettre a jour Altitude Zone")
+            print("3. Supprimer colonne nb_incendies")
+            choix5 = int(input("Veuillez choisir une option"))
+            if choix5 == 1:
+                print("On va ajouter une colonne altitude zone")
+                ajouter_colonne_altitude_zone()
+                print("Processus Done")
+            elif choix5 == 2:
+                print("On va mettre a jout l'altitude zone")
+                mettre_a_jour_altitude_zone()
+                print("Processus Done")
+            elif choix5 == 3:
+                print("On va supprimer la colonne nb_incendies")
+                supprimer_colonne_nb_incendies()
+                print("Processus Done")
+            else:
+                print("Le numero choisi est invalide ou n'existe pas")
+        elif choix == "6":
             confirmation = input("Etes vous sur de vouloir quiiter le menu du Projet Stat Info?")
             if confirmation == "o" or confirmation == "ok" or confirmation == "yes" or confirmation == "Oui" or confirmation == "si" or confirmation == "oui":
                 print("Merci d'avoir d'utilise le programme A bientot!")

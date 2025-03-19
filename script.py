@@ -221,6 +221,27 @@ def create_table_incendiesregions():
     print("La table incendiesregions a été créée avec succès.")
 
 
+# Creer la Table Incendies_temp_heure
+def create_table_incendies_temp_heure():
+    connexion, curs = connecterdb()  # Connexion à la base de données
+    curs.execute(
+        """
+        CREATE TABLE incendies_temp_heure (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,       
+        code_INSEE TEXT NOT NULL,                    
+        annee INTEGER NOT NULL,                     
+        mois INTEGER NOT NULL,                      
+        jour INTEGER NOT NULL,                      
+        heure INTEGER NOT NULL,                     
+        nb_incendies INTEGER NOT NULL,              
+        tmax_med REAL NOT NULL
+        )
+        """
+    )
+    connexion.commit()  # Sauvegarde de la table créée
+    curs.close()  # Fermeture du curseur
+    connexion.close()  # Fermeture de la connexion
+    print("La table incendies_temp_heure a été créée avec succès.")
 
 
 # Phase d'injection des donees
@@ -652,6 +673,33 @@ def injecter_donnees_incendiesregions():
         connexion.close()  # Fermeture de la connexion
 
 
+#Injection des doneees dans la Table Incendies temp heure
+def injection_table_incendies_temp_heure():
+    connexion, curs = connecterdb()
+
+    curs.execute("""
+        INSERT INTO incendies_temp_heure (code_INSEE, annee, mois, jour, heure, nb_incendies, tmax_med)
+        SELECT 
+            i.code_INSEE,
+            i.annee,
+            i.mois,
+            i.jour,
+            i.heure,
+            COUNT(*) AS nb_incendies,
+            m.Tmax_med
+        FROM incendies i
+        INNER JOIN donnees_meteo m 
+            ON i.code_INSEE = m."Code_INSEE"
+        GROUP BY 
+            i.code_INSEE, i.annee, i.mois, i.jour, i.heure, m.Tmax_med
+    """)
+
+    connexion.commit()
+    curs.close()
+    connexion.close()
+    print("Les données des incendies croisés avec la température ont été insérées avec succès.")
+
+
 
 # Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
@@ -976,6 +1024,29 @@ def export_donnees_incendiesregions(fichier_output="Exports/export_incendiesregi
     except Exception as e:
         print("Erreur lors de l'exportation des données :", e)
 
+#Exportation des donnees de la Tables Incendies Temp Heure
+
+def export_donnees_incendies_temp_heure(fichier_output="Exports/export_incendiestempheure.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM incendies_temp_heure")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Incendies_temp_heure ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite :", e)
+    except Exception as e:
+        print("Erreur lors de l'exportation des données :", e)
 
 #Fonctions Speciales:
 
@@ -1048,6 +1119,7 @@ def menu():
             print('7. Creation de la Table Humidites')
             print('8. Creation de la Table Vents')
             print('9. Creation de la Table Incendies-Regions')
+            print('10. Creation de la Table Incendies_temp_heure')
 
             choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
@@ -1087,6 +1159,10 @@ def menu():
                 print("Creation de la Table Incendies-Regions")
                 create_table_incendiesregions()
                 print("La Creation de la Table Incendies-Regions a ete creer avec succees ")
+            elif choix1 == 10:
+                print("Creation de la Table Incendies-Temp-Heure")
+                create_table_incendies_temp_heure()
+                print("La Creation de la Table Incendies-temp-heure a ete creer avec succees ")
             else:
                 print(" Le numero choisi est invalide ou n'existe pas   ")
 
@@ -1101,6 +1177,7 @@ def menu():
             print('7. Injection des donees de la Table Humidites')
             print('8; Injection des donnees de la Table Vents')
             print('9. Injections des donees dans la Table Incendies-Regions')
+            print('10. Injections des donnees dans la Table Incendies-temp-heure')
 
             choix2 = int(input("Veuillez choisir une option: "))
 
@@ -1140,6 +1217,10 @@ def menu():
                 print("Injection de la Table IncendiesRegions")
                 injecter_donnees_incendiesregions()
                 print("Injection effectue avec succees dans la Table IncedniesRegions")
+            elif choix2 == 10:
+                print("Injection de la Table Incendies-temp-heure")
+                injection_table_incendies_temp_heure()
+                print("Injection effectue avec succees dans la Table Incendies-temp-heure")
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
@@ -1196,6 +1277,8 @@ def menu():
             print("7.Exportation des donnees de la Table Incendies2023")
             print("8. Exportation des donnees de la Table Vents")
             print("9. Exportation des donnees de la Table IncendiesRegions")
+            print("10. Exportation des donnees de la Table Incendies_temp_heure")
+
             choix4 = int(input("Veuillez choisir une option"))
             if choix4 == 1:
                 print("La procedure de l'exportation des donees pour la Table Incendies a commencee")
@@ -1224,6 +1307,9 @@ def menu():
             elif choix4 == 9:
                 print("La procedure de l'exportation des donnees pour la Table Incendiesregions a commencee")
                 export_donnees_incendiesregions()
+            elif choix4 == 10:
+                print("La procedure de l'exportation des donnees pour la Table Incendies_temp_heure a commencee")
+                export_donnees_incendies_temp_heure()
             else:
                 print("Le numero choisi est invalide ou n'existe pas")
 

@@ -1,0 +1,181 @@
+# Librairies nécessaires
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(corrplot)
+
+# Importation des données
+df <- read.csv("../Data/donnees_incendies.csv")
+df %>% count(nature_inc_prim) %>% mutate(freq = n / sum(n) * 100)
+
+
+ggplot(df, aes(x = nature_inc_prim)) + 
+  geom_bar() +
+  ggtitle("Répartition des types d'incendies (primaires)")
+
+df %>% count(nature_inc_sec) %>% mutate(freq = n / sum(n) * 100)
+ggplot(df, aes(x = nature_inc_sec)) + 
+  geom_bar() +
+  ggtitle("Répartition des types d'incendies (secondaires)")
+
+
+# mois
+ggplot(df, aes(x = factor(mois))) + 
+  geom_bar() +
+  ggtitle("Répartition des incendies par mois")
+
+df_summary_mois <- df %>%
+  filter(!is.na(mois)) %>%
+  count(mois) %>%
+  mutate(freq = n / sum(n) * 100)
+
+ggplot(df_summary_mois, aes(x = "", y = n, fill = factor(mois))) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) + 
+  geom_text(aes(label = paste0(round(freq, 1), "%")), 
+            position = position_stack(vjust = 0.5), size = 4) +
+  scale_fill_brewer(palette = "Pastel1") +
+  labs(
+    title = "Répartition des incendies par mois",
+    fill = "Mois"
+  ) +
+  theme_void() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
+
+df_summary_mois <- df %>%
+  filter(!is.na(mois)) %>%
+  count(mois) %>%
+  mutate(freq = n / sum(n) * 100)
+
+# Convertir la colonne "mois" en facteur ordonné
+df_summary_mois$mois <- factor(df_summary_mois$mois, 
+                               levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+
+ggplot(df_summary_mois, aes(x = mois, y = n, fill = mois)) + 
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  geom_text(aes(label = n), vjust = -0.5, size = 4) +
+  scale_fill_brewer(palette = "Set3") +
+  labs(
+    title = "Répartition des incendies par mois",
+    x = "Mois",
+    y = "Nombre d'incendies"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
+
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(corrplot)
+# Charger les librairies nécessaires
+library(tidyverse)
+
+# Charger les données
+df <- read.csv("../Data/donnees_incendies.csv")
+
+# Variables quantitatives
+vars_quanti <- c("surface_parcourue_m2", "annee", "mois", "jour", "heure")
+
+# Statistiques descriptives globales
+summary(df[vars_quanti])
+
+# Histogrammes & Boxplots
+for (var in vars_quanti) {
+  
+  # Vérifier si la variable est continue (numérique)
+  if (is.numeric(df[[var]])) {
+    # Histogramme pour variables continues
+    print(
+      ggplot(df, aes_string(x = var)) + 
+        geom_histogram(bins = 30, fill = "skyblue", color = "black") + 
+        ggtitle(paste("Histogramme de", var))
+    )
+  } else {
+    # Diagramme en barres pour variables discrètes (facteurs)
+    print(
+      ggplot(df, aes_string(x = var)) + 
+        geom_bar(fill = "skyblue", color = "black") + 
+        ggtitle(paste("Répartition des", var))
+    )
+  }
+  
+  # Boxplot
+  print(
+    ggplot(df, aes_string(y = var)) + 
+      geom_boxplot(fill = "orange") + 
+      ggtitle(paste("Boxplot de", var))
+  )
+}
+
+
+colnames(df)
+
+# Tableau croisé
+table(df$nature_inc_prim, df$nature_inc_sec)
+
+# Test du Chi²
+chisq.test(table(df$nature_inc_prim, df$nature_inc_sec))
+
+
+
+
+
+library(ggplot2)
+library(dplyr)
+
+df %>%
+  filter(!is.na(nature_inc_sec)) %>%
+  ggplot(aes(x = nature_inc_prim, fill = nature_inc_sec)) + 
+  geom_bar(position = "dodge") +
+  scale_fill_brewer(palette = "Set3") +  # Palette plus colorée
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  labs(
+    title = "Répartition des types d'incendies (primaire vs secondaire)",
+    x = "Nature primaire",
+    fill = "Nature secondaire"
+  )
+
+# Importer les deux CSV
+df_incendies <- read.csv("../Data/donnees_incendies.csv")
+df_meteo <- read.csv("../Data/donnees_meteo.csv")
+
+# Matrice de corrélation
+cor_matrix <- cor(df[vars_quanti], use = "complete.obs")
+corrplot(cor_matrix, method = "color", type = "upper", addCoef.col = "black")
+
+# Scatterplot + régression
+ggplot(df, aes(x = Insolation_med, y = Tmax_med)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", col = "red") + 
+  ggtitle("Tmax_med vs Insolation_med")
+
+# Corrélation de Pearson
+cor.test(df$Insolation_med, df$Tmax_med, method = "pearson")
+
+
+
+
+# Boxplot Altitude selon nature_inc_prim
+ggplot(df, aes(x = nature_inc_prim, y = Altitude)) + 
+  geom_boxplot() + 
+  ggtitle("Altitude selon le type d'incendie primaire")
+
+# Tmax selon nature_sec_inc
+ggplot(df, aes(x = nature_sec_inc, y = Tmax_med)) + 
+  geom_boxplot() + 
+  ggtitle("Tmax selon nature secondaire")
+
+# Test ANOVA
+anova_test <- aov(Tmax_med ~ nature_sec_inc, data = df)
+summary(anova_test)

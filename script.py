@@ -243,6 +243,48 @@ def create_table_incendies_temp_heure():
     connexion.close()  # Fermeture de la connexion
     print("La table incendies_temp_heure a été créée avec succès.")
 
+# Creation de la Table Impact Pression Vapeur
+
+def creer_table_impact_pression_vapeur():
+    connexion, curs = connecterdb()
+    curs.execute(
+        '''
+        CREATE TABLE IF NOT EXISTS impact_pression_vapeur(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code_INSEE TEXT NOT NULL,
+            tens_vap_med REAL NOT NULL,
+            surface_parcourue_m2 INTEGER NOT NULL
+        )
+        '''
+    )
+    # Confirme la création
+    connexion.commit()
+    # Fermer le curseur et la connexion
+    curs.close()
+    connexion.close()
+    print("La table impact_pression_vapeur a été créée avec succès")
+
+#Creation de la Table Impact Climat Urbanisation
+
+def creer_table_impact_climat_urbanisation():
+    connexion, curs = connecterdb()
+    curs.execute(
+        '''
+        CREATE TABLE IF NOT EXISTS impact_climat_urbanisation(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code_INSEE TEXT NOT NULL,
+            nature_sec_inc TEXT NOT NULL,
+            rr_med REAL NOT NULL
+        )
+        '''
+    )
+    # Confirme la création
+    connexion.commit()
+    # Fermer le curseur et la connexion
+    curs.close()
+    connexion.close()
+    print("La table impact_climat_urbanisation a été créée avec succès")
+
 
 # Phase d'injection des donees
 # Injection des donees dans la Table Incendies
@@ -700,6 +742,52 @@ def injection_table_incendies_temp_heure():
     print("Les données des incendies croisés avec la température ont été insérées avec succès.")
 
 
+#Injection des donnees dans la table impact pression vapeur
+
+def injection_table_impact_pression_vapeur():
+    connexion, curs = connecterdb()
+
+    curs.execute("""
+        INSERT INTO impact_pression_vapeur (code_INSEE, tens_vap_med, surface_parcourue_m2)
+        SELECT 
+            i.code_INSEE,
+            m.Tens_vap_med,
+            i.surface_parcourue_m2
+        FROM incendies i
+        INNER JOIN donnees_meteo m 
+            ON i.code_INSEE = m."Code_INSEE"
+    """)
+
+    connexion.commit()
+    curs.close()
+    connexion.close()
+    print("Les données des incendies croisés avec la pression de vapeur ont été insérées avec succès.")
+
+#Injection des donnees dans la Table Impact Climat Urbanisation
+def injection_table_impact_climat_urbanisation():
+    # Connexion à la base de données
+    connexion, curs = connecterdb()
+
+    # Exécution de la requête SQL pour insérer les données
+    curs.execute("""
+        INSERT INTO impact_climat_urbanisation (code_INSEE, nature_sec_inc, rr_med)
+        SELECT 
+            i.code_INSEE,
+            i.nature_inc_sec,
+            m.rr_med
+        FROM incendies i
+        INNER JOIN donnees_meteo m 
+            ON i.code_INSEE = m."Code_INSEE"
+    """)
+
+    # Valider les changements
+    connexion.commit()
+
+    # Fermer le curseur et la connexion
+    curs.close()
+    connexion.close()
+
+    print("Les données des incendies croisés avec les données climatiques ont été insérées avec succès.")
 
 # Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
@@ -1075,6 +1163,52 @@ def export_donnees_incendies_temp_heure(fichier_output="Exports/export_incendies
     except Exception as e:
         print("Erreur lors de l'exportation des données :", e)
 
+# Exportation des donnees de la table impact pression vapeur
+def export_donnees_impact_pression_vapeure(fichier_output="Exports/export_impactvapeure.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM impact_pression_vapeur")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Impact Pression Vapeure ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite :", e)
+    except Exception as e:
+        print("Erreur lors de l'exportation des données :", e)
+
+#Exportation des donnees dans la Table Impact_climat_urbansiation
+
+def export_donnees_impact_climat_urbanisation(fichier_output="Exports/export_impactclimaturbanisation.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM impact_climat_urbanisation")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Impact Climat Urbanisation ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite :", e)
+    except Exception as e:
+        print("Erreur lors de l'exportation des données :", e)
 #Fonctions Speciales:
 
 def ajouter_colonne_altitude_zone():
@@ -1170,6 +1304,8 @@ def menu():
             print('8. Creation de la Table Vents')
             print('9. Creation de la Table Incendies-Regions')
             print('10. Creation de la Table Incendies_temp_heure')
+            print('11. Creation de la Table Impact Pression Vapeur')
+            print('12. Creer Table Impact Climat Urbanisation')
 
             choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
@@ -1213,6 +1349,15 @@ def menu():
                 print("Creation de la Table Incendies-Temp-Heure")
                 create_table_incendies_temp_heure()
                 print("La Creation de la Table Incendies-temp-heure a ete creer avec succees ")
+            elif choix1 == 11:
+                print("Creation de la Table Impact Pression Vapeur")
+                creer_table_impact_pression_vapeur()
+                print("La Creation de la Table Impact Pression Vapeur a ete creer avec succees ")
+            elif choix1 == 12:
+                print("Creation de la Table Climat Urbanisation")
+                creer_table_impact_climat_urbanisation()
+                print("La Creation de la Table Impact Climat Urbanisation a ete creer avec succees ")
+
             else:
                 print(" Le numero choisi est invalide ou n'existe pas   ")
 
@@ -1228,6 +1373,8 @@ def menu():
             print('8; Injection des donnees de la Table Vents')
             print('9. Injections des donees dans la Table Incendies-Regions')
             print('10. Injections des donnees dans la Table Incendies-temp-heure')
+            print('11. Injection des donnees dans la Table Impact Pression Vapeur')
+            print('12. Injection des donnees dans la Table Impact Climat Urbanisation')
 
             choix2 = int(input("Veuillez choisir une option: "))
 
@@ -1271,6 +1418,13 @@ def menu():
                 print("Injection de la Table Incendies-temp-heure")
                 injection_table_incendies_temp_heure()
                 print("Injection effectue avec succees dans la Table Incendies-temp-heure")
+            elif choix2 == 11:
+                print("Injection de la Table Impact Pression Vapeure")
+                injection_table_impact_pression_vapeur()
+                print("Injection effectue avec succees dans la Table Impact Pression Vapeure")
+            elif choix2 == 12:
+                print("Injection de la Table Impact_climat_organisation")
+                injection_table_impact_climat_urbanisation()
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
@@ -1343,6 +1497,10 @@ def menu():
             print("8. Exportation des donnees de la Table Vents")
             print("9. Exportation des donnees de la Table IncendiesRegions")
             print("10. Exportation des donnees de la Table Incendies_temp_heure")
+            print("11. Exportation des donnees de la Table Impact Pression Vapeure")
+            print("12. Exportation des donnees de la Table Impact Climat Urbanisation")
+
+
             choix4 = int(input("Veuillez choisir une option"))
             if choix4 == 1:
                 print("La procedure de l'exportation des donees pour la Table Incendies a commencee")
@@ -1374,6 +1532,13 @@ def menu():
             elif choix4 == 10:
                 print("La procedure de l'exportation des donnees pour la Table Incendies_temp_heure a commencee")
                 export_donnees_incendies_temp_heure()
+            elif choix4 == 11:
+                print("La procedure de l'exportation des donnees pour la Table ImpactPressionVap a commencee")
+                export_donnees_impact_pression_vapeure()
+            elif choix4 == 12:
+                print("La procedure de l'exportation des donnees pour la Table ImpactClimatUrb a commencee")
+                export_donnees_impact_climat_urbanisation()
+
             else:
                 print("Le numero choisi est invalide ou n'existe pas")
 

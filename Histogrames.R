@@ -890,3 +890,182 @@ ggplot(agg_data_bins, aes(x = tmax_bin, y = nb_incendies)) +
     axis.text.x = element_text(angle = 45, hjust = 1)
   )
 
+
+library(ggplot2)
+library(dplyr)
+
+# Charger les données
+agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
+
+# Aggrégation par mois et heure
+agg_data_periode <- agg_data %>%
+  group_by(mois, heure) %>%
+  summarise(nb_incendies = n())
+
+# Mois en facteur pour l'affichage correct
+agg_data_periode$mois <- factor(agg_data_periode$mois, levels = 1:12, labels = month.name)
+agg_data_periode <- droplevels(agg_data_periode)
+
+ggplot(agg_data_periode, aes(x = heure, y = mois, fill = nb_incendies)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "white", high = "red") +
+  scale_y_discrete(drop = TRUE) +   # 🔴 ici on évite les NA sur l’axe Y
+  labs(
+    title = "Périodes à risque élevé d'incendie",
+    x = "Heure de la journée",
+    y = "Mois",
+    fill = "Nombre d'incendies"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+agg_data_periode <- agg_data %>%
+  filter(!is.na(mois), mois >= 1 & mois <= 12, !is.na(heure)) %>%  # Suppression des NA
+  group_by(mois, heure) %>%
+  summarise(nb_incendies = n(), .groups = "drop") %>%
+  mutate(
+    mois = factor(mois, levels = 1:12, labels = month.name)
+  )
+
+
+print("Check levels de mois")
+print(levels(agg_data_periode$mois))
+
+print("Check table mois")
+print(table(agg_data_periode$mois, useNA = "ifany"))
+
+print("Check head")
+print(head(agg_data_periode))
+
+agg_data_periode <- agg_data %>%
+  filter(!is.na(mois) & mois >= 1 & mois <= 12, !is.na(heure)) %>%  # Supprime NA juste après le chargement
+  group_by(mois, heure) %>%
+  summarise(nb_incendies = n(), .groups = "drop") %>%
+  mutate(
+    mois = factor(mois, levels = 1:12, labels = month.name)
+  )
+
+
+agg_data_periode <- agg_data %>%
+  filter(mois >= 1 & mois <= 12, !is.na(heure)) %>%
+  group_by(mois, heure) %>%
+  summarise(nb_incendies = n(), .groups = "drop") %>%
+  mutate(
+    mois = factor(mois, levels = 1:12, labels = month.name)
+  )
+
+
+
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(ggplot2)
+
+# Charger les données
+agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
+
+# Convertir la colonne 'mois' en facteur avec un ordre correct (Jan -> Dec)
+agg_data$mois <- factor(agg_data$mois, levels = month.name)
+
+# Vérifier la conversion
+print(table(agg_data$mois))  # Vérifie la répartition des mois
+
+# Aggrégation par mois et heure
+agg_data_periode <- agg_data %>%
+  filter(!is.na(mois) & mois %in% month.name, !is.na(heure)) %>%  # Supprimer les NA et s'assurer que les mois sont valides
+  group_by(mois, heure) %>%
+  summarise(nb_incendies = n(), .groups = "drop") %>%
+  mutate(
+    mois = factor(mois, levels = month.name)  # Assure que les mois sont ordonnés de janvier à décembre
+  )
+
+# Créer le graphique (Heatmap) : Nombre d'incendies en fonction de l'heure et du mois
+ggplot(agg_data_periode, aes(x = heure, y = mois, fill = nb_incendies)) +
+  geom_tile(color = "white") +  # Bordures blanches pour bien séparer les cases
+  scale_fill_gradient(low = "white", high = "red") +  # Dégradé du blanc au rouge
+  labs(
+    title = "Périodes à risque élevé d'incendie",
+    x = "Heure de la journée",
+    y = "Mois",
+    fill = "Nombre d'incendies"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+# Vérifier les valeurs uniques dans la colonne 'mois'
+unique(agg_data$mois)
+
+# Si les mois sont numériques (1 à 12), les convertir en noms de mois
+agg_data$mois <- factor(agg_data$mois, levels = 1:12, labels = month.name)
+
+# Vérifier que la conversion a bien fonctionné
+table(agg_data$mois)
+
+
+
+
+incendies <- read.csv("../Data/donnees_incendies.csv")
+incendies$mois <- factor(incendies$mois, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+
+nb_incendies_par_mois <- table(incendies$mois)
+
+barplot(nb_incendies_par_mois, 
+        col = "orange", 
+        border = "black", 
+        main = "Nombre d'incendies par mois", 
+        xlab = "Mois", 
+        ylab = "Nombre d'incendies",
+        las = 2)  
+
+
+incendies$saison <- NA 
+
+incendies$saison[incendies$mois %in% c("Dec", "Jan", "Feb")] <- "Hiver"
+incendies$saison[incendies$mois %in% c("Mar", "Apr", "May")] <- "Printemps"
+incendies$saison[incendies$mois %in% c("Jun", "Jul", "Aug")] <- "Été"
+incendies$saison[incendies$mois %in% c("Sep", "Oct", "Nov")] <- "Automne"
+
+nb_incendies_par_saison <- table(incendies$saison)
+
+couleurs_saisons <- c("Hiver" = "blue", "Printemps" = "green", "Été" = "orange", "Automne" = "brown")
+
+barplot(nb_incendies_par_saison, 
+        col = couleurs_saisons[names(nb_incendies_par_saison)],  
+        border = "black", 
+        main = "Nombre d'incendies par saison", 
+        xlab = "Saison", 
+        ylab = "Nombre d'incendies")
+
+
+
+incendies <- read.csv("../Data/donnees_incendies.csv")
+
+incendies$jour <- as.Date(incendies$jour, format="%Y-%m-%d")
+
+head(incendies$jour)
+
+Sys.setlocale("LC_TIME", "fr_FR.UTF-8")  
+incendies$jour_semaine <- weekdays(incendies$jour, abbreviate = FALSE)
+
+
+incendies$jour_semaine <- factor(incendies$jour_semaine, 
+                                 levels = c("lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"))
+
+semaine_incendies <- sum(incendies$jour_semaine %in% c("lundi", "mardi", "mercredi", "jeudi", "vendredi"))
+weekend_incendies <- sum(incendies$jour_semaine %in% c("samedi", "dimanche"))
+
+total_incendies <- c(semaine = semaine_incendies, weekend = weekend_incendies)
+
+par(mar = c(2, 2, 2, 2))  
+pie(total_incendies, 
+    col = c("lightblue", "orange"), 
+    main = "Repartition des incendies entre semaine et week-end",
+    labels = c("Semaine (Lun-Ven)", "Week-end (Sam-Dim)"),
+    cex = 1) 
+

@@ -385,9 +385,264 @@ Pour donner plus de visibilité à notre projet, nous avons affiché notre diagr
 
 https://gantstatinfo.netlify.app/
 
-## 4. Partie Statistique
+## 4. Partie Analyse Descriptive
 
-### 4.1 Definitions des concepts statistiques
+### 4.1 Definition de la Statistique Descriptive 
+
+Il s'agit d'une des sections de la statistique qui vise à condenser et à **exposer les données** de façon **synthétique** et **intelligible**.
+
+Une **Population** désigne un ensemble total d'individus, d'objets ou de mesures sur lesquels se focalise l'analyse statistique. 
+
+Un **échantillon** est une sélection d'une partie de la population choisie pour analyser les caractéristiques de l'ensemble de cette population. 
+
+Une variable se définit comme une caractéristique qui peut varier en fonction des individus de la population. 
+
+**On dispose de différentes sortes de variables : **
+
+- **Variable Qualitative**: Variable dont les valeurs se présentent sous forme de catégories. 
+
+- **Variable Quantitative**: Variable possédant des valeurs numériques, qui peut être soit discrète, prenant des valeurs distinctes, soit continue, pouvant adopter n'importe quelle valeur dans une plage définie. 
+
+### 4.2 Analyse Descriptive Univariees
+
+#### 4.2.1 Analyse sur les Variables Qualitatives
+
+##### 4.2.1.1 Analyse de nature_inc_prim:
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(corrplot)
+df <- read.csv("../Data/donnees_incendies.csv")
+df_summary_prim <- df %>% 
+  filter(!is.na(nature_inc_prim)) %>%  # Exclure les NA
+  count(nature_inc_prim) %>%
+  mutate(freq = n / sum(n) * 100)
+
+ggplot(df_summary_prim, aes(x = reorder(nature_inc_prim, -n), y = n, fill = nature_inc_prim)) + 
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  geom_text(aes(label = paste0(round(freq, 1), "%")), vjust = -0.5, size = 4) +
+  scale_fill_brewer(palette = "Dark2") + # Couleurs différentes pour changer de "Set2"
+  labs(
+    title = "Répartition des types d'incendies (primaires) sans NA", 
+    x = "Type d'incendie",
+    y = "Nombre d'incidents"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
+
+Dans cette étude descriptive, nous avons élaboré un graphique à barres illustrant la distribution des diverses catégories d'incendies primaires.
+
+Nous avons intégré les bibliothèques **tidyverse**, **ggplot2**, **dplyr**, **ggpubr** et **corrplot** pour effectuer des analyses et visualisations de données.  Ensuite, nous avons importé les données du fichier.
+
+Nous avons sélectionné les données en omettant les valeurs absentes dans la colonne **nature_inc_prim**.  
+
+Nous avons par la suite dénombré le nombre d'apparitions pour chaque sorte de feu principal. 
+
+Nous avons déterminé le taux relatif en pourcentage pour chaque catégorie. 
+
+Nous élaborons un diagramme à barres avec **ggplot2** où l'axe X représente les catégories d'incendies classées par ordre de fréquence décroissante.  
+
+L'axe des Y représente le nombre d'incendies.  
+
+Chaque barre est teintée en fonction du genre d'incendie à l'aide de la palette « Dark2 ».  
+
+Les pourcentages sont présentés au-dessus de chaque barre. 
+
+Cette analyse descriptive univariée vise à compter les occurrences et le pourcentage de chaque type d'incendie. Le résultat sera un tableau présentant les effectifs et les fréquences. 
+
+Ensuite, pour visualiser nos résultats, nous représentons la distribution des incendies primaires à travers des diagrammes en barres.
+
+##### 4.2.1.2 Analyse de nature_sec_inc:
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(corrplot)
+
+# Charger les données
+df <- read.csv("../Data/donnees_incendies.csv")
+
+df_summary <- df %>% 
+  filter(!is.na(nature_inc_sec)) %>%  # Exclure les NA
+  count(nature_inc_sec) %>%
+  mutate(freq = n / sum(n) * 100)
+
+ggplot(df_summary, aes(x = reorder(nature_inc_sec, -n), y = n, fill = nature_inc_sec)) + 
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  geom_text(aes(label = paste0(round(freq, 1), "%")), vjust = -0.5, size = 4) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "Répartition des types d'incendies (secondaires) sans NA", 
+    x = "Type d'incendie",
+    y = "Nombre d'incidents"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
+
+Dans le cadre de cette étude, nous avons élaboré un graphique à barres qui montre la distribution des divers genres d'incendies secondaires.
+
+D'abord, on importe les bibliothèques nécessaires pour l'analyse et la visualisation.  Les informations ont été extraites à partir du fichier **donnees_incendies.Csv**.
+
+Nous avons procédé à un filtrage des données pour éliminer les valeurs absentes dans la colonne **nature_inc_sec**.  Chaque type d'incendie secondaire a été quantifié et la fréquence proportionnelle en pourcentage a été déterminée pour chaque catégorie.
+
+Un graphique à barres a été élaboré à l'aide de la bibliothèque **ggplot2**, où l'axe des **X** illustre les catégories d'incendies secondaires ordonnées en fonction de leur fréquence décroissante.  
+
+L'axe vertical représente le nombre d'incendies.  
+
+Chaque barre est teintée en fonction de la catégorie d'incendies en utilisant la palette **Set2**.  Les taux sont présentés au-dessus de chaque barre.
+
+Le but de cette étude est de dénombrer les incendies par cause secondaire, puis de déterminer les fréquences relatives et d'illustrer la distribution des causes secondaires à l'aide d'un diagramme en barres.
+
+##### 4.2.1.3 Analyse de Mois:
+
+```{r}
+df <- read.csv("../Data/donnees_incendies.csv")
+df_summary_mois <- df %>%
+  filter(!is.na(mois)) %>%
+  count(mois) %>%
+  mutate(freq = n / sum(n) * 100)
+
+# Convertir la colonne "mois" en facteur ordonné
+df_summary_mois$mois <- factor(df_summary_mois$mois, 
+                               levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+
+ggplot(df_summary_mois, aes(x = mois, y = n, fill = mois)) + 
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  geom_text(aes(label = n), vjust = -0.5, size = 4) +
+  scale_fill_brewer(palette = "Set3") +
+  labs(
+    title = "Répartition des incendies par mois",
+    x = "Mois",
+    y = "Nombre d'incendies"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  )
+```
+
+Dans ce travail d'analyse, nous allons réaliser un graphique à barres. En premier lieu, nous importons les données du fichier **donnees_incendies.csv**, avant de procéder à la sélection des données afin d'éliminer les valeurs absentes dans la colonne **mois**. 
+
+Par la suite, le nombre d'incendies pour chaque mois a été enregistré.  
+
+Le calcul de la fréquence relative en pourcentage a été effectué pour chaque mois. 
+
+Pour assurer une présentation chronologique, nous transformons la colonne mois en facteur ordonné afin que les mois soient affichés dans leur ordre naturel.  
+
+On a employé les abréviations des mois comme niveaux du facteur.
+
+On génère ensuite le graphique à l'aide de la bibliothèque **ggplot2**, en précisant que l'axe X représente les mois dans leur séquence chronologique et l'axe Y indique le nombre d'incendies. 
+
+Chaque barre est teintée en fonction du mois selon la palette **Set3**.  
+
+Le chiffre précis des incendies est présenté au-dessus de chaque barre.
+
+Cette étude vise à démontrer la répartition saisonnière des incendies, nous permettant ainsi d'identifier les pics saisonniers. 
+
+Il est essentiel de noter que **factor(mois)** est utilisé pour que les mois soient considérés comme **catégories** plutôt que comme chiffres.
+
+##### 4.2.1.4 Analyse des communes les plus touches:
+
+```{r}
+df %>% count(commune) %>% arrange(desc(n)) %>% head(10)
+```
+
+Avec cette commande, nous pouvons déterminer les 10 communes qui ont enregistré le plus d'incendies. 
+
+C'est une étude géographique qui nous permettra de savoir où les incendies sont les plus courants.
+
+#### 4.2.2 Analyse sur les Varibales Quantitatives
+
+
+```{r}
+# Charger les données
+df <- read.csv("../Data/donnees_incendies.csv")
+
+# Variables quantitatives
+vars_quanti <- c("surface_parcourue_m2", "annee", "mois", "jour", "heure")
+
+# Statistiques descriptives globales
+summary(df[vars_quanti])
+```
+
+Dans cette section, nous avons réalisé une analyse statistique univariée basée sur des variables quantitatives, en employant les variables suivantes : 
+
+- **surface_parcourue_m2**: la surface parcourue par l'incendie 
+- **annee** : l'annee de l'incendie
+- **mois** : le mois de l'incendie
+- **jour** : le jour de l'incendie 
+- **heure** : l'heure de l'incendie 
+
+Pour ce faire, nous avons utilisé la fonction **summary()** pour obtenir les principales mesures de tendance centrale et de dispersion pour chaque variable, comme le minimum, le maximum, etc.
+
+Nous examinerons ces chiffres plus en profondeur dans la cinquième section de notre rapport.
+
+### 4.2 Analyse Descriptive Bivariees
+
+#### 4.2.1 Quali vs Quali
+
+```{r}
+
+
+library(ggplot2)
+library(dplyr)
+df <- read.csv("../Data/donnees_incendies.csv")
+
+# Tableau croisé
+table(df$nature_inc_prim, df$nature_inc_sec)
+
+# Test du Chi²
+chisq.test(table(df$nature_inc_prim, df$nature_inc_sec))
+
+
+df %>%
+  filter(!is.na(nature_inc_sec)) %>%
+  ggplot(aes(x = nature_inc_prim, fill = nature_inc_sec)) + 
+  geom_bar(position = "dodge") +
+  scale_fill_brewer(palette = "Set3") +  # Palette plus colorée
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  labs(
+    title = "Répartition des types d'incendies (primaire vs secondaire)",
+    x = "Nature primaire",
+    fill = "Nature secondaire"
+  )
+```
+
+Dans cette étude, nous avons initialement effectué un tableau croisé entre les catégories d'incendies primaires et secondaires afin d'examiner le lien entre ces deux variables de nature qualitative.  
+
+Par la suite, nous avons effectué un test du Chi² d'indépendance afin de déterminer s'il existe une corrélation statistique entre les caractéristiques des incendies primaires et secondaires.  
+
+Pour mettre en évidence cette relation de manière visuelle, nous avons créé un graphique à barres groupées (barplot en « dodge »), omettant les valeurs manquantes (NA) de la variable secondaire.  
+
+Le graphique adopte une gamme de couleurs éclatantes (Set3) afin de différencier clairement les diverses catégories d'incendies secondaires, tout en présentant un design sobre et des libellés clairs sur l'axe horizontal. 
+
+Cette démarche permet de combiner à la fois une analyse statistique et une visualisation claire pour mieux comprendre la distribution conjointe des deux types d’incendies.
+
+
+
+## 5. Partie Analyse des Donees
+
+### 5.1 Definitions des concepts statistiques
 
 Avant de commencer à donner des définitions, il est essentiel de nous baser sur le concept initial, c'est-à-dire la définition du terme Statistique. On peut définir ou représenter la statistique comme l'ensemble des méthodes et techniques utilisées pour collecter, analyser, interpréter et présenter des données numériques.
 
@@ -466,7 +721,7 @@ Un intervalle de confiance c'est l'outil qui nous permet d'estimer une plage dan
 
 
 
-### 4.2 Description des donnees
+### 5.2 Description des donnees
 
 Avant de commencer l'étape d'analyse de nos données et leur présentation sous forme de graphiques, nous allons identifier les types de données fournies par notre équipe pédagogique, afin de mener à bien ce projet.
 
@@ -480,14 +735,14 @@ Le fichier géographique renferme la latitude, la longitude et l'altitude. Ces i
  Le dossier Météorologique nous fournira des caractéristiques liées aux conditions météorologiques, ce qui nous permettra de distinguer les divers types de météo au moment de l'incendie.
  
 
-### 4.3 Analyse des doneees 
+### 5.3 Analyse des doneees 
 
 Dans cette partie, une fois que toutes les définitions nécessaires sont établies et que notre base de données est complète, nous serons prêts à analyser les données grâce au langage R. Nous emploierons différents types d'histogrammes pour diversifier nos analyses et nous procéderons à une étude approfondie de chaque histogramme.
 
 Nous avons divisé nos problématiques en différentes sections :
 
-#### 4.3.1 Évolution des incendies
-##### 4.3.1.1 Évolution des incendies au fil des années
+#### 5.3.1 Évolution des incendies
+##### 5.3.1.1 Évolution des incendies au fil des années
 Dans cette problématique, on va interroger sur le nombre d'incendies qui se produisent chaque année sur le territoire français.  Pour répondre à cette question, il est primordial de définir d'abord certains concepts naturels qui faciliteront l'analyse de cette problématique.  Une année se compose de 12 mois et comporte 365 jours. Dans cette étude, nous examinerons l'évolution annuelle du nombre d'incendies à travers tous les départements français, déterminant s'il est en déclin ou en ascension. 
 
 
@@ -548,7 +803,7 @@ Pour conclure notre analyse, l'évolution des incendies de 2012 à 2022 a montr�
 
 Enfin, et c'est crucial, la gestion et la prévention jouent un rôle primordial. Les préfectures, ainsi que les forces de police municipales et nationales, peuvent contribuer à maîtriser ce taux d'incendies attribués à des actes de malveillance ou de négligence.
 
-##### 4.3.1.2 Analyse des heures d’incendie
+##### 5.3.1.2 Analyse des heures d’incendie
 
 ```{r}
 incendies <- read.csv("../Exports/export_incendies.csv")
@@ -635,14 +890,227 @@ Il est probable que **la médiane**, c'est-à-dire le moment où **50% des incen
 
 
 
-##### 4.3.1.3 Évolution décennale des causes d’incendies
-##### 4.3.1.4 Heures critiques de déclenchement
-##### 4.3.1.5 Cyclicité hebdomadaire
+##### 5.3.1.3 Évolution décennale des causes d’incendies
+##### 5.3.1.4 Analyse des incendies par mois et saison
 
-#### 4.3.2 Facteurs climatiques et météorologiques
+```{r}
+incendies <- read.csv("../Data/donnees_incendies.csv")
+incendies$mois <- factor(incendies$mois, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
 
-##### 4.3.2.1 Influence de la température sur les incendies
-##### 4.3.2.2 Impact de l'humidité sur les incendies
+nb_incendies_par_mois <- table(incendies$mois)
+
+barplot(nb_incendies_par_mois, 
+        col = "orange", 
+        border = "black", 
+        main = "Nombre d'incendies par mois", 
+        xlab = "Mois", 
+        ylab = "Nombre d'incendies",
+        las = 2)  
+```
+
+```{r}
+incendies$saison <- NA 
+
+incendies$saison[incendies$mois %in% c("Dec", "Jan", "Feb")] <- "Hiver"
+incendies$saison[incendies$mois %in% c("Mar", "Apr", "May")] <- "Printemps"
+incendies$saison[incendies$mois %in% c("Jun", "Jul", "Aug")] <- "Été"
+incendies$saison[incendies$mois %in% c("Sep", "Oct", "Nov")] <- "Automne"
+
+nb_incendies_par_saison <- table(incendies$saison)
+
+couleurs_saisons <- c("Hiver" = "blue", "Printemps" = "green", "Été" = "orange", "Automne" = "brown")
+
+barplot(nb_incendies_par_saison, 
+        col = couleurs_saisons[names(nb_incendies_par_saison)],  
+        border = "black", 
+        main = "Nombre d'incendies par saison", 
+        xlab = "Saison", 
+        ylab = "Nombre d'incendies")
+```
+
+1-  **Analyse Informatique:**
+
+Pour débuter, nous arrangeons les mois selon l'ordre désiré :  
+**incendies$mois <- factor(incendies$mois, levels = c("Jan", "Fév", "Mars", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Décembre")).** 
+
+Cette phase convertit la colonne mois en un facteur catégorique, établissant clairement la séquence des mois de janvier à décembre.  
+
+Ceci assure un classement précis des mois lors de la création de graphiques ou de calculs.
+
+Ensuite, nous calculons le nombre d'incendies par mois avec la commande **nb_incendies_par_mois <- table(incendies$mois)**.
+
+Cette opération crée un tableau de décompte des incendies par mois.
+
+Un diagramme à barres est donc généré pour représenter le nombre d'incendies mensuels en utilisant **barplot(nb_incendies_par_mois,...)**.  
+
+**Dans cette fonction :**
+
+- **col="orange"** : Les barres sont colorées en orange.
+- **border="noir"** : Ajoute une bordure noire autour des barres.
+- **main="Nombre** d'incendies par mois" : Le titre du graphique.
+- **xlab="Mois"** et **ylab="Nombre d'incendies"** : Les étiquettes des axes.
+- **las=2* : Cette option fait pivoter les étiquettes des mois pour une meilleure lisibilité,
+surtout si les noms sont longs.
+
+Par la suite, une colonne saison est ajoutée à l'objet incendie pour assigner une saison à chaque mois.  
+
+L'instruction **incendies$saison <- NA** initialise d'abord une colonne vide, puis les lignes subséquentes attribuent une saison à chaque mois en se basant sur les valeurs de la colonne mois :
+
+- Déc, Jan, Fév : **Hiver**
+- Mars, Avr, Mai : **Printemps**
+- Juin, Juil, Août : **Été**
+- Sept, Oct, Nov : **Automne**
+
+Après avoir analysé les données sur les incendies, nous avons calculé le nombre d'incendies qui se sont produits pendant chaque saison à l'aide de la fonction **table()**. 
+
+Cela nous a permis de générer un tableau croisé indiquant la fréquence des incendies selon la période de l'année à laquelle ils se sont déclarés.
+
+2-  **Analyse Statistique:**
+
+Nous avons examiné le total d'incendies sur une durée de douze mois, de janvier à décembre.  L'axe horizontal indique les différents mois de l'année, alors que l'axe vertical dépeint le nombre total d'incendies, qui varie selon les périodes.  
+
+Le graphique illustre donc **les variations mensuelles**.
+
+Pour visualiser facilement les variations, nous avons choisi **un diagramme en barres**.
+
+De **janvier à mars**, on observe une montée progressive du nombre de feux, vraisemblablement due aux conditions hivernales qui accroissent les dangers liés à la chaleur et l'usage des dispositifs de chauffage.  
+
+Cette évolution continue en **février et mars**.
+
+En **mai**, le nombre d'incendies est relativement bas, probablement à cause d'un temps plus clément et d'une diminution des activités potentiellement dangereuses avant l'arrivée de l'été.
+
+De **juin à août**, on observe une montée, surtout en juillet et août, qui sont les mois les plus chauds où les activités humaines et agricoles se multiplient, provoquant de nombreux incendies.
+
+De **septembre à décembre**, les risques d'incendie diminuent progressivement avec l'arrivée des mois plus frais et humides, réduisant ainsi les dangers.
+
+Cette répartition met en évidence l'influence du climat et des actes humains en fonction des saisons, entre les besoins en chauffage d'hiver et estivaux, augmentant ainsi les risques, à l'opposé de la période de fin d'année.
+
+Le **second graphique** propose une étude de la **récurrence des feux en fonction des saisons sur le sol français.**  
+
+Les données sont distribuées selon les **quatre saisons classiques** : l'hiver, le printemps, l'été et l'automne.  
+
+**L'axe horizontal** illustre ces diverses saisons alors que l'axe vertical indique le total d'incendies pour chaque saison.  
+
+Pour représenter la distribution saisonnière des incendies, nous avons choisi d'utiliser un diagramme à barres.
+
+L'été se distingue de manière significative avec un nombre d'incendies pratiquement triplé par rapport aux autres saisons.  
+
+Cela est dû aux températures élevées de l'été et à la hausse des dangers d'incendies de forêt.  Cette augmentation est également alimentée par l'intensification des activités humaines pendant l'été, qu'il s'agisse de la cultivation ou des divertissements en plein air.
+
+Le nombre d'incendies au printemps est généralement inférieur mais plus élevé qu'en automne et en hiver.  
+
+Ceci pourrait être dû à la fin de la saison hivernale combinée aux premiers pics de chaleur, entraînant quelques incendies, en particulier d'origine agricole.
+
+Même si le nombre d'incendies à l'automne est moins élevé qu'en été, il reste néanmoins important.  
+
+Des températures plus clémentes diminuent le danger des méga-incendies, toutefois les travaux agricoles et la chute des feuilles continuent d'être des éléments à risque.
+
+L'hiver est marqué par une incidence réduite d'incendies grâce à des températures basses et un taux d'humidité plus élevé qui minimisent les dangers.  
+
+L'usage limité de certains appareils, tels que les cheminées, ainsi que la réduction des activités en plein air contribuent aussi à ce nombre réduit.
+
+En définitive, l'analyse saisonnière des incendies met en évidence l'impact du climat et des actions humaines sur leur occurrence.  
+
+L'été est la saison la plus risquée, tandis que l'hiver enregistre les statistiques les plus faibles.  
+
+Ces informations sont indispensables aux services de prévention et d'intervention pour identifier les saisons à haut risque et mettre en place des dispositifs de sécurité appropriés.
+
+Ainsi, le maximum de fréquence se produit durant l'été.  
+
+Il est probable que la médiane, c'est-à-dire la saison durant laquelle 50% des incendies se produisent, se situe entre le printemps et l'été étant donné la forte concentration estivale.
+
+##### 5.3.1.5 Heures critiques de déclenchement
+##### 5.3.1.6 Cyclicité hebdomadaire
+
+```{r}
+incendies <- read.csv("../Data/donnees_incendies.csv")
+
+incendies$jour <- as.Date(incendies$jour, format="%Y-%m-%d")
+
+head(incendies$jour)
+
+Sys.setlocale("LC_TIME", "fr_FR.UTF-8")  
+incendies$jour_semaine <- weekdays(incendies$jour, abbreviate = FALSE)
+
+print(unique(incendies$jour_semaine)) 
+
+incendies$jour_semaine <- factor(incendies$jour_semaine, 
+                                 levels = c("lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"))
+
+semaine_incendies <- sum(incendies$jour_semaine %in% c("lundi", "mardi", "mercredi", "jeudi", "vendredi"))
+weekend_incendies <- sum(incendies$jour_semaine %in% c("samedi", "dimanche"))
+
+total_incendies <- c(semaine = semaine_incendies, weekend = weekend_incendies)
+
+par(mar = c(2, 2, 2, 2))  
+pie(total_incendies, 
+    col = c("lightblue", "orange"), 
+    main = "Repartition des incendies entre semaine et week-end",
+    labels = c("Semaine (Lun-Ven)", "Week-end (Sam-Dim)"),
+    cex = 1) 
+```
+
+1.  **Analyse Informatique:**
+
+**Transformation de la colonne "date" en type Date:**
+
+Nous utilisons la fonction as.Date() pour transformer la colonne « date » en un objet de type Date. Le format indiqué est **"%Y-%m-%d"**, qui représente **l'année, le mois et le jour selon la norme**.
+
+**Extraction du jour de la semaine:**
+
+La fonction **weekdays()** est employée pour extraire **le nom du jour de la semaine** à partir de la colonne **date**.  
+
+Nous commençons par définir la langue française de localisation grâce à **Sys.setlocale()**, afin que les jours soient affichés dans cette langue, comme par exemple « lundi ».
+
+**Verification des jours uniques:**
+
+Cette instruction permet de montrer les valeurs distinctes trouvées dans la colonne « jour_semaine » pour vérifier les jours récupérés.
+
+**Création d'un facteur pour les jours:**
+
+Nous convertissons la colonne « jour_semaine » en facteur, avec les niveaux des jours clairement définis de lundi à dimanche, assurant ainsi leur séquence correcte.
+
+**Calcul du nombre d'incendies pendant la semaine et le weekend:**
+
+Nous comptons ici les incendies qui se déclenchent durant **la semaine, du lundi au vendredi**, ainsi que pendant **le week-end**, c'est-à-dire **samedi et dimanche**. 
+
+Ceci est effectué en utilisant l'opérateur **%in%** pour confirmer quel jour correspond à l'événement.
+
+**Création d'un vecteur avec les résultats:**
+
+Un tableau nommé **« total_incendies »** est créé pour conserver **les résultats** des incendies durant la **semaine et le week-end**.
+
+**Creation d'un graphique circulaire:**
+
+Pour finir, nous utilisons la fonction **pie()** pour créer un **diagramme circulaire** afin d'illustrer la répartition des incendies entre la semaine et le weekend, en optant pour des couleurs et étiquettes sur mesure, tout en modifiant les marges pour une présentation plus soignée.
+
+2.  **Analyse Statistique:**
+
+**Incendies fréquents pendant la semaine active:**
+
+Les informations indiquent que la majorité des incendies se déclarent en semaine, à cause de divers facteurs.  
+
+Parfois, l'augmentation de l'activité humaine et une forte densité de population peuvent engendrer plus de risques.  
+
+Au cours des heures de travail et durant les déplacements, les activités domestiques ou industrielles augmentent les risques potentiels.  
+
+De plus, les incendies peuvent également être favorisés par le travail ou les conditions météorologiques : l'usage d'instruments ou d'équipements électriques lors de journées de travail intenses en est fréquemment une raison.
+
+**Fin de semaine plus paisible:**
+
+Le week-end semble présenter un risque d'incendie réduit, en raison de la diminution des activités professionnelles et industrielles, ainsi que de la réduction des déplacements et de l'utilisation d'appareils susceptibles de déclencher un feu.  
+
+Il est probable qu'en week-end, lorsque les activités commerciales et industrielles sont réduites ou absentes, les personnes utilisent moins d'appareils ou adoptent davantage de mesures de précaution.
+
+
+
+
+
+#### 5.3.2 Facteurs climatiques et météorologiques
+
+##### 5.3.2.1 Influence de la température sur les incendies
+##### 5.3.2.2 Impact de l'humidité sur les incendies
 
 Pour mener l'analyse de l'influence de l'humidité sur les incendies, il est nécessaire de constituer notre base d'analyse.  Il est nécessaire d'utiliser les deux tables que nous avons mises en place dans notre Base de données, à savoir la Table Incendies et la Table donnees_meteo. 
 
@@ -804,7 +1272,7 @@ ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
 ```
 
 
-##### 4.3.2.3 Relation entre le vent et la propagation des incendies
+##### 5.3.2.3 Relation entre le vent et la propagation des incendies
 
 Pour examiner la question relative à la corrélation entre le vent et la diffusion des incendies sur le sol français, nous adopterons une approche distincte en segmentant ce sujet en quatres sous-questions.
 
@@ -1009,16 +1477,15 @@ Le diagramme de dispersion a révélé une tendance à l'augmentation de la supe
 Les données recueillies indiquent que même si la puissance du vent a un impact significatif sur l'expansion des incendies, elle ne constitue pas le seul élément décisif.D'autres facteurs tels que la disponibilité des carburants, l'humidité du sol et la topographie locale ont aussi un impact sur la diffusion du feu.Ainsi, même si une augmentation de la vitesse du vent peut effectivement favoriser la diffusion des incendies, cette corrélation devient moins directe et plus complexe lorsque le vent atteint des intensités plus extrêmes.
 
 
-##### 4.3.2.4 Impact des conditions météorologiques extrêmes sur les incendies
-##### 4.3.2.5 Effet des radiations solaires sur les incendies
-##### 4.3.2.6 Température et nombre d'incendies par période de la journée
+##### 5.3.2.4 Impact des conditions météorologiques extrêmes sur les incendies
+##### 5.3.2.5 Effet des radiations solaires sur les incendies
+##### 5.3.2.6 Température et nombre d'incendies par période de la journée
 
 Pour pouvoir analyser notre problemarique qui se concerne sur la temperature et le nombre des incendies par periode journee on va diviser notre problematique en des sous problematiques: 
 
 - Relation entre la température maximale quotidienne et le nombre d'incendies
 - Impact combiné de la température et de l'heure de la journée sur les incendies
 - Seuils de température critique pour l'émergence des incendies
-- Identification des périodes à risque élevé d'incendie
 
 1-  **Relation entre la température maximale quotidienne et le nombre d'incendies:**
 
@@ -1311,13 +1778,92 @@ Ceci peut être dû à un ensemble de facteurs tels que la chaleur adéquate pou
 
 Au-delà de 20 degrés, le danger diminue dans certains scénarios où la végétation devient trop sèche pour une combustion efficace ou lorsque d'autres facteurs météorologiques, comme des précipitations accompagnées de températures plus élevées, atténuent le risque.
 
+Pour conclure sur notre question générale, nous pourrions affirmer que les incendies surviennent plus souvent lorsque la température est comprise entre 15 et 25 degrés, notamment durant l'heure de la journée où la chaleur est la plus forte, particulièrement entre 10h et 18h. 
 
-##### 4.3.2.7 Relation entre la force du vent et la propagation des incendies
-##### 4.3.2.8 Impact de la pression de vapeur sur la vitesse de propagation des incendies
+Cette fourchette de température encourage la déshydratation de la flore et crée des conditions favorables à l'expansion des incendies.  
+
+Les incendies sont moins probables à des températures très basses ou très élevées, ce qui souligne l'importance d'une surveillance renforcée et de mesures préventives pendant les heures les plus chaudes de la journée.
 
 
-#### 4.3.3 Géographie et environnement
-##### 4.3.3.1 Propagation des incendies sur le territoire Francais
+##### 5.3.2.7 Relation entre la force du vent et la propagation des incendies
+##### 5.3.2.8 Impact de la pression de vapeur sur la vitesse de propagation des incendies
+
+Dans cette problématique nous allons se concentrer sur l'impact de la pression de vapeur sur la vitesse de propagation des incendies 
+
+```{r}
+data <- read.csv("../Exports/export_impactvapeure.csv")
+
+library(ggplot2)
+
+# Créer un graphique de dispersion entre la pression de vapeur et la surface parcourue par le feu
+ggplot(data, aes(x = tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue") +  # Points bleus
+  geom_smooth(method = "lm", color = "red") +  # Ajouter une droite de régression linéaire
+  labs(title = "Impact de la pression de vapeur sur la vitesse de propagation des incendies",
+       x = "Pression de vapeur (hPa)",
+       y = "Surface parcourue par le feu (m²)") +
+  theme_minimal()
+```
+
+
+1-  **Analyse Informatique:**
+
+Dans un premier temps, nous avons importé la librairie **ggplot2** pour réaliser notre diagramme, puis nous avons intégré nos données à l'aide d'un DataFrame et de la méthode prédéfinie **read.Csv**.
+
+L'objet de données renferme toutes les informations extraites du fichier CSV.
+
+Nous générons le graphique grâce à la librairie **ggplot**, en précisant le jeu de données ainsi que les variables qui seront représentées sur les axes X et Y. De plus, nous définissons les axes via le paramètre **aes**.
+
+On utilise la méthode prédéfinie **geom_point()** pour ajouter les points sur le diagramme de dispersion.  Chaque point va symboliser une observation de données. 
+ 
+Nous intégrons une courbe de tendance dans le graphique en employant le paramètre **method="lm"** pour signaler que la courbe représentera une régression linéaire. 
+
+Et finalement, en matière de personnalisation, nous attribuons des titres aux deux axes ainsi qu'au titre principal en utilisant **labs()**. Pour lui donner un aspect plus contemporain, nous employons **theme_minimal**.
+
+2-  **Analyse Statistique:**
+
+Ce graphique que nous avons est un type de diagramme de dispersion, ou plus précisément, un nuage de points (scatter plot), qui comprend une courbe de régression et une zone d'intervalle de confiance. 
+
+L'axe des abscisses indique la pression de vapeur, mesurée en hPa, variant de 0 à 25 hPa, tandis que l'axe des ordonnées représente la vitesse de propagation du feu, exprimée en mètres par seconde sur une échelle logarithmique allant de 0 à 1 000 000 m/s.
+
+Il est à noter que les points de couleur bleue correspondent aux observations individuelles.  Dans notre graphique, chaque point illustre une mesure de régression de vapeur et de vitesse de propagation. 
+
+Une tendance générale est illustrée par une ligne rouge continue, entourée d'une zone ombragée représentant l'intervalle de confiance supposé à 95%.
+
+Les points montrent une grande dispersion, surtout à basse pression de vapeur entre 0 et 15 hPa, ce qui témoigne d'une variabilité significative dans la vitesse de propagation pour ces niveaux de pression. 
+
+Lorsque la pression de vapeur excède 15 hPa, les points se multiplient et la vitesse de diffusion semble généralement se réduire. 
+
+La plupart des points se regroupent à des vitesses de propagation inférieures à 250 000 m/s, avec quelques valeurs hors normes atteignant les 1 000 000 m/s.
+
+L'échelle de l'axe des ordonnées est logarithmique, ce qui est courant pour des données très dispersées ou présentant une distribution déséquilibrée, comme c'est le cas ici. Cela nous aide à mettre en évidence les valeurs les plus faibles tout en intégrant les valeurs extrêmes.
+
+Il est possible que la vitesse de propagation des incendies suive une distribution exponentielle ou même log-normale. 
+
+Le graphique de régression illustre un lien inverse entre la pression de vapeur et la vitesse de propagation. Quand la pression sur la valeur s'accroît, la vitesse de propagation tend à se réduire. 
+
+La courbe présente une inclinaison marquée initialement entre 0 et 10 hPa, puis elle se nivèle progressivement à mesure que la pression de vapeur augmente, entraînant un effet asymptotique où la vitesse de progression atteint une valeur faible pour des pressions élevées. 
+
+Pour ce qui est de l'intervalle de confiance, la zone en gris sur le graphique de régression indique cet intervalle.
+
+L'écart se réduit à mesure que la pression de vapeur augmente, car il y a une diminution des données et la variabilité paraît moins importante. 
+
+La configuration de la courbe indique un modèle non linéaire, en d'autres termes, une régression logarithmique ou exponentielle, ce qui est en accord avec l'échelle logarithmique de l'axe Y.
+
+Il est hypothétique qu'une transformation logarithmique de la variable dépendante, la vitesse de propagation, a été effectuée pour linéariser la relation, suivie de l'ajout d'un modèle de régression. 
+
+On observe une relation inverse entre la pression de vapeur et la vitesse de propagation des incendies. Autrement dit, une pression de vapeur plus élevée, généralement associée à une humidité accrue, tend à freiner la progression des incendies. 
+
+En termes physiques, une pression de vapeur plus élevée signale un volume d'eau accru dans l'air, ce qui pourrait diminuer la combustibilité des matériaux et freiner la progression du feu. 
+
+L'importante dispersion des points, surtout à basse pression de vapeurs, nous indique que d'autres paramètres non considérés dans ce graphique, tels que la température et le vent, ont un impact sur la vitesse de diffusion. 
+
+La courbe de régression indique une tendance décroissante statistiquement significative, puisque son intervalle de confiance ne traverse pas la ligne horizontale nulle. Cela suggère que l'impact de la pression de vapeur sur la vitesse de propagation est effectif et non fortuit. 
+
+Pour finir, ce graphique met en lumière une relation inverse manifeste entre la pression de vapeur et la vitesse de propagation des incendies : plus la pression de vapeur est forte, plus la progression des incendies est lente.
+
+#### 5.3.3 Géographie et environnement
+##### 5.3.3.1 Propagation des incendies sur le territoire Francais
 
 ```{python}
 import geopandas as gpd
@@ -1406,7 +1952,7 @@ Pour conclure, la dernière région est la **Provence Alpes Côte d'Azur**, qui 
 
 Suite à l'étude de la progression du taux d'incendies sur la carte nationale que nous avons réalisée, il est évident que la région où le taux d'incendies est le plus élevé est la **Côte d'Azur**. En revanche, les zones où le taux d'incendies est le plus faible incluent des régions telles que les **Pays de la Loire**, **Normandie**, etc.  Il est donc clair que les conditions météorologiques et la localisation géographique de la ville ou de la région ont un impact crucial, surtout lorsque les conditions climatiques sont particulièrement propices aux incendies. De même, la nature des forêts situées dans les zones urbaines a une incidence significative sur l'expansion des feux.Bien qu'il existe une différence de taux d'incendies entre la ville et la montagne, cette question sera examinée dans le cadre d'une autre problèmatique.
 
-##### 4.3.3.2 Comparaison de la fréquence des incendies dans les régions montagneuses vs basses altitudes
+##### 5.3.3.2 Comparaison de la fréquence des incendies dans les régions montagneuses vs basses altitudes
 
 L'objectif de cette étude est d'examiner et de comparer le lien entre les incendies et l'altitude dans diverses régions et départements en France.
 
@@ -2024,23 +2570,23 @@ Les sommets atteints en 2016-2017 indiquent des conditions climatiques extrêmes
 Il est donc nécessaire d'ajuster les stratégies : combattre la malfaisance dans les zones basses et gérer les risques associés aux activités humaines dans les zones hautes.
 
 
-##### 4.3.3.3 Variation de l'altitude par region
-##### 4.3.3.4 Distance côtière et risque d’incendie
+##### 5.3.3.3 Variation de l'altitude par region
+##### 5.3.3.4 Distance côtière et risque d’incendie
 
 
 
-#### 4.3.4 Urbanisation et activités humaines
-##### 4.3.4.1 Comparaison des incendies entre les zones rurales et urbaines
-##### 4.3.4.2 Activités humaines à risque (travaux/particuliers)
-##### 4.3.4.3 Profil temporel des incendies criminels
-##### 4.3.4.4 Facteurs prédictifs des incendies criminels
-##### 4.3.4.5 Impact cumulé du climat et de l’urbanisation
+#### 5.3.4 Urbanisation et activités humaines
+##### 5.3.4.1 Comparaison des incendies entre les zones rurales et urbaines
+##### 5.3.4.2 Activités humaines à risque (travaux/particuliers)
+##### 5.3.4.3 Profil temporel des incendies criminels
+##### 5.3.4.4 Facteurs prédictifs des incendies criminels
+##### 5.3.4.5 Impact cumulé du climat et de l’urbanisation
 
-#### 4.3.5 Vulnérabilité et analyse de survie
+#### 5.3.5 Vulnérabilité et analyse de survie
 
-## 5. Ressources
+## 6. Ressources
 
-###  5.1 Ressources sur la Partie Informative
+###  6.1 Ressources sur la Partie Informative
 
 Jean-Luc CARTAULT, CLAIR, B., & KAPP, D. (2025, January 29). INCENDIES : Le phénomène physique. Encyclopædia Universalis. https://www.universalis.fr/encyclopedie/incendies/2-le-phenomene-physique/
 
@@ -2048,7 +2594,7 @@ Contributeurs aux projets Wikimedia. (2004, July 23). feu violent et destructeur
 
 Risque incendie : causes, conséquences et moyens de lutte. (2021). Preventica.com. https://www.preventica.com/magazine/dossiers/prevention-du-risque-incendie-comment-garantir-la-securite-des-personnes-et-des-biens-11032021/risque-incendie-causes-consequences-et-moyens-de-lutte
 
-### 5.2 Ressources sur la Partie Informatique 
+### 6.2 Ressources sur la Partie Informatique 
 
 Cours et Tutoriels sur le Langage SQL. (2025). SQL. https://sql.sh/
 
@@ -2058,7 +2604,7 @@ Bien démarrer avec la documentation GitHub - Documentation GitHub. (2025). GitH
 
 Qu’est-ce qu’une base de données ? Définition et fonctionnement. (2021, July 26). Hubspot.fr. https://blog.hubspot.fr/marketing/base-de-donnees
 
-### 5.3 Ressources sur la Partie Statistique 
+### 6.3 Ressources sur la Partie Statistique 
 
 
 Dérobert, N. (2025). Paramètres statistiques - Position et dispersion. Commentprogresser.com. https://commentprogresser.com/statistique-parametre-statistiques-moyenne-mediane-etendue-ecart-type.html

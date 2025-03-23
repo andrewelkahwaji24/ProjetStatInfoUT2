@@ -1069,3 +1069,165 @@ pie(total_incendies,
     labels = c("Semaine (Lun-Ven)", "Week-end (Sam-Dim)"),
     cex = 1) 
 
+
+
+data <- read.csv("../Exports/export_impactvapeure.csv")
+
+library(ggplot2)
+
+# Créer un graphique de dispersion entre la pression de vapeur et la surface parcourue par le feu
+ggplot(data, aes(x = tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue") +  # Points bleus
+  geom_smooth(method = "lm", color = "red") +  # Ajouter une droite de régression linéaire
+  labs(title = "Impact de la pression de vapeur sur la vitesse de propagation des incendies",
+       x = "Pression de vapeur (hPa)",
+       y = "Surface parcourue par le feu (m²)") +
+  theme_minimal()
+
+
+model <- lm(surface_parcourue_m2 ~ tens_vap_med, data = data)
+on
+
+
+
+# Calcul de la corrélation de Pearson
+correlation <- cor(data$tens_vap_med, data$surface_parcourue_m2, method = "pearson")
+
+# Afficher le résultat
+correlation
+
+
+
+# Charger la bibliothèque ggplot2 pour la visualisation
+library(ggplot2)
+
+# Créer un graphique de dispersion entre la pression de vapeur et la surface parcourue par le feu
+ggplot(data, aes(x = tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(color = "blue") +  # Afficher les points en bleu
+  geom_smooth(method = "lm", color = "red", linetype = "dashed") +  # Droite de régression linéaire
+  labs(title = "Relation entre la pression de vapeur et la surface parcourue par le feu",
+       x = "Pression de vapeur (hPa)",
+       y = "Surface parcourue par le feu (m²)") +
+  theme_minimal()
+
+
+
+
+
+
+
+
+
+
+# Charger les librairies nécessaires
+library(dplyr)
+
+# Supposons que votre dataframe s'appelle df
+df <- read.csv("../Exports/export_impactclimaturbanisation.csv")  # Charger vos données
+
+# Modèle de régression linéaire
+mod <- lm(rr_med ~ nature_sec_inc, data = df)
+
+# Résumé du modèle
+summary(mod)
+
+# Visualiser les résultats du modèle avec ggplot
+ggplot(df, aes(x = nature_sec_inc, y = rr_med)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, col = "red") +
+  labs(title = "Régression de RR_med sur nature_sec_inc", x = "Nature de l'incident", y = "RR_med")
+
+
+
+# Calculer la moyenne de 'RR_med' par 'code_INSEE'
+avg_rrmed_by_insee <- aggregate(rr_med ~ code_INSEE, data = df, FUN = mean)
+
+# Visualiser les résultats
+ggplot(avg_rrmed_by_insee, aes(x = reorder(code_INSEE, rr_med), y = rr_med)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Moyenne de RR_med par code INSEE", x = "Code INSEE", y = "Moyenne de RR_med") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# Modèle de régression pour évaluer l'impact de 'code_INSEE' et 'nature_sec_inc' sur 'RR_med'
+mod_multi <- lm(rr_med ~ nature_sec_inc + code_INSEE, data = df)
+
+# Résumé du modèle
+summary(mod_multi)
+
+
+
+
+
+
+
+
+
+
+# Chargement des librairies
+library(ggplot2)
+library(dplyr)
+library(sf)
+library(readr)
+
+# Importation des données
+data <- read_csv("../Exports/export_impactclimaturbanisation.csv")
+
+# Suppression des NA sur les colonnes pertinentes
+data_clean <- data %>%
+  filter(!is.na(rr_med), !is.na(nature_sec_inc))
+
+# 1. Boxplot rr_med par nature_sec_inc (sans NA)
+ggplot(data_clean, aes(x = nature_sec_inc, y = rr_med, fill = nature_sec_inc)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Distribution de rr_med par type d'incident secondaire",
+       x = "Type d'incident secondaire",
+       y = "Risque relatif médian (rr_med)") +
+  theme(legend.position = "none")
+
+# 2. Histogramme de rr_med (sans NA)
+ggplot(data_clean, aes(x = rr_med)) +
+  geom_histogram(binwidth = 0.5, fill = "#2c7fb8", color = "white") +
+  theme_minimal() +
+  labs(title = "Histogramme de rr_med",
+       x = "Risque relatif médian",
+       y = "Nombre d'occurrences")
+
+# 3. Barplot du nombre d'incidents par nature_sec_inc (sans NA)
+data_clean %>%
+  count(nature_sec_inc) %>%
+  ggplot(aes(x = reorder(nature_sec_inc, n), y = n, fill = nature_sec_inc)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Nombre d'incidents par type",
+       x = "Type d'incident secondaire",
+       y = "Nombre d'incidents") +
+  theme(legend.position = "none")
+
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Nombre d'incidents par type",
+       x = "Type d'incident secondaire",
+       y = "Nombre d'incidents") +
+  theme(legend.position = "none")
+
+# 4. Heatmap géographique (optionnel si code_INSEE = géolocalisation)
+# Pour ça, il te faut un fond de carte des communes INSEE (fichier shapefile ou via {mapsf}, {cartography} etc.)
+# Exemple simple si tu as une base géographique
+
+# Si tu veux je peux aussi t’ajouter un choropleth map (carte colorée) par INSEE et rr_med si tu m’en dis plus sur tes codes_INSEE.
+
+
+  data_clean %>%
+    count(nature_sec_inc) %>%
+    ggplot(aes(x = reorder(nature_sec_inc, n), y = n, fill = nature_sec_inc)) +
+    geom_bar(stat = "identity") +
+    coord_flip() +
+    theme_minimal() +
+    labs(title = "Nombre d'incidents par type",
+         x = "Type d'incident secondaire",
+         y = "Nombre d'incidents") +
+    theme(legend.position = "none")
+  

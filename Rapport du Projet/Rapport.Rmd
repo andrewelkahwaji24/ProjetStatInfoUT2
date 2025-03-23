@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  pdf_document: 
-    latex_engine: xelatex
+  html_document: 
     toc: true
     toc_depth: 6
-  html_document: 
+  pdf_document: 
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
 ---
@@ -2485,17 +2485,18 @@ ggplot(incendiesregions, aes(x = annee, fill = nature_inc_prim)) +
 
 1-  **Analyse Informatique:**
 
-Pour en pouvoir creer ce graphe on a en premier charger les donnees dans une variable en utilisant la methode **read.csv** en specifiant en parametre le chemin relatif du fichier CSV 
+Pour construire ce diagramme, nous avons d'abord importé les données dans une variable en utilisant la méthode **read.csv**, en précisant comme argument le chemin relatif du fichier CSV. 
 
-Apres cela en utilisant la methode **gpplot()** en indiqyant dans cette methode deux parametres principals la variables contenant la donneeee sous format de DataFrame et l'aes aesthetics n specifiant l'axe des x qui sera represente en anneee et on specifie que la barre des graphes seront remplies par **nature_inc_prim** en specifiant le type des incendies.
+Après cette étape, nous utilisons la fonction **ggplot()** en précisant deux paramètres essentiels : la variable contenant les données sous format DataFrame et l'aes aesthetics spécifiant l'axe des x qui sera représenté en années. Nous indiquons également que les barres du graphique seront remplies par **nature_inc_prim**, définissant ainsi le genre d'incendies.
 
-Apres cela en utilisant la methode predefine **geom_bar()** en mettant en parametre la position fill pour pouvoir normaliser les hauteurs de barres pour que chaque barre represente une proportion et non une valeur absolue. 
+Par la suite, on utilise la méthode prédéfinie **geom_bar()** en configurant le paramètre de position sur 'fill' afin de normaliser les hauteurs des barres. Cela permet à chaque barre de représenter une proportion plutôt qu'une valeur absolue. 
 
-Chaque barre est donc echeloneee de 0 a 1 ou chaque couleur qui est remplie par **nature_inc_prim** represente une proportion au total.
+Chaque barre est donc graduée de 0 à 1, où chaque couleur remplie par **nature_inc_prim** symbolise une part du total.
 
-Pour pouvoir personaliser notre graphique en utilisant la methode predefinie **labs()** on specifie le titre principale de notre graphe et le titre des deux axes x et y respectivement , afin de rendre le theme de notre graphe plus coherent et plus moderne on tuilise la methode predefinei **theme_minimal()**.
+Pour personnaliser notre diagramme à l'aide de la fonction prédéfinie **labs()**, nous indiquons le titre principal de notre graphique ainsi que les titres des axes x et y respectivement. Dans le but d'adapter le thème de notre graphique pour qu'il soit plus cohérent et contemporain, nous recourons à la fonction prédéfinie **theme_minimal()**.
 
-On utilise la methode predefinie **scale_fill_brewer()** pour appliquer une pqlette de couleurs pre-definies par **RColorBrewer**.La palette **Set2** est utilise pour permet de colorier differentes categories de **nature_inc_prim** de maniere distincte.
+On fait appel à la méthode prédéfinie **scale_fill_brewer()** pour appliquer une palette de couleurs définies par **RColorBrewer**. La palette **Set2** est employée pour attribuer une couleur différente aux diverses catégories de **nature_inc_prim**, de façon distincte.
+
 
 
 2-  **Analyse Statistique:**
@@ -2581,6 +2582,236 @@ Il est donc nécessaire d'ajuster les stratégies : combattre la malfaisance dan
 ##### 5.3.4.3 Profil temporel des incendies criminels
 ##### 5.3.4.4 Facteurs prédictifs des incendies criminels
 ##### 5.3.4.5 Impact cumulé du climat et de l’urbanisation
+
+1-  **Comment le niveau de risque (rr_med) varie-t-il selon la nature des incidents secondaires dans les zones urbaines sèches ?**
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(sf)
+library(readr)
+
+data <- read_csv("../Exports/export_impactclimaturbanisation.csv")
+
+data_clean <- data %>%
+  filter(!is.na(rr_med), !is.na(nature_sec_inc))
+
+ggplot(data_clean, aes(x = nature_sec_inc, y = rr_med, fill = nature_sec_inc)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Distribution de rr_med par type d'incident secondaire",
+       x = "Type d'incident secondaire",
+       y = "Risque relatif médian (rr_med)") +
+  theme(legend.position = "none")
+```
+
+**Analyse Informatique**
+
+Pour élaborer ce diagramme, nous avons commencé par importer diverses bibliothèques indispensables comme ggplot2 pour la représentation graphique, dplyr pour le traitement de données, sf pour la gestion spatiale et readr pour l'importation de documents CSV.
+
+Par la suite, nous avons importé notre jeu de données en utilisant la fonction read_csv(), en indiquant le chemin relatif vers le fichier CSV en question.  Les informations sont donc conservées dans la variable data.
+
+Pour garantir la qualité des données avant leur représentation graphique, nous avons réalisé un prétraitement en utilisant la fonction filter() provenant de dplyr.  Nous avons sélectionné les lignes en éliminant celles qui comportent des valeurs absentes dans les colonnes rr_med (risque relatif médian) et nature_sec_inc (nature de l'incident secondaire).  Ce nettoyage est enregistré dans une nouvelle variable appelée data_clean.
+
+Pour créer des graphiques, nous recourons à la fonction ggplot(), dans laquelle nous mentionnons la variable contenant nos données épurées et définissons l'esthétique aes(), où nous précisons que l'axe des x dépeindra la nature_sec_inc, tandis que l'axe des y mettra en lumière les valeurs de rr_med.
+
+On fait ensuite appel à la fonction préétablie geom_boxplot() pour créer un boxplot, offrant une représentation de la distribution du rr_med pour chaque catégorie d'incident secondaire.  Nous appliquons une couleur de remplissage (fill) en fonction de nature_sec_inc, permettant d'attribuer une couleur distincte à chaque catégorie.
+
+Nous adaptons finalement le graphique en utilisant la fonction labs(), afin de définir le titre principal et les intitulés des axes x et y.  Pour donner un aspect plus contemporain et minimaliste au graphique, nous utilisons le thème prédéfini theme_minimal().  
+
+Pour finir, nous éliminons la légende en appliquant theme(legend.position = "none"), étant donné que les informations relatives aux catégories sont déjà visibles sur l'axe des x.
+
+
+**Analyse Statistique**
+
+Le diagramme illustre un boxplot, également connu sous le nom de boîte à moustaches, qui compare la répartition du niveau médian de risque **rr_med** en fonction de deux catégories d'incidents secondaires : **particulier** et **travaux**.  
+
+L'axe vertical indique le niveau de risque médian, tandis que l'axe horizontal illustre les différentes catégories d'incendies secondaires. 
+
+**D'après ce graphique, nous serons en mesure de repérer des aspects cruciaux dans notre étude statistique : **
+
+La ligne centrale de la boîte, représentant la médiane de la distribution, est appelée la médiane. 
+
+L'interquartile représente l'intervalle entre le premier quartile et le troisième quartile, illustrant la dispersion des 50% de données centrales à travers la boîte elle-même. 
+
+Les lignes qui se déploient à partir des boîtes illustrent la portée des données.
+
+**En ce qui concernes les incendies de type particulier:**
+
+La médiane est aux alentours de 50. L'IQR varie approximativement entre 40 et 60, ce qui indique une dispersion modérée des données. 
+
+Les moustaches se prolonge légèrement au-delà de l'IQR, probablement entre 30 et 70. 
+
+**Pour les incendies de type travaux: **
+
+La médiane se situe aussi autour de 50, très proche de celle des incendies de type particulier. 
+
+L'intervalle interquartile (iQR) semble plus vaste, s'étalant approximativement de 35 à 65. 
+
+Les moustaches s'étendent de 20 à 80. 
+
+Dans les zones urbaines sèches, des éléments tels que la densité de population, l'état des infrastructures ou les conditions météorologiques peuvent influencer les incendies secondaires. 
+
+Dans les cas d'incendies atypiques, les valeurs extrêmes pourraient indiquer des sinistres exceptionnels et sévères tels que des fuites de gaz, des incendies ou des accidents impliquant des substances périlleuses qui ont un impact accru dans un environnement aride. 
+
+Dans les incendies liés aux travaux, une variabilité légèrement plus élevée est observée, mais les extrêmes sont moins marqués. Cela suggère que les opérations telles que les chantiers routiers ou la distribution de réseaux entraînent des risques plus prévisibles, bien qu'ils dépendent de la qualité de gestion des travaux et des conditions locales. 
+
+Le degré de risque moyen est comparable pour les incendies de type particulier et de type travaux dans les régions urbaines sèches, avec une moyenne proche de 50.
+
+Toutefois, certaines sortes d'incendies présentent des dangers nettement plus importants, ce qui indique qu'ils peuvent parfois avoir un effet bien plus considérable. 
+
+2-  **Quelle est la distribution générale du risque (rr_med) dans l’ensemble des zones étudiées ?**
+
+```{r}
+data <- read_csv("../Exports/export_impactclimaturbanisation.csv")
+data_clean <- data %>%
+  filter(!is.na(rr_med), !is.na(nature_sec_inc))
+ggplot(data_clean, aes(x = rr_med)) +
+  geom_histogram(binwidth = 0.5, fill = "#2c7fb8", color = "white") +
+  theme_minimal() +
+  labs(title = "Histogramme de rr_med",
+       x = "Risque relatif médian",
+       y = "Nombre d'occurrences")
+
+mean_rr_med <- mean(data_clean$rr_med, na.rm = TRUE)
+median_rr_med <- median(data_clean$rr_med, na.rm = TRUE)
+sd_rr_med <- sd(data_clean$rr_med, na.rm = TRUE)
+skewness_rr_med <- e1071::skewness(data_clean$rr_med, na.rm = TRUE)  # Calcul de l'asymétrie
+```
+
+**Analyse Informatique**
+
+À cette étape, nous avons rechargé notre ensemble de données en utilisant la fonction read_csv(), en indiquant le chemin relatif vers le fichier CSV.  
+
+Ainsi, les données sont conservées dans la variable nommée data.  Par la suite, nous avons fait appel à la variable data_clean, qui avait déjà été purgée des valeurs manquantes.
+
+Pour représenter graphiquement, nous avons conçu un histogramme à l'aide de la fonction ggplot(), en positionnant rr_med sur l'axe des x.  
+
+Nous avons paramétré la fonction geom_histogram() avec une largeur de bin de 0.5, ce qui offre la possibilité de gérer l'amplitude des barres de l'histogramme, et un ton de remplissage #2c7fb8 (un bleu sombre), alors que le contour des barres est teinté en blanc pour une distinction nette.  Cette sélection de style garantit une lecture plaisante.
+
+L'aspect épuré et contemporain du graphique a été obtenu grâce à l'application du thème theme_minimal(). Par ailleurs, la fonction labs() a permis d'intégrer un titre principal au graphique ainsi que des intitulés pour les axes x et y, en lien avec le risque relatif médian et le nombre d'occurrences des diverses valeurs.
+
+Parallèlement à la visualisation, nous avons réalisé certains calculs statistiques concernant la colonne rr_med du jeu de données nettoyé.  
+
+Nous avons commencé par déterminer la moyenne de rr_med en utilisant la fonction mean(), en précisant l'argument na.rm = TRUE afin d'éliminer les valeurs absentes.  
+
+Par ailleurs, la fonction median() est utilisée pour déterminer la médiane et sd() pour calculer l'écart-type.  Pour finir, nous avons employé la fonction skewness() du package e1071 afin d'évaluer l'asymétrie de la distribution de rr_med.
+
+
+**Analyse Statistique**
+
+Notre diagramme illustre la répartition du risque relatif médian, où notre axe des x montre le risque relatif médian variant de 0 à 250.  L'échelle des ordonnées indique le nombre d'apparitions pour chaque plage de **rr_med**.
+
+La plupart des valeurs de **rr_med** se regroupent entre 0 et 100, avec une concentration notable autour de 50.  La distribution présente une forte asymétrie vers la droite avec une longue queue du côté droit, mais elle comporte peu de données au-delà de 100. 
+
+Des valeurs extrêmes sont visibles autour de 200 et 250, bien qu'elles soient rares.
+
+Le sommet de l'histogramme se trouve approximativement autour de 50, ce qui indique que la valeur la plus courante de **rr_med** est proche de 50. 
+
+Étant donné l'asymétrie à droite, la médiane est légèrement inférieure à la moyenne, mais elle se situe près de 50. 
+
+L'asymétrie à droite est la raison pour laquelle la moyenne dépasse 50.
+
+Les valeurs de **rr_med** varient entre 0 et 250. Concernant la variabilité, on observe une concentration notable autour de 50, cependant la présence de valeurs atypiques signale une grande variabilité dans les situations extrêmes.
+
+La répartition du risque relatif médian **rr_median** dans l'ensemble des zones examinées présente une forte asymétrie à droite. Cela indique que la majorité des zones affichent un niveau de risque relativement bas autour de 50, cependant, il y a tout de même des situations rares où le risque atteint des niveaux extrêmement élevés jusqu'à 250. 
+
+Cette asymétrie indique que les zones étudiées, probablement des régions urbaines sèches, présentent un faible risque. Cependant, des incendies ciblés ou des circonstances particulières peuvent conduire à des niveaux de risque exceptionnellement élevés.
+
+Cet histogramme présente une distribution générale qui est en adéquation avec notre sous-problème précédent. La concentration autour de 50 correspond aux médianes des deux groupes, et les valeurs aberrantes visibles dans les boxplots sont à l'origine de la longue queue sur la droite de l'histogramme. 
+
+La plupart des régions examinées présentent un risque faible à modéré, généralement autour de 50. Cependant, des incendies sporadiques engendrent parfois des risques très élevés. 
+
+Cela reflète des conditions particulières propres aux zones urbaines sèches, telles qu'une vulnérabilité accrue aux incendies ou une mauvaise gestion d'infrastructures essentielles.
+
+3.  **Quels types d’incidents secondaires sont les plus fréquents dans les zones urbaines (potentiellement sèches) ?**
+
+```{r}
+
+data_clean %>%
+  count(nature_sec_inc) %>%
+  ggplot(aes(x = reorder(nature_sec_inc, n), y = n, fill = nature_sec_inc)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Nombre d'incidents par type",
+       x = "Type d'incident secondaire",
+       y = "Nombre d'incidents") +
+  theme(legend.position = "none")
+
+```
+
+**Analyse Informatique**
+
+Lors de cette phase, nous avons fait appel à la fonction count() issue du package dplyr afin de déterminer le nombre d'incidents selon chaque type d'incident secondaire.  
+
+Nous avons par la suite enregistré le résultat dans une nouvelle variable afin de rendre les données prêtes pour leur présentation visuelle.
+
+Nous avons fait appel à ggplot() pour créer le graphique, en indiquant comme variables l'axe x qui illustre les catégories d'incidents secondaires, agencées en fonction du nombre d'incidents (reorder(nature_sec_inc, n)).  
+
+La direction des y indique le nombre d'incidents (n).  Nous avons opté pour l'utilisation d'un graphique à barres via geom_bar(stat = "identity"), ce qui facilite la présentation directe des valeurs d'occurrences, évitant ainsi le calcul de proportions ou de fréquences relatives.
+
+Pour faciliter la lecture, nous avons intégré la fonction coord_flip() qui permet de renverser les axes afin de présenter les barres sur un format horizontal.  Cela rend la lecture des étiquettes sur l'axe des x plus aisée, en particulier lorsqu'il y a un grand nombre de types d'incidents.
+
+Nous avons utilisé le thème theme_minimal() pour donner un aspect contemporain et minimaliste, tandis que la fonction labs() a été mise en œuvre pour incorporer un titre principal, ainsi que ceux des axes x et y.  
+
+Finalement, nous avons éliminé la légende en appliquant theme(legend.position = "none"), car les détails sont déjà manifestement représentés sur l'axe des x.
+
+
+
+**Analyse Statistique**
+
+Ce graphique comprend deux catégories d'incendies secondaires : les travaux et les particuliers. 
+
+Les zones urbaines désignent des espaces densément peuplés dotés d'infrastructures. Les incidents secondaires peuvent englober des perturbations associées à des travaux publics ou à des actions individuelles. 
+
+Les zones qui pourraient être sèches  Cela indique des zones où l'approvisionnement en eau est restreint, soit à cause de conditions climatiques telles que la sécheresse saisonnière ou persistante, soit en raison de pression sur les ressources hydriques urbaines, comme la surexploitation, l'infrastructure vieillissante, etc. 
+
+Les sinistres liés aux chantiers sont plus courants, totalisant environ 200, tandis que les sinistres personnels sont moins fréquents, avec approximativement 150 incidents.
+
+Cela indique que les incendies associés aux travaux sont approximativement 33% plus courants que ceux liés aux particuliers. 
+
+On estime qu'il y a environ 350 incendies au total.
+
+Les incendies attribués aux travaux constituent 57% du total, tandis que ceux correspondant à des types d'incendies **particuliers** en représentent approximativement 43%.
+
+Les incendies associés aux travaux ont généralement lieu plus souvent en milieu urbain, du fait des infrastructures requérant des interventions régulières, notamment dans les zones à forte densité. 
+
+Dans les zones urbaines, les types d'incendies secondaires les plus courants sont ceux associés aux travaux, avec environ 200 incendies représentant 57% du total. Bien que les incendies liés aux particuliers soient significatifs (150 incidents, soit 43%), ils se produisent moins fréquemment. 
+
+**Pourquoi les travaux sont-ils plus frequents?**
+
+Dans les régions urbaines, les systèmes d'eau et de drainage sont fréquemment vétustes. Par exemple, aux États-Unis, certaines conduites ont plus d'un siècle. En période de sécheresse, le sol peut se rétracter, ce qui entraîne des fissures et des fuites nécessitant des réparations régulières. 
+
+Les villes situées dans des régions arides mettent en place des infrastructures afin de préserver l'eau.
+
+L'élargissement des zones urbaines requiert des efforts continus pour l'établissement de nouvelles routes, bâtiments et réseaux. Ces infrastructures peuvent être à l'origine d'incendies accidentels ou de pannes de services, sans compter les accidents qui peuvent survenir sur les chantiers. 
+
+Dans les régions urbaines susceptibles d'être sèches, les événements secondaires les plus courants sont liés aux travaux (57 % des occurrences, soit environ 200 incidents), probablement parce qu'il est essentiel de rénover ou de modifier les infrastructures face à la pression sur l'eau.  
+
+Les incidents individuels (43 %, soit environ 150 incidents) sont également notables, illustrant des actions personnelles telles que l'utilisation incorrecte de l'eau ou les accidents à domicile.  
+
+Pour minimiser ces occurrences, un mélange d'améliorations des infrastructures, de campagnes de sensibilisation et de politiques sur mesure s'avère indispensable.
+
+**Conclusion**
+
+L'analyse statistique effectuée souligne l'effet conjugué de la sécheresse et de l'urbanisation sur la répartition et le caractère des risques en milieu urbain.  En général, le risque relatif médian (rr_med) se situe à une valeur intermédiaire proche de 50, indiquant une condition plutôt stable pour la plupart des incidents constatés. 
+
+Néanmoins, la présence de valeurs extrêmes, qui peuvent parfois atteindre 250, suggère que des circonstances exceptionnelles, généralement associées à des événements d'ampleur ou à des pannes critiques d'infrastructures, peuvent considérablement augmenter le degré de risque. 
+
+En outre, l'analyse des incidents montre une distinction marquée entre les sinistres classés comme « travaux » et ceux identifiés comme « particulier ». 
+
+Les incidents liés aux chantiers se produisent non seulement plus souvent – constituant approximativement 57 % des situations – mais sont également un peu plus variables en termes de degré de risque. 
+
+Cette prévalence des incidents associés aux travaux dans les régions urbaines sèches illustre la valeur cruciale des infrastructures dans ces environnements, où les systèmes techniques et les sites de construction sont constamment présents et fréquemment soumis à des conditions climatiques rigoureuses. 
+
+Effectivement, des facteurs tels que la sécheresse, la canicule ou encore la pression sur les ressources en eau peuvent augmenter la susceptibilité des infrastructures et des communautés urbaines à ces événements. 
+
+Par conséquent, la combinaison des impacts du climat aride et de l'urbanisation intensive génère un cadre à risque, dans lequel certaines sortes d'incidents montrent une intensité plus élevée ou une fréquence accrue. 
+
+
+
+
 
 #### 5.3.5 Vulnérabilité et analyse de survie
 

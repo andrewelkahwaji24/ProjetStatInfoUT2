@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  html_document: 
-    toc: true
-    toc_depth: 6
   pdf_document: 
     latex_engine: xelatex
+    toc: true
+    toc_depth: 6
+  html_document: 
     toc: true
     toc_depth: 6
 ---
@@ -891,6 +891,123 @@ Il est probable que **la médiane**, c'est-à-dire le moment où **50% des incen
 
 
 ##### 5.3.1.3 Évolution décennale des causes d’incendies
+
+Dans cette problematique on va analyser l'evolution decennale des causes d'incendies
+
+```{r}
+incendies <- read.csv("../Data/donnees_incendies.csv")
+  
+incendies$annee <- as.numeric(incendies$annee)
+  
+  
+incendies_criminels <- subset(incendies, nature_inc_prim == "Malveillance")
+  
+incendies_par_annee <- table(incendies_criminels$annee)
+  
+incendies_par_annee_df <- data.frame(annee = as.numeric(names(incendies_par_annee)), 
+                                       nombre_incendies = as.vector(incendies_par_annee))
+  
+  
+incendies_total_par_annee <- table(incendies$annee)
+  
+incendies_total_par_annee_df <- data.frame(annee = as.numeric(names(incendies_total_par_annee)),
+                                             nombre_incendies_total = as.vector(incendies_total_par_annee))
+  
+  par(mar=c(5, 4, 4, 5) + 0.1)
+  
+  plot(incendies_par_annee_df$annee, incendies_par_annee_df$nombre_incendies, 
+       type="o", col="red", 
+       xlab="Année", ylab="Nombre d'incendies criminels", 
+       main="Relation entre les incendies criminels et le total d'incendies",
+       ylim=c(0, max(incendies_par_annee_df$nombre_incendies) * 1.2))  # Aumenta el límite del eje y izquierdo
+  
+  lines(incendies_total_par_annee_df$annee, incendies_total_par_annee_df$nombre_incendies_total, 
+        type="o", col="blue", pch=16)
+  
+  axis(4, at=seq(0, max(incendies_total_par_annee_df$nombre_incendies_total), by=500), 
+       labels=seq(0, max(incendies_total_par_annee_df$nombre_incendies_total), by=500))
+  
+  legend("topright", legend=c("Malveillance", "Total des incendies"), 
+         col=c("red", "blue"), lty=1, pch=5, xpd=TRUE, inset=c(0.05, 1.1))
+```
+
+**Analyse Informatique:**
+
+La variable "année" a été modifiée en un format numérique afin de permettre son exploitation sans erreur dans les analyses à venir :
+
+**incendies$annee <- as.numeric(incendies$annee)**
+
+Les incendies dont la cause principale est répertoriée comme étant la "malveillance" ont pu être isolés grâce à la commande :
+
+**incendies_criminels <- subset(incendies, nature_inc_prim == "Malveillance")**
+
+Cela permet d'examiner plus en détail cette catégorie d'incendies.
+
+La fonction table() a facilité le comptage des incendies criminels sur une base annuelle.  Ces résultats ont par la suite été convertis en dataframe pour en faciliter une exploitation graphique ultérieure :
+
+**incendies_par_annee_df <- data.frame(annee = as.numeric(names(incendies_par_annee)), nombre_incendies = as.vector(incendies_par_annee))**
+
+Une tâche similaire a été réalisé pour tous les types d'incendies sans exception :
+
+**incendies_total_par_annee_df <- data.frame(annee = as.numeric(names(incendies_total_par_annee)), nombre_incendies_total = as.vector(incendies_total_par_annee))**
+
+Cela facilitera la comparaison avec uniquement les incendies criminels.
+
+Il sera désormais possible de produire des graphiques pour une comparaison visuelle entre le nombre total d'incendies et celui des incendies criminels.
+
+Pour illustrer la comparaison entre les incendies criminels et le total des incendies annuels, nous élaborons un diagramme où les points symbolisant les incendies criminels sont reliés par une ligne de couleur rouge.  
+
+Tous les points sont pris en compte par l'ajustement de l'axe Y.
+
+Par la suite, nous incluons la courbe bleue représentant le total des incendies, avec des points plus distincts.  
+
+Cela facilite l'identification des corrélations entre les pics d'incendies criminels et les pics totaux.
+
+Étant donné la difficulté de comparer les grandes valeurs du total sur un seul axe Y, nous ajoutons un second axe à droite pour cette courbe.
+
+Pour finir, nous positionnons la légende à la droite, en dehors du diagramme, en désignant la ligne rouge comme représentant les incendies criminels et la bleue comme le total.  
+
+Cette mesure rend les données présentées plus claires tout en préservant une excellente lisibilité.
+
+Ainsi, le graphique offre la possibilité d'analyser la corrélation entre les incendies criminels et la progression générale des incendies au cours des années.
+
+**Analyse Statistique:**
+
+Nous avons analysé le lien entre les incendies criminels intentionnels et le total des incendies sur la période de 2012 à 2022.  
+
+L'axe des abscisses représente les différentes années tandis que l'axe des ordonnées indique le nombre de feux.  
+
+On observe deux courbes :  
+- En **rouge**, l'évolution variable du nombre d'incendies intentionnels (causés par la malveillance humaine).  
+
+- En **bleu**, le total variable des incendies relevés chaque année.
+
+**Fluctuation du nombre total de feux :**
+
+On observe une variation significative du total des incendies, atteignant des pics en 2018 et 2022.  
+
+Ces augmentations pourraient être dues à des conditions climatiques extrêmes ou à des phases prolongées de sécheresse qui favorisent les incendies.
+
+**Évolution des incendies criminels :**
+
+Le nombre d'incendies criminels présente une tendance semblable, mais avec une portée réduite.  
+Nous constatons une hausse marquée en 2022, qui pourrait signaler une intensification des actes de malveillance intentionnelle.
+
+**Corrélation partielle observée entre les deux graphiques :**
+
+Bien que les incendies criminels suivent globalement la tendance générale du nombre total de feux, quelques déviations demeurent.  
+
+Par exemple, en 2018, on observe une augmentation notable du total des incendies, alors que la progression des feux d'origine criminelle reste plus mesurée.  
+
+Ceci pourrait indiquer que d'autres éléments (météo, accidents) ont eu un impact significatif sur l'augmentation générale des incendies cette année-là.
+
+L'étude indique que les incendies intentionnels constituent une part importante de l'ensemble des feux, mais leur progression ne coïncide pas toujours parfaitement avec la même tendance.
+
+Les fluctuations des incendies pourraient être affectées par certains phénomènes climatiques ou des phases de sécheresse prolongées, alors que les feux allumés volontairement sont plus en lien avec des éléments sociétaux et de sécurité.
+
+Ces informations sont indispensables pour guider les stratégies de prévention des incendies, en distinguant les actions à entreprendre en fonction de la provenance des flammes.
+
+
 ##### 5.3.1.4 Analyse des incendies par mois et saison
 
 ```{r}

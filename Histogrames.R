@@ -1231,3 +1231,53 @@ data_clean %>%
          y = "Nombre d'incidents") +
     theme(legend.position = "none")
   
+  
+
+  
+incendies <- read.csv("../Data/donnees_incendies.csv")
+  
+incendies$annee <- as.numeric(incendies$annee)
+  
+  
+incendies_criminels <- subset(incendies, nature_inc_prim == "Malveillance")
+  
+incendies_par_annee <- table(incendies_criminels$annee)
+  
+incendies_par_annee_df <- data.frame(annee = as.numeric(names(incendies_par_annee)), 
+                                       nombre_incendies = as.vector(incendies_par_annee))
+  
+  
+incendies_total_par_annee <- table(incendies$annee)
+  
+incendies_total_par_annee_df <- data.frame(annee = as.numeric(names(incendies_total_par_annee)),
+                                             nombre_incendies_total = as.vector(incendies_total_par_annee))
+  
+  par(mar=c(5, 4, 4, 5) + 0.1)
+  
+  plot(incendies_par_annee_df$annee, incendies_par_annee_df$nombre_incendies, 
+       type="o", col="red", 
+       xlab="Année", ylab="Nombre d'incendies criminels", 
+       main="Relation entre les incendies criminels et le total d'incendies",
+       ylim=c(0, max(incendies_par_annee_df$nombre_incendies) * 1.2))  # Aumenta el límite del eje y izquierdo
+  
+  lines(incendies_total_par_annee_df$annee, incendies_total_par_annee_df$nombre_incendies_total, 
+        type="o", col="blue", pch=16)
+  
+  axis(4, at=seq(0, max(incendies_total_par_annee_df$nombre_incendies_total), by=500), 
+       labels=seq(0, max(incendies_total_par_annee_df$nombre_incendies_total), by=500))
+  
+  legend("topright", legend=c("Malveillance", "Total des incendies"), 
+         col=c("red", "blue"), lty=1, pch=5, xpd=TRUE, inset=c(0.05, 1.1))
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

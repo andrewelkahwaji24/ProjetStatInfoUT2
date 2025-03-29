@@ -285,6 +285,24 @@ def creer_table_impact_climat_urbanisation():
     connexion.close()
     print("La table impact_climat_urbanisation a été créée avec succès")
 
+#Creation de la Tables Incendies-Crim
+
+def creer_table_incendies_criminels():
+    connexion , curs = connecterdb()
+    curs.execute(
+        '''
+        CREATE TABLE IF NOT EXISTS incendies_criminels(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code_INSEE TEXT NOT NULL,
+            nature_inc_prim TEXT NOT NULL,
+            tmax_med REAL NOT NULL 
+        )
+        '''
+    )
+    connexion.commit()
+    curs.close()
+    connexion.close()
+    print("La table impact_climat_urbanisation a été créée avec succès")
 
 # Phase d'injection des donees
 # Injection des donees dans la Table Incendies
@@ -789,6 +807,32 @@ def injection_table_impact_climat_urbanisation():
 
     print("Les données des incendies croisés avec les données climatiques ont été insérées avec succès.")
 
+#Injection des donnees dans la Table Incendies_Criminels
+def injection_table_inendies_criminels():
+    # Connexion à la base de données
+    connexion, curs = connecterdb()
+
+    # Exécution de la requête SQL pour insérer les données
+    curs.execute("""
+        INSERT INTO incendies_criminels (code_INSEE, nature_inc_prim ,tmax_med )
+        SELECT 
+            i.code_INSEE,
+            i.nature_inc_prim,
+            m.Tmax_med
+        FROM incendies i
+        INNER JOIN donnees_meteo m 
+            ON i.code_INSEE = m."Code_INSEE"
+    """)
+    # Valider les changements
+    connexion.commit()
+
+    # Fermer le curseur et la connexion
+    curs.close()
+    connexion.close()
+
+    print("Les données des incendies croisés avec les données climatiques ont été insérées avec succès.")
+
+
 # Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
     connexion, curs = connecterdb()
@@ -1209,6 +1253,29 @@ def export_donnees_impact_climat_urbanisation(fichier_output="Exports/export_imp
         print("Erreur avec la base de données SQLite :", e)
     except Exception as e:
         print("Erreur lors de l'exportation des données :", e)
+
+
+def export_donnees_incendies_criminels(fichier_output="Exports/export_incendies_criminels.csv"):
+    try:
+        connexion, curs = connecterdb()
+        curs.execute("SELECT * FROM incendies_criminels")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table Incendies Criminels ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite :", e)
+    except Exception as e:
+        print("Erreur lors de l'exportation des données :", e)
 #Fonctions Speciales:
 
 def ajouter_colonne_altitude_zone():
@@ -1357,6 +1424,10 @@ def menu():
                 print("Creation de la Table Climat Urbanisation")
                 creer_table_impact_climat_urbanisation()
                 print("La Creation de la Table Impact Climat Urbanisation a ete creer avec succees ")
+            elif choix1 == 13:
+                print("Creation de la Table Incendies_Criminels")
+                creer_table_incendies_criminels()
+                print("La Creation de la Table Incendies_Criminels a ete creer avec succees ")
 
             else:
                 print(" Le numero choisi est invalide ou n'existe pas   ")
@@ -1425,6 +1496,9 @@ def menu():
             elif choix2 == 12:
                 print("Injection de la Table Impact_climat_organisation")
                 injection_table_impact_climat_urbanisation()
+            elif choix2 == 13:
+                print("Injection de la Table Incendies Criminels")
+                injection_table_inendies_criminels()
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
@@ -1538,6 +1612,9 @@ def menu():
             elif choix4 == 12:
                 print("La procedure de l'exportation des donnees pour la Table ImpactClimatUrb a commencee")
                 export_donnees_impact_climat_urbanisation()
+            elif choix4 == 13:
+                print("La procedure de l'exportation des donnees pour la Table Incendies Criminels a commencee")
+                export_donnees_incendies_criminels()
 
             else:
                 print("Le numero choisi est invalide ou n'existe pas")

@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  html_document: 
-    toc: true
-    toc_depth: 6
   pdf_document: 
     latex_engine: xelatex
+    toc: true
+    toc_depth: 6
+  html_document: 
     toc: true
     toc_depth: 6
 ---
@@ -3275,6 +3275,124 @@ Par conséquent, la combinaison des impacts du climat aride et de l'urbanisation
 
 
 #### 5.3.5 Vulnérabilité et analyse de survie
+#### 5.3.6 Les Incendies en Europe France - Italie - Espagne
+
+En Europe, les incendies constituent un danger de plus en plus grand pour les écosystèmes et les sociétés humaines, notamment dans les zones méditerranéennes.  
+
+Face au changement climatique, qui se manifeste par une élévation des températures et une fréquence accrue des sécheresses
+
+La **France**, l'**Italie** et l'**Espagne** sont des nations méditerranéennes qui font face à ce danger en raison de leurs étés arides.
+
+Ces nations présentent des traits géographiques et climatiques semblables, cependant elles diffèrent dans leurs stratégies de gestion des incendies et les ressources dédiées à la prévention et à la lutte contre ces fléaux.
+
+Cela est dû au fait que chaque pays dispose de son propre gouvernement qui instaure ses propres politiques en matière d'incendies.
+
+Cette problématique cherche à étudier les évolutions des feux de forêt dans ces trois nations en se basant sur les informations fournies par le **Système d'information européen sur les incendies** et **les données climatiques du programme Copernicus**.
+
+Qu'ils soient domestiques, commerciaux, industriels ou autres, les incendies constituent un enjeu crucial pour la sécurité publique en Europe, spécialement dans les zones méditerranéennes.
+
+Dans cette étude, nous allons étudier la progression des incendies en général sans se concentrer sur les diverses sortes de ceux-ci, notamment toutes les variantes entre ces trois nations. 
+
+Nous nous baserons sur des informations officielles provenant de services d'incendies et secours, ainsi que des rapports rédigés par l'Union Européenne.
+
+Les informations proviennent majoritairement de statistiques nationales, des services de secours et d'incendie, complétées par des comptes rendus émanant de l'Union Européenne, comme ceux du Centre de recherche commun. 
+
+Nous avons utilisé les informations relatives à la France provenant du **Ministère de l'Intérieur**, d'Italie via le **Corps national dei Vigili del Fuoco** et d'Espagne grâce à la **Fondation MAPFRE**.
+
+##### France
+Selon les chiffres officiels du Ministère de l'Intérieur en France pour 2022, on dénombre un total de **286,600** incendies, marquant une hausse de **6.2%** par rapport à 2021.  
+
+Cette augmentation dénote une tendance vers la stabilisation après une phase de baisse, avec une répartition notable entre les différentes régions. 
+
+Par exemple, le sud de la France, en particulier la **Gironde**, a été fortement touché avec environ **45,000** hectares ravagés par des feux de forêt en 2022. Toutefois, les chiffres globaux englobent aussi les incendies domestiques et industriels. 
+
+Comparé à 2019 où les chiffres étaient légèrement inférieurs, autour de **270,000** incidents estimés, l'année 2022 nous révèle une hausse liée à des conditions climatiques plus sèches et à une urbanisation en expansion. 
+
+Il est également observable que lorsque la température augmente, le nombre d'incendies tend à s'accroître, surtout si l'on compare le nombre d'incendies dans le nord du territoire français, qui est inférieur à celui du sud de la France. 
+
+##### Italie
+
+D'après les données officielles divulguées par les Vigili del Fuoco (les pompiers italiens), l'Italie a dénombré 325 941 incendies en 2022, une légère hausse comparée aux approximativement 320 000 incidents évalués en 2021. 
+
+Cette augmentation, quoique légère, fait partie d'une tendance globale à l'escalade des feux de forêt, stimulée par des conditions météorologiques de plus en plus extrêmes, en particulier des étés hors du commun en termes de chaleur et de sécheresse. 
+
+Ces sinistres incluent des incendies résidentiels, commerciaux et industriels, avec une prédominance dans les zones méridionales du pays comme la Sicile et la Sardaigne, où les incendies de broussailles sont particulièrement courants pendant l'été. 
+
+Il est notable que le chiffre de 2022 correspond exactement à celui de 2019, ce qui pourrait indiquer une stabilité. Cependant, les autorités soulignent une intensification des incendies, en particulier en termes de durée et d'effet sur les zones touchées. 
+
+En dépit des mesures de prévention mises en œuvre, telles que les initiatives de sensibilisation et le renforcement des compétences d'intervention, l'incidence des incendies reste élevée. Cela met en évidence les défis persistants associés à l'urbanisation accrue dans les zones à risque et à la criminalité, y compris les incendies intentionnels.
+
+On note des tendances analogues dans le sud du pays par rapport à la France, notamment en Provence-Alpes-Côte d'Azur, en Corse et en Occitanie. En effet, les étés arides, la végétation sujette à l'incendie et la forte affluence touristique contribuent aux déclenchements de feux. 
+
+Ainsi, en 2022, la France a enregistré un incendie couvrant près de 72 000 hectares, un chiffre record depuis 2003, avec une grande partie des flammes se concentrant dans ces zones du sud. 
+
+Par contre, le nord de la France, qui jouit d'un climat plus humide et moins enclin aux sécheresses, est beaucoup moins exposé. Toutefois, ce risque y croît également à cause du changement climatique, engendrant des vagues de chaleur exceptionnelles et une déshydratation progressive des sols.
+
+Il apparaît donc que, tant en France qu'en Italie, la répartition géographique du risque d'incendie semble dépasser les zones historiquement sujettes, soulignant l'importance de la mise à jour des politiques de prévention et des stratégies de résilience face à un phénomène désormais exacerbé par les impacts du changement climatique.
+
+##### Espagne
+
+En 2022, obtenir des informations précises sur les feux en Espagne s'avère compliqué à cause de la diversité des sources et des spécificités des rapports.  
+
+Toutefois, des projections basées sur les observations antérieures et les analyses d'entités comme la Fondation MAPFRE indiquent que près de 200 000 incendies ont été dénombrés, ce qui représente une hausse par rapport à 2019 où le nombre estimé était approximativement de 184 000 incendies.  
+
+Cette hausse s'aligne sur une tendance plus vaste notée ces dernières années, à cause des conditions climatiques extrêmes et de la pression grandissante due à l'urbanisation et à la gestion des espaces naturels.
+
+En Espagne, on distingue plusieurs types d'incendies : ceux domestiques, commerciaux et industriels, ainsi que les incendies de végétation qui sont particulièrement courants dans des zones méditerranéennes telles que l'Andalousie et la Catalogne.  
+
+Ces zones, réputées pour leurs étés chauds et secs, sont sujettes à une occurrence élevée d'incendies, généralement amplifiée par des périodes de sécheresse prolongées et des vagues de chaleur.  
+
+De plus, ces régions sont particulièrement vulnérables aux incendies de grande envergure à cause de leur végétation dense et de leur topographie montagneuse, qui favorisent une diffusion rapide des feux.
+
+Un trait distinctif de l'année 2022 est la montée des pertes en vies humaines dues aux incendies, avec un total de 281 décès notés, témoignage d'un bilan particulièrement pesant.  
+
+D'après Statista 2022, cette année a connu de nombreuses pertes humaines, étant l'une des plus dévastatrices, en raison de plusieurs incendies d'ampleur qui ont touché des zones densément peuplées ou touristiques.  
+
+Ce nombre important indique non seulement une augmentation de ce phénomène, mais également des problèmes grandissants liés à la sécurité publique et à la gestion des désastres naturels.
+
+Selon un rapport d'El Mundo, l'Espagne a enregistré une augmentation significative du nombre de pompiers, qui a atteint 42 011 en 2022, témoignant d'une intensification de la gestion des incendies par rapport aux années précédentes.  
+
+Cette hausse du personnel était supposée optimiser l'efficience du combat contre les incendies et des actions de prévention.  
+
+Toutefois, en dépit de cet engagement, le taux d'incendies demeure élevé, indiquant qu'il y a de sérieux problèmes structurels dans la gestion et la prévention des incendies.  
+
+Ces enjeux comportent des problématiques relatives à l'aménagement urbain, à la sauvegarde des espaces forestiers et à l'ajustement des infrastructures face aux conditions climatiques évolutives, y compris le réchauffement climatique.
+
+En dépit d'importants progrès dans les technologies de détection et de lutte contre les incendies, les enjeux environnementaux tels que l'augmentation des vagues de chaleur, ainsi que les défis logistiques inhérents à la géographie et aux conditions climatiques extrêmes demeurent problématiques.  
+
+En outre, l'augmentation de la population, l'urbanisation des régions rurales et l'existence d'habitats en zones à risque amplifient la vulnérabilité face aux incendies.  
+
+Ces problèmes subsistent malgré les initiatives adoptées par les autorités locales et nationales pour accroître la résilience des régions et optimiser la réponse aux incendies.
+
+Globalement, malgré l'existence de politiques solides de prévention et de gestion en Espagne, les incendies demeurent un danger significatif pour la sécurité publique et l'environnement.  
+
+Toutefois que les conditions météorologiques extrêmes exacerbaient le phénomène, celui-ci mettait également en évidence des vulnérabilités dans les démarches structurelles et organisationnelles. 
+
+Il insiste sur l'importance de continuer à œuvrer pour une meilleure compréhension des origines des incendies et la nécessité d'ajuster les tactiques d'intervention face à une réalité de plus en plus complexe.  
+
+Pour affronter ces défis constants dans les années futures, il sera primordial d'assurer une bonne collaboration entre les diverses entités locales, nationales et européennes, ainsi qu'une planification stratégique à long terme.
+
+##### Conclusion des 3 Pays
+
+Pour conclure, on constate une aggravation notable des incendies en Italie, en France et en Espagne au fil des dernières années, avec des statistiques de plus en plus alarmantes malgré les efforts constants déployés pour prévenir et gérer ces risques. 
+
+Dans ces trois nations méditerranéennes, les conditions météorologiques extrêmes et le réchauffement climatique sont au cœur de l'augmentation des incendies, intensifiant la fréquence et la gravité des flammes. 
+
+Les régions méridionales de chaque nation, connues pour leur climat chaud et aride, sont particulièrement sujettes aux risques, comprenant des zones telles que la Sicile, la Sardaigne, le sud de la France et l'Andalousie qui sont fréquemment frappées. 
+
+Il est à noter que sur le territoire français, la plus grande partie des incendies a lieu dans le sud, notamment en Provence-Alpes-Côte d’Azur, en Corse et en Occitanie. 
+
+Ces zones sont particulièrement sensibles aux incendies du fait de leur climat méditerranéen sec et de leur végétation hautement inflammable. 
+
+En revanche, le nord de la France connaît beaucoup moins d'incendies, du fait de son climat plus humide et des caractéristiques de sa végétation. 
+
+En dépit d'importants investissements en infrastructures, en ressources humaines et en technologies préventives, les statistiques demeurent élevées, mettant en évidence l'existence de défis structurels considérables dans la gestion des incendies. 
+
+La situation continue de se détériorer en raison de l'urbanisation croissante des régions à risque et de facteurs tels que la criminalité et la déforestation. 
+
+Face à cette menace en augmentation, il est primordial d'intensifier la collaboration internationale, de mettre en place des stratégies mieux alignées sur les contextes locaux et d'accroître la sensibilisation des citoyens aux dangers potentiels. 
+
+Devant ces défis complexes, il demeure crucial d'adopter une stratégie préventive et intégrée, associée à des politiques de résilience plus audacieuses, afin de minimiser les effets des incendies sur l'homme, l'environnement et l'économie dans ces nations.
 
 ## 6. Ressources
 
@@ -3300,6 +3418,29 @@ Qu’est-ce qu’une base de données ? Définition et fonctionnement. (2021, Ju
 
 
 Dérobert, N. (2025). Paramètres statistiques - Position et dispersion. Commentprogresser.com. https://commentprogresser.com/statistique-parametre-statistiques-moyenne-mediane-etendue-ecart-type.html
+
+EFFIS - Welcome to EFFIS. (2015). Europa.eu. https://effis.jrc.ec.europa.eu/
+
+Fire Weather Index | Copernicus. (n.d.). Climate.copernicus.eu. https://climate.copernicus.eu/fire-weather-index
+
+Eurostat. (2022). Eurostat. Europa.eu. https://ec.europa.eu/eurostat
+
+France’s unprecedented summer of wildfires, in maps and graphs. (2022, August 25). Le Monde.fr. https://www.lemonde.fr/en/les-decodeurs/article/2022/08/25/fires-in-france-maps-and-graphs-to-visualize-an-unprecedented-summer_5994672_8.html
+
+https://www.climatechangepost.com/france/forest-fires/
+
+The EU 2022 wildfire season was the second worst on record. (2023, April 20). Joint-Research-Centre.ec.europa.eu. https://joint-research-centre.ec.europa.eu/jrc-news-and-updates/eu-2022-wildfire-season-was-second-worst-record-2023-05-02_en
+
+Spain: wildfire area burned 2022. (n.d.). Statista. https://www.statista.com/statistics/1265354/area-burned-by-wildfire-in-spain/
+
+Ministère de l'Intérieur. (2022). 2022. Http://Www.interieur.gouv.fr/Publications/Statistiques/Securite-Civile/2022. https://www.interieur.gouv.fr/Publications/Statistiques/Securite-civile/2022
+
+https://www.vigilfuoco.it/chi-siamo/le-statistiche/annuari-delle-statistiche-ufficiali-del-corpo-nationale-dei-vigili-del-fuoco
+
+https://www.fundacionmapfre.org/publications/todas/estudio-victimas-incendios-en-espana/
+
+Fire-related deaths by region Spain 2022. (n.d.). Statista. https://www.statista.com/statistics/980503/number-of-fire-related-deaths-by-region-spain/
+
 
 
 

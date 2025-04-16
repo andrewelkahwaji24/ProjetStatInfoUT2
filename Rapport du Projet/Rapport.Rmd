@@ -1226,6 +1226,7 @@ Il est probable qu'en week-end, lorsque les activités commerciales et industrie
 
 #### 5.3.2 Facteurs climatiques et météorologiques
 
+
 ##### 5.3.2.1 Influence de la température sur les incendies
 ##### 5.3.2.2 Impact de l'humidité sur les incendies
 
@@ -1979,6 +1980,170 @@ La courbe de régression indique une tendance décroissante statistiquement sign
 
 Pour finir, ce graphique met en lumière une relation inverse manifeste entre la pression de vapeur et la vitesse de propagation des incendies : plus la pression de vapeur est forte, plus la progression des incendies est lente.
 
+##### 5.3.2.9 Impact des températures sur les conditions propices aux incendies
+
+```{r}
+ data <- read.csv("../Exports/export_meteo.csv", header = TRUE, sep = ",")
+  variables <- c("Tmin_med", "Tmax_med", "RR_med", "NBJRR1_med", "NBJRR5_med", 
+                 "NBJRR10_med", "Tens_vap_med", "Force_vent_med", 
+                 "Insolation_med", "Rayonnement_med")
+  data_subset <- data[, variables]
+  corr <- cor(data_subset, use = "complete.obs")
+  print("Matrice de corrélation :")
+  round(corr, 2)
+  par(mfrow = c(1, 1))  
+  plot(data$Tmin_med, data$Rayonnement_med, 
+       main = "Tmin_med vs Rayonnement_med",
+       xlab = "Tmin_med (°C)", ylab = "Rayonnement_med",
+       pch = 16, col = "red")
+  abline(lm(Rayonnement_med ~ Tmin_med, data = data), col = "black", lwd = 2)  
+
+```
+
+```{r}
+ data <- read.csv("../Exports/export_meteo.csv", header = TRUE, sep = ",")
+  variables <- c("Tmin_med", "Tmax_med", "RR_med", "NBJRR1_med", "NBJRR5_med", 
+                 "NBJRR10_med", "Tens_vap_med", "Force_vent_med", 
+                 "Insolation_med", "Rayonnement_med")
+  data_subset <- data[, variables]
+  corr <- cor(data_subset, use = "complete.obs")
+  round(corr, 2)
+  par(mfrow = c(1, 1))  
+ plot(data$Tmax_med, data$Insolation_med, 
+       main = "Tmax_med vs Insolation_med",
+       xlab = "Tmax_med (°C)", ylab = "Insolation_med",
+       pch = 16, col = "blue")
+  abline(lm(Insolation_med ~ Tmax_med, data = data), col = "black", lwd = 2)  
+```
+
+```{r}
+ data <- read.csv("../Exports/export_meteo.csv", header = TRUE, sep = ",")
+  variables <- c("Tmin_med", "Tmax_med", "RR_med", "NBJRR1_med", "NBJRR5_med", 
+                 "NBJRR10_med", "Tens_vap_med", "Force_vent_med", 
+                 "Insolation_med", "Rayonnement_med")
+  data_subset <- data[, variables]
+  corr <- cor(data_subset, use = "complete.obs")
+  round(corr, 2)
+  par(mfrow = c(1, 1))  
+ plot(data$Tmax_med, data$Force_vent_med, 
+       main = "Tmax_med vs Force_vent_med",
+       xlab = "Tmax_med (°C)", ylab = "Force_vent_med",
+       pch = 16, col = "green")
+  abline(lm(Force_vent_med ~ Tmax_med, data = data), col = "black", lwd = 2)  
+```
+
+**Analyse Informatique**
+
+Le programme est segmenté en trois sections distinctes, toutes exécutant une fonction similaire : importer des données météorologiques, établir une matrice de corrélation et créer un diagramme de dispersion pour examiner les liens entre diverses variables climatiques.  
+
+Le premier segment étudie le lien entre la température minimale (Tmin_med) et l'ensoleillement (Rayonnement_med), le second observe la corrélation entre la température maximale (Tmax_med) et l'exposition au soleil (Insolation_med), tandis que le troisième se concentre sur la relation entre Tmax_med et l'intensité du vent (Force_vent_med).
+
+La première instruction de chaque segment, data <- read.csv("../Exports/export_meteo.csv", header = TRUE, sep = ","), permet de récupérer un fichier CSV appelé export_meteo.csv qui se trouve dans le répertoire parent (../Exports/).  
+
+La fonction read.csv interprète ce fichier et le convertit en un data frame dans R, une structure tabulaire où chaque colonne représente une variable et chaque ligne correspond à une observation.  
+
+L'instruction header = TRUE signale que la première ligne du fichier renferme les intitulés des colonnes, tandis que sep = "," spécifie que les données sont divisées par des virgules, ce qui est conforme à la norme pour un CSV.  
+
+Par la suite, le code établit une série de variables climatiques avec variables <- c("Tmin_med", "Tmax_med", "RR_med", "NBJRR1_med", "NBJRR5_med", "NBJRR10_med", "Tens_vap_med", "Force_vent_med", "Insolation_med", "Rayonnement_med").  
+
+Cette liste inclut des variables importantes pour l'étude des feux de forêt : Tmin_med et Tmax_med pour les températures minimales et maximales, RR_med pour la mesure de précipitations, NBJRR1_med, NBJRR5_med, NBJRR10_med pour le dénombrement des jours avec plus de 1, 5 et 10 mm de pluie, Tens_vap_med pour la tension de vapeur (associée à l'humidité), Force_vent_med pour la vitesse du vent, Insolation_med pour la durée d'ensoleillement et Rayonnement_med pour le rayonnement solaire.  
+
+La commande suivante, data_subset <- data[, variables], permet de créer un sous-ensemble du data frame nommé data en conservant uniquement ces colonnes.
+
+Le code procède ensuite à l'établissement d'une matrice de corrélation par le biais de corr <- cor(data_subset, use = "complete.obs").  La fonction cor() détermine les coefficients de corrélation de Pearson pour chaque paire de variables numériques présentes dans data_subset.
+
+Il est crucial d'utiliser l'option use = "complete.obs" : elle exclut les lignes qui comportent des valeurs absentes (NA), prévenant ainsi les erreurs en cas de données incomplètes.  Puis, print("Matrice de corrélation :") et round(corr, 2) montrent la matrice arrondie à deux chiffres après la virgule pour une meilleure clarté.  
+
+Cette matrice offre une vue d'ensemble des relations linéaires entre les variables : un coefficient près de 1 signale une corrélation positive marquée, aux alentours de -1 une corrélation négative marquée, et autour de 0 indique un manque de corrélation.  
+
+Les trois graphiques sont des diagrammes de dispersion (scatter plots) créés avec la fonction de base plot(). 
+
+Le premier, dans le premier bloc, est généré par plot(data$Tmin_med, data$Rayonnement_med, main = "Tmin_med vs Rayonnement_med", xlab = "Tmin_med (°C)", ylab = "Rayonnement_med", pch = 16, col = "red"). 
+
+Cette ligne affiche un nuage de points avec Tmin_med sur l’axe des x et Rayonnement_med sur l’axe des y. 
+
+Les arguments main, xlab, et ylab définissent le titre et les étiquettes des axes, tandis que pch = 16 utilise des points pleins et col = "red" les colore en rouge. 
+
+Ensuite, abline(lm(Rayonnement_med ~ Tmin_med, data = data), col = "black", lwd = 2) ajoute une droite de régression linéaire, calculée avec lm() (modèle linéaire), en noir avec une épaisseur de 2. 
+
+Cette droite montre la tendance générale de la relation : si elle monte, la corrélation est positive ; si elle descend, elle est négative. 
+
+Ce graphique est utile pour voir si le rayonnement solaire augmente avec la température minimale, ce qui pourrait indiquer des conditions plus propices aux incendies.
+
+Le second graphique, situé dans le second bloc, fait appel à plot(data$Tmax_med, data$Insolation_med, titre = "Tmax_med vs Insolation_med", axeX = "Tmax_med (°C)", axeY = "Insolation_med", pch = 16, couleur = "blue"), suivi de l'invocation répétée de la commande abline() pour l'ajout d'une droite de régression.  
+
+Ce diagramme de dispersion illustre le lien entre la température maximale et la durée d'ensoleillement, en utilisant des points de couleur bleue.  
+
+Un lien positif dans ce cas (ligne montante) signifierait que des températures maximales hautes coïncident avec davantage d'heures de soleil, ce qui pourrait dessécher la flore et accroître le danger d’incendie.  
+
+Le troisième graphique, situé dans le troisième bloc, adopte une approche identique en utilisant plot(data$Tmax_med, data$Force_vent_med, main = "Tmax_med vs Force_vent_med", xlab = "Tmax_med (°C)", ylab = "Force_vent_med", pch = 16, col = "green"). 
+
+Il analyse la relation entre la température maximale et la force du vent, avec des points verts. Une corrélation positive ou négative pourrait indiquer si des vents forts accompagnent des températures élevées, un facteur clé pour la propagation des incendies.
+
+**Analyse Statistique**
+
+Nous avons analysé le lien entre les variations des paramètres météorologiques, tels que la température minimale et maximale variable, l'irradiation fluctuante, l'ensoleillement changeant et la puissance inconstante du vent.  
+
+Chaque diagramme illustre une relation entre deux éléments de la météorologie dynamique :
+
+**Diagramme 1 (coloré en rouge) :  Les moyennes mobiles de Tmin comparées au Rayonnement moyen aléatoire.**
+
+L'axe horizontal illustre la fluctuation de la température minimale moyenne (Tmin_med) en degrés Celsius, tandis que l'axe vertical dépeint la variabilité du rayonnement moyen (Rayonnement_med).  
+
+On constate une tendance chaotique croissante : à mesure que la température minimale monte de façon imprévisible, le rayonnement moyen semble également augmenter de façon aléatoire.  
+
+Ceci pourrait être dû au fait que des températures minimales plus élevées de façon aléatoire sont fréquemment liées à des journées globalement plus ensoleillées de manière imprévisible.
+
+**Graphique 2 (en bleu) : Les Tmax moyennes changeantes vs l'insolation moyenne variable**
+
+La température maximale moyenne mouvante (Tmax_med) est représentée sur l'axe horizontal, tandis que l'insolation moyenne imprévisible (Insolation_med) est indiquée sur l'axe vertical.  
+
+On observe une corrélation positive variable : quand la température maximale monte de façon sporadique, l'ensoleillement semble également croître de manière désordonnée.  
+
+Il existe un lien intuitif, car des températures plus élevées de façon capricieuse ont tendance à être observées lors de journées avec une exposition au soleil imprévisible.
+
+**Graphique 3 (en vert) : Les Tmax moyennes mobiles vs la Force du vent moyen imprévisible**
+
+Ce diagramme illustre le lien entre la variation de la température maximale moyenne (Tmax_med) et l'intensité moyenne du vent aléatoire (Force_vent_med).  
+
+À l'inverse des deux cas précédents, on note ici une corrélation légèrement négative instable.  
+
+Cela pourrait indiquer qu'à mesure que la température maximale monte de manière imprévisible, la vigueur du vent a tendance à faiblir de façon capricieuse, bien que le lien soit peu prononcé de manière capricieuse.  
+
+Cette constatation pourrait être associée à des conditions climatiques locales imprévisibles, où des journées exceptionnellement chaudes survenant de manière sporadique sont fréquemment accompagnées de conditions atmosphériques plus constantes et moins venteuses de façon désordonnée.
+
+**Observations marquantes irrégulières**
+
+Une correlation positive variable entre la température et l'ensoleillement/rayonnement.
+
+Les deux premiers graphiques démontrent une corrélation évidente entre l'accroissement inattendu des températures (minimum et maximum) et une augmentation imprévisible du rayonnement et de l'insolation.  
+
+Cela correspond à l'observation que les périodes de chaleur sont fréquemment caractérisées par une exposition au soleil plus forte de manière capricieuse.
+
+Une corrélation légèrement négative variable entre la température maximale et l'intensité du vent.
+
+Le dernier diagramme révèle une légère tendance à la diminution imprévisible, suggérant que le réchauffement des températures n'est pas nécessairement lié à un renforcement des vents, et pourrait même être associé à une diminution erratique de leur vitesse.
+
+**Conclusion**
+
+Ces résultats soulignent des liens significatifs fluctuants entre la température, le rayonnement, l'insolation et le vent.  
+
+L'augmentation inattendue des températures semble coïncider avec une plus grande exposition au soleil, ce qui est à prévoir dans un contexte de conditions météorologiques normales fluctuantes.  
+
+Toutefois, le lien entre vent et température est plus complexe et semble être influencé par des facteurs climatiques régionaux et saisonniers imprévisibles.
+
+
+
+
+
+
+
+
+
+
+
+
+
 #### 5.3.3 Géographie et environnement
 ##### 5.3.3.1 Propagation des incendies sur le territoire Francais
 
@@ -2698,6 +2863,185 @@ Il est donc nécessaire d'ajuster les stratégies : combattre la malfaisance dan
 ##### 5.3.4.2 Activités humaines à risque (travaux/particuliers)
 ##### 5.3.4.3 Profil temporel des incendies criminels
 ##### 5.3.4.4 Facteurs prédictifs des incendies criminels
+
+
+**Analyse de la répartition es incendies criminels en fonction de la température**
+
+```{r}
+  library(ggplot2)
+  
+  donnees_combinees<- read.csv("../Exports/export_incendies_criminels.csv")
+  library(ggplot2)
+  
+  ggplot(donnees_combinees, aes(x = tmax_med, fill = nature_inc_prim)) +
+    geom_histogram(position = "dodge", bins = 30, alpha = 0.7) +  # Slight transparency for better visibility
+    scale_fill_manual(values = c("#FF6347", "#4682B4", "#32CD32", "#FFD700")) +  # Custom colors for the fill
+    labs(
+      title = "Distribution de la Température Maximale en Fonction de la Nature des Incendies",
+      x = "Température Maximale (°C)",  # More specific axis label
+      y = "Fréquence",  # More specific y-axis label
+      fill = "Nature des Incendies"  # Label for the fill legend
+    ) +
+    theme_minimal() +  
+    theme(
+      plot.title = element_text(size = 16, face = "bold", color = "darkblue", hjust = 0.5),  # Title styling
+      axis.title.x = element_text(size = 14, face = "bold", color = "black"),  # X-axis title styling
+      axis.title.y = element_text(size = 14, face = "bold", color = "black"),  # Y-axis title styling
+      axis.text = element_text(size = 12, color = "black"),  
+      legend.title = element_text(size = 12, face = "bold"), 
+      legend.text = element_text(size = 11)  
+    ) +
+    theme(axis.line = element_line(size = 0.8, color = "black"))  
+```
+
+**Analyse Informatique** 
+
+La première ligne de code, library(ggplot2), sert à importer la bibliothèque ggplot2 dans R.  
+
+Cette librairie est réputée pour sa capacité à produire des graphiques élégants et personnalisables.  
+
+En substance, elle offre la possibilité de créer des visualisations en superposant des couches, à l'image d'un dessin progressif : commencer par les données, puis passer aux formes, aux couleurs, et ainsi de suite.  
+
+Ici, on la charge afin de pouvoir exploiter ses fonctionnalités par la suite.  
+
+Le code contient deux appels à la bibliothèque ggplot2, alors qu'un seul est nécessaire. En effet, R ne chargerait pas deux fois la même ressource — c'est une redondance superflue.
+
+Puis, on a utilisé la commande **données_combinees <- read.csv("../Exports/export_incendies_criminels.csv")** pour lire le fichier CSV.  
+
+Cette ligne est cruciale : 
+
+elle s'applique à un fichier CSV (un tableau séparé par des virgules, semblable à celui d'Excel) nommé export_incendies_criminels.csv, situé dans un répertoire dénommé Exports, qui se trouve un niveau au-dessus du répertoire courant (le ../ signifie cela).  
+
+La fonction read.csv interprète ce fichier et le convertit en un tableau de données dans R, connu sous le nom de data frame.  
+
+La variable donnees_combinees contient ce tableau.  
+
+Il est supposé que ce document renferme des renseignements concernant les incendies, incluant des colonnes telles que tmax_med (probablement la température maximale) et nature_inc_prim (le genre d'incendie).  
+
+Si le fichier n’existe pas ou si le chemin est faux, ça planterait direct avec une erreur.
+
+Le travail concret débute avec ggplot(donnees_combinees, aes(x = tmax_med, fill = nature_inc_prim)).  
+
+Il s'agit du fond du graphique.On utilise les données combinées comme référence, et aes() (pour « aesthetics ») définit comment les disposer.  
+
+Dans ce contexte, x = tmax_med indique que la température maximale est représentée sur l'axe horizontal (l'axe des x), tandis que fill = nature_inc_prim signifie que les couleurs des barres sont déterminées par la catégorie d'incendie.  
+
+Par exemple, si nature_inc_prim présente des valeurs telles que « criminel » ou « accidentel », chaque catégorie se verra attribuer une couleur distincte.  
+
+Cette ligne n'est pas encore définie, elle sert simplement à préparer le terrain.
+
+Ensuite, on intègre geom_histogram(position = "dodge", bins = 30, alpha = 0.7).  
+
+C'est là que se trouve vraiment l partie qui trace le graphique.  geom_histogram génère un histogramme, qui est une catégorie de diagramme où l'on dénombre le nombre d'occurrences d'une valeur (dans ce cas tmax_med) dans divers intervalles.  
+
+Les bins = 30 répartissent les températures en 30 petites catégories afin de constituer les histogrammes.position = « dodge » fait que les barres de chaque catégorie d'incendie sont placées l'une à côté de l'autre plutôt qu'empilées, ce qui facilite la comparaison.  
+
+Avec alpha fixé à 0.7, les barres deviennent légèrement transparentes (de 0 pour invisible à 1 pour opaque), ce qui est utile si elles se superposent, afin de mettre en évidence les détails.
+
+Par la suite, on utilise scale_fill_manual(values = c("#FF6347", "#4682B4", "#32CD32", "#FFD700")).  Cette ligne sélectionne les teintes des barres.  
+
+Des codes tels que #FF6347 représentent des valeurs hexadécimales, indiquant à la machine quelle teinte appliquer (dans ce cas, rouge tomate, bleu acier, vert citron et jaune doré).  
+
+Cela implique l'existence de quatre catégories distinctes d'incendies dans nature_inc_prim.  
+
+Si le nombre n'est pas adéquat, cela pourrait causer des soucis : un excès de types entraîne une répétition des couleurs ; une carence, et certaines teintes deviennent inutiles.  
+
+C'est une personnalisation agréable pour améliorer l'aspect et la clarté du graphique.
+
+Par la suite, labs(...) appose des étiquettes pour assurer une lisibilité parfaite.  
+
+Le titre long : « Distribution de la Température Maximale en Fonction de la Nature des Incendies » décrit précisément ce qu'on examine.  
+
+x = "Température Maximale (°C)" modifie le nom de l'axe horizontal pour qu'il soit plus explicite que simplement « tmax_med », tandis que y = « Fréquence » signifie que l'axe vertical représente le nombre d'observations dans chaque colonne.  
+
+Finalement, fill = "Nature des Incendies" attribue un titre à la légende, indiquant quelle couleur correspond à quel type d'incendie.
+
+Cela rend le graphique simple à interpréter, même pour une personne qui n'est pas familière avec les données.
+
+theme_minimal() offre un style épuré et minimaliste, avec un fond blanc et une absence de lignes superflues - cela met l'accent sur les données.  
+
+Cependant, nous allons encore plus loin dans la personnalisation avec le thème (...).  
+
+Par exemple, plot.title = element_text(size = 12, face = « bold », color = « darkblue », hjust = 0.5) modifie le titre : taille 12, en gras, bleu foncé et centré (hjust = 0.5 signifie « au centre »).  
+
+Les titres des axes (axis.title.x et axis.title.y) sont définis en gras, taille 14 et en couleur noire pour assurer une bonne visibilité.  Les chiffres affichés sur les axes (axis.text) sont de taille 12, la légende comporte un titre en gras (taille 12) et un texte de taille inférieure (taille 9).  
+
+Cela donne un aspect professionnel et facilement lisible.
+
+Finalement, theme(axis.line = element_line(size = 0.8, color = "black")) insère des lignes noires d'épaisseur 0.8 sur les axes, servant ainsi de cadre.  
+
+Cela définit les contours du graphique et lui donne plus de clarté.
+
+En fin de compte, ce code génère un histogramme qui illustre la répartition des températures maximales selon les catégories d'incendies, avec des barres colorées disposées côte à côte, une conception limpide et des étiquettes judicieusement élaborées.  
+
+C'est courant d'examiner des données pour vérifier s'il existe une relation entre la température et le type des incendies.
+
+**Analyse Statistique**
+
+Le diagramme représente un histogramme illustrant la répartition de la température maximale (en °C) selon le type d'incendie, en distinguant quatre catégories : « Accidentelle » (rose), « Involontaire » (bleu), « Malveillance » (vert), et « Naturelle » (jaune).  
+
+L'axe horizontal illustre la température maximale, qui varie de 0 à 35 °C, tandis que l'axe vertical dénote la fréquence, soit le nombre d'incendies pour chaque plage de température.  
+
+L'option position = "dodge" permet d'afficher les barres côte à côte, facilitant ainsi la comparaison des distributions des différentes sortes d'incendies.  
+
+Le diagramme est explicite, en présentant des couleurs distinctives et des libellés nettement définis, ce qui rend l'analyse plus aisée.
+
+En analysant la distribution globale, on note que la plupart des feux, peu importe les types, se situent entre 15 et 25 °C.  
+
+C'est au sein de cette fourchette que les pics sont les plus importants, particulièrement aux environs de 20 °C où le taux se rapproche presque de 175 pour la classe « Malveillance » (vert).  
+
+Cela indique que les incendies, en particulier ceux causés intentionnellement, ont tendance à être plus courants à des températures modérées, ni trop basses ni trop élevées.  
+
+Hors de cette fourchette, les occurrences diminuent : on observe très peu d'incendies en dessous de 10 °C ou au-delà de 30 °C, avec quelques pics isolés signalant des événements rares. 
+
+Cette courbe de distribution en forme de cloche (légèrement asymétrique) est caractéristique des données telles que la température, qui présente fréquemment une plage « préférée » dans des conditions naturelles.
+
+En analysant chaque catégorie séparément, on constate que la catégorie « Malveillance » (en vert) prédomine nettement en termes de fréquence.
+
+Elle présente les niveaux les plus élevés dans presque toutes les plages, en particulier autour de 20 °C, où elle atteint son maximum.  Ceci signifie que dans cet ensemble de données, les incendies causés intentionnellement sont les plus fréquents et se produisent principalement à des températures modérées.  
+
+La catégorie « Involontaire » (bleu) suit également, présentant des occurrences moins fréquentes mais toujours notables, souvent dans la fourchette de 50 à 100 au sein du même intervalle de température.
+
+Les incendies dits « accidentels » (indiqués en rose) et « naturels » (indiqués en jaune) se produisent beaucoup moins fréquemment, leurs barres ne dépassant guère les 50, sauf à certains endroits.  
+
+Par exemple, les feux « naturels » présentent une légère hausse autour de 20 °C, cependant leur occurrence demeure inférieure comparée à d'autres.
+
+Un aspect intéressant concerne la forme des distributions pour chaque catégorie.  On observe toutes une tendance comparable, culminant autour de 15-25 °C, néanmoins elles varient en amplitude.  
+
+La répartition des incendies « Malveillance » est plus diffuse et plus élevée, indiquant une variabilité supérieure et une fréquence accrue.  
+En revanche, les incendies « naturels » présentent une distribution plus uniforme, avec des taux faibles sur l'ensemble de l'éventail, ce qui pourrait signifier qu'ils sont moins sensibles à la température ou qu'ils sont tout simplement moins fréquents dans cet ensemble de données.  
+
+Les incendies « Accidentels » et « Involontaires » présentent des distributions intermédiaires, avec des sommets moins prononcés que « Malveillance », mais plus perceptibles que « Naturelle ».
+
+Concernant le lien entre la température et les types d'incendies, le diagramme ne révèle pas de variation marquante dans la forme des distributions en fonction des catégories.  
+
+On observe que tous les types d'incendies semblent survenir principalement dans la même plage de température (15-25 °C), ce qui laisse supposer que la température maximale n'est peut-être pas un critère décisif pour différencier les divers types d'incendies.
+
+Toutefois, le taux nettement plus élevé d'incendies attribués à la « Malveillance » pourrait suggérer que d'autres éléments, tels que des actions humaines, ont une influence plus significative dans cette catégorie.  
+
+Pour finir, on doit prendre note de certaines observations concernant les extrêmes.  
+
+Sous 10 °C et au-delà de 30 °C, les occurrences sont minimes pour toutes les classes, toutefois, on observe quelques barres isolées.  
+
+Par exemple, on observe des incendies « naturels » et « involontaires » aux alentours de 0 °C et 35 °C, ce qui est inhabituel mais captivant.  
+
+Cela pourrait être attribué à des circonstances exceptionnelles, telles que des sécheresses extrêmes pour les incendies naturels à haute température.  
+
+Ces occurrences peu fréquentes pourraient constituer des anomalies, et il serait pertinent de déterminer si elles sont authentiques ou si elles résultent d'imperfections dans les données. 
+
+Pour résumer, ce graphique illustre que les incendies, particulièrement ceux causés par des actes malveillants, se produisent plus souvent à des températures modérées (15-25 °C), et il n'y a pas de grandes variations dans la forme des distributions entre les différentes catégories.  
+
+Le prépondérance des incendies « Malveillance » indique que les facteurs humains sont sans doute plus influents que la température à eux seuls.  
+
+Pour aller plus loin, nous pourrions envisager d'examiner d'autres variables ou réaliser des analyses statistiques afin de déterminer si les différences relevées ont une signification.  
+
+Ce type d'analyse constitue un excellent point de départ pour appréhender les données et formuler des interrogations plus spécifiques.
+
+
+
+
+
+
 ##### 5.3.4.5 Impact cumulé du climat et de l’urbanisation
 
 1-  **Comment le niveau de risque (rr_med) varie-t-il selon la nature des incidents secondaires dans les zones urbaines sèches ?**
@@ -2931,6 +3275,124 @@ Par conséquent, la combinaison des impacts du climat aride et de l'urbanisation
 
 
 #### 5.3.5 Vulnérabilité et analyse de survie
+#### 5.3.6 Les Incendies en Europe France - Italie - Espagne
+
+En Europe, les incendies constituent un danger de plus en plus grand pour les écosystèmes et les sociétés humaines, notamment dans les zones méditerranéennes.  
+
+Face au changement climatique, qui se manifeste par une élévation des températures et une fréquence accrue des sécheresses
+
+La **France**, l'**Italie** et l'**Espagne** sont des nations méditerranéennes qui font face à ce danger en raison de leurs étés arides.
+
+Ces nations présentent des traits géographiques et climatiques semblables, cependant elles diffèrent dans leurs stratégies de gestion des incendies et les ressources dédiées à la prévention et à la lutte contre ces fléaux.
+
+Cela est dû au fait que chaque pays dispose de son propre gouvernement qui instaure ses propres politiques en matière d'incendies.
+
+Cette problématique cherche à étudier les évolutions des feux de forêt dans ces trois nations en se basant sur les informations fournies par le **Système d'information européen sur les incendies** et **les données climatiques du programme Copernicus**.
+
+Qu'ils soient domestiques, commerciaux, industriels ou autres, les incendies constituent un enjeu crucial pour la sécurité publique en Europe, spécialement dans les zones méditerranéennes.
+
+Dans cette étude, nous allons étudier la progression des incendies en général sans se concentrer sur les diverses sortes de ceux-ci, notamment toutes les variantes entre ces trois nations. 
+
+Nous nous baserons sur des informations officielles provenant de services d'incendies et secours, ainsi que des rapports rédigés par l'Union Européenne.
+
+Les informations proviennent majoritairement de statistiques nationales, des services de secours et d'incendie, complétées par des comptes rendus émanant de l'Union Européenne, comme ceux du Centre de recherche commun. 
+
+Nous avons utilisé les informations relatives à la France provenant du **Ministère de l'Intérieur**, d'Italie via le **Corps national dei Vigili del Fuoco** et d'Espagne grâce à la **Fondation MAPFRE**.
+
+##### France
+Selon les chiffres officiels du Ministère de l'Intérieur en France pour 2022, on dénombre un total de **286,600** incendies, marquant une hausse de **6.2%** par rapport à 2021.  
+
+Cette augmentation dénote une tendance vers la stabilisation après une phase de baisse, avec une répartition notable entre les différentes régions. 
+
+Par exemple, le sud de la France, en particulier la **Gironde**, a été fortement touché avec environ **45,000** hectares ravagés par des feux de forêt en 2022. Toutefois, les chiffres globaux englobent aussi les incendies domestiques et industriels. 
+
+Comparé à 2019 où les chiffres étaient légèrement inférieurs, autour de **270,000** incidents estimés, l'année 2022 nous révèle une hausse liée à des conditions climatiques plus sèches et à une urbanisation en expansion. 
+
+Il est également observable que lorsque la température augmente, le nombre d'incendies tend à s'accroître, surtout si l'on compare le nombre d'incendies dans le nord du territoire français, qui est inférieur à celui du sud de la France. 
+
+##### Italie
+
+D'après les données officielles divulguées par les Vigili del Fuoco (les pompiers italiens), l'Italie a dénombré 325 941 incendies en 2022, une légère hausse comparée aux approximativement 320 000 incidents évalués en 2021. 
+
+Cette augmentation, quoique légère, fait partie d'une tendance globale à l'escalade des feux de forêt, stimulée par des conditions météorologiques de plus en plus extrêmes, en particulier des étés hors du commun en termes de chaleur et de sécheresse. 
+
+Ces sinistres incluent des incendies résidentiels, commerciaux et industriels, avec une prédominance dans les zones méridionales du pays comme la Sicile et la Sardaigne, où les incendies de broussailles sont particulièrement courants pendant l'été. 
+
+Il est notable que le chiffre de 2022 correspond exactement à celui de 2019, ce qui pourrait indiquer une stabilité. Cependant, les autorités soulignent une intensification des incendies, en particulier en termes de durée et d'effet sur les zones touchées. 
+
+En dépit des mesures de prévention mises en œuvre, telles que les initiatives de sensibilisation et le renforcement des compétences d'intervention, l'incidence des incendies reste élevée. Cela met en évidence les défis persistants associés à l'urbanisation accrue dans les zones à risque et à la criminalité, y compris les incendies intentionnels.
+
+On note des tendances analogues dans le sud du pays par rapport à la France, notamment en Provence-Alpes-Côte d'Azur, en Corse et en Occitanie. En effet, les étés arides, la végétation sujette à l'incendie et la forte affluence touristique contribuent aux déclenchements de feux. 
+
+Ainsi, en 2022, la France a enregistré un incendie couvrant près de 72 000 hectares, un chiffre record depuis 2003, avec une grande partie des flammes se concentrant dans ces zones du sud. 
+
+Par contre, le nord de la France, qui jouit d'un climat plus humide et moins enclin aux sécheresses, est beaucoup moins exposé. Toutefois, ce risque y croît également à cause du changement climatique, engendrant des vagues de chaleur exceptionnelles et une déshydratation progressive des sols.
+
+Il apparaît donc que, tant en France qu'en Italie, la répartition géographique du risque d'incendie semble dépasser les zones historiquement sujettes, soulignant l'importance de la mise à jour des politiques de prévention et des stratégies de résilience face à un phénomène désormais exacerbé par les impacts du changement climatique.
+
+##### Espagne
+
+En 2022, obtenir des informations précises sur les feux en Espagne s'avère compliqué à cause de la diversité des sources et des spécificités des rapports.  
+
+Toutefois, des projections basées sur les observations antérieures et les analyses d'entités comme la Fondation MAPFRE indiquent que près de 200 000 incendies ont été dénombrés, ce qui représente une hausse par rapport à 2019 où le nombre estimé était approximativement de 184 000 incendies.  
+
+Cette hausse s'aligne sur une tendance plus vaste notée ces dernières années, à cause des conditions climatiques extrêmes et de la pression grandissante due à l'urbanisation et à la gestion des espaces naturels.
+
+En Espagne, on distingue plusieurs types d'incendies : ceux domestiques, commerciaux et industriels, ainsi que les incendies de végétation qui sont particulièrement courants dans des zones méditerranéennes telles que l'Andalousie et la Catalogne.  
+
+Ces zones, réputées pour leurs étés chauds et secs, sont sujettes à une occurrence élevée d'incendies, généralement amplifiée par des périodes de sécheresse prolongées et des vagues de chaleur.  
+
+De plus, ces régions sont particulièrement vulnérables aux incendies de grande envergure à cause de leur végétation dense et de leur topographie montagneuse, qui favorisent une diffusion rapide des feux.
+
+Un trait distinctif de l'année 2022 est la montée des pertes en vies humaines dues aux incendies, avec un total de 281 décès notés, témoignage d'un bilan particulièrement pesant.  
+
+D'après Statista 2022, cette année a connu de nombreuses pertes humaines, étant l'une des plus dévastatrices, en raison de plusieurs incendies d'ampleur qui ont touché des zones densément peuplées ou touristiques.  
+
+Ce nombre important indique non seulement une augmentation de ce phénomène, mais également des problèmes grandissants liés à la sécurité publique et à la gestion des désastres naturels.
+
+Selon un rapport d'El Mundo, l'Espagne a enregistré une augmentation significative du nombre de pompiers, qui a atteint 42 011 en 2022, témoignant d'une intensification de la gestion des incendies par rapport aux années précédentes.  
+
+Cette hausse du personnel était supposée optimiser l'efficience du combat contre les incendies et des actions de prévention.  
+
+Toutefois, en dépit de cet engagement, le taux d'incendies demeure élevé, indiquant qu'il y a de sérieux problèmes structurels dans la gestion et la prévention des incendies.  
+
+Ces enjeux comportent des problématiques relatives à l'aménagement urbain, à la sauvegarde des espaces forestiers et à l'ajustement des infrastructures face aux conditions climatiques évolutives, y compris le réchauffement climatique.
+
+En dépit d'importants progrès dans les technologies de détection et de lutte contre les incendies, les enjeux environnementaux tels que l'augmentation des vagues de chaleur, ainsi que les défis logistiques inhérents à la géographie et aux conditions climatiques extrêmes demeurent problématiques.  
+
+En outre, l'augmentation de la population, l'urbanisation des régions rurales et l'existence d'habitats en zones à risque amplifient la vulnérabilité face aux incendies.  
+
+Ces problèmes subsistent malgré les initiatives adoptées par les autorités locales et nationales pour accroître la résilience des régions et optimiser la réponse aux incendies.
+
+Globalement, malgré l'existence de politiques solides de prévention et de gestion en Espagne, les incendies demeurent un danger significatif pour la sécurité publique et l'environnement.  
+
+Toutefois que les conditions météorologiques extrêmes exacerbaient le phénomène, celui-ci mettait également en évidence des vulnérabilités dans les démarches structurelles et organisationnelles. 
+
+Il insiste sur l'importance de continuer à œuvrer pour une meilleure compréhension des origines des incendies et la nécessité d'ajuster les tactiques d'intervention face à une réalité de plus en plus complexe.  
+
+Pour affronter ces défis constants dans les années futures, il sera primordial d'assurer une bonne collaboration entre les diverses entités locales, nationales et européennes, ainsi qu'une planification stratégique à long terme.
+
+##### Conclusion des 3 Pays
+
+Pour conclure, on constate une aggravation notable des incendies en Italie, en France et en Espagne au fil des dernières années, avec des statistiques de plus en plus alarmantes malgré les efforts constants déployés pour prévenir et gérer ces risques. 
+
+Dans ces trois nations méditerranéennes, les conditions météorologiques extrêmes et le réchauffement climatique sont au cœur de l'augmentation des incendies, intensifiant la fréquence et la gravité des flammes. 
+
+Les régions méridionales de chaque nation, connues pour leur climat chaud et aride, sont particulièrement sujettes aux risques, comprenant des zones telles que la Sicile, la Sardaigne, le sud de la France et l'Andalousie qui sont fréquemment frappées. 
+
+Il est à noter que sur le territoire français, la plus grande partie des incendies a lieu dans le sud, notamment en Provence-Alpes-Côte d’Azur, en Corse et en Occitanie. 
+
+Ces zones sont particulièrement sensibles aux incendies du fait de leur climat méditerranéen sec et de leur végétation hautement inflammable. 
+
+En revanche, le nord de la France connaît beaucoup moins d'incendies, du fait de son climat plus humide et des caractéristiques de sa végétation. 
+
+En dépit d'importants investissements en infrastructures, en ressources humaines et en technologies préventives, les statistiques demeurent élevées, mettant en évidence l'existence de défis structurels considérables dans la gestion des incendies. 
+
+La situation continue de se détériorer en raison de l'urbanisation croissante des régions à risque et de facteurs tels que la criminalité et la déforestation. 
+
+Face à cette menace en augmentation, il est primordial d'intensifier la collaboration internationale, de mettre en place des stratégies mieux alignées sur les contextes locaux et d'accroître la sensibilisation des citoyens aux dangers potentiels. 
+
+Devant ces défis complexes, il demeure crucial d'adopter une stratégie préventive et intégrée, associée à des politiques de résilience plus audacieuses, afin de minimiser les effets des incendies sur l'homme, l'environnement et l'économie dans ces nations.
 
 ## 6. Ressources
 
@@ -2956,6 +3418,29 @@ Qu’est-ce qu’une base de données ? Définition et fonctionnement. (2021, Ju
 
 
 Dérobert, N. (2025). Paramètres statistiques - Position et dispersion. Commentprogresser.com. https://commentprogresser.com/statistique-parametre-statistiques-moyenne-mediane-etendue-ecart-type.html
+
+EFFIS - Welcome to EFFIS. (2015). Europa.eu. https://effis.jrc.ec.europa.eu/
+
+Fire Weather Index | Copernicus. (n.d.). Climate.copernicus.eu. https://climate.copernicus.eu/fire-weather-index
+
+Eurostat. (2022). Eurostat. Europa.eu. https://ec.europa.eu/eurostat
+
+France’s unprecedented summer of wildfires, in maps and graphs. (2022, August 25). Le Monde.fr. https://www.lemonde.fr/en/les-decodeurs/article/2022/08/25/fires-in-france-maps-and-graphs-to-visualize-an-unprecedented-summer_5994672_8.html
+
+https://www.climatechangepost.com/france/forest-fires/
+
+The EU 2022 wildfire season was the second worst on record. (2023, April 20). Joint-Research-Centre.ec.europa.eu. https://joint-research-centre.ec.europa.eu/jrc-news-and-updates/eu-2022-wildfire-season-was-second-worst-record-2023-05-02_en
+
+Spain: wildfire area burned 2022. (n.d.). Statista. https://www.statista.com/statistics/1265354/area-burned-by-wildfire-in-spain/
+
+Ministère de l'Intérieur. (2022). 2022. Http://Www.interieur.gouv.fr/Publications/Statistiques/Securite-Civile/2022. https://www.interieur.gouv.fr/Publications/Statistiques/Securite-civile/2022
+
+https://www.vigilfuoco.it/chi-siamo/le-statistiche/annuari-delle-statistiche-ufficiali-del-corpo-nationale-dei-vigili-del-fuoco
+
+https://www.fundacionmapfre.org/publications/todas/estudio-victimas-incendios-en-espana/
+
+Fire-related deaths by region Spain 2022. (n.d.). Statista. https://www.statista.com/statistics/980503/number-of-fire-related-deaths-by-region-spain/
+
 
 
 

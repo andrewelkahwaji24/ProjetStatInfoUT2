@@ -1275,9 +1275,135 @@ incendies_total_par_annee_df <- data.frame(annee = as.numeric(names(incendies_to
   
   
   
+  library(ggplot2)
+  
+  donnees_combinees<- read.csv("../Exports/export_incendies_criminels.csv")
+  library(ggplot2)
+  
+  ggplot(donnees_combinees, aes(x = tmax_med, fill = nature_inc_prim)) +
+    geom_histogram(position = "dodge", bins = 30, alpha = 0.7) +  # Slight transparency for better visibility
+    scale_fill_manual(values = c("#FF6347", "#4682B4", "#32CD32", "#FFD700")) +  # Custom colors for the fill
+    labs(
+      title = "Distribution de la Température Maximale en Fonction de la Nature des Incendies",
+      x = "Température Maximale (°C)",  # More specific axis label
+      y = "Fréquence",  # More specific y-axis label
+      fill = "Nature des Incendies"  # Label for the fill legend
+    ) +
+    theme_minimal() +  # Cleaner background
+    theme(
+      plot.title = element_text(size = 12, face = "bold", color = "darkblue", hjust = 0.5),  # Title styling
+      axis.title.x = element_text(size = 14, face = "bold", color = "black"),  # X-axis title styling
+      axis.title.y = element_text(size = 14, face = "bold", color = "black"),  # Y-axis title styling
+      axis.text = element_text(size = 12, color = "black"),  # Axis text styling
+      legend.title = element_text(size = 12, face = "bold"),  # Legend title styling
+      legend.text = element_text(size = 9)  # Legend text styling
+    ) +
+    theme(axis.line = element_line(size = 0.8, color = "black"))  # Adds border to the plot
+  
+  
+  
+
   
   
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  data <- read.csv("../Exports/export_meteo.csv", header = TRUE, sep = ",")
+  variables <- c("Tmin_med", "Tmax_med", "RR_med", "NBJRR1_med", "NBJRR5_med", 
+                 "NBJRR10_med", "Tens_vap_med", "Force_vent_med", 
+                 "Insolation_med", "Rayonnement_med")
+  data_subset <- data[, variables]
+  corr <- cor(data_subset, use = "complete.obs")
+  plot(data$Tmin_med, data$Rayonnement_med, 
+       main = "Tmin_med vs Rayonnement_med",
+       xlab = "Tmin_med (°C)", ylab = "Rayonnement_med",
+       pch = 16, col = "red")
+  abline(lm(Rayonnement_med ~ Tmin_med, data = data), col = "black", lwd = 2)  
+  plot(data$Tmax_med, data$Insolation_med, 
+       main = "Tmax_med vs Insolation_med",
+       xlab = "Tmax_med (°C)", ylab = "Insolation_med",
+       pch = 16, col = "blue")
+  abline(lm(Insolation_med ~ Tmax_med, data = data), col = "black", lwd = 2) 
+  plot(data$Tmax_med, data$Force_vent_med, 
+       main = "Tmax_med vs Force_vent_med",
+       xlab = "Tmax_med (°C)", ylab = "Force_vent_med",
+       pch = 16, col = "green")
+  abline(lm(Force_vent_med ~ Tmax_med, data = data), col = "black", lwd = 2)  
+  
+  par(mfrow = c(1, 1))
+  
+  
+  
+  
+  
+  
+  data <- read.csv("../Exports/export_meteo.csv", header = TRUE, sep = ",")
+  variables <- c("Tmin_med", "Tmax_med", "RR_med", "NBJRR1_med", "NBJRR5_med", 
+                 "NBJRR10_med", "Tens_vap_med", "Force_vent_med", 
+                 "Insolation_med", "Rayonnement_med")
+  data_subset <- data[, variables]
+  corr <- cor(data_subset, use = "complete.obs")
+  print("Matrice de corrélation :")
+  round(corr, 2)
+  par(mfrow = c(2, 2))  
+  plot(data$Tmin_med, data$Rayonnement_med, 
+       main = "Tmin_med vs Rayonnement_med",
+       xlab = "Tmin_med (°C)", ylab = "Rayonnement_med",
+       pch = 16, col = "red")
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  data <- read.csv("../Exports/export_meteo.csv", header = TRUE, sep = ",")
+  variables <- c("Tmin_med", "Tmax_med", "RR_med", "NBJRR1_med", "NBJRR5_med", 
+                 "NBJRR10_med", "Tens_vap_med", "Force_vent_med", 
+                 "Insolation_med", "Rayonnement_med")
+  data_subset <- data[, variables]
+  corr <- cor(data_subset, use = "complete.obs")
+  print("Matrice de corrélation :")
+  round(corr, 2)
+  par(mfrow = c(1, 1))  
+  plot(data$Tmin_med, data$Rayonnement_med, 
+       main = "Tmin_med vs Rayonnement_med",
+       xlab = "Tmin_med (°C)", ylab = "Rayonnement_med",
+       pch = 16, col = "red")
+  abline(lm(Rayonnement_med ~ Tmin_med, data = data), col = "black", lwd = 2)  
+  plot(data$Tmax_med, data$Insolation_med, 
+       main = "Tmax_med vs Insolation_med",
+       xlab = "Tmax_med (°C)", ylab = "Insolation_med",
+       pch = 16, col = "blue")
+  abline(lm(Insolation_med ~ Tmax_med, data = data), col = "black", lwd = 2) 
+  plot(data$Tmax_med, data$Force_vent_med, 
+       main = "Tmax_med vs Force_vent_med",
+       xlab = "Tmax_med (°C)", ylab = "Force_vent_med",
+       pch = 16, col = "green")
+  abline(lm(Force_vent_med ~ Tmax_med, data = data), col = "black", lwd = 2)  
+  
+  par(mfrow = c(1, 1))
   

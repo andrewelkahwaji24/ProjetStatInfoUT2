@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  pdf_document: 
-    latex_engine: xelatex
+  html_document: 
     toc: true
     toc_depth: 6
-  html_document: 
+  pdf_document: 
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
 ---
@@ -3393,6 +3393,164 @@ La situation continue de se détériorer en raison de l'urbanisation croissante 
 Face à cette menace en augmentation, il est primordial d'intensifier la collaboration internationale, de mettre en place des stratégies mieux alignées sur les contextes locaux et d'accroître la sensibilisation des citoyens aux dangers potentiels. 
 
 Devant ces défis complexes, il demeure crucial d'adopter une stratégie préventive et intégrée, associée à des politiques de résilience plus audacieuses, afin de minimiser les effets des incendies sur l'homme, l'environnement et l'économie dans ces nations.
+
+#### 5.3.6 Analyse des Incendies en Europe
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+
+df <- read_csv("../Data/annual-number-of-fires.csv")
+df_filtre <- df %>% filter(Year >= 2012 & Year <= 2025)
+resume_total <- df_filtre %>%
+  group_by(Entity) %>%
+  summarise(total = sum(`Annual number of fires`, na.rm = TRUE)) %>%
+  arrange(desc(total))
+
+pays_europe <- c(
+  "Albania", "Andorra", "Armenia", "Austria", "Azerbaijan", "Belarus", "Belgium", "Bosnia and Herzegovina",
+  "Bulgaria", "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", "Finland", "France", "Georgia",
+  "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kazakhstan", "Kosovo", "Latvia", "Liechtenstein",
+  "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "North Macedonia",
+  "Norway", "Poland", "Portugal", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain",
+  "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "Vatican"
+)
+
+df_europe <- resume_total %>% filter(Entity %in% pays_europe)
+
+europe_map <- ne_countries(scale = "medium", returnclass = "sf")
+europe_map <- europe_map %>%
+  left_join(df_europe, by = c("name" = "Entity"))
+
+ggplot(data = europe_map) +
+  geom_sf(aes(fill = total)) +
+  scale_fill_gradientn(colors = rev(heat.colors(10)), na.value = "gray90") +
+  labs(
+    title = "Nombre d'incendies de forêt en Europe (2012–2025)",
+    fill = "Nombre d'incendies"
+  ) +
+  coord_sf(xlim = c(-25, 60), ylim = c(34, 72), expand = FALSE) +  # Zoom sur l’Europe
+  theme_minimal()
+```
+
+Cette analyse se penche sur les incendies à travers l'Europe sur une période de 13 ans. 
+
+Il est important de noter qu'elle ne se limite pas seulement aux pays méditerranéens, mais couvre également tous les pays situés sur le continent européen. 
+
+Nous allons effectuer une analyse informatique suivie d'une analyse statistique.
+
+##### 5.3.6.1 Analyse Informatique
+
+D'abord, nous chargeons les bibliothèques nécessaires pour créer notre carte.
+
+- **readr** Il s'agit d'une bibliothèque utilisée pour une lecture efficace des fichiers de données sous forme de tableau. 
+
+- **dplyr** C'est une librairie principalement utilisée pour la manipulation et le traitement des données. 
+
+- **ggplot2** C'est une bibliothèque qui va nous assister dans l'élaboration des graphiques basés sur la **Grammaire des Graphiques** de **Wilkinson**, facilitant ainsi la construction et la visualisation de graphiques complexes par superposition de couches. 
+
+- **sf** Il s'agit d'une bibliothèque utilisée pour traiter des données géospatiales vectorielles conformément aux normes internationales. 
+
+- **rnaturalearth** et **rnaturalearthdata** Il s'agit de deux ensembles qui nous donneront un accès direct aux données géographiques du projet Natural Earth, une source réputée pour ses données géographiques libres de haute qualité. 
+
+Suite à cela, nous entamons la phase d'importation et de filtrage des données en employant un chemin relatif pour accéder à notre fichier. 
+
+Nous faisons appel à la méthode prédéfinie **read_csv()** pour la lecture de ce dernier et mettons en œuvre un filtrage temporel via une prédiction logique au moyen de la fonction **filter()**.
+
+Ensuite, nous procédons à l'étape d'agrégation et de tri. Nous utilisons une stratégie d'agrégation bien établie nommée **split-apply-combine**. 
+
+Dans cette démarche, nous divisons les données par pays en employant la méthode préétablie **group_by()**, puis nous mettons en œuvre une fonction d'agrégation via le biais de la méthode **summarise** avec l'utilisation de **sum**. 
+
+Enfin, nous combinons et classons les résultats grâce à la méthode **arrange**.  
+Nous utilisons l'option **na.rm=TRUE** pour démontrer une gestion appropriée des valeurs absentes, aspect essentiel pour la robustesse de l'analyse.
+
+Ensuite, on entre dans la phase de **filtrage géographique**, où un vecteur de pays explicite est mis en place plutôt qu'une détection automatique. 
+
+Cela nous assure un contrôle précis sur le champ géographique de l'analyse. 
+
+L'opérateur **%in%** offre un filtrage vectorisé performant qui nous aide à éviter les boucles explicites.
+
+Par la suite, nous passons à l'étape de **l'intégration géospatiale**. 
+
+Pour ce faire, nous exploitons l'obtention de données géospatiales standardisées grâce à **ne_countries()**, qui permet de récupérer des objets vectoriels. 
+
+Ensuite, nous utilisons **scale="medium"** afin d'équilibrer précision et performance dans le but de régler la résolution.
+
+Après cela, on effectue une jointure relationnelle en utilisant un **left_join**, afin d'associer les données attributaires et géométriques. 
+
+Nous employons ensuite l'association explicite **c("name" = "Entity")** pour harmoniser les identifiants. 
+
+Il est important de noter que le choix du **left_join** plutôt que de l'**inner_join** est crucial, car il nous permettra de maintenir tous les pays sur la carte, même ceux dépourvus de données.
+
+Ensuite, nous entamons la phase de construction du graphique en employant la méthode prédéfinie **ggplot** qui s'appuie sur le paradigme de la **grammaire des graphiques**. 
+
+Nous superposons les couches grâce à l'approche additive en utilisant l'opérateur **+**. 
+
+De plus, nous attribuons des valeurs aux propriétés visuelles via **aes()**, ce qui implique un mappage esthétique. 
+
+Par ailleurs, nous gérons les valeurs manquantes à l'aide du paramètre **na.value** pour les pays dépourvus de données.
+
+Pour améliorer la présentation, nous utilisons la fonction **coord_sf()** pour définir l'aire d'intérêt et nous appliquons une optimisation visuelle en employant la méthode **theme_minimal()** afin de diminuer le désordre visuel.
+
+##### 5.3.6.1 Analyse Statistique
+
+Les feux de forêt, devenus depuis de nombreuses années une problématique environnementale de premier plan à l'échelle mondiale.  
+
+Dans le cadre de l'Europe, la conjonction du changement climatique, de l'augmentation de l'urbanisation et de la déforestation a accru tant les occurrences que la sévérité de ces incendies.  
+
+Cette recherche se base sur une carte représentant le nombre de feux de forêt comptabilisés de 2012 à 2025 dans plusieurs pays d'Europe.  
+
+Ce travail d'analyse vise à déchiffrer les inégalités géographiques, à identifier les raisons possibles et à en évaluer les conséquences, tout en mettant l'accent sur les défis majeurs liés à la prévention et à la gestion durable des forêts.
+
+La carte offre une perspective globale du continent européen, avec des couleurs variant du jaune clair (indiquant un faible nombre d'incendies) au bordeaux intense (qui indique un grand nombre d'incendies).  
+
+La période considérée va de 2012 à 2025, offrant ainsi une perspective à la fois rétrospective et prospective.
+
+Ainsi, les pays sont classés en fonction de la fréquence des incendies de forêt observés :
+
+En Ukraine, où le bordeaux très sombre est utilisé pour la représentation, on observe un pic avec plus de 60 000 incendies pendant cette période.
+
+La Turquie est représentée en orange, une couleur qui indique entre 30 000 et 40 000 incendies.
+
+Des pays du Sud de l'Europe tels que l'Espagne, la Grèce et l'Italie sont signalés en jaune-orange, témoignant de quelques milliers d'incendies.
+
+En revanche, les pays de l'Europe centrale, de l'ouest et du nord comme l'Allemagne, la France, la Pologne, les nations scandinaves et le Royaume-Uni affichent des nuances très claires qui symbolisent une activité incendiaire faible (moins de 5 000).
+
+La caractéristique la plus marquante de cette carte est la vivacité des couleurs en Ukraine, qui se distingue de façon incomparable.  
+
+**Cela suscite plusieurs suppositions fascinantes :**
+
+L'Ukraine est parsemée de vastes forêts mixtes et de steppes, regorgeant de combustible qui pourrait s'enflammer lors d'une sécheresse prolongée.
+
+Depuis 2014, l'instabilité géopolitique a pu provoquer une détérioration de la gestion environnementale dans certaines régions, demeurées sans surveillance appropriée et soumises à des incendies plus ardus à contrôler.
+
+L'augmentation des températures, l'occurrence de sécheresses estivales et parfois de vents forts sont exacerbées par le changement climatique, qui intensifie les dangers naturels.
+
+Située à la frontière de l'Europe et de l'Asie, la Turquie est particulièrement exposée aux incendies en raison de son climat méditerranéen sec pendant les mois d'été.  
+
+Par ailleurs, l'extension de l'urbanisation et de l'agriculture augmente le danger pour les êtres humains.
+
+Des nations telles que l'Espagne, l'Italie et la Grèce connaissent régulièrement des incendies chaque été, même si quelques-uns attirent particulièrement l'attention.  
+
+Néanmoins, grâce à la surveillance par satellite, des plans d'action rapide et l'engagement des communautés dans la prévention, leur gestion des risques a connu une amélioration.
+
+Cela pourrait justifier leurs statistiques moins élevées qu'en Ukraine ou en Turquie, malgré des conditions météorologiques favorables à l'incendie.
+
+L'Europe de l'Ouest et du Nord paraît assez protégée, grâce à un climat plus humide qui entrave la diffusion naturelle, ainsi qu'à des stratégies forestières strictes telles que l'entretien des sous-bois et la gestion soutenable des forêts.
+
+La représentation du nombre d'incendies forestiers en Europe de 2012 à 2025 met en lumière des écarts saisissants.  
+
+Bien que l'Ukraine et la Turquie semblent être les plus affectées, d'autres zones, historiquement touchées comme la Méditerranée occidentale, paraissent avoir mieux contrôlé le phénomène.  
+
+Cette recherche souligne la complexité des facteurs, entre environnement naturel, conditions climatiques et actions humaines.  
+
+Elle met également l'accent sur l'importance d'une gestion proactive, durable et collaborative des forêts en Europe.  
+
+Face à l'aggravation du changement climatique, la faculté des pays à prévoir, éviter et gérer ces désastres naturels façonnera en grande mesure le futur environnemental du continent.
 
 ## 6. Ressources
 

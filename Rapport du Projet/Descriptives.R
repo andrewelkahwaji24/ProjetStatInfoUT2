@@ -179,3 +179,166 @@ ggplot(df, aes(x = nature_sec_inc, y = Tmax_med)) +
 # Test ANOVA
 anova_test <- aov(Tmax_med ~ nature_sec_inc, data = df)
 summary(anova_test)
+
+
+
+
+install.packages("rnaturalearth")
+install.packages("rnaturalearthdata")
+install.packages("sf")  # si pas déjà fait
+
+
+
+
+
+
+```{r carte-europe-incendies, fig.width=10, fig.height=7, echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+
+# Charger les données
+df <- read_csv("../Data/annual-number-of-fires.csv")
+df_filtre <- df %>% filter(Year >= 2012 & Year <= 2025)
+resume_total <- df_filtre %>%
+  group_by(Entity) %>%
+  summarise(total = sum(`Annual number of fires`, na.rm = TRUE)) %>%
+  arrange(desc(total))
+
+# Liste des pays européens
+pays_europe <- c(
+  "Albania", "Andorra", "Armenia", "Austria", "Azerbaijan", "Belarus", "Belgium", "Bosnia and Herzegovina",
+  "Bulgaria", "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", "Finland", "France", "Georgia",
+  "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kazakhstan", "Kosovo", "Latvia", "Liechtenstein",
+  "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "North Macedonia",
+  "Norway", "Poland", "Portugal", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain",
+  "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "Vatican"
+)
+
+df_europe <- resume_total %>% filter(Entity %in% pays_europe)
+
+# Récupérer la carte des pays
+europe_map <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Joindre les données d’incendies
+europe_map <- europe_map %>%
+  left_join(df_europe, by = c("name" = "Entity"))
+
+# Tracer la carte
+ggplot(data = europe_map) +
+  geom_sf(aes(fill = total)) +
+  scale_fill_gradientn(colors = rev(heat.colors(10)), na.value = "gray90") +
+  labs(
+    title = "Nombre d'incendies de forêt en Europe (2012–2025)",
+    fill = "Nombre d'incendies"
+  ) +
+  theme_minimal()
+
+
+
+
+
+
+```{r carte-europe-incendies, fig.width=10, fig.height=7, echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+
+# Charger les données
+df <- read_csv("../Data/annual-number-of-fires.csv")
+df_filtre <- df %>% filter(Year >= 2012 & Year <= 2025)
+resume_total <- df_filtre %>%
+  group_by(Entity) %>%
+  summarise(total = sum(`Annual number of fires`, na.rm = TRUE)) %>%
+  arrange(desc(total))
+
+# Liste des pays européens
+pays_europe <- c(
+  "Albania", "Andorra", "Armenia", "Austria", "Azerbaijan", "Belarus", "Belgium", "Bosnia and Herzegovina",
+  "Bulgaria", "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", "Finland", "France", "Georgia",
+  "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kazakhstan", "Kosovo", "Latvia", "Liechtenstein",
+  "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "North Macedonia",
+  "Norway", "Poland", "Portugal", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain",
+  "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "Vatican"
+)
+
+df_europe <- resume_total %>% filter(Entity %in% pays_europe)
+
+# Charger la carte et joindre les données
+europe_map <- ne_countries(scale = "medium", returnclass = "sf")
+europe_map <- europe_map %>%
+  left_join(df_europe, by = c("name" = "Entity"))
+
+# Afficher la carte avec zoom sur l'Europe
+ggplot(data = europe_map) +
+  geom_sf(aes(fill = total)) +
+  scale_fill_gradientn(colors = rev(heat.colors(10)), na.value = "gray90") +
+  labs(
+    title = "Nombre d'incendies de forêt en Europe (2012–2025)",
+    fill = "Nombre d'incendies"
+  ) +
+  coord_sf(xlim = c(-25, 60), ylim = c(34, 72), expand = FALSE) +  # Zoom sur l’Europe
+  theme_minimal()
+
+
+
+
+
+```{r carte-europe-noms, fig.width=11, fig.height=8, echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+
+# Charger les données
+df <- read_csv("../Data/annual-number-of-fires.csv")
+df_filtre <- df %>% filter(Year >= 2012 & Year <= 2025)
+resume_total <- df_filtre %>%
+  group_by(Entity) %>%
+  summarise(total = sum(`Annual number of fires`, na.rm = TRUE)) %>%
+  arrange(desc(total))
+
+# Liste des pays européens
+pays_europe <- c(
+  "Albania", "Andorra", "Armenia", "Austria", "Azerbaijan", "Belarus", "Belgium", "Bosnia and Herzegovina",
+  "Bulgaria", "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", "Finland", "France", "Georgia",
+  "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kazakhstan", "Kosovo", "Latvia", "Liechtenstein",
+  "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "North Macedonia",
+  "Norway", "Poland", "Portugal", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain",
+  "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "Vatican"
+)
+
+df_europe <- resume_total %>% filter(Entity %in% pays_europe)
+
+# Charger les frontières et fusionner
+europe_map <- ne_countries(scale = "medium", returnclass = "sf")
+europe_map <- europe_map %>%
+  left_join(df_europe, by = c("name" = "Entity"))
+
+# Calculer les positions des labels (centroïdes)
+europe_centroids <- st_centroid(europe_map)
+
+# Affichage
+ggplot(data = europe_map) +
+  geom_sf(aes(fill = total)) +
+  geom_text(data = europe_centroids, aes(x = st_coordinates(geometry)[,1],
+                                         y = st_coordinates(geometry)[,2],
+                                         label = name),
+            size = 2.5, color = "black", check_overlap = TRUE) +
+  scale_fill_gradientn(colors = rev(heat.colors(10)), na.value = "gray90") +
+  labs(
+    title = "Nombre d'incendies de forêt en Europe (2012–2025)",
+    fill = "Nombre d'incendies"
+  ) +
+  coord_sf(xlim = c(-25, 60), ylim = c(34, 72), expand = FALSE) +
+  theme_minimal()
+
+

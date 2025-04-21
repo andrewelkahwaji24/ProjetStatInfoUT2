@@ -1803,6 +1803,17 @@ ggplot(df_criminels %>% count(mois), aes(x = mois, y = n, fill = mois)) +
 
 
 
+df_malveillance <- df_malveillance %>%
+  mutate(
+    heure_num = as.numeric(str_sub(heure, 1, 2)),
+    tranche_horaire = case_when(
+      heure_num >= 0 & heure_num < 6 ~ "Nuit (00h-06h)",
+      heure_num >= 6 & heure_num < 12 ~ "Matin (06h-12h)",
+      heure_num >= 12 & heure_num < 18 ~ "Après-midi (12h-18h)",
+      heure_num >= 18 & heure_num < 24 ~ "Soir (18h-00h)",
+      TRUE ~ "Heure inconnue"
+    )
+  )
 # Travailler le facteur pour l'ordre des mois
 df_malveillance <- df_malveillance %>%
   mutate(mois = factor(mois, levels = month.abb))  # Jan, Feb, ..., Dec
@@ -1821,4 +1832,101 @@ ggplot(df_malveillance, aes(x = mois, fill = mois)) +
 
 
 
+# Charger les bibliothèques nécessaires
+library(tidyverse)
 
+# 1️⃣ Charger les données
+df <- read_csv("../Data/donnees_incendies.csv")
+
+# 2️⃣ Filtrer les incendies de type malveillance
+df_malveillance <- df %>%
+  filter(str_detect(tolower(nature_inc_prim), "malveillance"))
+
+# 3️⃣ Extraction de l'heure et création de tranches horaires
+df_malveillance <- df_malveillance %>%
+  mutate(
+    heure_num = as.numeric(str_sub(heure, 1, 2)),
+    tranche_horaire = case_when(
+      heure_num >= 0 & heure_num < 6 ~ "Nuit (00h-06h)",
+      heure_num >= 6 & heure_num < 12 ~ "Matin (06h-12h)",
+      heure_num >= 12 & heure_num < 18 ~ "Après-midi (12h-18h)",
+      heure_num >= 18 & heure_num < 24 ~ "Soir (18h-00h)",
+      TRUE ~ "Heure inconnue"
+    )
+  )
+
+# 4️⃣ Compter les incendies par tranche horaire
+freq_observees <- df_malveillance %>%
+  count(tranche_horaire)
+
+# 5️⃣ Calcul des fréquences attendues sous l'hypothèse d'une répartition uniforme
+total_incendies <- sum(freq_observees$n)
+freq_attendues <- rep(total_incendies / nrow(freq_observees), nrow(freq_observees))
+
+# 6️⃣ Test du chi-deux
+test_chi2 <- chisq.test(freq_observees$n, p = rep(1/nrow(freq_observees), nrow(freq_observees)), rescale.p = TRUE)
+
+# Afficher les résultats du test
+test_chi2
+
+
+
+# Load required libraries
+library(tidyverse)
+
+# Read your data
+df <- read_csv("../Data/donnees_incendies.csv")
+
+# Filter for malicious fires (if needed)
+df_malveillance <- df %>%
+  filter(str_detect(tolower(nature_inc_prim), "malveillance"))
+
+# Summarize the number of incidents by month
+df_monthly_summary <- df_malveillance %>%
+  group_by(mois) %>%
+  summarise(n_incendies = n())
+
+# View the summary by month
+print(df_monthly_summary)
+
+# Optional: Ensure the months are in correct order for visualization
+df_monthly_summary <- df_monthly_summary %>%
+  mutate(mois = factor(mois, levels = month.abb))  # Jan, Feb, ..., Dec
+
+# View the final count by month for confirmation
+print(df_monthly_summary)
+
+
+
+
+# Charger les bibliothèques nécessaires
+library(tidyverse)
+library(lubridate)
+
+# Charger les données
+df <- read_csv("../Data/donnees_incendies.csv")
+
+# Filtrer les incendies de type malveillance (si nécessaire)
+df_malveillance <- df %>%
+  filter(str_detect(tolower(nature_inc_prim), "malveillance"))
+
+# Extraction de l'heure et création de tranches horaires
+df_malveillance <- df_malveillance %>%
+  mutate(
+    heure_num = as.numeric(str_sub(heure, 1, 2)),
+    tranche_horaire = case_when(
+      heure_num >= 0 & heure_num < 6 ~ "Nuit (00h-06h)",
+      heure_num >= 6 & heure_num < 12 ~ "Matin (06h-12h)",
+      heure_num >= 12 & heure_num < 18 ~ "Après-midi (12h-18h)",
+      heure_num >= 18 & heure_num < 24 ~ "Soir (18h-00h)",
+      TRUE ~ "Heure inconnue"
+    )
+  )
+
+# Agrégation du nombre d'incendies par tranche horaire
+df_tranches_horaires <- df_malveillance %>%
+  group_by(tranche_horaire) %>%
+  summarise(n_incendies = n())
+
+# Afficher les résultats
+print(df_tranches_horaires)

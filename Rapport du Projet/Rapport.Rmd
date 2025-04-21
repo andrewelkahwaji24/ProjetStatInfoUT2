@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  html_document: 
-    toc: true
-    toc_depth: 6
   pdf_document: 
     latex_engine: xelatex
+    toc: true
+    toc_depth: 6
+  html_document: 
     toc: true
     toc_depth: 6
 ---
@@ -3222,6 +3222,147 @@ En conclusion, cette analyse statistique révèle une relation inverse marquée 
 
 #### 5.3.4 Urbanisation et activités humaines
 ##### 5.3.4.1 Comparaison des incendies entre les zones rurales et urbaines
+
+```{r}
+library(tidyverse)
+
+df_incendies <- read_csv("../Data/donnees_incendies.csv")
+df_geo <- read_csv("../Data/donnees_geo.csv")
+
+df_incendies <- df_incendies %>%
+  mutate(code_INSEE = str_pad(code_INSEE, 5, pad = "0"))
+
+df_geo <- df_geo %>%
+  mutate(code_INSEE = str_pad(code_INSEE, 5, pad = "0"))
+
+df_merged <- df_incendies %>%
+  left_join(df_geo, by = "code_INSEE")
+
+df_merged <- df_merged %>%
+  mutate(categorie_altitude = case_when(
+    altitude_med < 200 ~ "Plaine (<200m)",
+    altitude_med >= 200 & altitude_med < 500 ~ "Collines (200-500m)",
+    altitude_med >= 500 ~ "Montagne (>500m)",
+    TRUE ~ "Inconnu"
+  ))
+
+freq_altitude <- df_merged %>%
+  count(categorie_altitude, name = "n_incendies") %>%
+  filter(!is.na(categorie_altitude))
+
+print(freq_altitude)
+
+ggplot(freq_altitude, aes(x = categorie_altitude, y = n_incendies, fill = categorie_altitude)) +
+  geom_col(width = 0.6, color = "white") +
+  labs(
+    title = "🔥 Répartition des incendies selon l'altitude moyenne des communes",
+    x = "Catégorie d'altitude",
+    y = "Nombre d'incendies"
+  ) +
+  scale_fill_brewer(palette = "Oranges") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+if (nrow(freq_altitude) > 1) {
+  test_chi2 <- chisq.test(freq_altitude$n_incendies)
+  print(test_chi2)
+}
+
+```
+
+1-  **Analyse Informatique:**
+
+La première phase de l'étude vise à fusionner deux ensembles de données différents : le premier comprend les détails concernant les feux (nature, date, heure, etc.), tandis que le second décrit les propriétés géographiques des communes (latitude, longitude, altitude).  
+
+Le code INSEE, qui est un identifiant unique pour chaque commune, constitue la liaison entre ces deux fichiers.  
+
+Avant de procéder à la fusion des données, une normalisation de ce champ est effectuée grâce à la méthode str_pad() pour s'assurer que tous les codes ont exactement 5 caractères, prévenant ainsi d'éventuelles erreurs de correspondance.  
+
+Cette phase de purification est indispensable pour assurer l'intégrité de la fusion des bases de données.
+
+Après la fusion de la base, nous utilisons le paramètre altitude_med pour classifier les communes en fonction de leur élévation moyenne.  
+
+On distingue trois catégories : Plaine (inférieure à 200m), Collines (200-500m) et Montagne (supérieure à 500m).  
+
+Cette segmentation facilite l'analyse tout en préservant une clarté dans la distinction des environnements.  
+
+Ce niveau est ici employé comme un indice indirect de la ruralité : les municipalités situées en plaine, généralement plus peuplées, peuvent être perçues comme étant plus urbaines, alors que celles situées en altitude (en particulier dans les zones montagneuses) ont plus de chances d'être rurales.
+
+L'assemblage des incendies selon le niveau d'altitude permet de déterminer si certains milieux géographiques sont davantage sujets aux départs de feu.
+
+Un diagramme à barres est créé avec ggplot2 pour illustrer les résultats.  Chaque barre illustre le total des incendies signalés dans les communes qui se trouvent dans l'une des trois catégories d'altitude.  
+
+Ce diagramme facilite l'identification immédiate d'une éventuelle concentration excessive d'incendies dans certaines régions.  
+
+Pour approfondir l'analyse, nous utilisons un test du chi² pour déterminer statistiquement si la distribution des incendies en fonction des classes d'altitude diffère de ce que l'on pourrait anticiper dans le cadre d'une hypothèse de distribution uniforme.  
+
+Un p-value considérablement bas (< 0.05) suggérerait que l'altitude, et par extension possiblement le niveau de ruralité, est un élément qui affecte la fréquence des incendies.
+
+2-  **Analyse Statistique:**
+
+Le diagramme est un histogramme élémentaire, composé de trois colonnes qui illustrent les classes d'altitude, chacune dépeinte dans une nuance de rouge symbolisant la force du feu : un rouge clair pour les « Collines (200-500m) », un rouge intermédiaire pour la « Montagne (>500m) », et un rouge plus soutenu pour la « Plaine (<200m) ».  
+
+On remarque tout de suite une première constatation : les plaines dominent sans conteste, avec presque 600 incendies, alors que les collines et les montagnes montrent des chiffres considérablement plus faibles, avec environ 300 et 200 incendies respectivement.  
+
+Ce contraste visuel est frappant : les zones basses paraissent être un lieu en proie aux flammes, alors que les régions élevées offrent une certaine sécurité face au feu.
+
+Estimons les fréquences approximatives pour chaque catégorie d’altitude
+
+- **Plaine (<200m):** 598 incendies.
+- **Collines (200-500m):** 277 incendies.
+- **Montagne (>500m):**327 incendies.
+
+Le total des incendies sur l’ensemble des catégories s’élève à environ 1100 incendies. 
+
+Calculons la répartition relative pour mieux comprendre la contribution de chaque catégorie :
+
+- **Plaine (<200m):** 598 / 1202 ≈ 49.75 %.
+- **Collines (200-500m):** 277 / 1202 ≈ 23.04 %.
+- **Montagne (>500m):** 327 / 1202 ≈ 27,20 %.
+
+Plus de la moitié des incendies se produisent dans les plaine, une statistique qui attire l'attention et indique une sensibilité spécifique aux feux à basse altitude.  
+
+Bien que les montagnes se classent en second, leur occurrence est nettement inférieure, tandis que les collines semblent être les moins affectées.  
+
+Cette dissémination inégale suscite des interrogations passionnantes : pourquoi y a-t-il autant d'incendies dans les plaines, et qu'est-ce qui préserve les hauteurs ?
+
+La domination des plaines dans la répartition des incendies est indéniable : avec **49.75 %** des incidents, elles surpassent largement les autres catégories d’altitude. Les montagnes, bien qu’atteignant **27,2 %** des incendies, sont deux fois moins touchées que les plaines, et les collines, avec seulement **23.04 %**, semblent être les moins vulnérables. 
+
+Cette distribution inégale indique une relation claire entre l’altitude et la fréquence des incendies : plus l’altitude est basse, plus le risque d’incendie semble élevé.
+
+**Qu'est-ce qui rend les plaines si susceptibles aux incendies ?**
+
+Cette concentration impressionnante peut s'expliquer par plusieurs facteurs.  Pour commencer, les plaines sont souvent des régions fortement peuplées, où se trouvent des villes, des villages et des territoires cultivés.  
+
+Cette importante concentration de population accroît les risques d'incendie, qu'ils aient lieu accidentellement (à l'instar des incendies secondaires représentés dans le premier graphique) ou intentionnellement (par exemple, les incendies délibérés mentionnés dans les graphiques précédents).  
+
+Les actions humaines telles que l'agriculture, l'industrialisation et l'urbanisation augmentent les risques : la présence de champs de blé desséchés durant l'été, d'entrepôts contenant des matériaux combustibles ou de résidences construites à proximité les unes des autres favorise la diffusion du feu.
+
+Par la suite, les conditions écologiques des plaines ont une importance capitale. 
+Les températures à basse altitude ont tendance à être plus hautes, principalement durant l'été (comme illustré dans le graphique de répartition mensuelle, qui montre un maximum en juillet-août).  
+
+Dans ces zones, la sécheresse régulière dessèche la flore et les terres, constituant un environnement favorable aux feux de forêt.  
+
+En outre, les plaines sont généralement soumises à des vents plus réguliers et moins entravés par le relief, ce qui peut favoriser la diffusion des flammes une fois un incendie allumé.
+
+Les collines, en raison de leur fréquence plus faible, pourraient bénéficier d'une protection naturelle.
+
+Entre 200 et 500 mètres d'altitude, la diversité de la végétation est généralement plus importante, avec des zones moins arides comparées à la plaine, et les températures y sont un peu plus fraîches.  
+
+Par ailleurs, les collines ont souvent une densité de population plus faible, diminuant ainsi les chances d'incendies intentionnels ou accidentels. 
+
+Cependant, leur terrain accidenté peut entraver l'accès aux secours, ce qui pourrait exacerber les incendies une fois allumés, même si leur occurrence demeure moins fréquente.
+
+Les montagnes affichent une dynamique complexe, avec un rythme qui se situe entre le régulier et l'irréguier.
+
+Au-delà de 500 mètres, les températures plus basses et une humidité possiblement plus importante (en raison des précipitations orographiques) peuvent freiner l'avancement des feux.
+
+Toutefois, les forêts touffues, souvent présentes en montagne, représentent une source significative de combustible, particulièrement lorsqu'elles sont asséchées durant l'été.  
+
+Bien que les feux de montagne soient moins courants, ils peuvent s'avérer plus difficiles à maîtriser en raison des terrains escarpés et du manque d'accessibilité des communes, ce qui pourrait justifier leur fréquence notable par rapport aux collines.
+
+
+
 ##### 5.3.4.2 Activités humaines à risque (travaux/particuliers)
 ##### 5.3.4.3 Profil temporel des incendies criminels
 

@@ -4045,6 +4045,38 @@ Il apparaît donc que, tant en France qu'en Italie, la répartition géographiqu
 
 ##### Espagne
 
+```{python}
+import geopandas as gpd
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("../incendios.csv" , delimiter = ';')
+
+chemin_fichier_geojson = "../spain.geojson"  
+gdf_regions = gpd.read_file(chemin_fichier_geojson)
+
+fig, ax = plt.subplots(figsize=(15, 15))  
+
+gdf_regions.plot(ax=ax, color="lightgray", edgecolor="black")
+
+ax.scatter(df["longitud"], df["latitud"], color="red", s=50, label="Incendies")
+
+ax.set_xlim([ -9.5, 4 ])  # Limites de la longitude pour l'Espagne
+ax.set_ylim([36, 43.8])    # Limites de la latitude pour l'Espagne
+
+plt.title("Carte des Incendies en Espagne par Région", fontsize=20)
+plt.legend()
+
+ax.set_axis_off()
+
+plt.savefig("carte_incendies_espagne_grande_avec_points_agrandis.png", dpi=600, bbox_inches='tight')
+
+# Afficher la carte
+plt.show()
+
+```
+
+
 En 2022, obtenir des informations précises sur les feux en Espagne s'avère compliqué à cause de la diversité des sources et des spécificités des rapports.  
 
 Toutefois, des projections basées sur les observations antérieures et les analyses d'entités comme la Fondation MAPFRE indiquent que près de 200 000 incendies ont été dénombrés, ce qui représente une hausse par rapport à 2019 où le nombre estimé était approximativement de 184 000 incendies.  

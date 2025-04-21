@@ -1930,3 +1930,72 @@ df_tranches_horaires <- df_malveillance %>%
 
 # Afficher les résultats
 print(df_tranches_horaires)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(tidyverse)
+
+# 1️⃣ Charger les données
+df_incendies <- read_csv("../Data/donnees_incendies.csv")
+df_geo <- read_csv("../Data/donnees_geo.csv")
+
+# 2️⃣ Harmoniser les codes INSEE
+df_incendies <- df_incendies %>%
+  mutate(code_INSEE = str_pad(code_INSEE, 5, pad = "0"))
+
+df_geo <- df_geo %>%
+  mutate(code_INSEE = str_pad(code_INSEE, 5, pad = "0"))
+
+# 3️⃣ Fusionner les deux jeux de données
+df_merged <- df_incendies %>%
+  left_join(df_geo, by = "code_INSEE")
+
+# 4️⃣ Catégoriser l'altitude (par exemple en 3 classes)
+df_merged <- df_merged %>%
+  mutate(categorie_altitude = case_when(
+    altitude_med < 200 ~ "Plaine (<200m)",
+    altitude_med >= 200 & altitude_med < 500 ~ "Collines (200-500m)",
+    altitude_med >= 500 ~ "Montagne (>500m)",
+    TRUE ~ "Inconnu"
+  ))
+
+# 5️⃣ Compter les incendies par catégorie d'altitude
+freq_altitude <- df_merged %>%
+  count(categorie_altitude, name = "n_incendies") %>%
+  filter(!is.na(categorie_altitude))
+
+print(freq_altitude)
+
+# 6️⃣ Visualiser
+ggplot(freq_altitude, aes(x = categorie_altitude, y = n_incendies, fill = categorie_altitude)) +
+  geom_col(width = 0.6, color = "white") +
+  labs(
+    title = "🔥 Répartition des incendies selon l'altitude moyenne des communes",
+    x = "Catégorie d'altitude",
+    y = "Nombre d'incendies"
+  ) +
+  scale_fill_brewer(palette = "Oranges") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+# 7️⃣ Test du chi² pour voir si la répartition est significativement différente
+if (nrow(freq_altitude) > 1) {
+  test_chi2 <- chisq.test(freq_altitude$n_incendies)
+  print(test_chi2)
+}
+

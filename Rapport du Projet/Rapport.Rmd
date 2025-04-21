@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  pdf_document: 
-    latex_engine: xelatex
+  html_document: 
     toc: true
     toc_depth: 6
-  html_document: 
+  pdf_document: 
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
 ---
@@ -3224,6 +3224,216 @@ En conclusion, cette analyse statistique révèle une relation inverse marquée 
 ##### 5.3.4.1 Comparaison des incendies entre les zones rurales et urbaines
 ##### 5.3.4.2 Activités humaines à risque (travaux/particuliers)
 ##### 5.3.4.3 Profil temporel des incendies criminels
+
+###### 5.3.4.3.1 Profil horaire des incendies criminels
+```{r}
+library(tidyverse)
+library(lubridate)
+
+df <- read_csv("../Data/donnees_incendies.csv")
+
+df_malveillance <- df %>%
+  filter(str_detect(tolower(nature_inc_prim), "malveillance"))
+
+df_malveillance <- df_malveillance %>%
+  mutate(
+    heure_num = as.numeric(str_sub(heure, 1, 2)),
+    tranche_horaire = case_when(
+      heure_num >= 0 & heure_num < 6 ~ "Nuit (00h-06h)",
+      heure_num >= 6 & heure_num < 12 ~ "Matin (06h-12h)",
+      heure_num >= 12 & heure_num < 18 ~ "Après-midi (12h-18h)",
+      heure_num >= 18 & heure_num < 24 ~ "Soir (18h-00h)",
+      TRUE ~ "Heure inconnue"
+    )
+  )
+
+ggplot(df_malveillance, aes(x = tranche_horaire, fill = tranche_horaire)) +
+  geom_bar(width = 0.7, color = "white") +
+  labs(
+    title = "⏰ Profil horaire des incendies criminels",
+    x = "Tranche horaire",
+    y = "Nombre d'incendies"
+  ) +
+  scale_fill_brewer(palette = "Reds") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+1-  **Analyse Informatique:**
+
+En premier lieu, les données ont été sélectionnées pour ne garder que les incendies de nature malveillante.  
+
+Ceci a été accompli en utilisant la fonction filter() de dplyr, couplée à l'usage de str_detect(), qui recherche la présence du mot « malveillance » dans la colonne nature_inc_prim.  
+
+Ce filtrage est crucial, puisqu'il assure que l'analyse se focalise exclusivement sur les incendies d'origine criminelle, évitant ainsi l'inclusion d'événements causés par des facteurs naturels ou accidentels.
+
+Par la suite, l'élément horaire a été dérivé de la colonne heure.  
+
+L'heure a été obtenue en format numérique grâce à la fonction str_sub() et transformée en format numérique pour simplifier les opérations ultérieures.  
+
+Ces données horaires ont par la suite été réparties en différentes plages horaires, à savoir : « Nuit (00h-06h) », « Matin (06h-12h) », « Après-midi (12h-18h) » et « Soir (18h-00h) ».  
+
+Cette conversion a rendu possible la classification des incendies en fonction des moments précis de la journée, ce qui simplifie leur analyse comparative.
+
+Ce graphique produit à partir de ces informations emploie un histogramme pour illustrer le nombre d'incendies criminels selon les plages horaires.
+
+L'axe des x présente les différentes plages horaires, tandis que l'axe des y montre le nombre d'incendies observés pour chaque plage horaire.  
+
+Chaque barre du graphique illustre une plage horaire précise et son niveau de remplissage est teinté selon la gamme de couleurs Reds, parfaitement appropriée pour visualiser la fréquence des événements (plus la couleur est sombre, plus la fréquence se révèle être importante).  
+
+Il n'y a pas de légende sur le graphique, car la couleur des barres sert déjà à distinguer chaque intervalle horaire.
+
+2-  **Analyse Statistique:**
+
+Le diagramme nommé « Profil horaire des incendies criminels » représente la distribution des incendies criminels sur une durée de 24 heures, segmentée en quatre intervalles horaires spécifiques : « Matin (06h-12h) », « Après-midi (12h-18h) », « Soir (18h-00h) », et « Nuit (00h-06h) ».  
+
+L'axe horizontal illustre ces intervalles de temps, alors que l'axe vertical dénote le nombre d'incendies, sur une échelle qui varie de 0 à 350.
+
+Cette étude vise à scruter la répartition des incendies criminels selon les moments de la journée, à déterminer les créneaux horaires les plus problématiques, à analyser les facteurs susceptibles d'expliquer ces fluctuations, et à débattre des conséquences statistiques et opérationnelles de ces découvertes dans un cadre de prévention et d'investigation.
+
+Le diagramme est un histogramme basique où chaque barre représente un créneau horaire de 6 heures, englobant ainsi la totalité de la journée.  
+
+Chaque segment est représenté par une barre de couleur distincte : un rose clair pour l'« Après-midi (12h-18h) », un rose moyen pour le « Matin (06h-12h) », un rouge sombre pour le « Soir (18h-00h) » et un rouge plus pâle pour la « Nuit (00h-06h) ».  
+
+Une première analyse révèle une variation significative dans la fréquence des incendies criminels en fonction des plages horaires.
+
+L'intervalle « Après-midi (12h-18h) » montre la plus grande fréquence, frôlant les 350 incendies, alors que l'intervalle « Nuit (00h-06h) » enregistre la fréquence la plus faible, avec environ 50 incendies.  
+
+Les plages horaires « Matin (06h-12h) » et « Soir (18h-00h) » se positionnent à des niveaux moyens, avec des fréquences estimées respectivement autour de 75 et 80 incendies.
+
+Cette représentation indique une importante occurrence des incendies criminels durant l'après-midi, ce qui pourrait témoigner de dynamiques comportementales, sociales ou environnementales propres à ce moment de la journée.  
+
+Pour effectuer une analyse quantitative précise, procédons à l'estimation des fréquences à partir du graphique.
+
+- **Après-midi (12h-18h)**: ~325 incendies.
+- **Soir (18h-00h)**: ~80 incendies.
+- **Matin (06h-12h)**: ~35 incendies.
+- **Nuit (00h-06h)**: ~82 incendies.
+
+Test du Chi-Deux
+- **Hypothèse nulle (H0)** : Les incendies criminels sont répartis de manière uniforme parmi les différentes tranches horaires ("Nuit", "Matin", "Après-midi", "Soir").
+- **Hypothèse alternative (H1)** : La répartition des incendies criminels varie entre les différentes tranches horaires.
+
+```{r}
+library(tidyverse)
+df <- read_csv("../Data/donnees_incendies.csv")
+df_malveillance <- df %>%
+  filter(str_detect(tolower(nature_inc_prim), "malveillance"))
+df_malveillance <- df_malveillance %>%
+  mutate(
+    heure_num = as.numeric(str_sub(heure, 1, 2)),
+    tranche_horaire = case_when(
+      heure_num >= 0 & heure_num < 6 ~ "Nuit (00h-06h)",
+      heure_num >= 6 & heure_num < 12 ~ "Matin (06h-12h)",
+      heure_num >= 12 & heure_num < 18 ~ "Après-midi (12h-18h)",
+      heure_num >= 18 & heure_num < 24 ~ "Soir (18h-00h)",
+      TRUE ~ "Heure inconnue"
+    )
+  )
+freq_observees <- df_malveillance %>%
+  count(tranche_horaire)
+total_incendies <- sum(freq_observees$n)
+freq_attendues <- rep(total_incendies / nrow(freq_observees), nrow(freq_observees))
+test_chi2 <- chisq.test(freq_observees$n, p = rep(1/nrow(freq_observees), nrow(freq_observees)), rescale.p = TRUE)
+test_chi2
+```
+
+Cela signifie que nous rejetons l'hypothèse nulle et acceptons l'hypothèse alternative, concluant ainsi que la répartition des incendies criminels n'est pas uniforme entre les tranches horaires. Ce résultat montre que certains moments de la journée ou de la nuit sont plus propices aux actes criminels, suggérant un comportement influencé par des facteurs temporels.
+
+###### 5.3.4.3.2 Répartition mensuelle des incendies malveillants
+
+```{r}
+df_malveillance <- df_malveillance %>%
+  mutate(
+    heure_num = as.numeric(str_sub(heure, 1, 2)),
+    tranche_horaire = case_when(
+      heure_num >= 0 & heure_num < 6 ~ "Nuit (00h-06h)",
+      heure_num >= 6 & heure_num < 12 ~ "Matin (06h-12h)",
+      heure_num >= 12 & heure_num < 18 ~ "Après-midi (12h-18h)",
+      heure_num >= 18 & heure_num < 24 ~ "Soir (18h-00h)",
+      TRUE ~ "Heure inconnue"
+    )
+  )
+df_malveillance <- df_malveillance %>%
+  mutate(mois = factor(mois, levels = month.abb))  # Jan, Feb, ..., Dec
+
+ggplot(df_malveillance, aes(x = mois, fill = mois)) +
+  geom_bar(width = 0.7, color = "white") +
+  labs(
+    title = "📆 Répartition mensuelle des incendies malveillants",
+    x = "Mois",
+    y = "Nombre d'incendies"
+  ) +
+  scale_fill_brewer(palette = "Reds") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+1-  **Analyse Informatique:**
+
+La première phase de cette étude implique l'organisation des données pour assurer leur interprétation et présentation correctes.  
+
+Dans ce cas, nous avons employé la colonne indiquant les mois, qui était initialement présentée sous forme d'abréviations (par exemple, « Jan », « Feb »), mais de manière désordonnée.
+
+Afin d'assurer une représentation précise sur le graphique, les mois ont été transformés en un facteur avec des niveaux qui correspondent à la séquence naturelle du calendrier (de janvier à décembre).  Cette étape est cruciale, car elle assure que les mois seront présentés dans l'ordre chronologique approprié sur le graphique, facilitant ainsi une analyse précise de la tendance mensuelle des incendies.
+
+Après traitement des données, un diagramme à barres est mis en place pour illustrer le nombre de feux criminels par mois au cours de l'année.  
+
+Sur le graphique, chaque barre illustre un mois, et sa hauteur indique le nombre d'incendies qui se sont produits durant ce mois spécifique.
+
+L'emploi d'un diagramme à barres facilite une comparaison entre les divers mois, mettant en évidence instantanément quels mois présentent un nombre supérieur ou inférieur d'incendies criminels.  
+
+L'utilisation d'une gamme de couleurs « Reds » souligne aussi les fluctuations dans la force des incendies, des teintes plus éclatantes signalant des phases d'activité criminelle accrue.
+
+L'étude du graphique facilite l'identification des tendances saisonnières ou mensuelles.  Si certaines barres semblent manifestement plus élevées que d'autres, cela indique que les actes criminels liés aux incendies ont lieu plus fréquemment à certains mois.
+
+Par exemple, si l'on observe des pics pendant les mois d'été, cela peut suggérer que les incendies criminels sont liés à des éléments climatiques comme des chaleurs plus intenses et une augmentation de l'activité extérieure, souvent favorables à ce genre de méfait.
+
+2-  **Analyse Statistique:**
+
+Le diagramme est une représentation sous forme d'histogramme où chaque colonne symbolise un mois de l'année, teintée dans des nuances de rouge allant du plus clair (janvier) au plus soutenu (septembre).
+
+Cette progression chromatique génère une perception visuelle de montée et descente, qui reflète les fluctuations dans la fréquence des feux malveillants.  Un premier constat met en lumière une disparité marquée : les mois de juillet et août se démarquent nettement avec des occurrences avoisinant les 150 incendies, tandis que mai se retrouve à son niveau le plus bas, comptabilisant à peine une dizaine d'incendies.  Les autres mois varient entre ces pôles, créant une courbe qui paraît refléter un cycle saisonnier.
+
+Janvier : 15 incendies.
+Février : 26 incendies.
+Mars : 41 incendies.
+Avril : 28 incendies.
+Mai : 6 incendies.
+Juin : 39 incendies.
+Juillet : 124 incendies.
+Août : 136 incendies (maximum).
+Septembre : 69 incendies.
+Octobre : 26 incendies.
+Novembre : 6 incendies.
+Décembre : 6 incendies.
+
+En regroupant ces évaluations, le nombre annuel d'incendies intentionnels se chiffre à près de 522.
+
+Juillet et août, qui sont les mois d'été, constituent une part importante, représentant presque 48 % du total (260 / 522 ≈ 49,8%).  
+
+Par contre, le mois de mai se remarque comme une exception, avec seulement 1,15 % des incendies (6 sur 522).  
+
+Cette distribution mensuelle illustre une courbe en forme de cloche asymétrique, centrée autour de l'été, présentant des extrémités basses en début et fin d'année.
+
+Sans aucun doute, l'été est la saison la plus cruciale, regroupant plus de la moitié des feux criminels annuels. 
+
+Les mois de juillet et août, enregistrant respectivement 124 et 136 incendies, constituent un sommet estival remarquable qui laisse penser à une recrudescence de l'activité criminelle durant cette période. 
+
+Toutefois, bien que le printemps se caractérise par une certaine constance en mars et avril, il est surtout marqué par un net déclin en mai, qui semble presque épargné par les feux malintentionnés. 
+
+Pour ce qui est de l'hiver et de l'automne, ils présentent des occurrences basses et assez constantes, variant entre 10 et 40 feux mensuels, avec une petite augmentation en septembre (69 feux), qui pourrait signaler un passage de l'été vigoureux à l'automne plus tranquille.
+
+Cette répartition saisonnière n'est pas régulière : l'été se distingue comme une phase de crise, alors que le reste de l'année présente une criminalité plus tempérée, interrompue par l'irrégularité de mai.  
+
+Cette périodicité indique des éléments saisonniers ou comportementaux qui nécessitent une étude détaillée.
+
+Pour résumer, cette étude sur la distribution mensuelle des incendies criminels met en lumière un fait accablant : l'été, en particulier les mois de juillet et août, est la période privilégiée pour les feux criminels, représentant près de 48 % des incidents sur l'année.  
+
+Ce pic estival, associé aux schémas horaires des graphiques antérieurs (12h-18h pour les incendies criminels, 15h-21h pour les secondaires), fournit une vision précise des moments critiques : les chaudes après-midi d'été.
+
+
+
 ##### 5.3.4.4 Facteurs prédictifs des incendies criminels
 
 

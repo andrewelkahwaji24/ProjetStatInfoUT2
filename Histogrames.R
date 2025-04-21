@@ -1698,3 +1698,127 @@ test_chi2 <- chisq.test(frequences_observees$n, p = rep(1 / nrow(frequences_obse
 
 print(frequences_observees)
 print(test_chi2)
+
+
+
+
+
+
+library(tidyverse)
+library(lubridate)
+
+# 1️⃣ Charger les données
+df <- read_csv("../Data/donnees_incendies.csv")
+
+# 2️⃣ Filtrer les incendies de type malveillance
+df_malveillance <- df %>%
+  filter(str_detect(tolower(nature_inc_prim), "malveillance"))
+
+# 3️⃣ Extraction de l'heure et création de tranches horaires
+df_malveillance <- df_malveillance %>%
+  mutate(
+    heure_num = as.numeric(str_sub(heure, 1, 2)),
+    tranche_horaire = case_when(
+      heure_num >= 0 & heure_num < 6 ~ "Nuit (00h-06h)",
+      heure_num >= 6 & heure_num < 12 ~ "Matin (06h-12h)",
+      heure_num >= 12 & heure_num < 18 ~ "Après-midi (12h-18h)",
+      heure_num >= 18 & heure_num < 24 ~ "Soir (18h-00h)",
+      TRUE ~ "Heure inconnue"
+    )
+  )
+
+# 4️⃣ Graphe : distribution par tranche horaire
+ggplot(df_malveillance, aes(x = tranche_horaire, fill = tranche_horaire)) +
+  geom_bar(width = 0.7, color = "white") +
+  labs(
+    title = "⏰ Profil horaire des incendies criminels",
+    x = "Tranche horaire",
+    y = "Nombre d'incendies"
+  ) +
+  scale_fill_brewer(palette = "Reds") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+library(tidyverse)
+
+# Charger les données
+df <- read_csv("../Data/donnees_incendies.csv")
+
+# Filtrer les incendies criminels
+df_criminels <- df %>%
+  filter(nature_inc_prim == "Criminel")
+
+# Vérifier les mois disponibles
+unique(df_criminels$mois)
+
+# Graphe du nombre d'incendies criminels par mois
+df_criminels %>%
+  count(mois) %>%
+  ggplot(aes(x = factor(mois, levels = month.abb), y = n, fill = mois)) +
+  geom_col(width = 0.6, color = "white") +
+  scale_fill_brewer(palette = "Reds") +
+  labs(
+    title = "🔥 Incendies criminels par mois",
+    x = "Mois",
+    y = "Nombre d'incendies"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", color = "#B22222"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "none"
+  )
+
+colnames(df)
+unique(df$mois)
+
+
+
+library(tidyverse)
+
+# 🔥 Filtrer les incendies criminels uniquement
+df_criminels <- df %>%
+  filter(nature_inc_prim == "Criminel") %>%
+  filter(!is.na(mois)) %>%
+  mutate(
+    mois = factor(mois, levels = month.abb)  # Pour trier les mois dans l'ordre
+  )
+
+# 📊 Graphe du nombre d'incendies criminels par mois
+ggplot(df_criminels %>% count(mois), aes(x = mois, y = n, fill = mois)) +
+  geom_col(width = 0.7, color = "white") +
+  scale_fill_brewer(palette = "Reds") +
+  labs(
+    title = "🔥 Incendies criminels par mois",
+    subtitle = "Analyse temporelle des actes de malveillance",
+    x = "Mois",
+    y = "Nombre d'incendies"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", color = "#B22222"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "none"
+  )
+
+
+
+# Travailler le facteur pour l'ordre des mois
+df_malveillance <- df_malveillance %>%
+  mutate(mois = factor(mois, levels = month.abb))  # Jan, Feb, ..., Dec
+
+# Graphe par mois
+ggplot(df_malveillance, aes(x = mois, fill = mois)) +
+  geom_bar(width = 0.7, color = "white") +
+  labs(
+    title = "📆 Répartition mensuelle des incendies malveillants",
+    x = "Mois",
+    y = "Nombre d'incendies"
+  ) +
+  scale_fill_brewer(palette = "Reds") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+
+
+

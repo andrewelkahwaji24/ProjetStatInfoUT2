@@ -1449,3 +1449,80 @@ ggplot(data = europe_map) +
   ) +
   coord_sf(xlim = c(-25, 60), ylim = c(34, 72), expand = FALSE) +  # Zoom sur l’Europe
   theme_minimal()
+
+
+
+
+install.packages("lubridate")  # Exécuter une seule fois si le package n'est pas installé
+
+# 📦 Chargement des packages
+library(tidyverse)
+library(lubridate)
+
+# 📂 Charger les données (adapter le chemin si besoin)
+df <- read_csv("../Data/donnees_incendies.csv")
+
+# 🕒 Traitement des plages horaires
+df <- df %>%
+  mutate(
+    heure_num = as.numeric(str_sub(heure, 1, 2)),  # extrait l'heure (ex: "14:30" -> 14)
+    tranche_horaire = case_when(
+      heure_num >= 0 & heure_num < 3 ~ "00-03h",
+      heure_num >= 3 & heure_num < 6 ~ "03-06h",
+      heure_num >= 6 & heure_num < 9 ~ "06-09h",
+      heure_num >= 9 & heure_num < 12 ~ "09-12h",
+      heure_num >= 12 & heure_num < 15 ~ "12-15h",
+      heure_num >= 15 & heure_num < 18 ~ "15-18h",
+      heure_num >= 18 & heure_num < 21 ~ "18-21h",
+      heure_num >= 21 & heure_num <= 23 ~ "21-24h",
+      TRUE ~ "Heure inconnue"
+    )
+  )
+
+df <- read_csv("../Data/donnees_incendies.csv")
+
+# 📊 Comptage des incendies par tranche horaire et type
+df_summary <- df %>%
+  group_by(tranche_horaire, nature_inc_sec) %>%
+  summarise(n = n(), .groups = "drop")
+
+# 🎨 Graphe empilé
+ggplot(df_summary, aes(x = tranche_horaire, y = n, fill = nature_inc_sec)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Distribution des incendies par tranche horaire",
+    x = "Tranche horaire",
+    y = "Nombre d'incendies",
+    fill = "Nature secondaire de l'incendie"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis_d()
+
+# Re-niveaute les tranches pour l'ordre logique
+df_summary$tranche_horaire <- factor(
+  df_summary$tranche_horaire,
+  levels = c("00-03h", "03-06h", "06-09h", "09-12h", "12-15h", "15-18h", "18-21h", "21-24h")
+)
+
+# 💅 Nouveau graphe stylé
+ggplot(df_summary, aes(x = tranche_horaire, y = n, fill = nature_inc_sec)) +
+  geom_bar(stat = "identity", position = "stack", width = 0.7, color = "white", linewidth = 0.3) +
+  scale_fill_brewer(palette = "YlOrRd") +  # Palette chaude
+  labs(
+    title = "🔥 Heures critiques des incendies par nature",
+    subtitle = "Répartition des incendies secondaires selon les tranches horaires",
+    x = "Tranche horaire",
+    y = "Nombre d'incendies",
+    fill = "Nature secondaire"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, color = "#B22222"),
+    plot.subtitle = element_text(size = 12, margin = margin(b = 10)),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "right",
+    legend.background = element_rect(fill = "transparent"),
+    panel.grid.major.y = element_line(color = "#eeeeee"),
+    panel.grid.minor = element_blank()
+  )

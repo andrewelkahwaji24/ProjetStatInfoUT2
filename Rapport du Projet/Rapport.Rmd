@@ -1138,6 +1138,156 @@ Ainsi, le maximum de fréquence se produit durant l'été.
 Il est probable que la médiane, c'est-à-dire la saison durant laquelle 50% des incendies se produisent, se situe entre le printemps et l'été étant donné la forte concentration estivale.
 
 ##### 5.3.1.5 Heures critiques de déclenchement
+
+```{r}
+# 📦 Chargement des packages
+library(tidyverse)
+library(lubridate)
+
+# 📂 Charger les données
+df <- read_csv("../Data/donnees_incendies.csv")
+
+# 🕒 Traitement des plages horaires
+df <- df %>%
+  mutate(
+    heure_num = as.numeric(str_sub(heure, 1, 2)),  # extrait l'heure (ex: "14:30" -> 14)
+    tranche_horaire = case_when(
+      heure_num >= 0 & heure_num < 3 ~ "00-03h",
+      heure_num >= 3 & heure_num < 6 ~ "03-06h",
+      heure_num >= 6 & heure_num < 9 ~ "06-09h",
+      heure_num >= 9 & heure_num < 12 ~ "09-12h",
+      heure_num >= 12 & heure_num < 15 ~ "12-15h",
+      heure_num >= 15 & heure_num < 18 ~ "15-18h",
+      heure_num >= 18 & heure_num < 21 ~ "18-21h",
+      heure_num >= 21 & heure_num <= 23 ~ "21-24h",
+      TRUE ~ "Heure inconnue"
+    )
+  )
+
+# 📊 Comptage des incendies par tranche horaire et type
+df_summary <- df %>%
+  group_by(tranche_horaire, nature_inc_sec) %>%
+  summarise(n = n(), .groups = "drop")
+
+# 🧼 Re-niveautage pour un affichage logique des tranches
+df_summary$tranche_horaire <- factor(
+  df_summary$tranche_horaire,
+  levels = c("00-03h", "03-06h", "06-09h", "09-12h", "12-15h", "15-18h", "18-21h", "21-24h")
+)
+
+# 💅 Graphe stylisé (seul affiché)
+ggplot(df_summary, aes(x = tranche_horaire, y = n, fill = nature_inc_sec)) +
+  geom_bar(stat = "identity", position = "stack", width = 0.7, color = "white", linewidth = 0.3) +
+  scale_fill_brewer(palette = "YlOrRd") +
+  labs(
+    title = "🔥 Heures critiques des incendies par nature",
+    subtitle = "Répartition des incendies secondaires selon les tranches horaires",
+    x = "Tranche horaire",
+    y = "Nombre d'incendies",
+    fill = "Nature secondaire"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, color = "#B22222"),
+    plot.subtitle = element_text(size = 12, margin = margin(b = 10)),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "right",
+    legend.background = element_rect(fill = "transparent"),
+    panel.grid.major.y = element_line(color = "#eeeeee"),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+1.  **Analyse Informatique**
+
+Initialement, on importe les données à partir d'un fichier externe au format CSV en utilisant la fonction **read_csv()**, qui assure une performance maximale pour de grandes quantités de données organisées en tableau.  
+
+Cette importation présuppose la présence et une bonne structuration des champs clés, notamment l'heure à laquelle chaque incendie a eu lieu (heure) et son type secondaire (nature_inc_sec).  
+
+Le but est de combiner ces deux aspects afin d'identifier des schémas temporels de déclenchement, c'est-à-dire des créneaux horaires plus susceptibles d'être liés au démarrage d'incendies de divers types.
+
+L'analyse temporelle des données s'effectue en utilisant une segmentation basée sur des intervalles horaires fixes, divisés ici par tranches de trois heures : de minuit à 03h, de 03h à 06h, et ainsi de suite jusqu'à 21h-24h.  
+
+La conversion des heures brutes en segments horaires classés se fait par l'intermédiaire de la fonction mutate() du tidyverse, associée à une condition case_when().
+
+Cette méthode garantit un traitement vectorisé et cohérent de la colonne heure.
+
+Après avoir déterminé les créneaux horaires, les données sont regroupées en combinant les variables tranche_horaire et nature_inc_sec.  
+
+Cela donne lieu à un tableau de contingence dénormalisé, qui montre le nombre d'incendies qui se sont produits dans chaque plage horaire pour chaque type secondaire d'incendie.  
+
+Ce regroupement est réalisé en utilisant les fonctions group_by() et summarise(), conformément aux normes de manipulation de données en pipeline caractéristiques du paradigme tidyverse.  
+
+Cette compilation sert de fondement à l'analyse visuelle subséquente.
+
+La visualisation s'appuie sur le package ggplot2, très apprécié pour sa flexibilité et sa performance dans l'illustration graphique de données complexes.  
+
+On propose deux variantes du diagramme : une première d'origine, qui utilise une palette viridis conçue pour l'accessibilité (en particulier pour les personnes atteintes de daltonisme), et une seconde, plus esthétique et sémantique, tirée de la palette YlOrRd dérivée de RColorBrewer.  
+
+Cette palette de couleurs, variant du jaune clair au rouge profond, évoque instinctivement la puissance et la chaleur du feu, ce qui apporte une cohérence visuelle en rapport avec le phénomène analysé.  
+
+Le mode empilé de geom_bar() est utilisé pour visualiser à la fois le volume total d'incendies par segment horaire et leur répartition interne selon les types secondaires.
+
+L'incorporation d'aspects esthétiques — comme l'inclinaison des labels de l'axe X, le style typographique du titre, l'épaisseur des barres ou même la présence d'un fond blanc autour des segments — témoigne d'une préoccupation marquée pour la clarté du graphique.  
+
+Ces sélections respectent les meilleures méthodes en visualisation scientifique, où la transparence de l'information prévaut sur l'impact esthétique brut.  
+
+En outre, l'utilisation de factor() pour la classification manuelle de la variable tranche_horaire assure un classement basé sur l'ordre logique plutôt que sur l'ordre alphabétique des tranches, prévenant ainsi toute confusion dans l'analyse temporelle.
+
+2.  **Analyse Statistique:**
+
+Le diagramme désigné « Heures critiques des incendies par nature : Distribution des incendies secondaires selon les créneaux horaires » offre une représentation graphique des informations relatives à la périodicité des incendies secondaires en lien avec les tranches horaires sur une durée de 24 heures.  On distingue deux types majeurs d'incendies secondaires : « particulier » et « travaux », auxquels s'ajoute une catégorie supplémentaire « NA » (non attribuée).
+
+L'axe horizontal illustre les intervalles de temps (de 00h-03h à 21h-24h), alors que l'axe vertical dépeint le nombre d'incendies, avec une gamme s'étendant de 0 à 450.  
+
+Cette étude a pour objectif d'explorer la répartition temporelle des incendies secondaires, de déterminer les moments clés, et d'aborder l'importance de ces conclusions dans une perspective statistique et pratique.
+
+Le diagramme est un histogramme superposé, où chaque colonne illustre un segment horaire de trois heures.  Les segments colorés sur les barres sont : un jaune pâle pour les incendies dits « particuliers », l'orange pour ceux liés aux « travaux », et une ligne noire mince pour la catégorie « NA ».
+
+Une première analyse montre une grande fluctuation du nombre d'incendies en fonction des créneaux horaires.  Les créneaux horaires de 15h à 18h et de 18h à 21h montrent les taux les plus élevés, avoisinant les 400 incendies, alors que les plages horaires de minuit à 3h, de 3h à 6h et de 21h à minuit dénotent des fréquences très basses, en dessous de 50 incendies.
+
+Concernant la répartition par nature, les incendies classés comme « particulier » et « travaux » prédominent de manière significative, tandis que la catégorie « NA » a une contribution négligeable.  Il semble que les incendies associés aux « travaux » soient un peu plus courants que ceux classés comme « particulier » durant les périodes de forte activité (15h-18h et 18h-21h), ce qui indique une éventuelle relation entre les activités professionnelles et l'apparition de ces incendies secondaires.
+
+- 00h-03h : ~10 incendies (majoritairement "travaux", faible contribution "NA").
+- 03h-06h : ~20 incendies (similaire à la tranche précédente, avec une légère augmentation des "particuliers").
+- 06h-09h : ~20 incendies (répartition équilibrée entre "particulier" et "travaux").
+- 09h-12h : ~120 incendies (augmentation notable, avec une répartition ~50/50 entre "particulier" et "travaux").
+- 12h-15h : ~100 incendies (légère baisse par rapport à la tranche précédente, répartition similaire).
+- 15h-18h : ~400 incendies (pic maximal, avec ~200 "particulier" et ~200 "travaux").
+- 18h-21h : ~380 incendies (second pic, répartition similaire à 15h-18h).
+- 21h-24h : ~50 incendies (forte baisse, avec une contribution mineure de "NA").
+
+Il est évident que les créneaux horaires de 15h à 18h et de 18h à 21h sont les plus critiques, car ils constituent près de 80 % du nombre total d'incendies secondaires sur une journée (en supposant un total approximatif de 1000 incendies sur 24 heures, estimation fondée sur la hauteur cumulative des barres).  
+
+Cette focalisation temporelle indique un phénomène de nature cyclique associé à des éléments humains ou environnementaux, que nous examinerons plus en détail par la suite.
+
+L'analyse de la répartition entre les catégories « particulier » et « travaux » révèle une symétrie notable durant les plages horaires les plus dynamiques.  
+
+Par exemple, dans la plage horaire de 15h à 18h, les deux catégories contribuent presque de manière équivalente (~200 incendies pour chacune).  
+
+Cela pourrait suggérer que les incendies secondaires, qu'ils soient d'origine domestique (« particulier ») ou professionnelle (« travaux »), ont en commun certains facteurs déclenchants à ces moments précis, tels qu'une intensification de l'activité humaine, une augmentation de la température, ou des conditions environnementales particulières (vent, sécheresse).
+
+La catégorie « NA » demeure marginale, ne représentant jamais plus de 5 % du total à aucun moment de la journée.  
+
+Cela indique une classification efficace des données, avec peu d'incidents non attribués.  
+
+Toutefois, cette catégorie pourrait mettre en évidence des insuffisances dans la collecte de données ou des incendies dont l'origine reste inconnue, ce qui nécessite une considération spécifique dans une analyse plus détaillée.
+
+Pour structurer l'étude, envisageons la distribution des incendies comme une série temporelle discrète sur 24 heures, segmentée en 8 tranches de 3 heures.  
+
+On remarque une distribution fortement asymétrique, avec un regroupement notable entre 15h et 21h.
+
+Les créneaux horaires de pointe identifiés (15h-21h) correspondent à des moments d'intense activité humaine.
+
+Concernant les incendies de catégorie « travaux », ceux-ci peuvent correspondre à des opérations professionnelles ou industrielles qui atteignent leur point culminant en fin de journée, tels que des projets de construction ou d'entretien nécessitant l'utilisation d'équipements dangereux (soudure, machines électriques).  
+
+En ce qui concerne les incendies dits « particuliers », cette tranche horaire pourrait coïncider avec des activités domestiques telles que la préparation des repas ou l’usage d’appareils électroménagers, qui ont généralement tendance à se produire plus régulièrement en fin de journée.
+
+Des éléments environnementaux, comme la température ou l'humidité, pourraient aussi avoir une influence, particulièrement si les informations se rapportent à une saison de l'année sujette aux feux (été).  Il est probable que la diminution de l'activité humaine durant la nuit et tôt le matin soit à l'origine des basses fréquences observées entre minuit et 9h.
+
+En résumé, l'examen statistique du diagramme montre une importante concentration d'incendies secondaires entre 15h et 21h, avec une distribution équilibrée entre les catégories « particulier » et « travaux ».
+
 ##### 5.3.1.6 Cyclicité hebdomadaire
 
 ```{r}

@@ -1526,3 +1526,175 @@ ggplot(df_summary, aes(x = tranche_horaire, y = n, fill = nature_inc_sec)) +
     panel.grid.major.y = element_line(color = "#eeeeee"),
     panel.grid.minor = element_blank()
   )
+
+
+install.packages("geosphere")  # Exécuter une seule fois si le package n'est pas installé
+
+
+# 📦 Chargement des packages
+library(tidyverse)
+library(geosphere)
+
+# 🌊 Villes côtières représentatives (tu peux en ajouter plus si tu veux)
+villes_cotieres <- tibble(
+  ville = c("Brest", "Marseille", "Nice", "Biarritz", "Toulon"),
+  lat = c(48.3904, 43.2965, 43.7102, 43.4832, 43.1242),
+  lon = c(-4.4861, 5.3698, 7.2620, -1.5586, 5.9281)
+)
+
+# 📂 Charger les données d'incendies
+df_incendies <- read_csv("../Data/donnees_geo.csv")
+
+# 🧭 Calculer pour chaque incendie la distance minimale à une ville côtière
+df_incendies <- df_incendies %>%
+  filter(!is.na(longitude), !is.na(latitude)) %>%
+  rowwise() %>%
+  mutate(
+    distance_min = min(
+      map2_dbl(
+        villes_cotieres$lon, villes_cotieres$lat,
+        ~ distVincentySphere(c(longitude, latitude), c(.x, .y))
+      ) / 1000  # Convertir en kilomètres
+    )
+  ) %>%
+  ungroup()
+
+# 📊 Catégorisation par distance à la côte
+df_incendies <- df_incendies %>%
+  mutate(
+    categorie_distance_cote = case_when(
+      distance_min <= 10 ~ "Proche de la côte (<10 km)",
+      distance_min <= 50 ~ "Modéré (10-50 km)",
+      distance_min > 50 ~ "Loin de la côte (>50 km)",
+      TRUE ~ "Inconnu"
+    )
+  )
+
+# 📈 Résumé pour le graphe
+df_summary <- df_incendies %>%
+  count(categorie_distance_cote)
+
+# 🎨 Graphique : Nombre d'incendies selon la distance à la côte
+ggplot(df_summary, aes(x = categorie_distance_cote, y = n, fill = categorie_distance_cote)) +
+  geom_col(width = 0.6, color = "white") +
+  scale_fill_brewer(palette = "YlOrRd") +
+  labs(
+    title = "🔥 Risque d'incendie et proximité à la côte",
+    subtitle = "Analyse par distance minimale à des villes côtières",
+    x = "Catégorie de distance à la côte",
+    y = "Nombre d'incendies"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", color = "#B22222"),
+    axis.text.x = element_text(angle = 30, hjust = 1),
+    legend.position = "none"
+  )
+
+colnames(df_incendies)
+
+
+library(tidyverse)
+library(geosphere)
+
+# 📂 Charger les données d'incendies avec coordonnées
+df_incendies <- read_csv("../Data/donnees_geo.csv")
+
+# 🌊 Coordonnées de villes côtières françaises
+villes_cotieres <- tibble(
+  ville = c("Brest", "Marseille", "Nice", "Biarritz", "Toulon", "La Rochelle", "Dunkerque", "Ajaccio", "Calais"),
+  lat = c(48.3904, 43.2965, 43.7102, 43.4832, 43.1242, 46.1603, 51.0350, 41.9192, 50.9513),
+  lon = c(-4.4861, 5.3698, 7.2620, -1.5586, 5.9281, -1.1511, 2.3770, 8.7386, 1.8521)
+)
+
+# 🧮 Calculer la distance minimale à une ville côtière
+df_incendies <- df_incendies %>%
+  filter(!is.na(longitude), !is.na(latitude)) %>%
+  rowwise() %>%
+  mutate(
+    distance_min = min(
+      map2_dbl(
+        villes_cotieres$lon, villes_cotieres$lat,
+        ~ distVincentySphere(c(longitude, latitude), c(.x, .y))
+      ) / 1000  # en kilomètres
+    )
+  ) %>%
+  ungroup()
+
+# 🏷️ Créer des catégories de distance
+df_incendies <- df_incendies %>%
+  mutate(
+    categorie_distance_cote = case_when(
+      distance_min <= 10 ~ "Proche de la côte (<10 km)",
+      distance_min <= 50 ~ "Modéré (10-50 km)",
+      distance_min > 50 ~ "Loin de la côte (>50 km)",
+      TRUE ~ "Inconnu"
+    )
+  )
+
+# 📊 Compter les incendies dans chaque catégorie
+frequences_observees <- df_incendies %>%
+  count(categorie_distance_cote) %>%
+  filter(categorie_distance_cote != "Inconnu")
+
+# 🧪 Test du chi² avec données réelles
+total <- sum(frequences_observees$n)
+expected <- rep(total / nrow(frequences_observees), nrow(frequences_observees))
+
+# Exécution du test
+test_chi2 <- chisq.test(frequences_observees$n, p = rep(1 / nrow(frequences_observees), nrow(frequences_observees)))
+
+# 🖨️ Afficher résultats
+print(frequences_observees)
+print(test_chi2)
+
+
+
+
+
+
+library(tidyverse)
+library(geosphere)
+
+df_incendies <- read_csv("../Data/donnees_geo.csv")
+
+villes_cotieres <- tibble(
+  ville = c("Brest", "Marseille", "Nice", "Biarritz", "Toulon"),
+  lat = c(48.3904, 43.2965, 43.7102, 43.4832, 43.1242),
+  lon = c(-4.4861, 5.3698, 7.2620, -1.5586, 5.9281)
+)
+
+df_incendies <- df_incendies %>%
+  filter(!is.na(longitude), !is.na(latitude)) %>%
+  rowwise() %>%
+  mutate(
+    distance_min = min(
+      map2_dbl(
+        villes_cotieres$lon, villes_cotieres$lat,
+        ~ distVincentySphere(c(longitude, latitude), c(.x, .y))
+      ) / 1000  # en kilomètres
+    )
+  ) %>%
+  ungroup()
+
+df_incendies <- df_incendies %>%
+  mutate(
+    categorie_distance_cote = case_when(
+      distance_min <= 10 ~ "Proche de la côte (<10 km)",
+      distance_min <= 50 ~ "Modéré (10-50 km)",
+      distance_min > 50 ~ "Loin de la côte (>50 km)",
+      TRUE ~ "Inconnu"
+    )
+  )
+
+frequences_observees <- df_incendies %>%
+  count(categorie_distance_cote) %>%
+  filter(categorie_distance_cote != "Inconnu")
+
+total <- sum(frequences_observees$n)
+expected <- rep(total / nrow(frequences_observees), nrow(frequences_observees))
+
+test_chi2 <- chisq.test(frequences_observees$n, p = rep(1 / nrow(frequences_observees), nrow(frequences_observees)))
+
+print(frequences_observees)
+print(test_chi2)

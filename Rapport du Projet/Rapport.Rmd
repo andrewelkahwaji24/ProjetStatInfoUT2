@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  html_document: 
-    toc: true
-    toc_depth: 6
   pdf_document: 
     latex_engine: xelatex
+    toc: true
+    toc_depth: 6
+  html_document: 
     toc: true
     toc_depth: 6
 ---
@@ -3005,6 +3005,218 @@ Il est donc nécessaire d'ajuster les stratégies : combattre la malfaisance dan
 
 ##### 5.3.3.3 Variation de l'altitude par region
 ##### 5.3.3.4 Distance côtière et risque d’incendie
+
+```{r}
+library(tidyverse)
+library(geosphere)
+
+villes_cotieres <- tibble(
+  ville = c("Brest", "Marseille", "Nice", "Biarritz", "Toulon"),
+  lat = c(48.3904, 43.2965, 43.7102, 43.4832, 43.1242),
+  lon = c(-4.4861, 5.3698, 7.2620, -1.5586, 5.9281)
+)
+
+df_incendies <- read_csv("../Data/donnees_geo.csv")
+
+df_incendies <- df_incendies %>%
+  filter(!is.na(longitude), !is.na(latitude)) %>%
+  rowwise() %>%
+  mutate(
+    distance_min = min(
+      map2_dbl(
+        villes_cotieres$lon, villes_cotieres$lat,
+        ~ distVincentySphere(c(longitude, latitude), c(.x, .y))
+      ) / 1000  # Convertir en kilomètres
+    )
+  ) %>%
+  ungroup()
+
+df_incendies <- df_incendies %>%
+  mutate(
+    categorie_distance_cote = case_when(
+      distance_min <= 10 ~ "Proche de la côte (<10 km)",
+      distance_min <= 50 ~ "Modéré (10-50 km)",
+      distance_min > 50 ~ "Loin de la côte (>50 km)",
+      TRUE ~ "Inconnu"
+    )
+  )
+
+df_summary <- df_incendies %>%
+  count(categorie_distance_cote)
+
+ggplot(df_summary, aes(x = categorie_distance_cote, y = n, fill = categorie_distance_cote)) +
+  geom_col(width = 0.6, color = "white") +
+  scale_fill_brewer(palette = "YlOrRd") +
+  labs(
+    title = "🔥 Risque d'incendie et proximité à la côte",
+    subtitle = "Analyse par distance minimale à des villes côtières",
+    x = "Catégorie de distance à la côte",
+    y = "Nombre d'incendies"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", color = "#B22222"),
+    axis.text.x = element_text(angle = 30, hjust = 1),
+    legend.position = "none"
+  )
+
+```
+
+1-  **Analyse Informatique**
+
+On débute en déclarant les bibliothèques requises. 
+
+**tidyverse** est employé comme base principale pour la gestion des données et leur représentation visuelle, alors que **geosphere** offre les instruments indispensables pour les calculs de distance géographique, notamment le calcul précis de la distance géodésique à l'aide de la formule de **Vincenty**.
+
+Puis, une base de données fictive est créée pour illustrer un échantillon de villes côtières en France.
+
+Cette option facilite la modélisation de la présence côtière sans nécessiter l'utilisation de shapefiles géospatiaux complexes.  Les villes choisies — Brest, Marseille, Nice, Biarritz, Toulon — offrent une représentation assez équilibrée du littoral français métropolitain, englobant les façades atlantique, méditerranéenne et de la Manche. 
+
+Ce sous-ensemble est élaboré à partir d'un tibble, un format moderne conçu pour le traitement vectoriel.
+
+On procède ensuite à l'importation du jeu de données principal relatif aux incendies depuis un fichier CSV.  
+
+Ce document renferme les données géographiques exactes de chaque évènement (latitude, longitude), qui est une supposition cruciale du modèle. 
+
+Une étape de prétraitement est mise en place afin d'écarter les enregistrements incomplets, une démarche indispensable dans tout processus de données scientifiques assurant la solidité statistique et informatique des étapes suivantes.
+
+L'analyse géographique proprement dite débute avec le calcul de la distance minimale entre chaque feu et tous les points côtiers. 
+
+Ce mécanisme est réalisé grâce à l’emploi de la fonction map2_dbl() de purrr, utilisée en parallèle avec distVincentySphere() pour produire une série de distances pour chaque point d'incendie, parmi lesquelles la distance minimale est sélectionnée. 
+
+Cette opération, réalisée ligne par ligne grâce à rowwise(), représente une méthode algorithmique claire, qui permet de reproduire le comportement d'une fonction vectorisée dans un contexte non spatial.
+
+Suite au calcul des distances, le script effectue une classification en trois catégories distinctes et compréhensibles : proximité immédiate (<10 km), proximité modérée (10–50 km) et éloignement (>50 km).  
+
+Cette démarche convertit une mesure continue en une variable catégorique, facilitant ainsi l'analyse statistique descriptive et la représentation graphique.  
+
+Ce genre de discrétisation est crucial pour organiser l'information dans des contextes de prise de décision ou d'explication scientifique.
+
+Le comptage (count()) permet ensuite de résumer l'information en termes de fréquences par classe de distance, constituant ainsi le fondement du graphe final.  
+
+Celui-ci, élaboré à l'aide de ggplot2, utilise une représentation par des barres colorées, avec des nuances chaudes (YlOrRd) qui suggèrent de manière intuitive la magnitude ou la sévérité du phénomène incendiaire.  
+
+L'option de la palette et l'élimination de la légende visuelle reflètent un désir de clarté et d'efficacité visuelle.
+
+Pour finir, la mise en forme finale utilise un design minimaliste et épuré (theme_minimal()), associée à un titre attractif et une inclinaison partielle des labels de l'axe des abscisses.  Le tout témoigne d'une réflexion approfondie sur la présentation des résultats, en mettant l'accent autant sur l'esthétisme de la représentation visuelle que sur sa précision scientifique.
+
+2-  **Analyse Statistique:**
+
+Le graphique nommée « Risque d’incendie et proximité à la côte : Analyse par distance minimale à des villes côtières » offre une représentation graphique des informations concernant le nombre d'incendies en rapport avec leur éloignement minimal des cités côtières.  
+
+L'axe des abscisses divise les distances en trois catégories : « Loin de la côte (>50 km) », « Modéré (10-50 km) » et « Près de la côte (<10 km) ».
+
+L'axe vertical représente le nombre d'incendies, avec une échelle qui varie de 0 à 800.  
+
+Cette recherche se situe dans le cadre des incendies en France, une nation où les feux de forêt et les incendies secondaires sont des enjeux primordiaux, particulièrement dans les zones méditerranéennes telles que le sud-est (Provence-Alpes-Côte d'Azur) et la Corse, qui sont situées près des côtes et exposées à un climat favorable aux incendies (sécheresse, vents puissants comme le mistral).
+
+Pour établir les fondements de l'interprétation dans le cadre de cette analyse, il est nécessaire de définir plusieurs notions statistiques et géographiques :
+
+- **Proximité à la côte :** L'évaluation de la distance minimale vers une ville côtière se fait en calculant la distance géodésique (en kilomètres) entre l'emplacement de l'incendie et la cité côtière la plus proche.  Le graphique emploie des catégories (« <10 km », « 10-50 km », « >50 km ») qui représentent une transformation de cette variable continue en classes distinctes, une démarche fréquemment adoptée en statistique pour simplifier l’étude des tendances.
+
+- **Risque d’incendie :** Le danger d'incendie est une évaluation probabiliste qui fusionne la probabilité qu'un incendie se produise et ses impacts éventuels.  Il est affecté par des éléments biotiques (plantes, type de couverture forestière) et abiotiques (température, humidité, courant d'air).  Dans le domaine de la statistique, ce risque peut être représenté à l'aide de distributions de Poisson pour les événements peu fréquents, ou via des modèles de régression spatiale afin d'inclure des covariables géographiques.
+
+Le diagramme se présente sous la forme d'un histogramme simple comportant trois barres, chaque barre symbolisant une catégorie de distance par rapport à la côte.  
+
+L'altitude des barres représente le nombre d'incendies dans chaque catégorie.  
+
+Une première analyse révèle une disparité marquée entre les différentes catégories :
+
+- Loin de la côte (>50 km) : Environ 745 incendies, la catégorie la plus élevée.
+- Modéré (10-50 km) : Environ 92 incendies, une baisse significative.
+- Proche de la côte (<10 km) : Environ 8 incendies, la catégorie la plus faible.
+
+L'assignation est fortement déséquilibrée, affichant une concentration notable des incendies dans les régions situées à plus de 50 km des côtes.  
+
+Cette constatation indique un lien inverse entre la proximité du littoral et le nombre d'incendies, une supposition que nous allons vérifier statistiquement par la suite.
+
+Pour une analyse plus précise, calculons les ratios et les fréquences proportionnelles.  
+
+On peut supposer que le nombre total d'incendies observés correspond à la somme des trois catégories, soit près de 745+92+8 = 845 incendres (chiffres approximatifs basés sur une interprétation visuelle du graphique).
+
+- **Loin de la côte (>50 km):** 745/845 ≈ 88,1 % des incendies.
+- **Modéré (10-50 km) :** 92/845 ≈ 10.88 % des incendies.
+- **Proche de la côte (<10 km):** 8/845 ≈ 0.95 % des incendies.
+
+Ces pourcentages suggèrent que plus de 90 % des feux ont lieu à plus de 50 km des villes côtières, une tendance qui pourrait témoigner des divergences en termes de caractéristiques géographiques, climatiques ou humaines entre les régions côtières et les zones intérieures en France.
+
+L'importante occurrence des incendies à plus de 50 km des côtes peut être attribuée à divers éléments liés aux aspects géographiques et météorologiques de la France :
+
+- **Végétation et climat** : Les régions intérieures, telles que les forêts des Cévennes, des Alpes ou des Landes, ont généralement une couverture forestière plus dense et un climat plus sec que les zones côtières, où l'humidité de la mer peut diminuer le danger d'incendie.Dans l'Hexagone, les territoires méditerranéens (habituellement situés près du littoral) subissent des incendies, cependant, les régions arides situées à l'intérieur peuvent se révéler davantage exposées du fait de la densité de la végétation combustibles (pins, garrigue).
+
+- **Activité humaine:** Les régions qui se trouvent loin des côtes peuvent comprendre des zones rurales ou agricoles où des activités telles que la pratique du brûlage agricole ou l'emploi de machines intensifient le danger d'un incendie.Les régions côtières, fréquemment urbanisées (comme Nice et Marseille), pourraient profiter d'infrastructures améliorées pour la prévention et les interventions rapides.
+
+- **Conditions météorologiques:** Des incendies peuvent être déplacés sur de vastes étendues par des vents secs tels que le mistral, qui souffle dans le sud de la France. Cependant, leur impact est généralement modéré près du littoral en raison de l'humidité marine.  En revanche, les conditions chaudes et sèches sont plus susceptibles d'affecter les zones intérieures.
+
+Le faible nombre d’incendies près des côtes (<10 km) pourrait également refléter une densité de population plus élevée, avec des paysages plus urbanisés et moins de végétation inflammable. 
+
+Cependant, des exceptions existent, comme les incendies côtiers en Corse, où la proximité de la mer n’empêche pas les feux en raison de la topographie et de la végétation.
+
+Test du Chi deux:
+```{r}
+library(tidyverse)
+library(geosphere)
+
+df_incendies <- read_csv("../Data/donnees_geo.csv")
+
+villes_cotieres <- tibble(
+  ville = c("Brest", "Marseille", "Nice", "Biarritz", "Toulon"),
+  lat = c(48.3904, 43.2965, 43.7102, 43.4832, 43.1242),
+  lon = c(-4.4861, 5.3698, 7.2620, -1.5586, 5.9281)
+)
+
+df_incendies <- df_incendies %>%
+  filter(!is.na(longitude), !is.na(latitude)) %>%
+  rowwise() %>%
+  mutate(
+    distance_min = min(
+      map2_dbl(
+        villes_cotieres$lon, villes_cotieres$lat,
+        ~ distVincentySphere(c(longitude, latitude), c(.x, .y))
+      ) / 1000  # en kilomètres
+    )
+  ) %>%
+  ungroup()
+
+df_incendies <- df_incendies %>%
+  mutate(
+    categorie_distance_cote = case_when(
+      distance_min <= 10 ~ "Proche de la côte (<10 km)",
+      distance_min <= 50 ~ "Modéré (10-50 km)",
+      distance_min > 50 ~ "Loin de la côte (>50 km)",
+      TRUE ~ "Inconnu"
+    )
+  )
+
+frequences_observees <- df_incendies %>%
+  count(categorie_distance_cote) %>%
+  filter(categorie_distance_cote != "Inconnu")
+
+total <- sum(frequences_observees$n)
+expected <- rep(total / nrow(frequences_observees), nrow(frequences_observees))
+
+test_chi2 <- chisq.test(frequences_observees$n, p = rep(1 / nrow(frequences_observees), nrow(frequences_observees)))
+
+print(frequences_observees)
+print(test_chi2)
+
+```
+
+Nous avons fait référence au test du Chi-Deux d'adéquation, une méthode statistique, pour comparer les fréquences observées dans diverses catégories à celles qui seraient attendues en supposant une uniformité. 
+
+**Nous avons donc établi deux suppositions :**
+
+- **Hypothèse nulle (H₀) **: La répartition des incendies est uniforme parmi les trois classes de distance à la mer.Cela implique qu'il existe une chance identique d'apparition dans chaque catégorie.
+
+- **Hypothèse alternative (H₁)**: La distribution des incendies n'est pas équitable.  En d'autres termes, il y a un écart notable entre les fréquences observées et celles prévues, ce qui laisse supposer un impact de la proximité du littoral.
+
+Avec une valeur du Chi-Deux de 1302.9 et un degré de liberté de 2, nous avons une valeur p très minuscule, inférieure à 0.0001, démontrant que la différence entre les fréquences observées et attendues est fortement significative. 
+
+La valeur p dénote la probabilité que l'écart entre les fréquences observées et anticipées soit le résultat du hasard.  Une petite valeur p indique que nous pouvons refuser l'hypothèse nulle avec une grande certitude.
+
+L'analyse du Chi-Deux nous indique que la distribution des incendies n'est pas uniforme entre les trois catégories de distance à la côte.
+
+En conclusion, cette analyse statistique révèle une relation inverse marquée entre la proximité des villes côtières et le nombre d’incendies en France, avec plus de 90 % des incendies survenant à plus de 50 km des côtes.
 
 
 

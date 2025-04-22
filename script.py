@@ -1230,6 +1230,36 @@ def export_donnees_impact_pression_vapeure(fichier_output="Exports/export_impact
     except Exception as e:
         print("Erreur lors de l'exportation des données :", e)
 
+#Exportation des donnees dans la Table incendies_geographie
+
+def export_donnees_incendies_geographie(fichier_output="Exports/export_incendies_geographie.csv"):
+    try:
+        connexion, curs = connecterdb()
+        requete_sql = """
+            SELECT * 
+            FROM donnees_incendies 
+            JOIN donnees_geographie 
+            ON donnees_incendies.code_INSEE = donnees_geographie.code_INSEE
+        """
+        curs.execute(requete_sql)
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)
+            csv_ecriture.writerows(lignes)
+
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table incendies_geographie ont été exportées avec succès")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite :", e)
+    except Exception as e:
+        print("Erreur lors de l'exportation des données :", e)
+
 #Exportation des donnees dans la Table Impact_climat_urbansiation
 
 def export_donnees_impact_climat_urbanisation(fichier_output="Exports/export_impactclimaturbanisation.csv"):
@@ -1498,7 +1528,7 @@ def menu():
                 injection_table_impact_climat_urbanisation()
             elif choix2 == 13:
                 print("Injection de la Table Incendies Criminels")
-                injection_table_inendies_criminels()
+                injection_table_inendies_criminels()            
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
@@ -1573,6 +1603,7 @@ def menu():
             print("10. Exportation des donnees de la Table Incendies_temp_heure")
             print("11. Exportation des donnees de la Table Impact Pression Vapeure")
             print("12. Exportation des donnees de la Table Impact Climat Urbanisation")
+            print("14. Exportation des donnees de la Table incendies geographie")
 
 
             choix4 = int(input("Veuillez choisir une option"))
@@ -1614,8 +1645,10 @@ def menu():
                 export_donnees_impact_climat_urbanisation()
             elif choix4 == 13:
                 print("La procedure de l'exportation des donnees pour la Table Incendies Criminels a commencee")
-                export_donnees_incendies_criminels()
-
+                export_donnees_incendies_criminels()     
+            elif choix4 == 14:
+                print("La procedure de l'exportation des donnees pour la table incednies geo a commence")
+                export_donnees_incendies_geographie()
             else:
                 print("Le numero choisi est invalide ou n'existe pas")
 

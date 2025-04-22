@@ -304,6 +304,42 @@ def creer_table_incendies_criminels():
     connexion.close()
     print("La table impact_climat_urbanisation a été créée avec succès")
 
+#Creation de la Table Incendies Meteo
+
+def creer_table_incendies_meteo():
+    connexion, curs = connecterdb()
+    curs.execute(
+        '''
+        CREATE TABLE IF NOT EXISTS incendies_meteo(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code_INSEE TEXT NOT NULL,
+            commune TEXT NOT NULL,
+            surface_parcourue_m2 INTEGER NOT NULL,
+            annee INTEGER NOT NULL,
+            mois TEXT NOT NULL,
+            jour INTEGER NOT NULL,
+            heure INTEGER NOT NULL,
+            nature_inc_prim TEXT NOT NULL,
+            nature_inc_sec TEXT NOT NULL,
+            RR_med REAL NOT NULL,
+            NBJRR1_med REAL NOT NULL,
+            NBJRR5_med REAL NOT NULL,
+            NBJRR10_med REAL NOT NULL,
+            Tmin_med REAL NOT NULL,
+            Tmax_med REAL NOT NULL,
+            Tens_vap_med REAL NOT NULL,
+            Force_vent_med REAL NOT NULL,
+            Insolation_med REAL NOT NULL,
+            Rayonnement_med REAL NOT NULL
+        )
+        '''
+    )
+    connexion.commit()
+    curs.close()
+    connexion.close()
+    print("La Table incendies_meteo a été créée avec succès.")
+
+
 # Phase d'injection des donees
 # Injection des donees dans la Table Incendies
 def injecter_donnees_incendies():
@@ -832,6 +868,41 @@ def injection_table_inendies_criminels():
 
     print("Les données des incendies croisés avec les données climatiques ont été insérées avec succès.")
 
+#Injection des donnes dans la Table Incendies Meteo
+
+def injection_table_incendies_meteo():
+    # Connexion à la base de données
+    connexion, curs = connecterdb()
+
+    # Exécution de la requête SQL pour insérer les données fusionnées
+    curs.execute("""
+        INSERT INTO incendies_meteo (
+            code_INSEE, commune, surface_parcourue_m2,
+            annee, mois, jour, heure,
+            nature_inc_prim, nature_inc_sec,
+            RR_med, NBJRR1_med, NBJRR5_med, NBJRR10_med,
+            Tmin_med, Tmax_med, Tens_vap_med,
+            Force_vent_med, Insolation_med, Rayonnement_med
+        )
+        SELECT
+            i.code_INSEE, i.commune, i.surface_parcourue_m2,
+            i.annee, i.mois, i.jour, i.heure,
+            i.nature_inc_prim, i.nature_inc_sec,
+            m.RR_med, m.NBJRR1_med, m.NBJRR5_med, m.NBJRR10_med,
+            m.Tmin_med, m.Tmax_med, m.Tens_vap_med,
+            m.Force_vent_med, m.Insolation_med, m.Rayonnement_med
+        FROM incendies i
+        INNER JOIN donnees_meteo m ON i.code_INSEE = m.code_INSEE;
+    """)
+
+    # Valider les changements
+    connexion.commit()
+
+    # Fermer le curseur et la connexion
+    curs.close()
+    connexion.close()
+
+    print("Les données des incendies fusionnées avec les données météorologiques ont été insérées avec succès.")
 
 # Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
@@ -1276,6 +1347,38 @@ def export_donnees_incendies_criminels(fichier_output="Exports/export_incendies_
         print("Erreur avec la base de données SQLite :", e)
     except Exception as e:
         print("Erreur lors de l'exportation des données :", e)
+
+#Exportation des donnes de la Table Incendies Meteo
+
+import csv
+
+def export_donnees_incendies_meteo(fichier_output="Exports/export_incendies_meteo.csv"):
+    try:
+        # Connexion à la base de données
+        connexion, curs = connecterdb()
+
+        # Exécution de la requête pour récupérer toutes les données de la table incendies_meteo
+        curs.execute("SELECT * FROM incendies_meteo")
+        lignes = curs.fetchall()
+        colonnes = [description[0] for description in curs.description]
+
+        # Écriture des données dans un fichier CSV
+        with open(fichier_output, 'w', newline='', encoding='utf-8') as fichier:
+            csv_ecriture = csv.writer(fichier)
+            csv_ecriture.writerow(colonnes)  # Écrire les noms des colonnes
+            csv_ecriture.writerows(lignes)   # Écrire les données
+
+        # Fermer le curseur et la connexion
+        curs.close()
+        connexion.close()
+
+        print("Les données de la Table incendies_meteo ont été exportées avec succès.")
+
+    except sqlite3.Error as e:
+        print("Erreur avec la base de données SQLite :", e)
+    except Exception as e:
+        print("Erreur lors de l'exportation des données :", e)
+
 #Fonctions Speciales:
 
 def ajouter_colonne_altitude_zone():
@@ -1428,6 +1531,10 @@ def menu():
                 print("Creation de la Table Incendies_Criminels")
                 creer_table_incendies_criminels()
                 print("La Creation de la Table Incendies_Criminels a ete creer avec succees ")
+            elif choix1 ==14:
+                print("Creation de la Table Incendies Meteo")
+                creer_table_incendies_meteo()
+                print("La Creation de la Table Incendies Meteo a ete creer avec succees ")
 
             else:
                 print(" Le numero choisi est invalide ou n'existe pas   ")
@@ -1499,6 +1606,9 @@ def menu():
             elif choix2 == 13:
                 print("Injection de la Table Incendies Criminels")
                 injection_table_inendies_criminels()
+            elif choix2 == 14:
+                print("Injection de la Table Incendies Meteo")
+                injection_table_incendies_meteo()
             else:
                 print("  Le numero choisi est invalide ou n'existe pas  ")
 
@@ -1615,6 +1725,9 @@ def menu():
             elif choix4 == 13:
                 print("La procedure de l'exportation des donnees pour la Table Incendies Criminels a commencee")
                 export_donnees_incendies_criminels()
+            elif choix4 == 14:
+                print("La procedure de l'exportation des donnees pour la Table Incendies Meteo a commencee")
+                export_donnees_incendies_meteo()
 
             else:
                 print("Le numero choisi est invalide ou n'existe pas")

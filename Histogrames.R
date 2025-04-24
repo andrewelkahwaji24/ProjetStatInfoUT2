@@ -2529,3 +2529,53 @@ ggplot(surv_data, aes(x = time, y = surv)) +
     legend.position = "none"  # Cacher la légende
   )
 
+
+
+
+
+# 1. Charger les bibliothèques nécessaires
+library(dplyr)
+library(ggplot2)
+library(readr)
+
+# 2. Importer le fichier CSV
+data_incendies <- read_csv("../Exports/export_incendies_geo.csv")
+
+# 3. Vérifier les données
+glimpse(data_incendies)
+
+# 4. Nettoyer les données : enlever les valeurs manquantes (si nécessaire)
+data_incendies <- data_incendies %>%
+  filter(!is.na(code_INSEE), !is.na(commune))
+
+# 5. Ajouter une variable simulée de taux d'urbanisation (si tu ne l'as pas dans le fichier)
+# 👉 Tu peux remplacer ce simulateur par une vraie variable de ton dataset si tu l'as
+set.seed(42)
+taux_urbanisation_par_commune <- data_incendies %>%
+  distinct(code_INSEE, commune) %>%
+  mutate(taux_urbanisation = runif(n(), min = 0.1, max = 1))  # Valeur entre 10% et 100%
+
+# 6. Nombre d’incendies par commune
+nb_incendies_commune <- data_incendies %>%
+  group_by(code_INSEE, commune) %>%
+  summarise(nb_incendies = n(), .groups = "drop")
+
+# 7. Fusion des données avec le taux d'urbanisation
+data_finale <- nb_incendies_commune %>%
+  left_join(taux_urbanisation_par_commune, by = c("code_INSEE", "commune"))
+
+# 8. Analyse de corrélation
+cor_result <- cor.test(data_finale$nb_incendies, data_finale$taux_urbanisation, method = "spearman")
+print(cor_result)
+
+# 9. Visualisation avec ggplot2
+ggplot(data_finale, aes(x = taux_urbanisation, y = nb_incendies)) +
+  geom_point(alpha = 0.6, color = "darkred") +
+  geom_smooth(method = "lm", color = "blue", se = TRUE) +
+  labs(
+    title = "Corrélation entre urbanisation et fréquence d'incendies",
+    subtitle = paste("Coefficient Spearman:", round(cor_result$estimate, 2)),
+    x = "Taux d'urbanisation (simulé)",
+    y = "Nombre d'incendies par commune"
+  ) +
+  theme_minimal()

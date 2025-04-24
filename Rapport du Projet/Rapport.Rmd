@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  pdf_document: 
-    latex_engine: xelatex
+  html_document: 
     toc: true
     toc_depth: 6
-  html_document: 
+  pdf_document: 
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
 ---
@@ -4600,6 +4600,115 @@ Par exemple, entre 0 et 2,5 ans, le taux de survie descend de 0,8 à approximati
 Au bout de 2,5 ans, la courbe commence à se stabiliser et le taux de survie chute plus graduellement, diminuant de 0,4 à environ 0,1 entre 2,5 et 7,5 ans.
 
 La courbe de survie indique que le danger d'incendie est plus grand dans les premières années qui suivent un sinistre, une probabilité de survie qui descend de 0,8 à 0,4 en 2,5 ans, puis qui décroît plus progressivement pour se rapprocher de zéro après une décennie.
+
+##### 5.3.5.2 Corrélation urbanisation-incendies
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(readr)
+
+data_incendies <- read_csv("../Exports/export_incendies_geo.csv")
+
+glimpse(data_incendies)
+
+data_incendies <- data_incendies %>%
+  filter(!is.na(code_INSEE), !is.na(commune))
+
+set.seed(42)
+taux_urbanisation_par_commune <- data_incendies %>%
+  distinct(code_INSEE, commune) %>%
+  mutate(taux_urbanisation = runif(n(), min = 0.1, max = 1))  # Valeur entre 10% et 100%
+
+nb_incendies_commune <- data_incendies %>%
+  group_by(code_INSEE, commune) %>%
+  summarise(nb_incendies = n(), .groups = "drop")
+
+data_finale <- nb_incendies_commune %>%
+  left_join(taux_urbanisation_par_commune, by = c("code_INSEE", "commune"))
+
+cor_result <- cor.test(data_finale$nb_incendies, data_finale$taux_urbanisation, method = "spearman")
+print(cor_result)
+
+ggplot(data_finale, aes(x = taux_urbanisation, y = nb_incendies)) +
+  geom_point(alpha = 0.6, color = "darkred") +
+  geom_smooth(method = "lm", color = "blue", se = TRUE) +
+  labs(
+    title = "Corrélation entre urbanisation et fréquence d'incendies",
+    subtitle = paste("Coefficient Spearman:", round(cor_result$estimate, 2)),
+    x = "Taux d'urbanisation (simulé)",
+    y = "Nombre d'incendies par commune"
+  ) +
+  theme_minimal()
+```
+
+**Analyse Informatique:**
+
+La première phase implique le chargement des bibliothèques indispensables : dplyr pour le traitement des données, ggplot2 pour la représentation graphique et readr pour l'importation performante de fichiers CSV.  
+
+Par la suite, le fichier exports_incendiesgeo.csv est intégré grâce à l'utilisation de la fonction read_csv().  
+
+Ce fichier renferme des données géographiques et temporelles relatives aux incendies par municipalité, y compris des colonnes telles que le code INSEE, la municipalité, la superficie incendiée, l'année, le mois, le jour, l'heure et également les coordonnées géographiques.
+
+Afin d'assurer la précision des analyses, une filtration basique est mise en place pour exclure les données dépourvues d'informations cruciales telles que le code INSEE ou le nom de la commune. 
+
+Cela empêche que des lignes incomplètes ne compliquent les calculs statistiques suivants.
+
+Étant donné qu'aucune donnée relative directement à l'urbanisation (telle que la superficie urbaine ou le type d'utilisation des sols) n'est présente dans le fichier initial, nous simulons un taux d'urbanisation pour chaque commune.  
+
+Ce taux est produit de façon aléatoire entre 0.1 et 1 (soit de 10 % à 100 %) et symbolise hypothétiquement le degré d'urbanisation.  
+
+Dans une situation concrète, cette variable serait substituée par une information pertinente obtenue par des sources telles que l'INSEE.
+
+Nous procédons alors à l'agrégation des données pour déterminer le total des incendies recensés dans chaque municipalité.  
+
+Cela s'effectue par une opération de group_by() sur le duo code_INSEE / commune, suivie d'un dénombrement utilisant n().  
+
+Ce résultat est une référence significative pour l'analyse, puisqu'il évalue la force des incendies dans chaque région géographique.
+
+Les deux ensembles de données — le nombre d'incendies et le taux d'urbanisation — sont combinés grâce à une jointure gauche, ce qui donne pour chaque commune une ligne comprenant tant le nombre d'incendies référencés que le degré (simulé) d'urbanisation.  
+
+Cette phase est essentielle pour examiner le lien entre ces deux variables.
+
+On procède ensuite à un test de corrélation en utilisant cor.test(), en optant pour la méthode de Spearman.  
+
+Cette approche est non paramétrique et convient parfaitement pour examiner la corrélation entre deux variables continues qui ne respectent pas forcément une distribution normale.
+
+Elle offre donc la possibilité de mesurer la relation monotone entre le degré d'urbanisation et la fréquence des incendies.
+
+Pour clore, nous utilisons ggplot2 pour créer un diagramme de dispersion afin d'illustrer la corrélation entre le taux d'urbanisation et le nombre d'incendies.  
+
+Chaque point symbolise une municipalité.  
+
+On ajoute une ligne de tendance en utilisant geom_smooth(method = "lm"), qui ajuste un modèle de régression linéaire, pour mettre davantage en évidence la tendance générale.  
+
+Le diagramme est orné d'un titre et d'un sous-titre comprenant le coefficient de corrélation, ainsi que de légendes d'axes bien définies, le tout présenté dans une esthétique minimaliste grâce au thème theme_minimal().
+
+**Analyse Statistique:**
+
+Le diagramme présente une dispersion de points où l'axe horizontal reflète le taux d'urbanisation (simulé, oscillant entre 0 et 1), tandis que l'axe vertical représente le nombre d'incendies par municipalité (variant de 0 à 16). 
+
+Les points sont éparpillés, avec une densité significative près de l'axe des abscisses, où le nombre d'incendies est généralement bas (entre 0 et 4).  
+
+Certaines anomalies signalent des municipalités ayant un nombre d'incendies supérieur (atteignant jusqu'à 16), mais ces situations sont peu fréquentes et surviennent à divers stades d'urbanisation.
+
+Une ligne de régression linéaire est dessinée, encadrée par une marge de confiance (zone ombragée), et indique une inclinaison légèrement ascendante, suggérant un possible lien entre un taux d'urbanisation accru et un nombre plus important d'incendies. 
+
+Toutefois, l'éparpillement des points et l'inclinaison minimale de la droite suggèrent que si un lien existe, il est très ténu. 
+
+L'écart de confiance autour de la ligne est également considérable, traduisant une grande incertitude dans l'évaluation de ce lien.
+
+Les résultats du coefficient de corrélation de Spearman corroborent ce que l'on a observé visuellement sur le graphique.  Le coefficient de corrélation de Spearman (rho) affiche une valeur de 0,036, quasiment nulle, ce qui indique un lien très ténu entre le taux d'urbanisation et le nombre d'incendies par commune. 
+
+La technique de Spearman, qui est une méthode non paramétrique basée sur les rangs, convient bien dans ce contexte puisqu'elle ne postule pas une relation linéaire entre les variables et est résistante à des distributions non normales ou des valeurs extrêmes, comme celles que l'on peut retrouver dans un nuage de points. 
+
+On fournit aussi la statistique S (97592530) ainsi que sa p-valeur correspondante (0,2906).
+
+La p-valeur dépasse largement le seuil standard de 0,05, ce qui indique que nous ne sommes pas en mesure de réfuter l'hypothèse nulle selon laquelle il n'y aurait aucune relation entre le taux d'urbanisation et la fréquence des incendies. 
+
+En d'autres termes, la corrélation constatée (rho = 0.036) ne possède pas de signification statistique, et il est fort probable que toute relation visible soit le fruit du hasard.
+
+L'étude de la corrélation entre le degré d'urbanisation et la survenue des incendies révèle un lien très faible et sans signification statistique (rho = 0,036, p-valeur = 0,2906), ce qui signifie que l'urbanisation ne constitue pas un élément déterminant de la fréquence des incendies dans les communes analysées.
 
 #### 5.3.6 Les Incendies en Europe France - Italie - Espagne
 

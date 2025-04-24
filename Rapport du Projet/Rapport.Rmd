@@ -3983,9 +3983,180 @@ Effectivement, des facteurs tels que la sécheresse, la canicule ou encore la pr
 
 Par conséquent, la combinaison des impacts du climat aride et de l'urbanisation intensive génère un cadre à risque, dans lequel certaines sortes d'incidents montrent une intensité plus élevée ou une fréquence accrue. 
 
+##### 5.3.4.6 Incendies par Types de Cause
 
+1.  **Analyse Informatique:**
 
+L'analyse des origines des incendies, effectué grâce au langage R et aux bibliothèques **dplyr**, **ggplot2** et **tidyr**, s'appuie sur une approche méthodique destinée à extraire, traiter et représenter les données présentes dans le fichier export_incendies.csv.
 
+Ce processus commence par le chargement des bibliothèques indispensables, où dplyr simplifie la gestion des données grâce à des fonctions comme count et arrange, ggplot2 offre la possibilité de produire des visualisations graphiques élaborées, et tidyr réorganise les données pour une analyse intégrée.
+
+L'interprétation des résultats est réalisée à l'aide de diagrammes circulaires créés avec ggplot2, sélectionnés pour leur aptitude à illustrer les proportions de manière intuitive.
+
+Pour les causes principales, un graphique est élaboré en utilisant geom_bar(stat = "identity"), puis converti en diagramme circulaire grâce à coord_polar(theta = "y").
+
+Dans ce diagramme, chaque segment représente proportionnellement la fréquence d'une catégorie.
+
+L'esthétique est déterminée par aes(x = "", y = n, fill = nature_inc_prim), et la palette Set3 de RColorBrewer fournit une distinction visuelle nette.  
+
+Des modifications, telles que l'élimination des axes et des grilles via theme_minimal et theme(axis.text = element_blank()), améliorent la clarté de la lecture.  
+
+Un graphique comparable est créé pour les causes secondaires, en utilisant la palette Set2 et un titre approprié, favorisant une comparaison visuelle directe entre les deux catégories de causes.
+
+Pour une analyse unifiée, les causes principales et secondaires sont fusionnées grâce à la fonction gather de tidyr, qui combine les deux colonnes en une unique variable cause.  
+
+On procède ensuite à la détermination des fréquences globales en utilisant count, puis on les classe, ce qui donne un tableau des causes les plus fréquentes, sans tenir compte de leur statut.  
+
+Cette méthode globale met en lumière les éléments prédominants au niveau de l'ensemble des données.  
+
+Un troisième graphique en camembert, qui se sert de la palette Set1, met en lumière ces résultats en fournissant une synthèse explicite des causes les plus critiques.  
+
+Chaque représentation graphique est élaborée pour être facile d'accès, avec des en-têtes clairs et un design minimaliste, simplifiant la présentation des résultats à différents types d'audiences.
+
+2.  **Analyse Statistique**:
+
+**Analyse du Diagrame des Incendies de Type Primaire:**
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+data <- read.csv("../Exports/export_incendies.csv")
+
+cause_principale <- data %>%
+  count(nature_inc_prim) %>%
+  arrange(desc(n))
+
+ggplot(cause_principale, aes(x = "", y = n, fill = nature_inc_prim)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +
+  labs(title = "Répartition des Causes Principales des Incendies") +
+  theme_minimal() +
+  theme(axis.text = element_blank(), 
+        axis.title = element_blank(),
+        panel.grid = element_blank()) +
+  scale_fill_brewer(palette = "Set3") # Choisir une palette de couleurs
+```
+
+Le graphique en camembert « Répartition des Causes Principales des Incendies » illustre les statistiques de 1202 incendies, réparties comme suit : « Malveillance » avec 522 incidents, « Involontaire » avec 503 incidents, « Accidentelle » avec 138 incidents, et « Naturelle » avec 39 incidents.
+
+Quant aux proportions, on observe que « Malveillance » prédomine largement avec **522** incidents sur 1202, ce qui représente approximativement **43,4 %** des incendies. Elle est suivie de près par « Involontaire » qui compte **503 cas**, soit environ **41,8 %**. 
+
+Ces deux catégories, combinées, constituent plus de **85%** des situations, soulignant l'importance prépondérante des éléments humains, qu'ils soient délibérés ou pas. 
+
+Pour comparaison, le terme « Accidentelle » englobe seulement **138 cas**, ce qui représente à peu près **11,5 %**. Quant à « Naturelle », il est marginal et regroupe uniquement **39 cas**, soit environ **3,2 %**. 
+
+Il est évident que cette distribution n'est pas symétrique et présente une prédominance notable des causes humaines. 
+
+Par conséquent, la majorité des incendies dans cet ensemble de données sont associés à des actions ou des fautes humaines, plutôt qu'à des événements naturels ou des accidents inattendus.
+
+Sur le plan statistique, cette répartition n'est pas du tout uniforme, étant donné que les catégories ne sont pas représentées de manière équitable.  
+
+Dans un scénario idéal, chaque catégorie représenterait à peu près 25 % des cas si les causes étaient distribuées de manière juste. 
+
+Cependant, dans ce cas précis, « Malveillance » et « Involontaire » excèdent largement cette proportion, alors que « Naturelle » est nettement en dessous.  
+
+Cette diversité suggère que les incendies ne se produisent pas au hasard entre ces causes, mais qu'il y a des éléments systématiques qui favorisent les causes d'origine humaine.  
+
+Le fait que « Malveillance » et « Involontaire » soient prédominants indique une tendance où les actions délibérées et les négligences occupent une place centrale, ce qui pourrait être associé à des contextes spécifiques, qu'ils soient sociaux, culturels ou économiques, dans le cadre du jeu de données.
+
+Concernant la variabilité, les différences de fréquences sont significatives : « Malveillance » (522) et « Involontaire » (503) sont presque similaires, tandis que « Accidentelle » (138) et « Naturelle » (39) se font largement plus rares.  
+
+Cette variabilité considérable indique que les facteurs ne participent pas de façon uniforme aux incendies, ce qui pourrait entraver les stratégies de prévention si elles ne sont pas spécifiques.  
+
+Statistiquement, un incendie a approximativement **43 %** de probabilité d'être causé par un acte malveillant, et presque autant par accident, mais à peine **3 %** provenant de causes naturelles. Ces chiffres soulignent l'influence prépondérante des actions humaines sur ces statistiques.
+
+**Analyse du Diagrame des Incendies de Type Secondaire:**
+
+```{r}
+data <- read.csv("../Exports/export_incendies.csv")
+cause_secondaire <- data %>%
+  count(nature_inc_sec) %>%
+  arrange(desc(n))
+ggplot(cause_secondaire, aes(x = "", y = n, fill = nature_inc_sec)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +
+  labs(title = "Répartition des Causes Secondaires des Incendies") +
+  theme_minimal() +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.grid = element_blank()) +
+  scale_fill_brewer(palette = "Set2") # Choisir une autre palette de couleurs
+```
+
+Le graphique circulaire nommé « Répartition des Causes Secondaires des Incendies » illustre les informations relatives à 1202 incendies, classées en trois groupes : « NA » (non attribué) comprenant 699 incidents, « travaux » avec 282 événements et « particulier » totalisant 221 occurrences.
+
+En ce qui concerne les proportions, la catégorie « NA » domine largement avec 699 incidents sur un total de 1202, ce qui représente approximativement 58,2 % des incendies. Cela suggère qu'une cause secondaire spécifique n'aurait pas été détectée dans la majorité des situations.  La section « travaux » comprend 282 cas, ce qui représente approximativement 23,5%, tandis que la catégorie « particulier » inclut 221 cas, soit environ 18,4%. 
+
+Ces ratios illustrent une répartition inégale, où plus de la moitié des incendies n'ont pas de raison secondaire clairement déterminée, alors que les deux autres classifications, bien qu'importantes, sont considérablement moins courantes.
+
+Les termes « travaux » et « particulier » représentent approximativement 41,9 % des occurrences, ce qui indique que lorsqu'une cause secondaire est détectée, elle est fréquemment associée à des actions humaines précises, telles que les travaux ou les actions individuelles.
+
+Cette distribution s'écarte considérablement d'une distribution uniforme, où chaque catégorie représenterait approximativement 33,3 % des occurrences si les causes avaient une probabilité égale. 
+
+La prédominance significative de la catégorie « NA » signale une insuffisance dans la collecte ou l'attribution des données, pouvant témoigner de difficultés dans la reconnaissance des facteurs contribuant à l'aggravation des incendies.
+
+Cependant, l'apparition marquante des catégories « travaux » et « particulier » laisse supposer que les actions humaines, qu'il s'agisse de travaux de construction ou d'actions individuelles, contribuent significativement à l'intensification des incendies lorsqu'on en détermine les origines. 
+
+On note une différence significative entre les fréquences : « NA » (699) est plus du double de « travaux » (282), tandis que « particulier » (221) est légèrement moins courant, ce qui témoigne d'une grande variabilité dans l'apport des causes secondaires.
+
+Sur le plan probabiliste, un incendie a approximativement 58 % de probabilité de ne pas être dû à une cause secondaire, 23 % d'être amplifié par des travaux, et 18 % par des éléments liés à des individus.  
+
+L'abondance de données incomplètes entrave la possibilité d'établir des conclusions claires sur les causes secondaires, tout en soulignant le rôle crucial des actions humaines lorsque l'origine est déterminée.
+
+**Analyse du Diagrame des Incendies de Type Combines (Primaire et Secondaire):**
+
+```{r}
+data <- read.csv("../Exports/export_incendies.csv")
+cause_principale <- data %>%
+  count(nature_inc_prim) %>%
+  arrange(desc(n))
+
+# Analyser les causes secondaires des incendies
+cause_secondaire <- data %>%
+  count(nature_inc_sec) %>%
+  arrange(desc(n))
+ggplot(cause_combinee, aes(x = "", y = n, fill = cause)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +
+  labs(title = "Répartition des Causes Combinées des Incendies") +
+  theme_minimal() +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.grid = element_blank()) +
+  scale_fill_brewer(palette = "Set1") # Choisir une palette de couleurs
+```
+
+Le graphique en secteurs, nommé « Répartition des Causes Combinées des Incendies », compile les causes primaires et secondaires. 
+
+Les chiffres montrent : « Malveillance » avec 522 incidents (30,6 %), « Involontaire » avec 503 incidents (29,5 %), « travaux » avec 282 incidents (16,5 %), « particulier » avec 221 incidents (13,0 %), « Accidentelle » avec 138 incidents (8,09 %), et « Naturelle » avec 39 incidents (2,29 %). 
+
+L'analyse des causes combinées révèle une prédominance notable des catégories « Malveillance » et « Involontaire », représentant respectivement 30,6 % et 29,5 % des causes totales, soit approximativement 60 % au total. 
+
+Ceci valide les tendances notées dans le diagramme des causes principales, où « Malveillance » (522 incidents, soit 43,4 %) et « Involontaire » (503 incidents, soit 41,8 %) prédominaient déjà avec un total de 85,2 % des incidents.
+
+Ces taux élevés suggèrent que les éléments humains, qu'ils soient volontaires ou dus à des négligences, constituent les facteurs prédominants des incendies dans ce jeu de données. 
+
+Cependant, les éléments « travaux » (16,5 %) et « particulier » (13,0 %), issus uniquement des causes secondaires (respectivement 282 et 221 cas), mettent en évidence que ces facteurs ont un impact aggravant notable, même s'ils ne sont pas aussi prédominants que les causes primaires humaines.  
+
+Les causes « Accidentelle » (8,09 %) et « Naturelle » (2,29 %) demeurent minoritaires, ce qui est en accord avec leur faible présence dans les causes majeures (11,5 % et 3,2 % respectivement).
+
+Le diagramme des causes secondaires avait mis en évidence une contrainte significative : 58,2 % des incidents (699 sur 1202) avaient été catégorisés comme « NA », signalant un manque d'informations concernant les éléments aggravants pour la plupart des feux.
+
+Toutefois, dans l'identification des causes secondaires, « travaux » et « particulier » prédominaient avec 23,5 % et 18,4 % respectivement, ce qui est manifeste dans leurs parts au sein de l'analyse cumulative. 
+
+Le manque de données secondaires pour plus de la moitié des incidents indique une collecte partielle, mais l'analyse des causes cumulatives aide à appréhender l'influence générale des éléments humains, qui demeurent dominants même en considérant les facteurs aggravants. 
+
+L'attribution des causes combinées est inégale, avec un accent marqué sur « Malveillance » et « Involontaire », et une distribution distincte entre les catégories, où les causes naturelles et accidentelles sont peu représentées.
+
+En somme, l'analyse des trois graphiques met en évidence une tendance distincte : une majorité des incendies au sein de ces données sont déclenchés et intensifiés par des facteurs d'origine humaine.
+ 
+Les causes principales indiquent que 85 % des incendies découlent de la malveillance ou d'erreurs accidentelles, une tendance accentuée dans l'étude conjointe où ces deux catégories constituent 60 % de l'ensemble des causes. 
+
+Malgré une absence notable de données, les facteurs secondaires montrent que les travaux et les actions individuelles contribuent fréquemment à l'aggravation des incendies, constituant 29,5 % des causes cumulées. 
+
+Les facteurs naturels et accidentels, totalisant moins de 11%, ont un impact négligeable.
 
 #### 5.3.5 Vulnérabilité et analyse de survie
 #### 5.3.6 Les Incendies en Europe France - Italie - Espagne

@@ -1999,3 +1999,107 @@ if (nrow(freq_altitude) > 1) {
   print(test_chi2)
 }
 
+
+
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+# Charger vos données (remplacez 'data.csv' par le chemin réel de votre fichier)
+data <- read.csv("../Exports/export_incendies.csv")
+
+# Analyser les causes principales des incendies
+cause_principale <- data %>%
+  count(nature_inc_prim) %>%
+  arrange(desc(n))
+
+# Analyser les causes secondaires des incendies
+cause_secondaire <- data %>%
+  count(nature_inc_sec) %>%
+  arrange(desc(n))
+
+# Répartition des causes principales des incendies avec diagramme circulaire
+ggplot(cause_principale, aes(x = "", y = n, fill = nature_inc_prim)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +
+  labs(title = "Répartition des Causes Principales des Incendies") +
+  theme_minimal() +
+  theme(axis.text = element_blank(), 
+        axis.title = element_blank(),
+        panel.grid = element_blank()) +
+  scale_fill_brewer(palette = "Set3") # Choisir une palette de couleurs
+
+# Répartition des causes secondaires des incendies avec diagramme circulaire
+ggplot(cause_secondaire, aes(x = "", y = n, fill = nature_inc_sec)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +
+  labs(title = "Répartition des Causes Secondaires des Incendies") +
+  theme_minimal() +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.grid = element_blank()) +
+  scale_fill_brewer(palette = "Set2") # Choisir une autre palette de couleurs
+
+# Analyser les causes combinées (principal + secondaire)
+cause_combinee <- data %>%
+  gather(key = "type_cause", value = "cause", nature_inc_prim, nature_inc_sec) %>%
+  count(cause) %>%
+  arrange(desc(n))
+
+# Répartition des causes combinées avec diagramme circulaire
+ggplot(cause_combinee, aes(x = "", y = n, fill = cause)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +
+  labs(title = "Répartition des Causes Combinées des Incendies") +
+  theme_minimal() +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.grid = element_blank()) +
+  scale_fill_brewer(palette = "Set1") # Choisir une palette de couleurs
+
+
+
+
+# Nombre d'incendies par type de cause primaire
+incendies_par_type_primaire <- data %>%
+  count(nature_inc_prim) %>%
+  arrange(desc(n))
+
+# Afficher le résultat
+incendies_par_type_primaire
+
+# Nombre d'incendies par type de cause secondaire
+incendies_par_type_secondaire <- data %>%
+  count(nature_inc_sec) %>%
+  arrange(desc(n))
+
+# Afficher le résultat
+incendies_par_type_secondaire
+
+
+
+library(tidyr)
+library(dplyr)
+
+# Fusionner les deux colonnes de causes
+cause_combinee <- data %>%
+  pivot_longer(cols = c(nature_inc_prim, nature_inc_sec),
+               names_to = "type_cause",
+               values_to = "cause") %>%
+  filter(!is.na(cause)) %>% # Exclure les NA
+  count(cause) %>%
+  arrange(desc(n))
+
+# Afficher les causes combinées avec leur fréquence
+cause_combinee
+
+# Ajouter la colonne de pourcentages
+cause_combinee_pct <- cause_combinee %>%
+  mutate(pourcentage = n / sum(n) * 100)
+
+# Afficher le résultat
+cause_combinee_pct
+
+
+

@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  pdf_document: 
-    latex_engine: xelatex
+  html_document: 
     toc: true
     toc_depth: 6
-  html_document: 
+  pdf_document: 
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
 ---
@@ -1746,6 +1746,250 @@ Les données recueillies indiquent que même si la puissance du vent a un impact
 
 
 ##### 5.3.2.4 Impact des conditions météorologiques extrêmes sur les incendies
+1.  **Corrélation entre les variable météo et la surface parcourue:**
+
+**Analyse Informatique:**
+
+L'étude informatique de l'influence des phénomènes météorologiques extrêmes sur les feux de forêt, effectuée à l'aide du logiciel R et des bibliothèques ggplot2 et dplyr, a pour objectif d'examiner le lien entre trois facteurs météorologiques — la température maximale moyenne (Tmax_med), la force du vent moyenne (Force_vent_med), et la tension de vapeur moyenne (Tens_vap_med) — et la superficie incendiée (surface_parcourue_m2).  
+
+Le code génère trois diagrammes de dispersion, chacun analysant une variable météorologique en lien avec la superficie brûlée, en s'appuyant sur des points semi-translucides pour représenter les informations et une ligne de régression linéaire avec intervalle de confiance pour déceler les orientations.
+
+Le premier graphique examine l'impact de la température maximale moyenne sur la superficie incendiée, en utilisant des points rouge vif (firebrick) et une ligne de régression de couleur noire.  
+
+Nommé « Température maximale vs Surface brûlée », il emploie geom_point pour représenter les observations et geom_smooth(method = "lm") pour effectuer la régression, avec des axes bien labellisés et un style épuré pour une clarté optimale.  
+
+Le second schéma a une structure similaire, mais il analyse la force moyenne du vent, utilisant des points de couleur bleu acier (steelblue) et un titre approprié « Force du vent moyenne vs Surface brûlée ».  
+
+Pour finir, le troisième graphique examine la pression de vapeur moyenne (un indicateur d'humidité), en utilisant des points de couleur vert foncé et un intitulé « Pression de vapeur moyenne vs Superficie brûlée », en suivant une approche similaire.
+
+**Analyse Statistique:**
+
+**Corrélation entre la Température max vs Surface brûlée**
+
+```{r}
+
+library(ggplot2)
+library(dplyr)
+data <- read.csv("../Exports/export_incendies_meteo.csv", sep = ",", stringsAsFactors = FALSE)
+
+# Température max vs Surface brûlée
+ggplot(data, aes(x = Tmax_med, y = surface_parcourue_m2)) +
+  geom_point(alpha = 0.5, color = "firebrick") +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  labs(title = "Température maximale vs Surface brûlée",
+       x = "Température maximale moyenne (°C)",
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+cor.test(data$Tmax_med, data$surface_parcourue_m2, method = "pearson")
+```
+
+Le diagramme « Température maximale face à la Surface brûlée » ainsi que les résultats de l'analyse de corrélation de Pearson fournissent une évaluation du lien entre la température maximale moyenne (Tmax_med) et la surface affectée par les incendies (surface_parcourue_m2). 
+
+Le coefficient de corrélation de Pearson calculé est de 0,0103, dénotant une corrélation positive mais très faible entre ces deux variables. 
+
+Avec une p-valeur de 0,7202, largement au-dessus du seuil critique de 0,05, le test échoue à rejeter l'hypothèse nulle d'absence de corrélation significative. 
+
+En outre, le champ de confiance à 95% pour la corrélation, qui varie de -0,0462 à 0,0668, englobe le chiffre 0. Cela confirme qu'il n'existe pas de signification statistique entre la température maximale et la superficie incendiée dans cet ensemble de données comportant 1202 observations.
+
+Le graphique indique une large dispersion des points rouges, illustrant une concentration prédominante entre 15 °C et 25 °C, et des étendues de terrain ravagées généralement en dessous de 250 000 m², même si certains feux touchent jusqu'à 1 000 000 m² à des températures supérieures.  
+
+La tendance linéaire ascendante du graphique de régression indique une faible corrélation positive, toutefois la grande variabilité des données suggère que la température maximale ne peut expliquer qu'une petite portion de la fluctuation des surfaces incendiées.
+
+**Corrélation entre la Force du vent vs Surface brûlée**
+```{r}
+library(ggplot2)
+library(dplyr)
+data <- read.csv("../Exports/export_incendies_meteo.csv", sep = ",", stringsAsFactors = FALSE)
+ggplot(data, aes(x = Force_vent_med, y = surface_parcourue_m2)) +
+  geom_point(alpha = 0.5, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  labs(title = "Force du vent moyenne vs Surface brûlée",
+       x = "Force du vent moyenne (km/h)",
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+cor.test(data$Force_vent_med, data$surface_parcourue_m2, method = "pearson")
+```
+
+Le diagramme « Force moyenne du vent vs Superficie brûlée » ainsi que les conclusions du test de corrélation de Pearson offrent la possibilité d'analyser le lien entre la vitesse moyenne du vent (Force_vent_med, en km/h) et l'aire touchée par les feux (surface_parcourue_m2).  Le coefficient de corrélation de Pearson calculé est de 0,0314, révélant une faible corrélation positive entre ces deux variables. 
+
+La p-valeur de 0,2771, largement supérieure à la barre des 0,05, indique que cette corrélation ne possède pas de signification statistique. Par ailleurs, l'intervalle de confiance de 95% qui s'étend de -0,0252 à 0,0878 inclut le chiffre zéro, ce qui souligne le manque d'une relation marquante dans cet échantillon comportant 1202 observations.
+
+Ce diagramme montre cette relation faible, avec des points bleus dispersés qui se concentrent généralement entre 2 et 6 km/h pour la force du vent, et des zones incendiées principalement en deçà de 250 000 m², même si quelques feux ont touché jusqu'à 1 000 000 m² à des vitesses de vent diverses. 
+
+La ligne de régression linéaire, légèrement inclinée vers le haut, illustre la faible corrélation positive. Cependant, l'importante dispersion des points suggère que la puissance du vent ne justifie qu'une petite portion de la fluctuation des zones incendiées.
+
+**Corrélation entre la Tension de vapeur (humidité) vs Surface brûlée**
+
+```{r}
+data <- read.csv("../Exports/export_incendies_meteo.csv", sep = ",", stringsAsFactors = FALSE)
+ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(alpha = 0.5, color = "darkgreen") +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  labs(title = "Tension de vapeur moyenne vs Surface brûlée",
+       x = "Tension de vapeur moyenne (hPa)",
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+cor.test(data$Tens_vap_med, data$surface_parcourue_m2, method = "pearson")
+```
+
+L'illustration « Tension de vapeur moyenne vs Surface brûlée » ainsi que les résultats du test de corrélation de Pearson offrent la possibilité d'examiner le lien entre la tension de vapeur moyenne (Tens_vap_med, en hPa, représentant un indice d'humidité) et la superficie affectée par les incendies (surface_parcourue_m2). 
+
+Le coefficient de corrélation de Pearson calculé est de -0,0211, signalant une très faible corrélation négative entre ces deux variables.  
+
+Avec une p-valeur de 0,4639 qui dépasse largement le seuil critique de 0,05, il est évident que cette corrélation ne présente pas de signification statistique. De plus, l'intervalle de confiance à 95 % s'étend de -0,0776 à 0,0354 et renferme la valeur 0, ce qui indique qu'il n'y a pas de lien significatif dans cet ensemble de données comportant 1202 observations.
+
+Le graphique met en évidence cette liaison pratiquement absente, avec des points verts éparpillés, principalement regroupés entre 5 et 15 hPa pour la pression de vapeur, et des zones incendiées principalement inférieures à 250 000 m², même si quelques feux parviennent à un million de m² sous diverses humidités.  
+
+La tendance linéaire légèrement descendante indique une corrélation négative faible, suggérant qu'un taux d'humidité plus bas (tension de vapeur inférieure) pourrait être lié à des zones brûlées légèrement plus vastes. 
+
+Cependant, l'importante dispersion des valeurs démontre que la tension de vapeur n'explique pratiquement aucune fluctuation des surfaces brûlées.
+
+Ces observations indiquent que, même si des conditions plus arides pourraient potentiellement augmenter le risque d'incendie en rendant la végétation plus susceptible de brûler, cet impact semble ici minime, probablement supplanté par des éléments d'origine humaine (85% des causes principales attribuées à « Malveillance » et « Involontaire ») ou d'autres facteurs climatiques comme le vent ou la chaleur.
+
+3.  **Corrélation entre les variable météo et la surface parcourue:**
+
+```{r}
+library(GGally)
+df_meteo <- data %>%
+  select(Force_vent_med, Tmax_med, Tens_vap_med, surface_parcourue_m2)
+ggpairs(df_meteo,
+        title = "Corrélations entre variables météo et surface brûlée")
+```
+
+**Analyse Informatique:**
+
+La bibliothèque GGally est exploitée en R pour examiner les liens entre les conditions météorologiques et la superficie affectée par les incendies à l'aide d'une matrice de corrélation visuelle.  Au départ, le jeu de données est épuré à l'aide de dplyr afin de garder uniquement les variables pertinentes : Force_vent_med (moyenne du vent en km/h), Tmax_med (moyenne de la température maximale en °C), Tens_vap_med (moyenne de la tension de vapeur en hPa, un indice d'humidité) et surface_parcourue_m2 (superficie brûlée en m²).
+
+Cette sélection, conservée dans df_meteo, facilite l'analyse des relations entre ces variables météorologiques et la magnitude des incendies.
+
+La fonction ggpairs de GGally crée une matrice de corrélation graphique, nommée « Corrélations entre variables météo et surface brûlée ». 
+
+ Cette matrice intègre divers aspects : des diagrammes de dispersion pour représenter les relations bivariées entre chaque duo de variables, des histogrammes ou des courbes de densité pour illustrer la répartition de chaque variable sur la diagonale, et des coefficients de corrélation (sans doute celui de Pearson) pour mesurer les liaisons linéaires. 
+
+L'outil ggpairs est très efficace car il fournit une perspective globale des relations interconnectées, ce qui permet non seulement de déceler les corrélations entre les variables météorologiques et la superficie brûlée, mais également de repérer les corrélations existantes entre ces mêmes variables météorologiques, telles que celles entre la température et l'humidité.
+
+**Analyse Statistique:**
+
+L'analyse visuelle appelée « Corrélations entre variables météo et surface brûlée » examine les liens entre la moyenne du vent (Force_vent_med), la moyenne de la température maximale (Tmax_med), la moyenne de la tension de vapeur (Tens_vap_med) et l'étendue des terrains affectés par les incendies (surface_parcourue_m2).
+
+Les indices de corrélation de Pearson indiquent que le lien entre les paramètres météorologiques et la superficie brûlée est faible : le coefficient de corrélation entre Force_vent_med et surface_parcourue_m2 est de 0,031, celui entre Tmax_med et surface_parcourue_m2 est de 0,010, tandis que celui entre Tens_vap_med et surface_parcourue_m2 se chiffre à -0,021.  
+
+Ces résultats proches de zéro témoignent d'une absence de lien notable, corroborant les études antérieures où aucune corrélation pertinente n'a pu être identifiée (des p-valeurs élevées : 0,2771, 0,7202 et 0,4639 respectivement).
+
+Des corrélations plus prononcées apparaissent lorsque l'on examine les variables météorologiques : Tmax_med et Tens_vap_med montrent une forte corrélation positive de 0,856, illustrant le lien attendu où des températures supérieures vont généralement de pair avec un niveau d'humidité accru.  
+
+Toutefois, Force_vent_med présente une légère corrélation négative avec Tmax_med (-0,037) et Tens_vap_med (-0,021), mais une corrélation positive avec Tmax_med à 0,104. Néanmoins, ces associations demeurent faibles.
+
+Les diagrammes de dispersion illustrent clairement la grande variabilité des données concernant la surface parcourue en m², où la majorité des surfaces brûlées se situent en dessous de 250 000 m², même si certaines atteignent jusqu'à 1 000 000 m². 
+
+Par ailleurs, les densités indiquent des distributions asymétriques pour toutes les variables, avec une concentration marquée de surface_parcourue_m2 autour de petites valeurs. 
+
+Ces observations indiquent que les conditions météorologiques à elles seules influencent peu la superficie brûlée, celle-ci étant probablement prédominée par des éléments humains (85% des causes majeures associées à « Malveillance » et « Involontaire »). 
+
+4.  **La distribution de la surface brûlée selon des seuils météo**
+
+```{r}
+data <- read.csv("../Exports/export_incendies_meteo.csv", sep = ",", stringsAsFactors = FALSE)
+data <- data %>%
+  mutate(temp_elevee = ifelse(Tmax_med > quantile(Tmax_med, 0.75, na.rm = TRUE), "Élevée", "Normale"))
+
+ggplot(data, aes(x = temp_elevee, y = surface_parcourue_m2, fill = temp_elevee)) +
+  geom_boxplot() +
+  scale_y_log10() +  # si les surfaces sont très dispersées
+  labs(title = "Impact de la température élevée sur la surface brûlée",
+       x = "Température maximale (catégorisée)",
+       y = "Surface parcourue (m²)") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Élevée" = "red", "Normale" = "lightblue"))
+```
+
+**Analyse Informatique:**
+
+ En utilisant le package dplyr, une nouvelle colonne nommée temp_elevee est ajoutée au jeu de données data via la fonction mutate : elle attribue le statut « Élevée » aux températures maximales moyennes (Tmax_med) qui excèdent le 75ème percentile (calculé avec quantile(Tmax_med, 0.75, na.rm = TRUE)), et « Normale » dans le cas contraire, en négligeant les valeurs manquantes grâce à na.rm = TRUE.  
+ 
+Cette classification facilite la comparaison entre les incendies qui se produisent sous des conditions de températures extrêmes et ceux dans des conditions plus tempérées.
+
+Par la suite, un diagramme en boîte est créé à l'aide de ggplot2 grâce à geom_boxplot, comparant la surface incendiée (surface_parcourue_m2) entre les deux catégories de température (temp_elevee).  
+
+L'échelle de l'axe des y est convertie en échelle logarithmique grâce à scale_y_log10() afin de mieux gérer la possible dispersion des surfaces incendiées, qui peuvent fluctuer sur plusieurs ordres de grandeur.  
+
+Le diagramme, dénommé « Impact de la température élevée sur la surface brûlée », se sert de nuances distinctes pour chaque catégorie (rouge pour « Élevée » et bleu clair pour « Normale ») définies grâce à scale_fill_manual. 
+
+Il adopte également une présentation épurée via theme_minimal() pour une meilleure lisibilité.
+
+Cette approche informatique permet de visualiser les différences dans la distribution des surfaces brûlées selon les niveaux de température, en mettant en évidence les médianes, les quartiles et les valeurs aberrantes, tout en facilitant l’interprétation grâce à l’échelle logarithmique et aux couleurs contrastées.
+
+**Analyse Statistique:**
+
+Le diagramme offre une étude comparative de l'influence des températures hautes sur l'étendue des zones incendiées.  
+
+On note que les zones touchées par l'incendie sont exprimées en mètres carrés et présentées sur une échelle logarithmique, indiquant une forte variabilité dans les informations.  
+
+Les chiffres mentionnés représentent une superficie de 100 000 m² (1e+05) et 300 000 m² (3e+05), ce qui illustre que les incendies peuvent embraser des terrains de grande envergure.
+
+Une analyse comparative des températures « Élevée » et « Normale » démontre une tendance manifeste : les phases de forte chaleur apparaissent corrélées à des zones plus étendues brûlées.  
+
+Même si le graphique ne donne pas de chiffres précis pour chaque catégorie, l'emplacement relatif des boîtes à moustaches suggère que les températures élevées sont souvent associées à des incendies plus dévastateurs en termes de superficie touchée.
+
+Cette constatation met en évidence le rôle crucial des conditions météorologiques, notamment des vagues de chaleur, dans l'étendue des feux.  
+
+Une analyse statistique approfondie, intégrant des tests de signification (tels qu'un test t ou une ANOVA), pourrait déterminer si cette divergence entre les groupes est significative sur le plan statistique.  
+
+En outre, l'emploi d'une échelle logarithmique indique que les données pourraient être fortement asymétriques, ce qui signifierait que quelques incendies de grande envergure ont une influence majeure sur la moyenne.
+
+Pour résumer, ce graphique illustre un lien inquiétant entre l'accroissement des températures et la hausse des zones incendiées, phénomène qui pourrait avoir des répercussions significatives sur la gestion des risques d'incendie dans un contexte de réchauffement global.
+
+5.  **Surface brûle selon la Condition Meteo**
+
+```{r}
+library(ggplot2)
+data <- read.csv("../Exports/export_incendies_meteo.csv", sep = ",", stringsAsFactors = FALSE)
+ggplot(data, aes(x = Force_vent_med, y = Tens_vap_med, color = Tmax_med, size = surface_parcourue_m2)) +
+  geom_point(alpha = 0.7) +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(title = "Surface brûlée selon conditions météo",
+       x = "Force du vent moyenne",
+       y = "Tension de vapeur moyenne",
+       color = "Température max",
+       size = "Surface brûlée (m²)") +
+  theme_minimal()
+
+```
+
+**Analyse Informatique:**
+
+L'utilisation de ggplot2 pour créer le diagramme facilite l'examen visuel des liens complexes entre diverses variables météorologiques et la surface affectée par les incendies.
+
+L'illustration s'appuie sur quatre dimensions de données : la puissance du vent en axe des x, la pression de vapeur en axe des y, la température maximale grâce à un code couleur, et la superficie ravagée par la grandeur des points.  
+
+Cette représentation multivariée met en évidence des tendances intéressantes concernant les conditions favorables aux grands feux de forêt.
+
+L'observation visuelle indique que les feux les plus étendus (points de taille supérieure) ont plutôt tendance à se déclencher lorsque plusieurs facteurs sont réunis : des températures élevées (indiquées par les points rouges), un certain niveau de vent, et une pression de vapeur spécifique.  
+
+L'arrangement des points indique que les incendies de grande envergure ne surviennent pas de manière aléatoire, mais semblent liés à des associations spécifiques de facteurs météorologiques.  
+
+L'indice de transparence des points (alpha=0.7) facilite l'identification des régions où les incendies sont courants, mettant ainsi en lumière les zones climatiques dites de « points chauds ».
+
+Cette représentation souligne l'importance des interactions entre divers éléments météorologiques.  
+
+On peut, par exemple, constater que des températures extrêmement hautes (rouge vif) ne provoquent pas nécessairement de vastes incendies si la vitesse du vent ou le taux d'humidité (pression de vapeur) n'est pas dans une zone critique.  
+
+**Analyse Statistique:**
+
+L'examen statistique du diagramme « Surface brûlée en fonction des conditions météorologiques » fournit une vision approfondie des liens entre diverses variables météorologiques et leur influence sur les feux de forêt. 
+
+Le graphique illustre la force moyenne du vent, qui peut varier de 0 à 10 (sans doute en km/h ou une unité équivalente), et la pression moyenne de vapeur, qui peut aller de 0 à 25 hPa, un indicateur lié à l'humidité atmosphérique.  
+
+La dimension des points dépeint la zone brûlée, variant de 250 000 à 1 000 000 m², alors que leur couleur indique la température maximale, oscillant entre 10 et 30°C, avec une transition du bleu (plus frais) au rouge (plus chaud).
+
+L'analyse de la répartition des données révèle que la plupart des mesures de force du vent se situent entre 2,5 et 7,5, avec quelques valeurs limites proches de 0 et 10. Quant à la pression de vapeur, elle se trouve majoritairement dans l'intervalle de 5 à 15 hPa, bien qu'il existe aussi quelques occurrences au-delà de 20 hPa.
+
+Les plus grandes surfaces enflammées, symbolisées par les points de grande taille, se manifestent fréquemment dans des situations de vent modéré, autour de 5 à 7,5, et sous des tensions de vapeur intermédiaires, entre 10 et 15 hPa, ce qui laisse penser que ces circonstances pourraient encourager l'expansion des feux.  
+
+En ce qui concerne la superficie incendiée, on observe souvent une corrélation avec des températures élevées, variant de 20 à 30°C. Cependant, il y a des cas où de grandes surfaces brûlent à des températures plus faibles.
+
+
+
 ##### 5.3.2.5 Effet des radiations solaires sur les incendies
 ##### 5.3.2.6 Température et nombre d'incendies par période de la journée
 
@@ -4117,6 +4361,11 @@ cause_principale <- data %>%
 cause_secondaire <- data %>%
   count(nature_inc_sec) %>%
   arrange(desc(n))
+cause_combinee <- data %>%
+  gather(key = "type_cause", value = "cause", nature_inc_prim, nature_inc_sec) %>%
+  count(cause) %>%
+  arrange(desc(n))
+
 ggplot(cause_combinee, aes(x = "", y = n, fill = cause)) +
   geom_bar(stat = "identity", width = 1) +
   coord_polar(theta = "y") +

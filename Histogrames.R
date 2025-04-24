@@ -2103,3 +2103,86 @@ cause_combinee_pct
 
 
 
+
+# Chargement du fichier CSV combiné contenant les données incendie + météo
+data <- read.csv("../Exports/export_incendies_meteo.csv", sep = ",", stringsAsFactors = FALSE)
+library(ggplot2)
+library(dplyr)
+
+# Température max vs Surface brûlée
+ggplot(data, aes(x = Tmax_med, y = surface_parcourue_m2)) +
+  geom_point(alpha = 0.5, color = "firebrick") +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  labs(title = "Température maximale vs Surface brûlée",
+       x = "Température maximale moyenne (°C)",
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+
+# Force du vent vs Surface brûlée
+ggplot(data, aes(x = Force_vent_med, y = surface_parcourue_m2)) +
+  geom_point(alpha = 0.5, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  labs(title = "Force du vent moyenne vs Surface brûlée",
+       x = "Force du vent moyenne (km/h)",
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+
+# Tension de vapeur (humidité) vs Surface brûlée
+ggplot(data, aes(x = Tens_vap_med, y = surface_parcourue_m2)) +
+  geom_point(alpha = 0.5, color = "darkgreen") +
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  labs(title = "Tension de vapeur moyenne vs Surface brûlée",
+       x = "Tension de vapeur moyenne (hPa)",
+       y = "Surface parcourue (m²)") +
+  theme_minimal()
+
+
+# Calcul de la corrélation entre température et surface brûlée
+cor.test(data$Tmax_med, data$surface_parcourue_m2, method = "pearson")
+
+cor.test(data$Force_vent_med, data$surface_parcourue_m2, method = "pearson")
+
+cor.test(data$Tens_vap_med, data$surface_parcourue_m2, method = "pearson")
+
+
+install.packages("GGally")
+
+library(GGally)
+
+# Sélection des variables météo + surface
+df_meteo <- data %>%
+  select(Force_vent_med, Tmax_med, Tens_vap_med, surface_parcourue_m2)
+
+# Matrice de corrélation visuelle
+ggpairs(df_meteo,
+        title = "Corrélations entre variables météo et surface brûlée")
+
+
+
+data <- data %>%
+  mutate(temp_elevee = ifelse(Tmax_med > quantile(Tmax_med, 0.75, na.rm = TRUE), "Élevée", "Normale"))
+
+ggplot(data, aes(x = temp_elevee, y = surface_parcourue_m2, fill = temp_elevee)) +
+  geom_boxplot() +
+  scale_y_log10() +  # si les surfaces sont très dispersées
+  labs(title = "Impact de la température élevée sur la surface brûlée",
+       x = "Température maximale (catégorisée)",
+       y = "Surface parcourue (m²)") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Élevée" = "red", "Normale" = "lightblue"))
+
+
+
+library(ggplot2)
+
+# Scatterplot avec couleur = température
+ggplot(data, aes(x = Force_vent_med, y = Tens_vap_med, color = Tmax_med, size = surface_parcourue_m2)) +
+  geom_point(alpha = 0.7) +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(title = "Surface brûlée selon conditions météo",
+       x = "Force du vent moyenne",
+       y = "Tension de vapeur moyenne",
+       color = "Température max",
+       size = "Surface brûlée (m²)") +
+  theme_minimal()
+

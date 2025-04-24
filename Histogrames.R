@@ -2209,3 +2209,323 @@ ggplot(data, aes(x = Rayonnement_med, y = surface_parcourue_m2)) +
 
 cor.test(data$Rayonnement_med, data$surface_parcourue_m2)
 
+
+install.packages("survminer")  # Exécuter une seule fois si le package n'est pas installé
+
+# Charger les bibliothèques
+library(survival)
+library(survminer)
+library(dplyr)
+
+# Charger les données
+data <- read.csv("../Exports/export_incendies_geo.csv")
+
+# Regrouper les données par commune et année
+# Créer un indicateur binaire : y a-t-il eu un incendie cette année ?
+data_clean <- data %>%
+  group_by(Code_INSEE, Année) %>%
+  summarise(incendie = ifelse(n() > 0, 1, 0)) %>%
+  ungroup()
+
+# Créer une table de suivi pour chaque commune : durée entre deux incendies
+# On prépare les périodes d'observation
+data_survie <- data_clean %>%
+  group_by(code_INSEE) %>%
+  arrange(annee) %>%
+  mutate(
+    time = cumsum(incendie == 0),   # Nombre d'années sans incendie
+    event = incendie                # 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # On ne garde que les périodes où l'événement a été observé
+
+# Modèle Kaplan-Meier
+surv_obj <- Surv(data_survie$time, data_survie$event)
+fit_km <- survfit(surv_obj ~ 1)
+
+# Graphique de la courbe de survie
+ggsurvplot(
+  fit_km,
+  conf.int = TRUE,
+  title = "Analyse de survie des communes face aux incendies",
+  xlab = "Années sans incendie",
+  ylab = "Probabilité de survie (pas d'incendie)",
+  palette = "Dark2"
+)
+
+
+
+
+
+# Charger les bibliothèques
+library(survival)   # Pour les modèles de survie
+library(survminer)  # Pour les graphiques de survie
+library(dplyr)      # Pour la manipulation des données
+
+# Charger les données
+data <- read.csv("../Exports/export_incendies_geo.csv")
+
+# Nettoyage des données : créer une colonne pour identifier la présence d'incendie
+# (On suppose que la colonne nature_inc_prim contient des valeurs non nulles quand il y a un incendie)
+data_clean <- data %>%
+  mutate(incendie = ifelse(!is.na(nature_inc_prim), 1, 0))  # 1 si incendie, 0 sinon
+
+# Regrouper les données par Code_INSEE et Année
+data_clean <- data_clean %>%
+  group_by(code_INSEE, annee) %>%
+  summarise(incendie = max(incendie)) %>%
+  ungroup()  # Résumé des incendies par commune et année
+
+# Créer une table de suivi pour chaque commune
+# On calcule le nombre d'années sans incendie et l'événement (1 = incendie, 0 = pas d'incendie)
+data_survie <- data_clean %>%
+  group_by(code_INSEE) %>%
+  arrange(annee) %>%
+  mutate(
+    time = cumsum(incendie == 0),   # Calcul du nombre d'années sans incendie
+    event = incendie                # 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # Ne garder que les périodes où l'événement (incendie) se produit
+
+# Modèle Kaplan-Meier pour la survie
+surv_obj <- Surv(data_survie$time, data_survie$event)
+fit_km <- survfit(surv_obj ~ 1)
+
+# Visualisation de la courbe de survie
+ggsurvplot(
+  fit_km,
+  data = data_survie,  # On précise ici l'argument data
+  conf.int = TRUE,
+  title = "Analyse de survie des communes face aux incendies",
+  xlab = "Années sans incendie",
+  ylab = "Probabilité de survie (pas d'incendie)",
+  palette = "Dark2"
+)
+
+
+# Calculer la durée entre chaque incendie pour chaque commune
+data_survie <- data_clean %>%
+  group_by(code_INSEE) %>%
+  arrange(annee) %>%
+  mutate(
+    # Calculer la durée entre les années d'incendie
+    time = ifelse(incendie == 1, 0, lag(annee) - annee),   # Calcul de l'écart d'années entre deux incendies successifs
+    time = ifelse(is.na(time), 0, time)  # Remplacer NA par 0 pour les premières années
+  ) %>%
+  mutate(
+    event = incendie  # 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # Garder uniquement les lignes avec des incendies (event == 1)
+
+# Vérifier les résultats
+head(data_survie)
+
+# Vérification de la somme des événements
+table(data_survie$event)
+
+# Vérification des résumés de `time`
+summary(data_survie$time)
+
+
+
+
+
+# Calculer la durée sans incendie (accumuler les années sans incendie)
+data_survie <- data_clean %>%
+  group_by(code_INSEE) %>%
+  arrange(annee) %>%
+  mutate(
+    time = ifelse(incendie == 1, 0, NA)  # initialiser time à 0 quand il y a un incendie
+  ) %>%
+  mutate(
+    # Calculer la durée entre chaque incendie successif
+    time = ifelse(is.na(time), lag(time, default = 0) + 1, time)
+  ) %>%
+  mutate(
+    event = incendie  # Garder 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # Garder uniquement les années où un incendie se produit
+
+# Vérifier les résultats après modification
+head(data_survie)
+
+# Vérification des résumés de `time`
+summary(data_survie$time)
+
+# Vérification de la somme des événements
+table(data_survie$event)
+
+
+
+
+# Calculer la durée entre les incendies pour chaque commune
+data_survie <- data_clean %>%
+  group_by(code_INSEE) %>%
+  arrange(code_INSEE, annee) %>%
+  mutate(
+    # Calculer la durée sans incendie entre deux événements
+    time = ifelse(incendie == 1, 0, NA)  # Initialisation à 0 pour les incendies
+  ) %>%
+  mutate(
+    # Utilisation de cumsum pour accumuler les années sans incendie
+    time = ifelse(is.na(time), cumsum(incendie == 0), time)
+  ) %>%
+  mutate(
+    event = incendie  # Garder 1 si incendie, 0 sinon
+  )
+
+# Vérifier les résultats après modification
+head(data_survie)
+
+# Vérification des résumés de `time`
+summary(data_survie$time)
+
+# Vérification de la somme des événements
+table(data_survie$event)
+
+
+
+
+
+library(dplyr)
+
+# Calculer l'intervalle entre les incendies pour chaque commune
+data_survie <- data_clean %>%
+  group_by(code_INSEE) %>%
+  arrange(code_INSEE, annee) %>%
+  mutate(
+    # Calculer la différence entre l'année courante et l'année précédente
+    time = annee - lag(annee, default = first(annee)),
+    event = incendie  # Garder 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # Garder uniquement les années où un incendie a eu lieu
+
+# Vérification des résultats après modification
+head(data_survie)
+
+# Vérification des résumés de `time`
+summary(data_survie$time)
+
+# Vérification de la somme des événements
+table(data_survie$event)
+
+
+
+library(dplyr)
+
+# Vérifier et trier les données par commune et année
+data_survie <- data_clean %>%
+  arrange(code_INSEE, annee) %>%  # Trier les données par code_INSEE et année
+  group_by(code_INSEE) %>%
+  mutate(
+    # Calculer la différence entre l'année courante et l'année précédente
+    time = c(NA, diff(annee)),
+    event = incendie  # Garder 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # Garder uniquement les années où un incendie a eu lieu
+
+# Vérification des résultats après modification
+head(data_survie)
+
+# Vérification des résumés de `time`
+summary(data_survie$time)
+
+# Vérification de la somme des événements
+table(data_survie$event)
+
+library(survival)
+
+# Créer un objet de survie
+surv_obj <- Surv(time = data_survie$time, event = data_survie$event)
+
+# Ajuster un modèle de survie
+surv_fit <- survfit(surv_obj ~ 1)
+
+# Visualiser la courbe de survie
+plot(surv_fit, main = "Courbe de survie des incendies", xlab = "Temps (années)", ylab = "Probabilité de survie")
+
+
+
+library(survival)
+library(ggplot2)
+
+# Créer un objet de survie
+surv_obj <- Surv(time = data_survie$time, event = data_survie$event)
+
+# Ajuster un modèle de survie
+surv_fit <- survfit(surv_obj ~ 1)
+
+# Convertir les résultats du modèle survfit en un dataframe pour ggplot
+surv_data <- as.data.frame(surv_fit)
+
+# Visualisation avec ggplot2
+ggplot(surv_data, aes(x = time, y = surv)) +
+  geom_step(aes(color = "blue"), size = 1.5) +  # Courbe de survie colorée en bleu
+  labs(
+    title = "Courbe de survie des incendies",
+    x = "Temps (années)",
+    y = "Probabilité de survie"
+  ) +
+  scale_color_manual(values = c("blue")) +  # Personnalisation de la couleur
+  theme_minimal() +  # Thème minimaliste
+  theme(
+    plot.title = element_text(hjust = 0.5),  # Centrer le titre
+    axis.title = element_text(size = 12),  # Taille des titres des axes
+    axis.text = element_text(size = 10),  # Taille des étiquettes des axes
+    legend.position = "none"  # Cacher la légende
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+library(survival)
+library(ggplot2)
+
+# Vérifier et trier les données par commune et année
+data_survie <- data_clean %>%
+  arrange(code_INSEE, annee) %>%  # Trier les données par code_INSEE et année
+  group_by(code_INSEE) %>%
+  mutate(
+    # Calculer la différence entre l'année courante et l'année précédente
+    time = c(NA, diff(annee)),
+    event = incendie  # Garder 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # Garder uniquement les années où un incendie a eu lieu
+
+# Créer un objet de survie
+surv_obj <- Surv(time = data_survie$time, event = data_survie$event)
+
+# Ajuster un modèle de survie
+surv_fit <- survfit(surv_obj ~ 1)
+
+# Extraire les résultats du modèle survfit
+surv_data <- data.frame(
+  time = surv_fit$time,
+  surv = surv_fit$surv,
+  n.risk = surv_fit$n.risk
+)
+
+# Visualisation avec ggplot2
+ggplot(surv_data, aes(x = time, y = surv)) +
+  geom_step(aes(color = "blue"), size = 1.5) +  # Courbe de survie colorée en bleu
+  labs(
+    title = "Courbe de survie des incendies",
+    x = "Temps (années)",
+    y = "Probabilité de survie"
+  ) +
+  scale_color_manual(values = c("blue")) +  # Personnalisation de la couleur
+  theme_minimal() +  # Thème minimaliste
+  theme(
+    plot.title = element_text(hjust = 0.5),  # Centrer le titre
+    axis.title = element_text(size = 12),  # Taille des titres des axes
+    axis.text = element_text(size = 10),  # Taille des étiquettes des axes
+    legend.position = "none"  # Cacher la légende
+  )
+

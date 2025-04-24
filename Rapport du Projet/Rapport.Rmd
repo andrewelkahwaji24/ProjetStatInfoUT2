@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  html_document: 
-    toc: true
-    toc_depth: 6
   pdf_document: 
     latex_engine: xelatex
+    toc: true
+    toc_depth: 6
+  html_document: 
     toc: true
     toc_depth: 6
 ---
@@ -4483,6 +4483,124 @@ Malgré une absence notable de données, les facteurs secondaires montrent que l
 Les facteurs naturels et accidentels, totalisant moins de 11%, ont un impact négligeable.
 
 #### 5.3.5 Vulnérabilité et analyse de survie
+##### 5.3.5.1 Analyse de survie des communes
+
+```{r}
+library(survival)
+library(ggplot2)
+library(dplyr)
+
+data <- read.csv("../Exports/export_incendies_geo.csv")
+
+data_clean <- data %>%
+  mutate(incendie = ifelse(!is.na(nature_inc_prim), 1, 0))
+
+# Vérifier et trier les données par commune et année
+data_survie <- data_clean %>%
+  arrange(code_INSEE, annee) %>%  # Trier les données par code_INSEE et année
+  group_by(code_INSEE) %>%
+  mutate(
+    # Calculer la différence entre l'année courante et l'année précédente
+    time = c(NA, diff(annee)),
+    event = incendie  # Garder 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # Garder uniquement les années où un incendie a eu lieu
+
+# Créer un objet de survie
+surv_obj <- Surv(time = data_survie$time, event = data_survie$event)
+
+# Ajuster un modèle de survie
+surv_fit <- survfit(surv_obj ~ 1)
+
+# Extraire les résultats du modèle survfit
+surv_data <- data.frame(
+  time = surv_fit$time,
+  surv = surv_fit$surv,
+  n.risk = surv_fit$n.risk
+)
+
+# Visualisation améliorée avec ggplot2
+ggplot(surv_data, aes(x = time, y = surv)) +
+  geom_step(aes(color = "blue"), size = 1.5) +  # Courbe de survie colorée en bleu
+  labs(
+    title = "Courbe de survie des incendies dans les communes",
+    subtitle = "Suivi des incendies par commune et par année",
+    x = "Temps depuis le dernier incendie (années)",
+    y = "Probabilité de survie des communes",
+  ) +
+  scale_color_manual(values = c("blue")) +  # Personnalisation de la couleur
+  theme_minimal() +  # Thème minimaliste
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Centrer et styliser le titre
+    plot.subtitle = element_text(hjust = 0.5, size = 12),  # Centrer et styliser le sous-titre
+    axis.title = element_text(size = 14),  # Taille des titres des axes
+    axis.text = element_text(size = 12),  # Taille des étiquettes des axes
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotation des étiquettes de l'axe x pour plus de lisibilité
+    plot.caption = element_text(hjust = 1, size = 10, color = "grey"),  # Texte en bas à droite
+    legend.position = "none",  # Cacher la légende
+    panel.grid.major = element_line(color = "lightgrey", size = 0.5),  # Lignes de grille principales
+    panel.grid.minor = element_line(color = "lightgrey", size = 0.25),  # Lignes de grille secondaires
+    panel.background = element_rect(fill = "white")  # Fond blanc pour une meilleure lisibilité
+  )
+```
+
+**Analyse Informatique:**
+
+En premier lieu, les données sont préparées et organisées par commune et par an, ce qui facilite la mise en ordre chronologique logique des incidents d'incendie.  
+
+Puis, on détermine une variable temporelle qui indique le nombre d'années s'étant écoulées entre deux incendies consécutifs dans chaque municipalité.  
+
+Cette variable est cruciale pour l'analyse de survie, puisqu'elle évalue le laps de temps entre les incendies.  Le code procède ensuite à une sélection des données, conservant uniquement les années où un incendie s'est produit afin d'éliminer les observations dépourvues d'incidents.
+
+Par la suite, un modèle de survie est calibré en exploitant la fonction survfit(), en se servant des variables time et event.  
+
+L'intention ici est d'évaluer la chance qu'une commune n'ait pas été touchée par un incendie à un instant précis, basée sur les précédents incendies.  
+
+Le modèle produit des estimations de survie à divers intervalles temporels et dénombre le nombre de communes toujours en danger à chaque instant. 
+
+Ces résultats sont récupérés dans un cadre de données et seront utilisés comme fondement pour la représentation visuelle.
+
+La représentation est effectuée grâce à ggplot2, une bibliothèque très prisée pour la création de graphiques en R.  
+
+Le tracé de la courbe de survie est réalisé grâce à geom_step(), une géométrie spécifiquement conçue pour les données de survie, qui met en évidence les fluctuations de la probabilité de survie selon le temps.  
+
+Le graphique est embellit par divers aspects stylistiques : un titre et un sous-titre alignés au centre, des axes clairement étiquetés, ainsi que l'orientation des étiquettes de l'axe X pour en faciliter la lecture.  
+
+L'affichage de la légende a été omis, car elle est superflue dans cette situation où seule une courbe est présentée.  
+
+Le fond et les grilles du graphique sont aussi adaptés pour améliorer la clarté et donner à la courbe une meilleure définition.
+
+**Analyse Statistique:**
+
+Le graphique de survie présenté démontre la chance qu'une commune n'ait pas subi d'incendie en relation avec l'intervalle de temps depuis le dernier incendie, exprimé en années. 
+
+Cette étude s'appuie sur des données relatives aux incendies par commune et par année, et elle emploie une méthode d'analyse de survie pour représenter le danger d'incendie au fil des années.  
+
+Ceci est un examen approfondi de ce graphique et de ses conséquences dans le cadre du problème lié à l'impact des radiations solaires sur les feux, en considérant les conclusions antérieures.
+
+Le graphique de survie est une illustration classique en statistiques de survie, où l'axe horizontal représente le temps passé depuis le dernier incendie (en années, variant de 0 à 10 ans), et l'axe vertical indique la chance de survie, soit la possibilité qu'une commune n'ait pas encore subi d'incendie à cet instant précis (variant de 0 à 0,8).  
+
+La courbe initie avec un taux de survie de 0,8 à t = 0, indiquant que 80 % des communes n'ont pas de feu juste après un événement (ou au début de la période d'observation).  
+
+Par la suite, la courbe subit une dégression graduelle en étapes, signalant une baisse continue de la probabilité de survie au cours du temps.
+
+Après 10 ans, la probabilité de survie est proche de 0, suggérant que presque toutes les communes auront connu un incendie dans cet intervalle.
+
+Les étapes de la courbe sont typiques d'une estimation de Kaplan-Meier, technique non paramétrique employée pour déterminer la fonction de survie basée sur des données censurées.  
+Chaque échelon représente un incident (un feu de forêt dans une localité), et l'ampleur de la chute indique le pourcentage de localités touchées à cette date spécifique.  
+
+La chute abrupte du risque d'incendie durant les premières années (de 0 à 2,5 ans) suggère une menace relativement grande peu après un incident antérieur, avant de diminuer graduellement, avec des paliers de moins en moins importants au fil du temps.
+
+La représentation graphique indique que le danger d'incendie varie au fil du temps, en accord avec les processus naturels tels que les feux de forêt.  
+
+Au cours des premières années après un sinistre par le feu, le risque qu'un autre incendie se déclare est accru, possiblement en raison de phénomènes comme l'accumulation de matière combustible (végétation sèche) ou des conditions météorologiques favorables aux feux.  
+
+Par exemple, entre 0 et 2,5 ans, le taux de survie descend de 0,8 à approximativement 0,4, indiquant que 40 % des communes subissent un incendie au cours de cette période.  
+
+Au bout de 2,5 ans, la courbe commence à se stabiliser et le taux de survie chute plus graduellement, diminuant de 0,4 à environ 0,1 entre 2,5 et 7,5 ans.
+
+La courbe de survie indique que le danger d'incendie est plus grand dans les premières années qui suivent un sinistre, une probabilité de survie qui descend de 0,8 à 0,4 en 2,5 ans, puis qui décroît plus progressivement pour se rapprocher de zéro après une décennie.
+
 #### 5.3.6 Les Incendies en Europe France - Italie - Espagne
 
 En Europe, les incendies constituent un danger de plus en plus grand pour les écosystèmes et les sociétés humaines, notamment dans les zones méditerranéennes.  

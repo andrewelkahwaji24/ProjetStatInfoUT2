@@ -342,3 +342,109 @@ ggplot(data = europe_map) +
   theme_minimal()
 
 
+
+
+
+
+library(survival)
+library(ggplot2)
+
+# Vérifier et trier les données par commune et année
+data_survie <- data_clean %>%
+  arrange(code_INSEE, annee) %>%  # Trier les données par code_INSEE et année
+  group_by(code_INSEE) %>%
+  mutate(
+    # Calculer la différence entre l'année courante et l'année précédente
+    time = c(NA, diff(annee)),
+    event = incendie  # Garder 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # Garder uniquement les années où un incendie a eu lieu
+
+# Créer un objet de survie
+surv_obj <- Surv(time = data_survie$time, event = data_survie$event)
+
+# Ajuster un modèle de survie
+surv_fit <- survfit(surv_obj ~ 1)
+
+# Extraire les résultats du modèle survfit
+surv_data <- data.frame(
+  time = surv_fit$time,
+  surv = surv_fit$surv,
+  n.risk = surv_fit$n.risk
+)
+
+# Visualisation avec ggplot2
+ggplot(surv_data, aes(x = time, y = surv)) +
+  geom_step(aes(color = "blue"), size = 1.5) +  # Courbe de survie colorée en bleu
+  labs(
+    title = "Courbe de survie des incendies",
+    x = "Temps (années)",
+    y = "Probabilité de survie"
+  ) +
+  scale_color_manual(values = c("blue")) +  # Personnalisation de la couleur
+  theme_minimal() +  # Thème minimaliste
+  theme(
+    plot.title = element_text(hjust = 0.5),  # Centrer le titre
+    axis.title = element_text(size = 12),  # Taille des titres des axes
+    axis.text = element_text(size = 10),  # Taille des étiquettes des axes
+    legend.position = "none"  # Cacher la légende
+  )
+
+
+
+
+
+
+library(survival)
+library(ggplot2)
+library(dplyr)
+
+# Vérifier et trier les données par commune et année
+data_survie <- data_clean %>%
+  arrange(code_INSEE, annee) %>%  # Trier les données par code_INSEE et année
+  group_by(code_INSEE) %>%
+  mutate(
+    # Calculer la différence entre l'année courante et l'année précédente
+    time = c(NA, diff(annee)),
+    event = incendie  # Garder 1 si incendie, 0 sinon
+  ) %>%
+  filter(event == 1)  # Garder uniquement les années où un incendie a eu lieu
+
+# Créer un objet de survie
+surv_obj <- Surv(time = data_survie$time, event = data_survie$event)
+
+# Ajuster un modèle de survie
+surv_fit <- survfit(surv_obj ~ 1)
+
+# Extraire les résultats du modèle survfit
+surv_data <- data.frame(
+  time = surv_fit$time,
+  surv = surv_fit$surv,
+  n.risk = surv_fit$n.risk
+)
+
+# Visualisation améliorée avec ggplot2
+ggplot(surv_data, aes(x = time, y = surv)) +
+  geom_step(aes(color = "blue"), size = 1.5) +  # Courbe de survie colorée en bleu
+  labs(
+    title = "Courbe de survie des incendies dans les communes",
+    subtitle = "Suivi des incendies par commune et par année",
+    x = "Temps depuis le dernier incendie (années)",
+    y = "Probabilité de survie des communes",
+    caption = "Source: Données des incendies"
+  ) +
+  scale_color_manual(values = c("blue")) +  # Personnalisation de la couleur
+  theme_minimal() +  # Thème minimaliste
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Centrer et styliser le titre
+    plot.subtitle = element_text(hjust = 0.5, size = 12),  # Centrer et styliser le sous-titre
+    axis.title = element_text(size = 14),  # Taille des titres des axes
+    axis.text = element_text(size = 12),  # Taille des étiquettes des axes
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotation des étiquettes de l'axe x pour plus de lisibilité
+    plot.caption = element_text(hjust = 1, size = 10, color = "grey"),  # Texte en bas à droite
+    legend.position = "none",  # Cacher la légende
+    panel.grid.major = element_line(color = "lightgrey", size = 0.5),  # Lignes de grille principales
+    panel.grid.minor = element_line(color = "lightgrey", size = 0.25),  # Lignes de grille secondaires
+    panel.background = element_rect(fill = "white")  # Fond blanc pour une meilleure lisibilité
+  )
+

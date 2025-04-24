@@ -1991,6 +1991,81 @@ En ce qui concerne la superficie incendiée, on observe souvent une corrélation
 
 
 ##### 5.3.2.5 Effet des radiations solaires sur les incendies
+
+```{r}
+library(ggplot2)
+data <- read.csv("../Exports/export_incendies_meteo.csv")
+ggplot(data, aes(x = Rayonnement_med, y = surface_parcourue_m2)) +
+  geom_point(color = "darkorange", alpha = 0.7) +  # Nuage de points
+  geom_smooth(method = "lm", color = "steelblue", se = TRUE) +  # Régression linéaire
+  labs(
+    title = "Impact du rayonnement solaire sur les surfaces brûlées",
+    x = "Rayonnement solaire moyen (W/m²)",
+    y = "Surface parcourue par les incendies (m²)"
+  ) +
+  theme_minimal()
+cor.test(data$Rayonnement_med, data$surface_parcourue_m2)
+```
+
+
+**Analyse Informatique:**
+
+Notre programme s'appuie sur la bibliothèque ggplot2, un outil efficace pour la représentation graphique des données dans l'environnement R.  
+
+On débute par l'importation de cette bibliothèque, essentielle pour exploiter la grammaire des graphiques conçue par Hadley Wickham.  
+
+Elle offre la possibilité de créer des visualisations en juxtaposant diverses strates d'éléments graphiques.
+
+La première phase du code implique la définition des données que l'on désire représenter visuellement via la fonction ggplot().  
+
+Dans cette situation, nous employons un tableau appelé data, où la variable Rayonnement_med doit être représentée sur l'axe horizontal (x), alors que surface_parcourue_m2 est placée sur l'axe vertical (y).  
+
+Ces deux paramètres correspondent respectivement à l'ensoleillement moyen et à la superficie ravagée lors d'un feu de forêt.
+
+Par la suite, une première couche graphique est incorporée en utilisant la fonction geom_point().  Cette commande génère un diagramme de dispersion, où chaque point symbolise une observation.  
+
+On a sélectionné l'orange profond (darkorange) comme couleur pour les points, et une transparence (alpha = 0.7) est appliquée afin d'améliorer la visualisation lorsque les points sont adjacents ou se superposent.
+
+La fonction geom_smooth() est utilisée pour incorporer une courbe de régression linéaire dans la couche suivante.  
+
+La spécification du paramètre method = "lm" signifie que nous utilisons un modèle de régression linéaire simple.  
+
+Cette courbe bleue, qui se superpose aux points, illustre la tendance globale présente dans les données.  
+
+L'activation de l'option se = TRUE génère une zone d'incertitude, nommée intervalle de confiance, autour de la courbe qui reflète la précision de l'estimation du modèle.
+
+Par la suite, la fonction labs() est utilisée pour personnaliser les éléments textuels.
+
+Cette dernière intègre un titre au graphique et des libellés clairs pour les axes, éléments cruciaux à la compréhension des résultats, surtout dans le cadre d'un rapport ou d'une publication.
+
+Pour conclure, le thème graphique est spécifié par la fonction theme_minimal(), conférant au graphique un aspect minimaliste.  
+ 
+Ce thème élimine les éléments graphiques superflus (tels que les bordures ou les arrière-plans colorés) pour se focaliser exclusivement sur les données et les axes, ce qui optimise la clarté et l'aspect professionnel du graphique.
+
+**Analyse Statistique:**
+
+Le diagramme illustre le lien entre l'irradiation solaire moyenne (exprimée en W/m², sur l'axe des X) et la zone affectée par les feux (en m², sur l'axe des Y).  
+
+On note une importante éparpillement des points, avec un regroupement marqué des données autour de rayonnements solaires entre 10 000 et 15 000 W/m², et des surfaces principalement inférieures à 250 000 m².  
+
+Certains points atypiques indiquent des surfaces couvertes très importantes (jusqu'à 1 000 000 m²), même avec de faibles niveaux de radiation solaire (environ 0 W/m²).
+
+Une ligne de régression linéaire est dessinée, présentant une inclinaison légèrement négative, indiquant un lien inverse faible entre l'exposition au soleil et la superficie affectée par les incendies.  
+
+L'espace ombragé autour de la ligne représente l'intervalle de confiance, qui est relativement vaste, suggérant une incertitude dans la relation estimée.
+
+**Les résultats statistiques fournis confirment cette observation :**
+
+**Corrélation coefficientielle (cor) :** -0,0527.  Ce coefficient près de 0 révèle une faible corrélation entre le rayonnement solaire moyen et la superficie affectée par les incendies.  Un nombre négatif indique un lien inverse, cependant l'ampleur est insignifiante.
+
+**Test de signifiance (t = -1.8286, df = 1200, p-value = 0.0677):**La valeur p dépasse légèrement le seuil conventionnel de 0,05 (5 %).Cela implique que nous ne sommes pas en mesure de rejeter l'hypothèse nulle (absence de corrélation) avec un niveau de confiance de 95 %.Autrement dit, la corrélation détectée ne revêt pas de signification statistique à ce niveau.
+
+**Confiance à 95 % :** l'intervalle est [-0.1089, 0.0038].Cet intervalle comprend 0, ce qui soutient l'hypothèse que la corrélation pourrait être nulle.Le plafond (0.0038) est quasiment à 0, ce qui confirme que toute corrélation présente, si elle est avérée, reste très faible.
+
+L'analyse statistique révèle qu'aucun lien linéaire notable n'existe entre l'intensité moyenne du rayonnement solaire et la superficie affectée par les feux de forêt.  
+
+Cela indique que le rayonnement solaire, comme il est quantifié ici, n'est pas un élément directement décisif pour la magnitude des incendies dans cet ensemble de données.
+
 ##### 5.3.2.6 Température et nombre d'incendies par période de la journée
 
 Pour pouvoir analyser notre problemarique qui se concerne sur la temperature et le nombre des incendies par periode journee on va diviser notre problematique en des sous problematiques: 

@@ -2186,3 +2186,26 @@ ggplot(data, aes(x = Force_vent_med, y = Tens_vap_med, color = Tmax_med, size = 
        size = "Surface brûlée (m²)") +
   theme_minimal()
 
+
+data <- read.csv("../Exports/export_incendies_meteo.csv")
+# Charger les bibliothèques nécessaires
+library(ggplot2)
+
+# Supposons que votre dataframe s'appelle 'incendies_data'
+# et contient les colonnes Rayonnement_med et surface_parcourue_m2
+
+# Exemple de graphique
+ggplot(data, aes(x = Rayonnement_med, y = surface_parcourue_m2)) +
+  geom_point(color = "darkorange", alpha = 0.7) +  # Nuage de points
+  geom_smooth(method = "lm", color = "steelblue", se = TRUE) +  # Régression linéaire
+  labs(
+    title = "Impact du rayonnement solaire sur les surfaces brûlées",
+    x = "Rayonnement solaire moyen (W/m²)",
+    y = "Surface parcourue par les incendies (m²)"
+  ) +
+  theme_minimal()
+
+
+
+cor.test(data$Rayonnement_med, data$surface_parcourue_m2)
+

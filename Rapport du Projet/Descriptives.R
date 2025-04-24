@@ -448,3 +448,4 @@ ggplot(surv_data, aes(x = time, y = surv)) +
     panel.background = element_rect(fill = "white")  # Fond blanc pour une meilleure lisibilité
   )
 
+colnames(data_clean)

@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  html_document: 
-    toc: true
-    toc_depth: 6
   pdf_document: 
     latex_engine: xelatex
+    toc: true
+    toc_depth: 6
+  html_document: 
     toc: true
     toc_depth: 6
 ---
@@ -3537,6 +3537,88 @@ L'analyse du Chi-Deux nous indique que la distribution des incendies n'est pas u
 
 En conclusion, cette analyse statistique révèle une relation inverse marquée entre la proximité des villes côtières et le nombre d’incendies en France, avec plus de 90 % des incendies survenant à plus de 50 km des côtes.
 
+##### 5.3.3.5 Altitude vs Types de causes
+
+```{r}
+data <- read.csv("../Exports/export_incendies_geo.csv", stringsAsFactors = FALSE)
+
+data$travaux <- grepl("travaux", data$nature_inc_sec, ignore.case = TRUE)
+
+data$classe_altitude <- ifelse(data$altitude_med <= 500, "0-500",
+                               ifelse(data$altitude_med <= 1000, "500-1000",
+                                      ifelse(data$altitude_med <= 1500, "1000-1500",
+                                             ifelse(data$altitude_med <= 2000, "1500-2000", "2000+"))))
+
+tab <- table(data$classe_altitude, data$travaux)
+
+barplot(t(tab),
+        beside = TRUE,
+        col = c("lightblue", "tomato"),
+        legend = c("Non-Travaux", "Travaux"),
+        main = "Incendies liés aux travaux par altitude",
+        xlab = "Classe d'altitude (m)",
+        ylab = "Nombre d'incendies")
+```
+
+**Analyse Informatique:**
+
+Nous allons ajouter une nouvelle colonne nommée « travaux », qui recherchera le terme « travaux » dans la colonne nature_inc_sec.  
+
+On a fait appel à la fonction grepl(), qui retourne TRUE si le terme « travaux » est présent, et FALSE dans le cas contraire.  
+
+De plus, le paramètre à négliger.case = TRUE autorise cette recherche sans distinction entre lettres majuscules et minuscules.  
+
+Cela donne donc une colonne booléenne supplémentaire qui indique si les activités humaines sont probablement à l'origine de chaque feu.
+
+Puis, on ajoute une colonne classe_altitude, qui classe les incendies selon l'altitude moyenne du lieu
+
+La fonction ifelse() est ici imbriquée pour créer une classification par tranches de 0 à 500 mètres, de 500 à 1000 mètres, de 1000 à 1500 mètres, de 1500 à 2000 mètres et de plus de 2000 mètres
+
+Chaque ligne du tableau est donc attribuée à une classe d’altitude en fonction de la valeur de altitude_med.
+
+On réalise ensuite un tableau de fréquence croisée entre les classes d’altitude et la présence ou non de travaux
+
+Onutilise la fonction table() pour compter le nombre d’incendies avec travaux (TRUE) et sans travaux (FALSE) dans chaque tranche d’altitude.
+
+Enfin, on crée un diagramme en barres pour visualiser nos résultats 
+
+- **barplot()** est la fonction qui génère le graphique
+- **t(tab)** effectue une transposition du tableau, ce qui inverse les lignes et colonnes pour mieux présenter les données.
+- **beside = TRUE** affiche les barres côte à côte (et non superposées), ce qui rend la comparaison visuelle plus claire.
+- **legend = ..** affiche une légende explicite pour que le lecteur comprenne la signification des couleurs.
+- **main, xlab et ylab** ajoutent des titres et des noms d’axes pour clarifier le contenu du graphique.
+
+Ce graphique permet d'examiner si les incendies liés aux travaux sont plus fréquents à certaines altitudes, ce qui peut guider des politiques de prévention spécifiques en zone montagneuse ou basse altitude
+
+**Analyse Statistique:**
+
+Le diagramme indique nettement une forte concentration de feux dans la fourchette d'altitude de 0 à 500 mètres, comprenant 713 feux non associés à des travaux et 170 directement attribuables à des travaux.  
+
+Ceci correspond approximativement à 24 % des incendies dans cette catégorie provoqués par des travaux, un pourcentage significatif. 
+
+Cette domination est due à la concentration des activités humaines à basse altitude : zones urbaines, agricoles ou périurbaines où des travaux tels que le défrichage, les feux contrôlés ou les projets de construction se produisent régulièrement.
+
+Ces activités, qui se déroulent souvent dans des conditions chaudes et arides – caractéristiques des plaines en été – accroissent le risque d'incendie.  Par ailleurs, la proximité des résidences et des installations peut intensifier l'identification et la notification de ces incidents, ce qui pourrait exagérer les chiffres dans cette catégorie.
+
+En progressant à l'altitude de 500-1000 mètres, on constate une diminution significative du chiffre global des incendies (147 non attribuables aux travaux, 80 attribuables), toutefois la part des incendies provoqués par les travaux tend à augmenter légèrement, atteignant approximativement 35 %.  
+
+Cela indique que, bien que la fréquence des activités humaines soit en baisse, celles qui subsistent – telles que l'abattage d'arbres, l'entretien des lignes à haute tension ou la construction de routes – comportent un risque proportionnellement plus important.
+
+Les forêts situées à une altitude intermédiaire, généralement peuplées de résineux tels que les pins, présentent une inflammabilité accrue, notamment si les opérations nécessitent l'utilisation d'instruments produisant des étincelles (scies à métaux, tronçonneuses). 
+
+Cette bande d'altitude pourrait également être un point de basculement où les conditions météorologiques (moins d'humidité qu'en haute montagne, mais des températures toujours élevées) favorisent les incendies.
+
+De 1000 à 1500 mètres, on observe une augmentation de la chute : 49 feux non associés et 29 associés aux travaux, ce qui représente un pourcentage encore supérieur d'incendies liés aux travaux (37 %).  
+
+Il se peut que cela soit le résultat de travaux particuliers effectués à ces altitudes, comme la maintenance de sentiers forestiers ou d'abris, mais en volumes nettement inférieurs.  L'environnement commence à se modifier : l'humidité s'accroît, les températures se refroidissent et la végétation devient moins épaisse ou plus humide, diminuant ainsi le danger global d'incendie.
+
+Au-delà de 1500 mètres, les incendies deviennent insignifiants (9 non associés et 3 associés entre 1500 et 2000 mètres, puis 2 non associés et aucun associé au-delà de 2000 mètres).  
+
+À ces hauteurs, les actions humaines deviennent rares et se restreignent à des opérations occasionnelles (comme l'entretien de stations de ski ou de sentiers en montagne).  
+
+Les conditions météorologiques, telles que le froid, l'humidité ou même la neige, rendent les risques d'incendie extrêmement faibles, même lors de travaux.  
+
+La flore, généralement constituée de prairies alpines ou de rochers, fournit peu de matière inflammable.
 
 
 #### 5.3.4 Urbanisation et activités humaines

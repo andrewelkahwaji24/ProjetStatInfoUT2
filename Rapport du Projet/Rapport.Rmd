@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  pdf_document: 
-    latex_engine: xelatex
+  html_document: 
     toc: true
     toc_depth: 6
-  html_document: 
+  pdf_document: 
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
 ---
@@ -3323,6 +3323,83 @@ Il est donc nécessaire d'ajuster les stratégies : combattre la malfaisance dan
 
 
 ##### 5.3.3.3 Variation de l'altitude par region
+
+```{r}
+data <- read.csv("../Exports/export_incendies_geo.csv", stringsAsFactors = FALSE)
+
+data$classe_altitude <- ifelse(data$altitude_med <= 500, "0-500",
+                               ifelse(data$altitude_med <= 1000, "500-1000",
+                                      ifelse(data$altitude_med <= 1500, "1000-1500",
+                                             ifelse(data$altitude_med <= 2000, "1500-2000", "2000+"))))
+
+moyenne_surface <- tapply(data$surface_parcourue_m2, data$classe_altitude, mean, na.rm = TRUE)
+
+barplot(moyenne_surface,
+        col = "darkorange",
+        main = "Surface moyenne des incendies selon l'altitude",
+        xlab = "Classe d'altitude (m)",
+        ylab = "Surface moyenne parcourue (m²)")
+
+```
+
+**Analyse Informatique:**
+
+On débute par l'importation d'un jeu de données depuis un fichier CSV localisé dans un dossier parent appelé « Exports ». 
+
+L'option stringsAsFactors = FALSE est indiquée pour empêcher la conversion automatique des chaînes de caractères en facteurs, une méthode conseillée pour maintenir une souplesse maximale dans la gestion des variables textuelles, surtout dans les versions précédentes à R 4.0 où cette transformation était effectuée automatiquement. 
+
+Cette phase garantit donc que l'intégrité textuelle des données est préservée pour de futures manipulations possibles.
+
+Par la suite, on crée une nouvelle variable catégorique : classe_altitude.  
+
+On se sert d'une suite imbriquée de la fonction ifelse pour catégoriser chaque observation en fonction de l'altitude médiane notée (altitude_med).  
+
+Ce système de classification englobe cinq plages de distance : de 0 à 500 m, de 500 à 1000 m, de 1000 à 1500 m, de 1500 à 2000 m et au-delà de 2000 m.  
+
+Cette approche reflète une intention de passer à une forme discrète d'une variable continue afin d'examiner des tendances ou des comportements moyens dans différentes bandes d'altitudes uniformes.  
+
+La méthode hiérarchique utilisée avec des ifelse imbriqués, bien que efficace, pourrait être substituée par une technique telle que cut() pour des questions de clarté.
+
+En utilisant la fonction tapply, on détermine la moyenne de la variable surface_parcourue_m2 (surface parcourue par les incendies, exprimée en mètres carrés) pour chaque catégorie d'altitude que nous avons définie auparavant.  
+
+Cette technique utilise une fonction (dans ce cas, la moyenne) sur des sous-groupes de données déterminés par un facteur (classe_altitude), tout en négligeant les valeurs absentes (na.rm = TRUE).  
+
+On obtient donc une série de moyennes qui illustrent la tendance centrale de la superficie brûlée pour chaque tranche d'altitude.
+
+Pour finir, on représente les résultats graphiquement avec un histogramme.  
+
+Avec l'utilisation du diagramme en barres, on produit une illustration graphique où chaque barre représente une catégorie d'altitude, et sa taille indique la superficie moyenne parcourue par les incendies dans cette catégorie.  
+
+L'utilisation de la couleur « darkorange » est judicieuse : elle fait référence au feu de manière instinctive et accentue donc l'analogie graphique avec le sujet des incendies.  
+
+**Analyse Statistique:**
+
+Les informations indiquent une variation claire du nombre d'incendies selon l'altitude.  La classe 0-500 m, qui compte 883 incidents, présente le taux d'incendies le plus élevé.
+
+Par la suite, on note une baisse graduelle : 227 incendies pour la classe de 500 à 1000 m, 78 incendies pour la classe de 1000 à 1500 m, 12 incendides pour la classe de 1500 à 2000 m et seulement deux au-delà de 2000 m. 
+
+Ce schéma indique que la fréquence des incendies est nettement plus élevée en basse altitude, potentiellement à cause d'une plus grande activité humaine, d'une végétation plus abondante ou de conditions météorologiques plus favorables (telles que des températures supérieures et une humidité inférieure).
+
+Les incendies sont peu fréquents en altitude, ce qui pourrait être dû à une réduction des points d'origine des feux, à une végétation moins dense ou à des conditions météorologiques défavorables à l'expansion du feu.
+
+Le diagramme indique que la zone moyenne affectée par les incendies demeure assez constante, oscillant entre 180 000 et 200 000 mètres carrés pour les catégories d'altitude allant de 0 à 2000 m. 
+
+Cela signifie que, bien que la fréquence des incendies soit élevée en basse altitude, leur gravité (en termes de surface brûlée) ne montre pas de variation significative dans ces régions.
+
+Néanmoins, un accroissement significatif est remarqué au-delà de 2000 m, où la superficie moyenne excède les 300 000 mètres carrés.  Même si seulement deux incendies sont identifiés dans cette catégorie, leur influence est démesurée, indiquant que les incendies en altitude, bien qu'inhabituels, causent une destruction bien plus importante en termes de surface.
+
+En analysant les données de fréquence et de surface moyenne, un contraste intéressant émerge. 
+
+À une altitude basse (0-500 m), même si les incendies sont courants (883 occurrences), leur superficie moyenne est modeste (approximativement 180 000 m²), ce qui pourrait suggérer une gestion efficace des feux dans ces régions, possiblement en raison d'une action prompte ou d'une végétation moins épaisse.  
+
+En revanche, au-dessus de 2000 m, les feux sont peu fréquents (2 incidents), cependant leur superficie moyenne est très importante (plus de 300 000 m²), ce qui appuie votre théorie selon laquelle les incendies en altitude sont plus sévères.
+
+Par ailleurs, la classe 500–1000 m, avec 227 incendies, présente une surface moyenne légèrement inférieure aux autres classes sous 2000 m, ce qui pourrait refléter des conditions spécifiques, comme une meilleure gestion des risques ou une végétation moins combustible à cette altitude.
+
+Pour conclure, cette analyse démontre que l'altitude a un impact notable sur la dynamique des feux de forêt.  
+
+À une altitude basse et moyenne, les incendies se produisent plus souvent mais leur intensité ne varie pas, alors qu'au-dessus de 2000 m, bien qu'ils soient peu fréquents, ils sont nettement plus vastes et dévastateurs.
+
 ##### 5.3.3.4 Distance côtière et risque d’incendie
 
 ```{r}

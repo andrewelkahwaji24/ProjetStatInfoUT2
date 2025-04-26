@@ -2604,3 +2604,29 @@ barplot(t(tab),
 
 
 tab
+
+
+
+
+data <- read.csv("../Exports/export_incendies_geo.csv", stringsAsFactors = FALSE)
+
+data$classe_altitude <- ifelse(data$altitude_med <= 500, "0-500",
+                               ifelse(data$altitude_med <= 1000, "500-1000",
+                                      ifelse(data$altitude_med <= 1500, "1000-1500",
+                                             ifelse(data$altitude_med <= 2000, "1500-2000", "2000+"))))
+
+moyenne_surface <- tapply(data$surface_parcourue_m2, data$classe_altitude, mean, na.rm = TRUE)
+
+barplot(moyenne_surface,
+        col = "darkorange",
+        main = "Surface moyenne des incendies selon l'altitude",
+        xlab = "Classe d'altitude (m)",
+        ylab = "Surface moyenne parcourue (m²)")
+
+
+table(data$classe_altitude)
+
+
+
+
+

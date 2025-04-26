@@ -4869,6 +4869,98 @@ En d'autres termes, la corrélation constatée (rho = 0.036) ne possède pas de 
 
 L'étude de la corrélation entre le degré d'urbanisation et la survenue des incendies révèle un lien très faible et sans signification statistique (rho = 0,036, p-valeur = 0,2906), ce qui signifie que l'urbanisation ne constitue pas un élément déterminant de la fréquence des incendies dans les communes analysées.
 
+##### 5.3.5.3 Impact de l’altitude sur la vulnérabilité
+
+```{r}
+data <- read.csv("../Exports/export_incendies_geo.csv", stringsAsFactors = FALSE)
+data$criminel <- grepl("Malveillance", data$nature_inc_prim, ignore.case = TRUE)
+data$classe_altitude <- ifelse(data$altitude_med <= 500, "0-500",
+                               ifelse(data$altitude_med <= 1000, "500-1000",
+                                      ifelse(data$altitude_med <= 1500, "1000-1500",
+                                             ifelse(data$altitude_med <= 2000, "1500-2000", "2000+"))))
+tab <- table(data$classe_altitude, data$criminel)
+barplot(t(tab),
+        beside = TRUE,
+        col = c("lightblue", "red"),
+        legend = c("Non Criminel", "Criminel"),
+        main = "Nombre d'incendies criminels selon l'altitude",
+        xlab = "Classe d'altitude (m)",
+        ylab = "Nombre d'incendies")
+
+```
+
+**Analyse Informatique:**
+
+Nous débutons par l'importation du jeu de données grâce à une ingénierie des variables, en intégrant un indicateur binaire qui détermine si les incendies sont criminels ou non.  
+
+Cette identification s'effectue par une analyse de motifs textuels appliquée sur le champ descriptif de l'incident, en utilisant une recherche d'expressions insensible à la casse afin d'assurer une plus grande robustesse face aux variations typographiques.
+
+Afin d'agréger l'information géographique, on procède à une discrétisation de la variable continue représentant l'altitude médiane. 
+
+Le choix de classes régulières de 500 mètres permet d'éviter des biais d'interprétation liés à des distributions irrégulières et facilite l'analyse comparative entre groupes. 
+
+On segmente ainsi l'espace selon une échelle altitudinale pertinente au regard des phénomènes étudiés.
+
+Par la suite, nous élaborons une matrice de contingence qui croise la classe d'altitude avec l'indicateur de criminalité.  
+
+Il est crucial d'avoir cette présentation sous forme de tableau pour évaluer la force de la liaison entre ces deux variables catégoriques.  
+
+Pour rendre ces relations facilement compréhensibles, on adopte une illustration graphique en utilisant des barres côte à côte, dotées d'un code couleur distinctif qui permet une interprétation instantanée de la répartition conditionnelle des faits criminels en fonction de l'altitude.
+
+Techniquement, cette approche permet de détecter visuellement des variations de densité des incendies criminels en fonction de l'altitude. 
+
+**Analyse Statistique:**
+
+
+Cette étude nous procure un éclairage sur le lien entre l'altitude et la fréquence des incendies, en séparant les causes criminelles de celles non criminelles. 
+
+Les informations indiquent une baisse significative des incendies avec l’élévation de l'altitude, un phénomène issu de l'interaction complexe entre divers facteurs environnementaux, démographiques et de comportement.
+
+Dans la bande d'altitude la plus basse, allant de 0 à 500 mètres, on note une concentration importante de feux, avec un total de 883 incidents, dont 458 sont considérés comme non criminels et 425 comme criminels.
+
+Cette zone, qui inclut probablement les régions de plaine et périurbaines, affiche le taux le plus élevé d'incendies, constituant approximativement 71 % du total des incidents identifiés sur toutes les catégories d'altitude. 
+
+Cette prévalence peut être due à plusieurs facteurs liés entre eux. Généralement, les zones de basse altitude hébergent des communautés humaines plus peuplées, ce qui engendre une interaction plus importante avec les régions forestières ou végétales.
+
+Ces échanges englobent couramment des occupations de loisir – comme des pique-niques, des séjours en plein air ou des grillades – qui pourraient par inadvertance provoquer des feux si elles ne sont pas dûment administrées.  De plus, la proportion significative d'incendies criminels (qui représente 48 % du total dans cette catégorie) souligne l'impact humain notable, possiblement associé à des actes de pyromanie causés par des tensions socio-économiques, des différends fonciers ou d'autres intentions nuisibles.
+
+Lorsque l'on passe de 500 à 1 000 mètres, on constate une diminution notable du nombre d'incendies, avec un total de 227 incidents, dont 159 non criminels et 68 criminels.  
+
+Cette baisse, qui correspond à une diminution d'environ 74 % par rapport à la tranche antérieure, peut s'expliquer par une raréfaction de la population et un accès réduit aux zones boisées.  
+
+Bien que moins fréquents, les incendies accidentels demeurent prédominants en termes de proportion (70 % des incidents dans ce segment), indiquant que les origines accidentelles – telles que des feux de camp mal maîtrisés ou des étincelles issues d'activités humaines – continuent de garder une place importante.
+
+Par contre, la diminution notable des incendies criminels (de 425 à 68) suggère que les individus commettant des actes délibérés sont moins enclins à agir dans des régions où l'isolement géographique rend les mouvements plus difficiles et où la vigilance pourrait être accrue.  
+
+Cette tendance souligne l'impact de la facilité d'accès et de la présence humaine sur les comportements criminels, les régions moins densément peuplées ayant l'air de décourager les actions préméditées.
+
+À des hauteurs supérieures, de 1 000 à 1 500 mètres, le taux d'incendies diminue davantage, comptant 51 incendies accidentels et 27 intentionnels, ce qui fait un total de 78 événements.  
+On observe cette tendance dans les altitudes plus élevées : entre 1 500 et 2 000 mètres, on dénombre seulement 10 incendies d'origine non criminelle et 2 d'origine criminelle, tandis qu'au-delà de 2 000 mètres, il n'y a que deux incendies d'origine non criminelle, sans aucune enquête criminelle.  
+
+La rareté des incendies en haute altitude s'attribue à des restrictions environnementales et logistiques.  
+
+D’une part, la végétation devient plus clairsemée à ces altitudes, réduisant la disponibilité de combustible pour les feux.
+
+Par ailleurs, l'accès à ces régions est fréquemment ardu, demandant des efforts physiques ou des moyens de déplacement particuliers, ce qui restreint autant les actions humaines fortuites que les desseins criminels.  
+
+Le fait qu'il n'y ait pas de feux criminels au-delà de 2 000 mètres indique que les raisons ou les occasions pour commettre de tels délits deviennent insignifiantes dans des lieux aussi éloignés, où les cibles potentielles sont peu fréquentes.
+
+L'examen des rapports entre incendies criminels et non criminels indique des fluctuations significatives en fonction de l'altitude.  
+
+Dans l'intervalle de 0 à 500 mètres, les incendies d'origine criminelle constituent 48 % des incidents, un pourcentage significatif qui témoigne de l'influence de l'activité humaine.  
+
+À des altitudes moyennes (1 000–1 500 mètres), cette proportion baisse quelque peu, se maintenant entre 35 % et 50 %, ce qui témoigne d'une continuité relative des actions criminelles malgré la diminution générale des incidents.  
+
+Cette stabilisation pourrait indiquer un comportement plus opportuniste ou imprévisible de la part des auteurs dans des lieux moins fréquentés, où la supervision est réduite, mais où des occasions d'intervenir persistent.
+
+À des altitudes élevées, la proportion d'incendies criminels devient insignifiante, confirmant l'idée d'une dissuasion due à l'isolement géographique et à la rareté des cibles.
+
+Pour résumer, cette étude souligne l'importance de l'altitude comme un facteur déterminant des conditions environnementales et humaines qui contribuent à la déclenchement des incendies.
+
+Les régions de basse altitude, qui se distinguent par une population densément peuplée et un accès facilité, sont le théâtre de la plupart des incidents, notamment ceux liés à la criminalité.  
+
+Avec l'augmentation de l'altitude, des éléments comme la raréfaction de la flore, l'isolement géographique et la baisse de la population humaine conduisent à une chute significative des feux, qu'ils soient accidentels ou délibérés.
+
 #### 5.3.6 Les Incendies en Europe France - Italie - Espagne
 
 En Europe, les incendies constituent un danger de plus en plus grand pour les écosystèmes et les sociétés humaines, notamment dans les zones méditerranéennes.  

@@ -2630,3 +2630,21 @@ table(data$classe_altitude)
 
 
 
+
+
+data <- read.csv("../Exports/export_incendies_geo.csv", stringsAsFactors = FALSE)
+data$criminel <- grepl("Malveillance", data$nature_inc_prim, ignore.case = TRUE)
+data$classe_altitude <- ifelse(data$altitude_med <= 500, "0-500",
+                               ifelse(data$altitude_med <= 1000, "500-1000",
+                                      ifelse(data$altitude_med <= 1500, "1000-1500",
+                                             ifelse(data$altitude_med <= 2000, "1500-2000", "2000+"))))
+tab <- table(data$classe_altitude, data$criminel)
+barplot(t(tab),
+        beside = TRUE,
+        col = c("lightblue", "red"),
+        legend = c("Non Criminel", "Criminel"),
+        main = "Nombre d'incendies criminels selon l'altitude",
+        xlab = "Classe d'altitude (m)",
+        ylab = "Nombre d'incendies")
+
+

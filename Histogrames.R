@@ -2648,3 +2648,20 @@ barplot(t(tab),
         ylab = "Nombre d'incendies")
 
 
+
+
+
+data <- read.csv("../Exports/export_vents.csv", stringsAsFactors = FALSE)
+plot(data$Force_vent_med, 
+     data$surface_parcourue_m2,
+     xlab = "Force moyenne du vent (m/s)",
+     ylab = "Surface parcourue (m²)",
+     main = "Relation entre force du vent et surface parcourue",
+     pch = 16,      
+     col = "blue")  
+modele <- lm(surface_parcourue_m2 ~ Force_vent_med, data = data)
+abline(modele, col = "red", lwd = 2)  
+
+
+
+

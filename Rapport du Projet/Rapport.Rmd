@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  html_document: 
-    toc: true
-    toc_depth: 6
   pdf_document: 
     latex_engine: xelatex
+    toc: true
+    toc_depth: 6
+  html_document: 
     toc: true
     toc_depth: 6
 ---
@@ -2372,7 +2372,71 @@ Cette fourchette de température encourage la déshydratation de la flore et cr�
 Les incendies sont moins probables à des températures très basses ou très élevées, ce qui souligne l'importance d'une surveillance renforcée et de mesures préventives pendant les heures les plus chaudes de la journée.
 
 
-##### 5.3.2.7 Relation entre la force du vent et la propagation des incendies
+##### 5.3.2.7 Relation entre la force du vent et la duree des incendies
+
+```{r}
+data <- read.csv("../Exports/export_vents.csv", stringsAsFactors = FALSE)
+plot(data$Force_vent_med, 
+     data$surface_parcourue_m2,
+     xlab = "Force moyenne du vent (m/s)",
+     ylab = "Surface parcourue (m²)",
+     main = "Relation entre force du vent et surface parcourue",
+     pch = 16,      
+     col = "blue")  
+modele <- lm(surface_parcourue_m2 ~ Force_vent_med, data = data)
+abline(modele, col = "red", lwd = 2)  
+```
+
+**Anlayse Informatique:**
+
+On débute par l'importation d'un fichier CSV intégrant les informations relatives aux incendies et aux conditions météorologiques.  
+
+Nous employons une fonction en R pour ouvrir ce fichier, puis nous le rangeons dans un tableau de données que nous nommons « data ».
+
+Par la suite, nous générons un diagramme de dispersion pour représenter la corrélation entre deux variables : l'intensité moyenne du vent et la zone affectée par les incendies.  
+
+Sur l'axe horizontal, on positionne la force moyenne du vent exprimée en mètres par seconde, tandis que sur l'axe vertical, on indique la surface traversée en mètres carrés.  
+
+Un titre est également ajouté au graphique pour expliquer ce que l'on constate.  Nous décidons de représenter les points du graphique en disques pleins de couleur bleue afin de les rendre plus distincts et faciles à lire.
+
+Une fois le nuage de points présenté, notre objectif est d'examiner de manière plus détaillée le lien entre la puissance du vent et la distance parcourue.  
+
+C'est pourquoi nous mettons en place un modèle de régression linéaire.  
+
+Ainsi, le modèle établit une équation reliant la force moyenne du vent à la surface traversée.
+
+Pour finir, on superpose au graphique la ligne de régression linéaire obtenue.  
+
+Cette ligne est dessinée en rouge et elle a été élargie pour assurer une bonne visibilité.  
+
+Elle offre une représentation visuelle pour déterminer si, généralement, l'intensification de la force du vent provoque une expansion de la superficie touchée par les incendies.
+
+**Analyse Statistique:**
+
+Le diagramme présente le lien entre la vitesse moyenne du vent, indiquée en mètres par seconde (m/s) sur l'axe horizontal, et la surface couverte, notée en mètres carrés (m²) sur l'axe vertical.  
+
+Les observations individuelles, sans doute associées à la propagation de feux, sont représentées par des points bleus, alors qu'une ligne rouge dérivée d'une régression linéaire dénote la tendance globale.  
+
+L'axe des x va de 0 à 10 m/s, représentant des vents de faible à modéré, tandis que l'axe des y utilise une échelle logarithmique, allant de 2e+05 à 1e+06 m², indiquant une large variation dans les surfaces parcourues.
+
+On remarque une très forte variabilité des données, avec une surface parcourue qui varie considérablement pour une même intensité de vent.  
+
+La plupart des points se situent entre 0 et 5 m/s, ce qui signifie que les observations ont majoritairement été effectuées sous des conditions de vent modérées.  
+
+Au-delà de 5 m/s, les informations deviennent plus difficiles à obtenir, ce qui pourrait être le résultat d'une raréfaction des vents puissants dans l'échantillon ou d'un défi lié à la collecte de données dans ces circonstances extrêmes.  
+
+De plus, une grande densité de points se trouve autour de 200 000 m², indiquant une restriction structurelle dans le phénomène observé (telles que des obstacles géographiques ou des actions humaines freinant la diffusion des feux).
+
+La ligne de régression linéaire rouge témoigne d'une pente très légère, presque plane, signifiant un lien très faible entre la puissance du vent et la distance parcourue.  
+
+Malgré une tendance apparente à l'augmentation de la surface couverte en fonction de la force du vent, ce lien est pratiquement insignifiant.  
+
+Cela indique que la seule puissance du vent ne justifie pas de façon significative le changement dans la superficie parcourue.  
+
+Des éléments comme le relief, la densité de la flore, le taux d'humidité ou encore les actions humaines (à l'instar des opérations de lutte contre les feux) pourraient avoir une influence bien plus cruciale sur la propagation des incendies.
+
+Pour résumer, même s'il semble y avoir un lien positif minime entre la force moyenne du vent et la surface parcourue, la grande variabilité des données et l'inclinaison quasiment inexistante de la régression linéaire suggèrent que le vent n'est pas un élément crucial dans cette situation.
+
 ##### 5.3.2.8 Impact de la pression de vapeur sur la vitesse de propagation des incendies
 
 Dans cette problématique nous allons se concentrer sur l'impact de la pression de vapeur sur la vitesse de propagation des incendies 

@@ -14,15 +14,101 @@ output:
 
 ## 1. Objectif du Projet
 
-Ce projet qui est liée a l'UE Statistique Inferentielle / Projet Stat-Info qui vise à mieux comprendre les raisons et cause des incendies en analysant des données statistiques. L'idée principale est de voir comment différentes variables influencent l'étendue des incendies, en utilisant des outils statistiques et informatiques. 
+Ce projet fait partie du cours **Statistique Inférentielle / Projet Stat-Info**, qui est proposé par le département de Mathématiques et Informatique de **l'Université Toulouse Jean Jaurès**, et porte le code **MI0A403T**.  
 
-Nous avons structuré notre rapport en trois sections principales : la Partie Informative, qui servira à présenter des informations générales afin d'aider le lecteur à comprendre notre projet avant de plonger dans les détails et les spécificités des sections Informatique et Statistique. La section Informatique va examiner minutieusement les techniques que nous avons mises en œuvre dans notre projet, en précisant toutes les informations indispensables. Et pour finir, la section Statistique qui nous aidera à détailler toutes les études que nous avons réalisées avec les diagrammes appropriés, l'interprétation et la solution de nos enjeux.
+L'objectif premier est d'examiner les raisons et les éléments qui ont un impact sur les incendies en étudiant des données statistiques.  
 
-Finalement, nous avons constitué une section supplémentaire qui nous sert à énumérer tous les sites internet que nous avons consultés pour la rédaction et l'élaboration de notre projet. Il est à noter que les références sont présentées au format APA !
+Les incendies constituent un phénomène complexe qui a des impacts à la fois sur l'environnement et les communautés humaines, entraînant des effets dévastateurs en termes de pertes humaines, économiques et écologiques.  
+
+Ce projet vise à comprendre comment diverses variables peuvent affecter la portée, la diffusion et la régulation des incendies, en utilisant des techniques statistiques et informatiques sophistiquées.
+
+Grâce à l'examen des données en notre possession, notre objectif est de déceler des liens entre divers éléments comme l'altitude, la température, l'humidité et la surface ravagée par les incendies.  
+
+Ce projet ne se limite pas à une simple analyse descriptive : il vise à fournir des réponses tangibles à des questions précises, comme l'influence des facteurs environnementaux sur la diffusion des incendies, en employant des instruments informatiques appropriés pour ce genre d'étude.
+
+L'analyse statistique de ces informations permettra d'aborder des interrogations précises, telles que : Existe-t-il un lien entre la surface affectée par un incendie et l'altitude ?  
+
+L'intention est d'appliquer des méthodes statistiques appropriées, y compris des analyses bivariées, afin de saisir l'interaction entre ces variables et de déterminer les corrélations qui peuvent exister entre elles.
+
+De plus, nous aimerions examiner dans quelle mesure des éléments tels que la température, l'humidité ou la nature de la végétation peuvent influencer l'intensité et la diffusion des incendies.  
+
+Dans le cadre de ce projet, des logiciels tels que R et Python sont employés pour manipuler d'importants volumes de données et effectuer des calculs statistiques sophistiqués.  
+
+Avec ces ressources, nous serons capables de mener une analyse détaillée, à la fois descriptive et explicative, des données fournies.
+
+Nous pourrons produire des visualisations nettes sous forme de graphiques, diagrammes en nuage de points et autres formes graphiques qui mettent en lumière les interactions entre les diverses variables.
+
+Le rapport décrit le travail en plusieurs phases majeures.  
+
+En premier lieu, nous avons entrepris de bâtir la base de données, une étape cruciale qui a impliqué la consolidation des fichiers CSV fournis, leur nettoyage et leur organisation afin qu'ils soient utilisables.  
+
+Cette étape a aussi inclus le traitement des données manquantes et la gestion des valeurs aberrantes, une tâche précise indispensable pour assurer la crédibilité des résultats ultérieurs.  
+
+Dès que les données ont été préparées, l'analyse statistique a pu débuter.  
+
+Cette étude a été réalisée à la fois de manière descriptive et plus exploratoire, en tentant de répondre aux interrogations posées dans le contexte du projet.
+
+Une des phases principales de cette étude a été d'effectuer une analyse univariée des variables pour observer leur distribution, centralité et dispersion, avant de progresser vers des analyses plus élaborées comme la quête de corrélations bivariées et l'élaboration de modèles relatifs aux relations entre quelques variables primordiales.  
+
+Pour ce faire, nous avons eu recours à des instruments statistiques comme les coefficients de corrélation et les tests d'importance, ainsi qu'à des visualisations graphiques facilitant la compréhension des données, comme les histogrammes, les boxplots, les diagrammes en nuage de points et les courbes de régression.
+
+En conclusion, ce projet inclut une partie dédiée aux références, qui compile toutes les sources employées pour la récolte des données, ainsi que celles examinées pour l'approche analytique et pour l'élaboration théorique des concepts statistiques utilisés.  Les références sont disposées en respectant les standards du format APA, pour assurer la précision académique du travail.  
+
+Les sites web et les publications scientifiques référencés sont cités de façon claire, permettant à quiconque désirant élargir sa compréhension du sujet d'accéder à ces références et de continuer l'exploration entamée par ce projet.  
+
+Ainsi, ce projet s'inscrit dans une approche de recherche détaillée, combinant des aptitudes en statistiques et en informatique, et ayant pour but d'apporter des réponses à des problématiques complexes concernant l'étude des incendies et la gestion des risques qui y sont liés.
 
 ### 1.1 Utilisation de GitHub 
 
-Il faut également noter que lors de notre projet, qui se divisait en deux parties : Informatique et Statistique, nous avons utilisé GitHub. Cette plateforme collaborative nous a permis de travailler collectivement sur un code en définissant les étapes attribuées à chaque membre du groupe. Cette plateforme nous offre aussi la possibilité de fusionner tout le code en un unique fichier, sans nécessité de l'assembler manuellement.
+Ce projet se compose de deux volets distincts : Informatique et Statistique. Nous avons incorporé l'usage de GitHub, une plateforme de gestion de versions réputée pour son efficacité à simplifier la collaboration sur des projets de codage sophistiqués.
+
+L'utilisation de cette technologie s'est révélée non seulement nécessaire pour organiser efficacement le projet, mais aussi essentielle pour garantir une gestion adéquate du code tout au long du cycle de développement.  
+
+Effectivement, GitHub nous a offert la possibilité de gérer nos efforts communs de façon harmonieuse, de surveiller la progression du travail effectué par chaque membre de l'équipe et d'assurer l'intégrité et la cohérence du code à mesure qu'il est modifié.
+
+L'une des principales atouts de GitHub est sa compétence à gérer diverses versions d'un même document.  
+
+Lors du lancement du projet, chaque participant de l'équipe s'est vu attribuer des parties précises du code à traiter, conformément aux phases établies dans notre programme de travail.  
+
+Par conséquent, certains se sont attelés à la préparation des données, tandis que d'autres ont pris en charge l'élaboration des modèles statistiques et l'analyse des résultats.  
+
+Cette distribution des rôles a assuré un déroulement harmonieux du projet et a prévenu toute ambiguïté en ce qui concerne la répartition des responsabilités.
+
+GitHub a offert à chaque utilisateur la possibilité de travailler sur ses propres portions de code de façon autonome et de les proposer sous forme de commits.  
+
+Ces commits sont des consignations détaillées des changements apportés au code, chaque entrée étant accompagnée d'un message explicatif, dans le but de préciser les modifications réalisées.  
+
+Cette méthode a rendu la réévaluation des tâches de chaque membre plus aisée et a favorisé un retour d'information rapide et constructif sur les divers aspects du projet.  
+
+La fonctionnalité des branches et des pull requests permet d'examiner, d'analyser et de corriger chaque commit avant son intégration au projet global.  
+
+Cela nous a donné la possibilité d'expérimenter et de peaufiner des solutions sans entraver le travail des autres membres.
+
+Une autre caractéristique essentielle de l'exploitation de GitHub a été la capacité de fusionner le code.  
+
+Effectivement, cette plateforme a permis de centraliser automatiquement le travail de chaque membre dans un répertoire commun.
+
+Lorsque certaines sections du code étaient terminées, elles étaient intégrées au code principal, garantissant ainsi une mise à jour continue des changements.  
+
+Cette fonctionnalité a non seulement supprimé le besoin de recomposer manuellement les diverses versions du code, mais elle a aussi simplifié la gestion des conflits potentiels entre les différentes contributions.
+
+Quand un conflit survenait, GitHub proposait un cadre bien défini et organisé pour résoudre ces différends de façon collective, en donnant à chaque membre de l'équipe la possibilité d'échanger et de décider ensemble des modifications à réaliser.  
+
+Cela a évité toute ambiguïté potentielle en matière de gestion des versions, garantissant ainsi une continuité impeccable et une intégrité parfaite du code.
+
+L'emploi de GitHub a aussi facilité une communication en direct au sein du groupe.  
+
+Les demandes de tirage et les issues nous ont permis d'identifier aisément et de résoudre les problèmes, d'explorer diverses approches et d'intégrer des améliorations continues.  
+
+Ces instruments ont rendu le partage d'idées et la résolution de problèmes plus efficace, en nous donnant la possibilité de traiter simultanément divers éléments du projet tout en préservant une cohésion globale.
+
+En conclusion , l'emploi de GitHub s'est avéré être un outil crucial pour ce projet, facilitant une administration conjointe du code à la fois fluide et efficace.  
+
+Cette plateforme ne nous a pas seulement aidés à collaborer sur un projet commun en respectant les échéances et les responsabilités de chacun, elle a aussi simplifié l'incorporation de diverses modifications, assurant la stabilité du code final.  
+
+La fonctionnalité collaborative et la gestion des versions grâce à GitHub ont facilité la contribution autonome de chaque membre du groupe, tout en préservant une cohésion cruciale pour le succès du projet.
+
+En outre, l'incorporation de cet instrument dans notre mode opératoire a consolidé notre aptitude à réaliser des projets complexes en collaboration, tout en améliorant la gestion du code et proposant un cadre organisé pour la documentation et le suivi des changements.
 
 **Lien de GitHub**
 
@@ -30,12 +116,43 @@ https://github.com/andrewelkahwaji24/ProjetStatInfoUT2.git
 
 ### 1.2 Utilisation de l'OpenData 
 
-Dans le cadre de ce projet, nous avons mené des recherches afin d’améliorer notre base de données, ce qui nous a amenés à exploiter les données ouvertes.  Autrement dit, l'Open data consiste à rendre accessibles des données publiques, selon le gouvernement, que les utilisateurs peuvent exploiter.
+Pour améliorer la qualité et l'exhaustivité de nos analyses statistiques dans le contexte de notre projet, nous avons dû augmenter la taille de notre base de données initiale.  
 
-Les différents secteurs de l'Open Data sont variés et servent à assurer la transparence des données. 
+Afin de réaliser cela, nous avons utilisé des données publiques fournies par des entités gouvernementales dans le contexte de politiques d'ouverture de l'information.  
 
-**Nous avons utilisé les données provenant de ce site internet:**
+Nous avons spécifiquement exploité les informations fournies par la Base de Données des Incendies de Forêts en France (BDIFF), qui est consultable sur le site officiel du Ministère français de l'Agriculture et de la Souveraineté alimentaire.  
 
+Cette décision s'est faite de manière naturelle puisque la BDIFF représente aujourd'hui la principale base de données publique contenant des informations détaillées, organisées et mises à jour concernant les incendies de forêt sur le territoire français.
+
+L'Open Data, également connu sous le nom de données ouvertes, est une initiative mondiale qui cherche à rendre les informations collectées par les institutions publiques facilement accessibles et réutilisables.  
+
+Le but primordial est de promouvoir la transparence, de stimuler l'innovation et d'offrir aux chercheurs, aux entreprises et aux citoyens la possibilité d'examiner des données d'intérêt public.  
+
+En France, la loi pour une République numérique de 2016 joue un rôle essentiel en favorisant la publication proactive de certaines données publiques par les administrations.  
+
+Dans ce cadre, la BDIFF est un parfait exemple de l'esprit Open Data : elle offre une multitude d'informations sur les incendies, comprenant leur position géographique, leur source présumée, l'étendue des zones affectées, ainsi que d'autres facteurs contextuels qui enrichissent l'étude des risques et des causes.
+
+Notre recours à la BDIFF nous a donné l'opportunité d'utiliser une base de données abondante, standardisée et digne de confiance, tout en assurant la légalité de l'exploitation des données.  
+
+Grâce à la fiabilité des données recueillies par ce site officiel, nous avons pu mener une étude rigoureuse sur l'évolution des incendies sur plusieurs années. 
+
+Cela nous a permis de déceler des corrélations statistiques importantes entre diverses variables comme la surface brûlée, les conditions écologiques, ou encore les dynamiques territoriales.  
+
+De ce fait, plutôt que de recourir à une diversité de sources variées qui pourrait nuire à la pureté de nos données, nous avons opté pour l'accentuation de nos efforts sur une base spécialisée, uniforme et reconnue pour sa rigueur scientifique.
+
+Il est essentiel de noter que s'appuyer sur une seule source telle que la BDIFF dans un projet statistique n'est pas un signe de faiblesse, mais plutôt une démarche méthodologique délibérée.  
+
+En optant pour une base de données officielle, nous garantissons non seulement la fiabilité de l'information recueillie, mais aussi sa traçabilité et sa validité au sein des institutions.  
+
+La BDIFF, qui reçoit des données provenant des services départementaux d'incendie et de secours (SDIS) et d'autres entités publiques expertes, est considérée comme une référence nationale pour toute recherche sérieuse sur les incendies de forêts en France.
+
+En outre, la forme des données fournies sur la BDIFF est spécialement conçue pour une utilisation scientifique.  
+
+Les données en format CSV peuvent être aisément adaptées et importées dans des contextes d'analyse statistique comme R ou Python.
+
+Chaque incident est consigné de façon organisée, facilitant ainsi les processus de nettoyage, d'amélioration et d'analyse exploratoire des données.  
+
+Cette organisation nous a facilité la réalisation d'analyses statistiques descriptives détaillées et significatives, conforme aux exigences méthodologiques attendues dans le contexte d'un projet universitaire au Département de Mathématiques et Informatique de l'Université Toulouse Jean Jaurès (code de l'UE : MI0A403T).
 
 https://bdiff.agriculture.gouv.fr/incendies
 
@@ -5346,6 +5463,10 @@ Risque incendie : causes, conséquences et moyens de lutte. (2021). Preventica.c
 
 ### 6.2 Ressources sur la Partie Informatique 
 
+Manuel de l’Open Data. (2025). Opendatahandbook.org. https://opendatahandbook.org/guide/fr/
+
+Etalab – Politique publique de la donnée. (2023). Gouv.fr. https://www.etalab.gouv.fr/
+
 Cours et Tutoriels sur le Langage SQL. (2025). SQL. https://sql.sh/
 
 Python Software Foundation. (2019). 3.7.3 Documentation. Python.org. https://docs.python.org/3/
@@ -5354,8 +5475,14 @@ Bien démarrer avec la documentation GitHub - Documentation GitHub. (2025). GitH
 
 Qu’est-ce qu’une base de données ? Définition et fonctionnement. (2021, July 26). Hubspot.fr. https://blog.hubspot.fr/marketing/base-de-donnees
 
+Chacon, S., & Straub, B. (2014). Git - Book. Git-Scm.com. https://git-scm.com/book/en/v2
+
+contributors, M. C. and. (n.d.). Basic Syntax | Markdown Guide. Www.markdownguide.org. https://www.markdownguide.org/basic-syntax/
+
+
 ### 6.3 Ressources sur la Partie Statistique 
 
+BDIFF : Recherche et consultation des incendies de forêt. (n.d.). Bdiff.agriculture.gouv.fr. https://bdiff.agriculture.gouv.fr/incendies
 
 Dérobert, N. (2025). Paramètres statistiques - Position et dispersion. Commentprogresser.com. https://commentprogresser.com/statistique-parametre-statistiques-moyenne-mediane-etendue-ecart-type.html
 

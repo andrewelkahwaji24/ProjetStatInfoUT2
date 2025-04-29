@@ -22,7 +22,7 @@ Les incendies constituent un phénomène complexe qui a des impacts à la fois s
 
 Ce projet vise à comprendre comment diverses variables peuvent affecter la portée, la diffusion et la régulation des incendies, en utilisant des techniques statistiques et informatiques sophistiquées.
 
-Grâce à l'examen des données en notre possession, notre objectif est de déceler des liens entre divers éléments comme l'altitude, la température, l'humidité et la surface ravagée par les incendies.  
+Grâce à l'analyse des données en notre possession, notre objectif est de déceler des liens entre divers éléments comme l'altitude, la température, l'humidité et la surface ravagée par les incendies.  
 
 Ce projet ne se limite pas à une simple analyse descriptive : il vise à fournir des réponses tangibles à des questions précises, comme l'influence des facteurs environnementaux sur la diffusion des incendies, en employant des instruments informatiques appropriés pour ce genre d'étude.
 
@@ -5450,6 +5450,50 @@ Cette recherche souligne la complexité des facteurs, entre environnement nature
 Elle met également l'accent sur l'importance d'une gestion proactive, durable et collaborative des forêts en Europe.  
 
 Face à l'aggravation du changement climatique, la faculté des pays à prévoir, éviter et gérer ces désastres naturels façonnera en grande mesure le futur environnemental du continent.
+
+## 5. Conclusion
+
+Suite à ce projet réalisé au sein de l'UE MI0A403T du **Département de Mathématiques et Informatique** de l'**Université Toulouse Jean Jaurès**, nous avons eu l'opportunité d'étudier en profondeur le phénomène des incendies grâce à une démarche méthodologique stricte, alliant informatique et statistique. 
+
+Notre équipe a engagé, pendant une durée de 4 mois, une approche méthodique et graduelle pour établir une base de données solide, analyser des informations provenant de sources publiques et effectuer des recherches statistiques descriptives et exploratoires. 
+
+Ce projet a favorisé l'acquisition de compétences transversales indispensables pour tout chercheur: la capacité à traiter les données, à dégager leur signification et à élaborer des problématiques complexes basées sur des observations empiriques.
+
+Concernant l'architecture de la base de données relationnelle, celle-ci a été élaborée en mettant un accent particulier sur la cohérence des données, leur normalisation et leur capacité à évoluer. 
+
+L'emploi de SQL pour l'extraction et la gestion de données, associé à l'utilisation de Python pour des traitements plus particuliers, a rendu possible l'automatisation et la fiabilité de nos analyses. 
+
+GitHub a été un élément clé dans notre structure organisationnelle commune, en nous fournissant un environnement collaboratif favorable à l'itération, à la révision constante du code et à la tenue d'un registre ordonné de nos efforts. 
+
+Cette décision technologique, en phase avec les méthodes professionnelles, a amélioré la qualité de notre production et consolidé l'esprit d'équipe.
+
+Dans une perspective statistique, les analyses univariées ont contribué à établir un aperçu descriptif détaillé des variables clés telles que la superficie ravagée, l'altitude, la durée des feux ou encore la répartition géographique des incendies. 
+
+Les analyses bivariées ont mis en lumière diverses relations pertinentes, y compris une corrélation notable entre l'altitude et la magnitude des incendies, laissant entrevoir des possibilités d'interprétation environnementale. 
+
+Toutefois, on a également relevé certaines limites, y compris la complexité d'incorporer des variables contextuelles changeantes, telles que les conditions climatiques exactes lors des feux, ou encore les actions humaines qui ont un impact crucial sur le cours de ces désastres.
+
+L'amélioration de notre base de données grâce à des sources d'Open Data, en particulier les informations fournies par le ministère français de l'Agriculture **https://bdiff.agriculture.gouv.fr/incendies**, nous a aidés à comprendre les défis liés aux données publiques dans nos recherches appliquées. 
+
+Aujourd'hui, l'Open Data représente un outil crucial pour favoriser l'accès à l'information, accroître la transparence et faciliter l'élaboration de connaissances plus ouvertes et collaboratives. 
+
+Toutefois, nous avons aussi remarqué que pour tirer pleinement parti de l'Open Data, une standardisation renforcée et des métadonnées exactes sont indispensables pour garantir l'interopérabilité et la réutilisation à grande échelle.
+
+Au final, ce projet ne s'est pas seulement concentré sur l'acquisition de compétences techniques et analytiques, il nous a aussi amenés à considérer des enjeux plus vastes. Il pose notamment une question de prospective essentielle :
+
+**Comment l'Europe peut-elle prévoir et réduire le risque grandissant d'incendies d'ici 2035 face aux changements climatiques et territoriaux ?**
+
+Bien que cette question dépasse le cadre immédiat de notre activité, elle nous semble indispensable dans un environnement où le changement climatique, l'urbanisation accrue des zones dangereuses et la mutation des écosystèmes fragiles compromettent de manière durable les territoires.
+
+Avec l'augmentation prévue de la fréquence et de l'intensité des incendies, il sera essentiel d'élaborer des modèles prédictifs qui intègrent des données météorologiques, environnementales et socio-économiques.
+
+Parallèlement, les politiques publiques relatives à l'aménagement du territoire et à la prévention des catastrophes naturelles devront être révisées.
+
+Donc, ce projet ne représente pas une finalité, mais plutôt le début de futures recherches alliant la statistique avancée, la modélisation environnementale et la science des données. 
+
+En adoptant une approche pluridisciplinaire, l’objectif sera de mettre en place des systèmes d'alerte anticipée, de développer des cartes de vulnérabilité territoriale et de définir des stratégies d'adaptation conformes aux réalités climatiques futures. 
+
+Notre objectif, en établissant les fondements de cette pensée, est de contribuer modestement mais avec détermination à ce champ de recherche essentiel pour préparer l'Europe aux enjeux cruciaux du **XXIe siècle**.
 
 ## 6. Ressources
 

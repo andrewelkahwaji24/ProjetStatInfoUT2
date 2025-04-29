@@ -163,18 +163,48 @@ Dans cette partie, nous allons considérer des données informatives avant de pa
 
 ### 2.1 C'est quoi un incendie 
 
-L'incendie est un phénomène de combustion incontrôlée dans le temps et l'espace, dont la principale caractéristique est sa capacité à se propager rapidement.
+Un feu est une réaction exothermique de combustion rapide et incontrôlée, qui se propage dans un environnement comportant un combustible et une substance supportant la combustion.  On peut le représenter physiquement à l'aide d'équations de transfert thermique (conduction, convection, rayonnement) et chimiquement en se basant sur les principes de la cinétique chimique.
 
-Pour qu'une combustion puisse se produire, trois éléments habituellement réunis dans le « triangle du feu » sont indispensables : un matériau combustible, un agent comburant et une source d'énergie d'activation.
+### 2.2 Triangle du feu
 
-### 2.2 Causes des Incendies
+Le **triangle du feu** est une illustration simplifiée des conditions requises pour que se produise une combustion :
+
+- **Combustible (C)** : toute substance ayant un pouvoir calorifique positif ;
+- **Comburant (O₂)** : généralement l’oxygène (21 % de l’air), agissant comme oxydant dans la réaction ;
+- **Énergie d’activation (Q)** : quantité minimale d’énergie thermique pour initier la réaction (étincelle, flamme, frottement).
+
+Formellement, la combustion peut être décrite par l’équation suivante :
+
+$$
+\text{Combustible} + \text{O}_2 \xrightarrow{T} \text{Produits} + \text{Énergie}
+$$
+
+### 2.3 Causes des Incendies
 
 Les raisons des incendies sont multiples, cependant, une grande majorité d'entre eux provient d'une action humaine.Comme la négligence, malveillance, préparation insuffisante aux catastrophes naturelles comme les séismes, les tsunamis
 
 
-### 2.3 Consequences des Incendies 
+### 2.4 Consequences des Incendies 
 
 Les effets des incendies sont nombreux et graves. Elles ont des conséquences sur l'homme (asphyxie, intoxication due aux fumées, brûlures sévères), sur les entreprises (diminution de la production, dégâts matériels, licenciements) et sur l'environnement (contamination de l'air et de l'eau, ravage du paysage). Les principales causes de décès liés aux incendies sont l'intoxication par le monoxyde de carbone et la diminution de l'oxygène, plutôt que les flammes elles-mêmes. Pour plus d'informations, veuillez consulter l'article intégral ici.
+
+### 2.5 Monoxyde de Carbone (CO)
+
+Le monoxyde de carbone, un gaz toxique résultant d'une combustion incomplète, est détecté en termes de parties par million (ppm).  
+
+Cela entrave la capacité de l'hémoglobine à acheminer l'oxygène.  
+
+## 2.6 Charge calorifique (MJ/m²)
+
+Maximale quantité d'énergie thermique accessible par mètre carré.  
+
+Il s'agit d'un paramètre mesurable et prévisible employé dans l'évaluation des risques (modèle thermique, normes Eurocode).
+
+## 2.7 Temps de réponse des détecteurs
+
+Temps requis pour qu'un détecteur (de fumée, de chaleur ou de flamme) émette une alerte après le début d'un incendie.  
+Cela dépend des spécificités du détecteur (genre, sensibilité) et de l'évolution du feu.  
+
 
 
 ## 3. Partie Informatique

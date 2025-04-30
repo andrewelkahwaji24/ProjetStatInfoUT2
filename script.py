@@ -1683,6 +1683,8 @@ def menu():
             print("10. Exportation des donnees de la Table Incendies_temp_heure")
             print("11. Exportation des donnees de la Table Impact Pression Vapeure")
             print("12. Exportation des donnees de la Table Impact Climat Urbanisation")
+            print("13. Exportation des donnees de la Table Incendies Criminels")
+            print("14. Exportation des donnees de la Table Incendies Meteo")
 
 
             choix4 = int(input("Veuillez choisir une option"))

@@ -217,6 +217,8 @@ La partie Informatique de notre Projet consiste à effectuer les démarches suiv
 4. Insertion de données dans les tables
 5. Présenter les informations des tables dans la console
 6. Exportation des données dans les tables dans des fichiers CSV
+7. Création du Menu de notre Code Python
+8.
 
 
 ### 3.1 Definition de quelques terme Informatiques
@@ -247,7 +249,6 @@ Avant d'initier notre compte-rendu en détaillant les phases et procédures que 
 
 12. Un **langage de programmation** est un ensemble de règles et normes employées pour la création de logiciels informatiques.Ces programmes autorisent l'émission d'instructions à un ordinateur pour accomplir des tâches spécifiques.Un langage de programmation établit la syntaxe et la sémantique des instructions que peut comprendre une machine.
 
-13. 
 
 
 ### 3.2 Bibliotheques Utilisees
@@ -504,7 +505,12 @@ Nous allons désormais passer en revue chaque ligne de la DataFrame à l'aide de
 
 Un petit message contextuel apparaîtra par un clic lorsque l'on clique en précisant le code INSEE qui correspond à l'identifiant de la commune concernée et l'altitude moyenne de la région en mètres. 
 
-Finalement, nous enregistrons cette carte interactive sous le nom de **carte_incendies.html**, d'où elle sera accessible dans l'archive ZIP du projet fourni. 
+Finalement, nous enregistrons cette carte interactive sous le nom de **carte_incendies.html**, d'où elle sera accessible dans l'archive ZIP du projet fourni.
+
+Pour accéder à cette page, nous l'avons publiée sur Netlify:
+
+https://carte-monde-statinfo.netlify.app/
+
 
 ### 3.14 Creation du Diagrame du GANT
 
@@ -3944,7 +3950,7 @@ print(freq_altitude)
 ggplot(freq_altitude, aes(x = categorie_altitude, y = n_incendies, fill = categorie_altitude)) +
   geom_col(width = 0.6, color = "white") +
   labs(
-    title = "🔥 Répartition des incendies selon l'altitude moyenne des communes",
+    title = "Répartition des incendies selon l'altitude moyenne des communes",
     x = "Catégorie d'altitude",
     y = "Nombre d'incendies"
   ) +
@@ -3961,7 +3967,9 @@ if (nrow(freq_altitude) > 1) {
 
 1-  **Analyse Informatique:**
 
-La première phase de l'étude vise à fusionner deux ensembles de données différents : le premier comprend les détails concernant les feux (nature, date, heure, etc.), tandis que le second décrit les propriétés géographiques des communes (latitude, longitude, altitude).  
+La première phase de l'étude vise à fusionner deux ensembles de données différents : 
+
+Le premier comprend les détails concernant les feux (nature, date, heure, etc.), tandis que le second décrit les propriétés géographiques des communes (latitude, longitude, altitude).  
 
 Le code INSEE, qui est un identifiant unique pour chaque commune, constitue la liaison entre ces deux fichiers.  
 
@@ -3971,7 +3979,10 @@ Cette phase de purification est indispensable pour assurer l'intégrité de la f
 
 Après la fusion de la base, nous utilisons le paramètre altitude_med pour classifier les communes en fonction de leur élévation moyenne.  
 
-On distingue trois catégories : Plaine (inférieure à 200m), Collines (200-500m) et Montagne (supérieure à 500m).  
+On distingue trois catégories : 
+- Plaine (inférieure à 200m)
+- Collines (200-500m)
+- Montagne (supérieure à 500m).  
 
 Cette segmentation facilite l'analyse tout en préservant une clarté dans la distinction des environnements.  
 
@@ -4051,8 +4062,6 @@ Toutefois, les forêts touffues, souvent présentes en montagne, représentent u
 Bien que les feux de montagne soient moins courants, ils peuvent s'avérer plus difficiles à maîtriser en raison des terrains escarpés et du manque d'accessibilité des communes, ce qui pourrait justifier leur fréquence notable par rapport aux collines.
 
 
-
-##### 5.3.4.2 Activités humaines à risque (travaux/particuliers)
 ##### 5.3.4.3 Profil temporel des incendies criminels
 
 ###### 5.3.4.3.1 Profil horaire des incendies criminels

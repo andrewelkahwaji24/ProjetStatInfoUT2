@@ -1517,29 +1517,29 @@ def menu():
     while True:
         print("Bienvenue dans le Menu du Programme du Projet Stat Info")
         print("Veuillez choisir une des options suivantes selon votre besoin")
-        print("1. Créer les tables")
-        print("2. Injecter des données dans les tables")
-        print("3. Afficher des donnees d'une table")
-        print("4. Exporter des doneees d'une table")
-        print("5. Fonctions Speciales")
-        print("6. Quiter le Menu")
+        print("1.Créer les tables")
+        print("2.Injecter des données dans les tables")
+        print("3.Afficher des donnees d'une table")
+        print("4.Exporter des doneees d'une table")
+        print("5.Fonctions Speciales")
+        print("6.Quiter le Menu")
 
         choix = input("Entrez le numero de choix que vous voulez choisir: ")
 
         if choix == "1":
             print('Bienvenue dans le Module de Creation des tables')
-            print('1. Creer table incendies')
-            print('2. Creer table donnees meteo')
-            print('3. Creer table donnees geo')
-            print('4. Creer Table Departements')
-            print('5. Creer Table Incendies_Departements')
-            print('6. Creer la Table Incendies 2023')
-            print('7. Creation de la Table Humidites')
-            print('8. Creation de la Table Vents')
-            print('9. Creation de la Table Incendies-Regions')
-            print('10. Creation de la Table Incendies_temp_heure')
-            print('11. Creation de la Table Impact Pression Vapeur')
-            print('12. Creer Table Impact Climat Urbanisation')
+            print('1.Creer table incendies')
+            print('2.Creer table donnees meteo')
+            print('3.Creer table donnees geo')
+            print('4.Creer Table Departements')
+            print('5.Creer Table Incendies_Departements')
+            print('6.Creer la Table Incendies 2023')
+            print('7.Creation de la Table Humidites')
+            print('8.Creation de la Table Vents')
+            print('9.Creation de la Table Incendies-Regions')
+            print('10.Creation de la Table Incendies_temp_heure')
+            print('11.Creation de la Table Impact Pression Vapeur')
+            print('12.Creer Table Impact Climat Urbanisation')
 
             choix1 = int(input("Entrez le numero de choix pour la table que vous voulez creer : "))
 
@@ -1611,33 +1611,33 @@ def menu():
             print('4.Injection des donees dans la Table Departements')
             print('5.Injection des donees dans la Table Incendies_Departements')
             print('6.Injection des donees dans la Table Incendies 2023')
-            print('7. Injection des donees de la Table Humidites')
-            print('8; Injection des donnees de la Table Vents')
-            print('9. Injections des donees dans la Table Incendies-Regions')
-            print('10. Injections des donnees dans la Table Incendies-temp-heure')
-            print('11. Injection des donnees dans la Table Impact Pression Vapeur')
-            print('12. Injection des donnees dans la Table Impact Climat Urbanisation')
+            print('7.Injection des donees de la Table Humidites')
+            print('8.Injection des donnees de la Table Vents')
+            print('9.Injections des donees dans la Table Incendies-Regions')
+            print('10.Injections des donnees dans la Table Incendies-temp-heure')
+            print('11.Injection des donnees dans la Table Impact Pression Vapeur')
+            print('12.Injection des donnees dans la Table Impact Climat Urbanisation')
 
             choix2 = int(input("Veuillez choisir une option: "))
 
             if choix2 == 1:
-                print("   Injection des données dans la table incendies")
+                print("Injection des données dans la table incendies")
                 injecter_donnees_incendies()
                 print("Injection effectue avec succees dans la Table Incendies   ")
             elif choix2 == 2:
-                print("   Injection des données dans la table meteo")
+                print("Injection des données dans la table meteo")
                 injecter_donnees_meteo()
                 print("Injection effectue avec succees dans la Table Meteos ")
             elif choix2 == 3:
-                print("   Injection des données dans la table geo")
+                print("Injection des données dans la table geo")
                 injecter_donnees_geo()
                 print("Injection effectue avec succees dans la Table Geo ")
             elif choix2 == 4:
-                print("   Injection des donees dans la Table Departements")
+                print("Injection des donees dans la Table Departements")
                 injection_table_departements()
                 print("Injection effectue avec succees dans la Table Departements  ")
             elif choix2 == 5:
-                print("   Injection des donnes dans la Table Incendies_Departements")
+                print("Injection des donnes dans la Table Incendies_Departements")
                 injection_table_incendies_departements()
                 print("Injection effectue avec succees dans la Table Incendies_Departements ")
             elif choix2 == 6:
@@ -1678,21 +1678,21 @@ def menu():
 
         elif choix == "3":
             print("Bienvenue dans le module de l'affichage des tables")
-            print('1. Afficher les doneees de la table Incendies')
-            print('2. Afficher les donnees de la table Meteo')
-            print('3. Afficher les donnees de la table Geo')
-            print('4. Afficher les donnees de la table Departements')
-            print('5. Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
-            print('6. Afficher les donnes de la Table Humidites')
-            print('7. Afficher les donnes de la Table Incendies2023')
-            print('8. Afficher les donnes de la Table Vents')
-            print('9. Afficher les donnes de la Table Incendies-regions')
-            print('10. Afficher les donnes de la Table Incendies-temp-heure')
-            print("11. Afficher les donnes de la Table Impact Climat Urbanisation")
-            print("12. Afficher les donnes de la Table Impact Pression Vapeure")
-            print("13. Afficher les donnees de la Table Incendies Criminels")
-            print("14. Afficher les donnees de la Table Incendies Geo")
-            print("15. Afficher les donnees de la Table Incendies Meteo")
+            print('1.Afficher les doneees de la table Incendies')
+            print('2.Afficher les donnees de la table Meteo')
+            print('3.Afficher les donnees de la table Geo')
+            print('4.Afficher les donnees de la table Departements')
+            print('5.Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
+            print('6.Afficher les donnes de la Table Humidites')
+            print('7.Afficher les donnes de la Table Incendies2023')
+            print('8.Afficher les donnes de la Table Vents')
+            print('9.Afficher les donnes de la Table Incendies-regions')
+            print('10.Afficher les donnes de la Table Incendies-temp-heure')
+            print("11.Afficher les donnes de la Table Impact Climat Urbanisation")
+            print("12.Afficher les donnes de la Table Impact Pression Vapeure")
+            print("13.Afficher les donnees de la Table Incendies Criminels")
+            print("14.Afficher les donnees de la Table Incendies Geo")
+            print("15.Afficher les donnees de la Table Incendies Meteo")
 
             choix3 = int(input("Veuillez choisir une option: "))
             if choix3 == 1:
@@ -1767,13 +1767,13 @@ def menu():
             print("5.Exportation des donnees de la Table Incendies_Departements")
             print("6.Exportation des donnees de la Table Humidites")
             print("7.Exportation des donnees de la Table Incendies2023")
-            print("8. Exportation des donnees de la Table Vents")
-            print("9. Exportation des donnees de la Table IncendiesRegions")
-            print("10. Exportation des donnees de la Table Incendies_temp_heure")
-            print("11. Exportation des donnees de la Table Impact Pression Vapeure")
-            print("12. Exportation des donnees de la Table Impact Climat Urbanisation")
-            print("13. Exportation des donnees de la Table Incendies Criminels")
-            print("14. Exportation des donnees de la Table Incendies Meteo")
+            print("8.Exportation des donnees de la Table Vents")
+            print("9.Exportation des donnees de la Table IncendiesRegions")
+            print("10.Exportation des donnees de la Table Incendies_temp_heure")
+            print("11.Exportation des donnees de la Table Impact Pression Vapeure")
+            print("12.Exportation des donnees de la Table Impact Climat Urbanisation")
+            print("13.Exportation des donnees de la Table Incendies Criminels")
+            print("14.Exportation des donnees de la Table Incendies Meteo")
 
 
             choix4 = int(input("Veuillez choisir une option"))
@@ -1825,9 +1825,9 @@ def menu():
 
         elif choix == "5":
             print("Bienvenue dans le Module Fonctions Speciales")
-            print("1. Ajouter une colonne altitude zone")
-            print("2. Mettre a jour Altitude Zone")
-            print("3. Supprimer colonne nb_incendies")
+            print("1.Ajouter une colonne altitude zone")
+            print("2.Mettre a jour Altitude Zone")
+            print("3.Supprimer colonne nb_incendies")
             choix5 = int(input("Veuillez choisir une option"))
             if choix5 == 1:
                 print("On va ajouter une colonne altitude zone")
@@ -1844,8 +1844,9 @@ def menu():
             else:
                 print("Le numero choisi est invalide ou n'existe pas")
         elif choix == "6":
+            print("Pour en pouvoir quitter le menu veuillez saisir le terme oui")
             confirmation = input("Etes vous sur de vouloir quiiter le menu du Projet Stat Info?")
-            if confirmation == "o" or confirmation == "ok" or confirmation == "yes" or confirmation == "Oui" or confirmation == "si" or confirmation == "oui":
+            if confirmation == "o" or confirmation == "ok" or confirmation == "yes" or confirmation == "Oui" or confirmation == "si" or confirmation == "oui" or confirmation == "nan":
                 print("Merci d'avoir d'utilise le programme A bientot!")
                 break
             else:
@@ -1854,6 +1855,6 @@ def menu():
             print("Le numero choisi est invalide ou n'existe pas  ")
 
 
-# Appel de la fonction menu
+# Appel de la fonction menu qui va nous aider a utiliser les differentes fonctionalites de notre systeme
 menu()
 

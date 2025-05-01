@@ -9,7 +9,7 @@ def connecterdb(database="data.db"):
     return connexion, curs
 
 
-# Creation des Tables
+# Phase de Creation des Tables
 
 # Creation de la Table Incendies
 def creer_table_incendies():
@@ -221,7 +221,7 @@ def create_table_incendiesregions():
     print("La table incendiesregions a été créée avec succès.")
 
 
-# Creer la Table Incendies_temp_heure
+# Creation la Table Incendies_temp_heure
 def create_table_incendies_temp_heure():
     connexion, curs = connecterdb()  # Connexion à la base de données
     curs.execute(
@@ -340,7 +340,8 @@ def creer_table_incendies_meteo():
     print("La Table incendies_meteo a été créée avec succès.")
 
 
-# Phase d'injection des donees
+# Phase d'injection des donees (insertion des donnees)
+
 # Injection des donees dans la Table Incendies
 def injecter_donnees_incendies():
     connexion, curs = connecterdb()
@@ -602,7 +603,7 @@ def injection_table_incendies_departements():
     connexion.close()
     print("Les données des incendies par département ont été insérées avec succès.")
 
-
+#Injections des donnees dans la Table Incendies 2023
 def injecter_donnees_incendies_2023():
     connexion, curs = connecterdb()
     fichier = "Data/incendies_2023.csv"  # Remplacez par le chemin réel de votre fichier CSV
@@ -728,7 +729,6 @@ def injecter_donnees_vents():
         connexion.close()
 
 #Injection des doneees dans la Table Incendies-Regions
-
 def injecter_donnees_incendiesregions():
     connexion, curs = connecterdb()  # Connexion à la base de données
     try:
@@ -1023,6 +1023,8 @@ def afficher_doneees_incendiesregions():
 
     curs.close()
     connexion.close()
+
+
 
 # Affiche les donnees dans la Table Incendies-Temp-Heure
 

@@ -904,6 +904,7 @@ def injection_table_incendies_meteo():
 
     print("Les données des incendies fusionnées avec les données météorologiques ont été insérées avec succès.")
 
+#Phase d'affichage des donnees
 # Affichage des donees de la table Incendies
 def afficher_donnees_incendies():
     connexion, curs = connecterdb()
@@ -1025,12 +1026,73 @@ def afficher_doneees_incendiesregions():
     connexion.close()
 
 
-
 # Affiche les donnees dans la Table Incendies-Temp-Heure
 
 def afficher_doneees_incendies_tem_heure():
     connexion, curs = connecterdb()
     curs.execute("SELECT * FROM incendies_tem_heure")
+    lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
+#Affiche les donnees dans la Table Incendies-criminels
+def afficher_doneees_incendies_criminels():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM incendies_criminels")
+    lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
+#Affiche les donnees dans la Table Impact Climat Urbanisation
+def afficher_doneees_impact_climat_urbanisation():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM impact_climat_urbanisation")
+    lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
+#Affiche les donnees dans la Table Impact Pression Vapeur
+def afficher_doneees_impact_pression_vapeur():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM impact_pression_vapeur")
+    lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
+#Affiche les donnees dans la Table  Incendies_Geo
+
+def afficher_doneees_incendies_geo():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM incendies_geo")
+    lignes = curs.fetchall()
+
+    for ligne in lignes:
+        print(ligne)
+
+    curs.close()
+    connexion.close()
+
+#Affiche les donnees dans la Table  Incendies_Meteo
+
+def afficher_doneees_incendies_geo():
+    connexion, curs = connecterdb()
+    curs.execute("SELECT * FROM incendies_meteo")
     lignes = curs.fetchall()
 
     for ligne in lignes:

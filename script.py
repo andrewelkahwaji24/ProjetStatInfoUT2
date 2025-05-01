@@ -1090,7 +1090,7 @@ def afficher_doneees_incendies_geo():
 
 #Affiche les donnees dans la Table  Incendies_Meteo
 
-def afficher_doneees_incendies_geo():
+def afficher_doneees_incendies_meteo():
     connexion, curs = connecterdb()
     curs.execute("SELECT * FROM incendies_meteo")
     lignes = curs.fetchall()
@@ -1678,16 +1678,21 @@ def menu():
 
         elif choix == "3":
             print("Bienvenue dans le module de l'affichage des tables")
-            print('1.   Afficher les doneees de la table Incendies')
-            print('2.   Afficher les donnees de la table Meteo')
-            print('3.   Afficher les donnees de la table Geo')
-            print('4.   Afficher les donnees de la table Departements')
-            print('5.   Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
-            print('6.   Afficher les donnes de la Table Humidites')
-            print('7.   Afficher les donnes de la Table Incendies2023')
-            print('8.   Afficher les donnes de la Table Vents')
-            print('9.   Afficher les donnes de la Table Incendies-regions')
-            print('10.   Afficher les donnes de la Table Incendies-temp-heure')
+            print('1. Afficher les doneees de la table Incendies')
+            print('2. Afficher les donnees de la table Meteo')
+            print('3. Afficher les donnees de la table Geo')
+            print('4. Afficher les donnees de la table Departements')
+            print('5. Afficher les donnees de la Table Incendies_Departements qui fait une analyse pour identifier chaque Departement combien est le nombre dincendies de chaque Dep ')
+            print('6. Afficher les donnes de la Table Humidites')
+            print('7. Afficher les donnes de la Table Incendies2023')
+            print('8. Afficher les donnes de la Table Vents')
+            print('9. Afficher les donnes de la Table Incendies-regions')
+            print('10. Afficher les donnes de la Table Incendies-temp-heure')
+            print("11. Afficher les donnes de la Table Impact Climat Urbanisation")
+            print("12. Afficher les donnes de la Table Impact Pression Vapeure")
+            print("13. Afficher les donnees de la Table Incendies Criminels")
+            print("14. Afficher les donnees de la Table Incendies Geo")
+            print("15. Afficher les donnees de la Table Incendies Meteo")
 
             choix3 = int(input("Veuillez choisir une option: "))
             if choix3 == 1:
@@ -1730,8 +1735,28 @@ def menu():
                 print("Afficher les donne de la Table Incendies-temp-heure")
                 afficher_doneees_incendies_tem_heure()
                 print('Afficher de la Table Incendies-temp-heure completes avec succes')
+            elif choix3 == 11:
+                print("Afficher les donne de la Table Impact Climat Urbanisation")
+                afficher_doneees_impact_climat_urbanisation()
+                print('Afficher de la Table Impact Climat Urbanisation completes avec succes')
+            elif choix3 == 12:
+                print("Afficher les donne de la Table Impact Pression Vapeur")
+                afficher_doneees_impact_pression_vapeur()
+                print('Afficher de la Table Impact Pression Vapeur completes avec succes')
+            elif choix3 == 13:
+                print("Afficher les donne de la Table Incendies Criminels")
+                afficher_doneees_incendies_criminels()
+                print('Afficher de la Table Incendies Criminels completes avec succes')
+            elif choix3 == 14:
+                print("Afficher les donne de la Table Incendies-Geo")
+                afficher_doneees_incendies_geo()
+                print('Afficher de la Table Incendies-Geo completes avec succes')
+            elif choix3 == 15:
+                print("Afficher les donne de la Table Incendies-Meteo")
+                afficher_doneees_incendies_meteo()
+                print('Afficher de la Table Incendies-Meteo completes avec succes')
             else:
-                print("  Le numero choisi est invalide ou n'existe pas  ")
+                print("Le numero choisi est invalide ou n'existe pas")
 
         elif choix == "4":
             print("Bienvenue dans le module de l'exportation des donees d'une table")

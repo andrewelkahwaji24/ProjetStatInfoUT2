@@ -194,13 +194,13 @@ Le monoxyde de carbone, un gaz toxique résultant d'une combustion incomplète, 
 
 Cela entrave la capacité de l'hémoglobine à acheminer l'oxygène.  
 
-## 2.6 Charge calorifique (MJ/m²)
+### 2.6 Charge calorifique (MJ/m²)
 
 Maximale quantité d'énergie thermique accessible par mètre carré.  
 
 Il s'agit d'un paramètre mesurable et prévisible employé dans l'évaluation des risques (modèle thermique, normes Eurocode).
 
-## 2.7 Temps de réponse des détecteurs
+### 2.7 Temps de réponse des détecteurs
 
 Temps requis pour qu'un détecteur (de fumée, de chaleur ou de flamme) émette une alerte après le début d'un incendie.  
 Cela dépend des spécificités du détecteur (genre, sensibilité) et de l'évolution du feu.  
@@ -840,6 +840,24 @@ M = x_{k+1}
 M = \frac{x_k + x_{k+1}}{2}
 \]
 
+**Définition de la Variance:**
+
+La **variance** mesure la dispersion des données par rapport à la moyenne.
+
+Plus la variance est élevée, plus les données sont dispersées.
+
+\[
+\text{Var}(X) = \frac{1}{n} \sum_{i=1}^{n}(x_i - \bar{x})^2
+\]
+
+**Définition de l'Écart-type (σ):**
+
+L’**écart-type** est la racine carrée de la variance.  
+Il exprime la dispersion des données dans la même unité que les valeurs initiales.
+
+\[
+\sigma = \sqrt{\text{Var}(X)}
+\]
 **Définition de la Classe Modale**
 
 La **classe modale** est l'intervalle de valeurs qui renferme le plus fort effectif dans une distribution organisée en classes.  Autrement dit, c'est la classe qui se manifeste le plus souvent dans un histogramme.
@@ -872,7 +890,77 @@ Une Variable Quantitative représente une évaluation numérique et peut être l
 
 Un intervalle de confiance c'est l'outil qui nous permet d'estimer une plage dans laquelle une valeur inconnue comme une moyenne ou une proportion se situe avec un certain niveau de confiance.
 
+**Définition du test du khi deux (χ²):**
 
+Le **test du khi deux (χ²)** est un test statistique utilisé pour déterminer s'il existe une association significative entre deux variables qualitatives. Il est basé sur la comparaison entre des **fréquences observées** et des **fréquences théoriques** attendues selon une hypothèse nulle.
+
+\[
+\chi^2 = \sum \frac{(O_i - E_i)^2}{E_i}
+\]
+où :
+- \( O_i \) est la fréquence observée,
+- \( E_i \) est la fréquence attendue.
+
+**Test de Student (t de Student):**
+
+Le **test de Student** est utilisé pour comparer des **moyennes** entre deux groupes et déterminer s’il existe une différence statistiquement significative.
+
+- **Test t pour un échantillon** : comparer la moyenne d’un échantillon à une valeur théorique.
+- **Test t pour échantillons indépendants** : comparer les moyennes de deux groupes indépendants.
+- **Test t pour échantillons appariés** : comparer les moyennes de deux mesures faites sur les mêmes individus.
+
+\[
+t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
+\]
+
+**Test de Normalité (loi normale):**
+
+Le **test de normalité** sert à vérifier si un jeu de données suit une **distribution normale**, ce qui est une condition préalable pour de nombreux tests paramétriques.
+
+- Si la **p-valeur** est < 0.05, on rejette l’hypothèse de normalité (distribution non normale).
+- Si la **p-valeur** est ≥ 0.05, on considère la distribution comme normale.
+
+**Hypothèse nulle (H₀):**
+
+L’**hypothèse nulle (H₀)** est une affirmation de départ selon laquelle il n’y a **pas d’effet**, **pas de différence**, ou **pas de lien** entre les variables.
+
+Les tests statistiques cherchent à vérifier si cette hypothèse peut être rejetée.
+
+**Hypothèse alternative (H₁):**
+
+L’**hypothèse alternative (H₁)** est l’hypothèse opposée à l’hypothèse nulle.  
+Elle affirme qu’il existe **un effet**, **une différence**, ou **une relation** statistiquement significative.
+
+**Loi Normale:**
+
+La **loi normale** (ou loi de Gauss) est une distribution de probabilité symétrique en forme de cloche.  
+Elle est définie par deux paramètres : la moyenne \( \mu \) et l’écart type \( \sigma \).  
+Elle est fondamentale dans les statistiques pour les tests paramétriques.
+
+**Test paramétrique:**
+
+Un **test paramétrique** suppose que les données suivent une certaine distribution (souvent normale) et utilisent des paramètres comme la moyenne et l’écart-type.
+
+**Test non paramétrique:**
+
+Un **test non paramétrique** ne repose pas sur des hypothèses fortes concernant la distribution des données.  
+Exemples : test de Wilcoxon, test de Mann-Whitney.
+
+**Corrélation:**
+
+La **corrélation** mesure la force et la direction d’une relation linéaire entre deux variables quantitatives.  
+Elle est exprimée par un coefficient \( r \) entre -1 et 1.
+
+**Régression:**
+
+La **régression** est une méthode statistique permettant de modéliser la relation entre une variable dépendante et une ou plusieurs variables indépendantes.
+
+
+**Distribution binomiale:**
+
+La **distribution binomiale** décrit le nombre de succès dans une séquence de **n essais indépendants** où chaque essai a une probabilité constante de succès.
+
+Elle est utilisée pour des variables discrètes.
 
 ### 5.2 Description des donnees
 

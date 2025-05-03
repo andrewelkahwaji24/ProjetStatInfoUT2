@@ -3,11 +3,11 @@ title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
 author: "Andrew El Kahwaji, Wael Aboulkacem, Hans Kanen Soobbooroyen"
 date: "09/05/2025"
 output:
-  pdf_document: 
-    latex_engine: xelatex
+  html_document: 
     toc: true
     toc_depth: 6
-  html_document: 
+  pdf_document: 
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
 ---
@@ -5696,7 +5696,41 @@ Notre objectif, en établissant les fondements de cette pensée, est de contribu
 
 ## 6. Ressources
 
+Dans le cadre de l'élaboration des ressources pour notre projet, nous avons minutieusement choisi un ensemble de références provenant de diverses sources, englobant plusieurs domaines pertinents à notre étude.  
+
+On peut classer ces références en trois sections majeures : la section d'information, la section informatique et la section statistique.  
+
+Chaque section compile des ressources cruciales qui ont orienté notre compréhension théorique du phénomène d'incendie, des techniques de gestion de données et des méthodes statistiques employées dans notre étude.
+
+Nous avons élaboré nos références en respectant les directives du style APA (American Psychological Association) comme stipulé dans le Manuel de Publication de l'Association Américaine de Psychologie.  
+
+Chaque citation est organisée pour comprendre les données clés : l’auteur, la date de publication, le titre de l'œuvre, ainsi que les détails de la source (éditeur, site internet ou DOI).  
+
+Par exemple, pour référencer un article en ligne, nous commençons par mentionner l’auteur, suivi de l'année de publication entre parenthèses, puis du titre de l'article en italique.
+
+Par la suite, nous avons indiqué la provenance (nom du site web ou de la publication) ainsi que l'URL intégrale pour accéder directement à l'article ou à la ressource sur Internet.  
+
+Quand la ressource concernée était un livre ou un manuel, nous avons incorporé le nom de l'éditeur ainsi que l'année de parution.  
+
+Le style APA requiert aussi l'application d'une ponctuation spécifique (comme l'emploi de l'italique pour les titres de livres et de revues) ainsi que le respect rigoureux d'un ordre déterminé des éléments.
+
+Au besoin, nous avons également fourni des précisions supplémentaires, comme le cas échéant l'édition ou le numéro de version d'un livre.  
+
+Cette approche d'écriture assure non seulement une citation uniforme et cohérente, mais garantit également que chaque source utilisée est retrouvable et vérifiable par le lecteur.
+
 ###  6.1 Ressources sur la Partie Informative
+
+Les renvois dans la section informative portent principalement sur le sujet des incendies et leurs origines.  
+
+Nous nous sommes basés sur des références académiques et des articles sur Internet pour obtenir une perspective globale de la dynamique des incendies, leurs causes et les méthodes de lutte.  
+
+La première source utilisée est l'Encyclopaedia Universalis, d'où a été consulté un article détaillé sur le phénomène physique des incendies.  Ce document nous a fourni les fondements théoriques concernant la combustion et ses répercussions.  
+
+De plus, nous avons aussi pris connaissance d'un article de Wikipédia, écrit par les contributeurs de Wikimedia, qui fournit une perspective globale sur les incendies violents et dévastateurs.
+
+Finalement, un rapport de Preventica.com concernant les dangers d'incendie et les méthodes de prévention nous a transmis des renseignements utiles sur les mesures préventives et les procédures de sécurité liées à ce risque.  
+
+Chaque référence a été méticuleusement formatée en suivant les critères de l'APA, garantissant ainsi une présentation uniforme et professionnelle des sources citées.
 
 Jean-Luc CARTAULT, CLAIR, B., & KAPP, D. (2025, January 29). INCENDIES : Le phénomène physique. Encyclopædia Universalis. https://www.universalis.fr/encyclopedie/incendies/2-le-phenomene-physique/
 
@@ -5705,6 +5739,18 @@ Contributeurs aux projets Wikimedia. (2004, July 23). feu violent et destructeur
 Risque incendie : causes, conséquences et moyens de lutte. (2021). Preventica.com. https://www.preventica.com/magazine/dossiers/prevention-du-risque-incendie-comment-garantir-la-securite-des-personnes-et-des-biens-11032021/risque-incendie-causes-consequences-et-moyens-de-lutte
 
 ### 6.2 Ressources sur la Partie Informatique 
+
+En ce qui concerne l'informatique, les sources que nous avons rassemblées se concentrent sur l'usage des instruments et des technologies indispensables pour traiter et examiner nos informations.  
+
+Nous avons inséré un guide exhaustif sur l'Open Data, diffusé sur la plateforme Opendatahandbook.org, qui nous a aidés à approfondir notre compréhension des principes essentiels de l'open data et de son application dans notre situation.  
+
+En outre, nous avons mobilisé des ressources pour renforcer notre compréhension des bases de données et des langages de programmation.
+
+Le site SQL.sh s'est avéré particulièrement utile pour revoir les notions fondamentales du langage SQL, indispensable pour interroger nos bases de données parmi ces derniers.  
+
+Nous avons aussi fait appel à la documentation officielle de Python et GitHub, qui sont des ressources essentielles pour la gestion de nos données et de notre code, favorisant une collaboration performante et une gestion de version structurée des projets.  
+
+Ces références sont élaborées conformément aux normes de citation APA afin d'assurer une citation précise et uniforme.
 
 Manuel de l’Open Data. (2025). Opendatahandbook.org. https://opendatahandbook.org/guide/fr/
 
@@ -5724,6 +5770,16 @@ contributors, M. C. and. (n.d.). Basic Syntax | Markdown Guide. Www.markdownguid
 
 
 ### 6.3 Ressources sur la Partie Statistique 
+
+Dans le domaine de la statistique, les ressources choisies ont servi à saisir et mettre en pratique les techniques statistiques indispensables pour l'analyse de nos données.  
+
+Par exemple, le site Commentprogresser.com nous a donné des renseignements sur les indicateurs statistiques fondamentaux comme la moyenne, la médiane, l'écart-type et leur signification dans le cadre des données relatives aux incendies.  
+
+Nous avons aussi fait appel à diverses bases de données expertes en matière d'incendies, comme BDIFF (Base de données sur les incendies forestiers) et EFFIS (Système d'information européen sur les incendies de forêt), qui nous ont aidés à enrichir nos informations avec des détails supplémentaires concernant le développement des incendies au niveau européen.
+
+Des articles statistiques provenant de Eurostat et du Joint Research Centre ont également été utilisés pour contextualiser nos analyses par rapport aux tendances globales des incendies. Les décès liés aux incendies, particulièrement en Espagne, ont été étudiés à travers des ressources statistiques fournies par Statista et d’autres institutions. 
+
+Comme pour les autres catégories, ces références ont été formatées selon les normes APA, garantissant une citation précise et conforme.
 
 BDIFF : Recherche et consultation des incendies de forêt. (n.d.). Bdiff.agriculture.gouv.fr. https://bdiff.agriculture.gouv.fr/incendies
 

@@ -1,13 +1,17 @@
 ---
 title: "MI0A403T - Statistique inférentielle / Projet informatique-statistique"
-author: "Andrew El Kahwaji 22402277 , Wael Aboulkacem 22310021, Hans Kanen Soobbooroyen 22312315"
+author: Andrew El Kahwaji 22402277 , Wael Aboulkacem 22310021, Hans Kanen Soobbooroyen
+  22312315
 date: "09/05/2025"
 output:
-  html_document: 
+  word_document:
+    toc: true
+    toc_depth: '6'
+  pdf_document:
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
-  pdf_document: 
-    latex_engine: xelatex
+  html_document:
     toc: true
     toc_depth: 6
 ---

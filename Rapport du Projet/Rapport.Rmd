@@ -964,23 +964,95 @@ Elle est utilisée pour des variables discrètes.
 
 ### 5.2 Description des donnees
 
-Avant de commencer l'étape d'analyse de nos données et leur présentation sous forme de graphiques, nous allons identifier les types de données fournies par notre équipe pédagogique, afin de mener à bien ce projet.
+Avant de procéder à l'étude détaillée des données et à leur représentation graphique, il est essentiel de saisir la nature des informations fournies par nos éducateurs.  
 
-Donc pour cette UE on a eu 3 fichiers CSV contenant des donnees importants ou dans ce rapport on va se baser pour poser notre analyse.
+Ces données constitueront le fondement de notre analyse, et leur examen devra être mené avec minutie.  
 
-Le fichier incendies renferme des attributs tels que le nom de la commune, le code de la commune, l'année de l'incendie, le mois de l'incendie, la date et l'heure à laquelle l'incendie a été signalé ainsi que les causes principales et secondaires de l'incendie.  Ces informations nous seront utiles pour examiner nos données et caractériser ces phénomènes en fonction des problématiques que nous mettrons en place bientôt dans ce rapport. 
+Les trois fichiers principaux de notre base de données sont cruciaux pour saisir les dynamiques des incendies, leur position géographique et les conditions environnementales associées.
 
+Le premier document, relatif aux incendies, est probablement le plus vital pour l'analyse de ce phénomène.  Il renferme une série de caractéristiques précisant le contexte de chaque feu.  
 
-Le fichier géographique renferme la latitude, la longitude et l'altitude. Ces informations peuvent nous donner l'emplacement précis du lieu de l'incendie, ce qui nous permettra de procéder à des analyses en posant nos questions. 
+Ces données comprennent le nom et le code de la commune, essentiels pour situer avec précision chaque événement.  
 
- Le dossier Météorologique nous fournira des caractéristiques liées aux conditions météorologiques, ce qui nous permettra de distinguer les divers types de météo au moment de l'incendie.
- 
+La commune n'est pas seulement une unité administrative, mais aussi un domaine d'analyse potentiellement fructueux, car elle peut être associée à d'autres informations géographiques pour étudier des schémas récurrents d'incendies.  
+
+L'année et le mois de l'incendie fournissent également des indices intéressants pour une analyse chronologique.
+
+Effectivement, l'analyse de la fréquence des incendies sur plusieurs années pourrait dévoiler des motifs ou des phases particulièrement délicates, comme des saisons spécifiques où les incendies surviennent avec une occurrence plus fréquente.  
+
+En outre, les variables concernant la date et l'heure du signalement serviront à évaluer la réactivité des autorités en réponse à ces incidents. Elles permettront également de mesurer la vitesse d'intervention, un élément essentiel pour contenir l'expansion des incendies.
+
+Les facteurs, qu'ils soient primaires ou secondaires, qui déclenchent les incendies constituent un autre aspect crucial pour notre examen.  
+
+L'étude des facteurs sous-jacents, qu'ils soient humains, naturels ou liés à des phénomènes météorologiques, sera rendue possible grâce à la compréhension de l'origine des incendies.  
+
+Cela permettra d'explorer les processus qui mènent à des situations dangereuses et de déterminer les régions où des actions préventives pourraient être intensifiées.
+
+En ce qui concerne notre analyse, le fichier géographique représente une dimension supplémentaire significative.  Pour cartographier les événements, il est crucial de disposer des informations sur la latitude, la longitude et l'altitude des incendies.  
+
+En localisant avec exactitude chaque feu, nous pourrons les positionner dans un espace géographique spécifique, ce qui nous offre la possibilité d'étudier la distribution spatiale des incendies.  
+
+Cette méthode peut identifier des régions géographiques particulièrement exposées, telles que les forêts ou les zones montagneuses, où le risque d'incendie est plus élevé.
+
+En outre, l'altitude pourrait aussi avoir une influence significative sur la gravité des incendies, étant donné que les terrains élevés, généralement plus arides, peuvent contribuer à leur extension.  
+
+Ainsi, la cartographie aidera à représenter ces éléments géographiques et à déterminer les zones vulnérables, ce qui contribuera à la formulation de politiques publiques axées sur la prévention.
+
+Finalement, le fichier météo fournira une dimension additionnelle de compréhension en offrant la possibilité d'examiner l'impact des conditions météorologiques sur l'apparition des incendies.  
+
+Des éléments tels que la température, l'humidité, la vitesse du vent et les précipitations peuvent directement influencer le démarrage et la diffusion des incendies.  
+
+Par exemple, des conditions de chaleur intense couplées à un faible niveau d'humidité peuvent favoriser un environnement susceptible de s'enflammer, alors que des rafales puissantes pourraient contribuer à la diffusion du feu.  
+
+Par contre, les précipitations peuvent jouer un rôle de tampon en éteignant ou en ralentissant l'avancée du feu.
+
+En étudiant les conditions climatiques qui prévalent lors des incendies, nous pourrions identifier des liens entre ces éléments environnementaux et la fréquence ou la sévérité des incendies, ce qui pourrait indiquer des voies d'amélioration pour les stratégies de gestion des risques.
+
+En combinant ces informations – les propriétés des feux, leur position géographique, et les conditions climatiques – nous serons en mesure de produire une analyse exhaustive et détaillée.  
+
+L'intention est de déceler des liens implicites entre les divers éléments et d'exposer des orientations susceptibles de contribuer à une meilleure compréhension de la dynamique des incendies.  
+
+Cette méthode globale nous donnera la possibilité non seulement de caractériser les incendies, mais également de suggérer des mesures concrètes pour leur prévention, leur gestion et leur réaction à ces incidents.  
+
+L'usage de graphiques et de cartes pour l'analyse et la représentation des données améliorera la compréhension claire de notre travail et l'importance de nos conseils.
 
 ### 5.3 Analyse des doneees 
 
-Dans cette partie, une fois que toutes les définitions nécessaires sont établies et que notre base de données est complète, nous serons prêts à analyser les données grâce au langage R. Nous emploierons différents types d'histogrammes pour diversifier nos analyses et nous procéderons à une étude approfondie de chaque histogramme.
+Dès que toutes les définitions et explications requises sont rassemblées, et que notre base de données est jugée complète et opérationnelle, nous serons en mesure d'initier l'analyse des données par le biais du langage R.  
 
-Nous avons divisé nos problématiques en différentes sections :
+R est un outil performant qui nous donne la possibilité de faire une analyse détaillée et visuelle des données.  
+
+Avec sa vaste collection de fonctions et de paquets, nous serons capables de créer une variété de graphiques, effectuer des tests statistiques et construire des modèles qui faciliteront notre compréhension des tendances et des motifs présents dans les données.  
+
+L'une de nos premières méthodes consistera à recourir aux histogrammes, qui sont des instruments visuels élémentaires mais très précieux pour étudier la répartition des diverses variables et examiner la distribution des données.
+
+Les histogrammes sont particulièrement utiles pour analyser la fréquence de certains événements ou attributs.  
+
+Ces outils nous offriront la possibilité d'observer comment les valeurs se distribuent dans chaque variable, et d'identifier des irrégularités, des motifs saisonniers, ou des concentrations qui pourraient ne pas être manifestes à première analyse.  
+
+Par exemple, un diagramme illustrant le nombre d'incendies selon les années ou les mois pourrait nous permettre de vérifier s'il existe une augmentation ou une diminution des incendies au cours du temps, ou encore si certains mois semblent plus susceptibles d'être touchés par des incendies que d'autres.  
+
+Ces graphiques, bien qu'ils fournissent une synthèse rapide, serviront de point de départ pour des analyses plus détaillées, en fonction des modèles détectés.
+
+Nous avons organisé notre étude en divers segments distincts, chaque segment se rapportant à une question précise que nous désirons explorer.  Chaque partie sera dirigée par une question spécifique, et les diagrammes en barres constitueront le point de départ pour explorer chaque facette de notre recherche.
+
+De plus, l'emploi d'histogrammes nous offrira la possibilité d'effectuer une analyse segmentée de façon détaillée.  
+
+Par exemple, nous pourrions établir des histogrammes afin d'analyser les fluctuations des incendies en lien avec les conditions météorologiques, telles que la température ou l'humidité, en mettant en parallèle les occurrences des incendies selon diverses conditions climatiques.  
+
+Ces études visuelles, soutenues par des analyses statistiques réalisées sur R, fourniront une perspective quantitative des liens entre les variables et permettront de valider ou de réfuter certaines suppositions.  
+
+Chaque histogramme, selon le problème traité, nous aide à affiner notre interprétation des données et oriente nos pensées vers des conclusions basées sur des preuves empiriques.
+
+Au fil de notre examen détaillé, les histogrammes s'avéreront être des outils cruciaux pour organiser notre pensée.  Un des principaux atouts de ces graphiques est leur capacité à offrir une analyse visuelle rapide et pertinente, tout en apportant des éléments essentiels pour l'analyse future, tels que la variabilité des données ou l'apparition de nouvelles tendances.  
+
+En variant les formats d'histogrammes que nous mettrons en œuvre – tels que des histogrammes empilés, des histogrammes de fréquence cumulative ou des histogrammes comparatifs – nous parviendrons à mieux comprendre les subtilités des liaisons entre les variables et à fournir des réponses plus exhaustives aux interrogations posées dans chaque segment de notre recherche.
+
+Par conséquent, l'emploi des histogrammes dans notre étude des incendies sera une étape cruciale orientant notre analyse.  
+
+Chaque diagramme, élaboré pour s'attaquer à une question particulière, constituera un point de départ pour des investigations plus poussées et des analyses à multiples variables.  
+
+Cette méthode visuelle nous permettra non seulement de repérer des tendances ou des irrégularités, mais aussi de guider notre étude vers des déductions significatives qui, à long terme, faciliteront l'élaboration de solutions concrètes pour optimiser la gestion et la prévention des incendies.
 
 #### 5.3.1 Évolution des incendies
 ##### 5.3.1.1 Évolution des incendies au fil des années

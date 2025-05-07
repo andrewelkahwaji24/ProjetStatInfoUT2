@@ -4,17 +4,21 @@ author: Andrew El Kahwaji 22402277 , Wael Aboulkacem 22310021, Hans Kanen Soobbo
   22312315
 date: "09/05/2025"
 output:
-  word_document:
-    toc: true
-    toc_depth: '6'
   pdf_document:
     latex_engine: xelatex
     toc: true
     toc_depth: 6
   html_document:
+    theme: cerulean
     toc: true
     toc_depth: 6
+  word_document:
+    toc: true
+    toc_depth: '6'
 ---
+
+knitr::opts_chunk$set(fig.align = "center")
+
 
 ## 1. Objectif du Projet
 
@@ -674,7 +678,6 @@ df_summary_mois <- df %>%
   count(mois) %>%
   mutate(freq = n / sum(n) * 100)
 
-# Convertir la colonne "mois" en facteur ordonné
 df_summary_mois$mois <- factor(df_summary_mois$mois, 
                                levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
                                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
@@ -728,13 +731,10 @@ C'est une étude géographique qui nous permettra de savoir où les incendies so
 
 
 ```{r}
-# Charger les données
 df <- read.csv("../Data/donnees_incendies.csv")
 
-# Variables quantitatives
 vars_quanti <- c("surface_parcourue_m2", "annee", "mois", "jour", "heure")
 
-# Statistiques descriptives globales
 summary(df[vars_quanti])
 ```
 
@@ -761,10 +761,8 @@ library(ggplot2)
 library(dplyr)
 df <- read.csv("../Data/donnees_incendies.csv")
 
-# Tableau croisé
 table(df$nature_inc_prim, df$nature_inc_sec)
 
-# Test du Chi²
 chisq.test(table(df$nature_inc_prim, df$nature_inc_sec))
 
 
@@ -974,7 +972,9 @@ Ces données constitueront le fondement de notre analyse, et leur examen devra �
 
 Les trois fichiers principaux de notre base de données sont cruciaux pour saisir les dynamiques des incendies, leur position géographique et les conditions environnementales associées.
 
-Le premier document, relatif aux incendies, est probablement le plus vital pour l'analyse de ce phénomène.  Il renferme une série de caractéristiques précisant le contexte de chaque feu.  
+Le premier document, relatif aux incendies, est probablement le plus vital pour l'analyse de ce phénomène.  
+
+Il renferme une série de caractéristiques précisant le contexte de chaque feu.  
 
 Ces données comprennent le nom et le code de la commune, essentiels pour situer avec précision chaque événement.  
 
@@ -1457,14 +1457,11 @@ Il est probable que la médiane, c'est-à-dire la saison durant laquelle 50% des
 ##### 5.3.1.5 Heures critiques de déclenchement
 
 ```{r}
-# 📦 Chargement des packages
 library(tidyverse)
 library(lubridate)
 
-# 📂 Charger les données
 df <- read_csv("../Data/donnees_incendies.csv")
 
-# 🕒 Traitement des plages horaires
 df <- df %>%
   mutate(
     heure_num = as.numeric(str_sub(heure, 1, 2)),  # extrait l'heure (ex: "14:30" -> 14)
@@ -1481,23 +1478,20 @@ df <- df %>%
     )
   )
 
-# 📊 Comptage des incendies par tranche horaire et type
 df_summary <- df %>%
   group_by(tranche_horaire, nature_inc_sec) %>%
   summarise(n = n(), .groups = "drop")
 
-# 🧼 Re-niveautage pour un affichage logique des tranches
 df_summary$tranche_horaire <- factor(
   df_summary$tranche_horaire,
   levels = c("00-03h", "03-06h", "06-09h", "09-12h", "12-15h", "15-18h", "18-21h", "21-24h")
 )
 
-# 💅 Graphe stylisé (seul affiché)
 ggplot(df_summary, aes(x = tranche_horaire, y = n, fill = nature_inc_sec)) +
   geom_bar(stat = "identity", position = "stack", width = 0.7, color = "white", linewidth = 0.3) +
   scale_fill_brewer(palette = "YlOrRd") +
   labs(
-    title = "🔥 Heures critiques des incendies par nature",
+    title = "Heures critiques des incendies par nature",
     subtitle = "Répartition des incendies secondaires selon les tranches horaires",
     x = "Tranche horaire",
     y = "Nombre d'incendies",
@@ -1686,10 +1680,6 @@ De plus, les incendies peuvent également être favorisés par le travail ou les
 Le week-end semble présenter un risque d'incendie réduit, en raison de la diminution des activités professionnelles et industrielles, ainsi que de la réduction des déplacements et de l'utilisation d'appareils susceptibles de déclencher un feu.  
 
 Il est probable qu'en week-end, lorsque les activités commerciales et industrielles sont réduites ou absentes, les personnes utilisent moins d'appareils ou adoptent davantage de mesures de précaution.
-
-
-
-
 
 #### 5.3.2 Facteurs climatiques et météorologiques
 
@@ -1892,10 +1882,8 @@ On va détailler davantage pourquoi nous avons opté pour une régression polyno
 ```{r}
 library(ggplot2)
 
-# Charger les données
 data <- read.csv("../Exports/export_vents.csv")
 
-# Créer un graphique avec régression polynomial
 ggplot(data, aes(x = Force_vent_med, y = surface_parcourue_m2)) +
   geom_point(color = "black", size = 2) + 
   geom_smooth(method = "lm", formula = y ~ poly(x, 2), color = "blue", se = FALSE) + 
@@ -1964,7 +1952,6 @@ Cet histogramme pourrait illustrer des relevés de la puissance du vent sur une 
 Maintenant on va tracer une courbe de densite:
 
 ```{r}
-# Histogramme avec courbe de densité pour la Force du Vent
 data <- read.csv("../Exports/export_vents.csv")
 ggplot(data, aes(x = Force_vent_med)) +
   geom_histogram(aes(y = ..density..), binwidth = 1, fill = "red", color = "black", alpha = 0.7) +
@@ -2089,7 +2076,6 @@ library(ggplot2)
 library(dplyr)
 data <- read.csv("../Exports/export_incendies_meteo.csv", sep = ",", stringsAsFactors = FALSE)
 
-# Température max vs Surface brûlée
 ggplot(data, aes(x = Tmax_med, y = surface_parcourue_m2)) +
   geom_point(alpha = 0.5, color = "firebrick") +
   geom_smooth(method = "lm", se = TRUE, color = "black") +
@@ -2398,16 +2384,14 @@ library(ggplot2)
 library(dplyr)
 agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
 
-# Calculer le nombre d'incendies par jour (regroupement par an, mois, jour)
 agg_data_daily <- agg_data %>%
   group_by(annee, mois, jour) %>%
-  summarise(nb_incendies = n(),   # Nombre d'incendies par jour
-            tmax_med = mean(tmax_med, na.rm = TRUE))   # Température maximale moyenne par jour
+  summarise(nb_incendies = n(),   
+            tmax_med = mean(tmax_med, na.rm = TRUE))   
 
-# Créer un graphique en nuage de points avec ggplot2
 ggplot(agg_data_daily, aes(x = tmax_med, y = nb_incendies)) +
   geom_point(color = "#1f77b4", size = 3, alpha = 0.7) +  # Points de données (couleur et opacité ajustées)
-  geom_smooth(method = "lm", color = "red", se = FALSE, linetype = "dashed", size = 1.2) +  # Ligne de régression (ajout de type de ligne et taille)
+  geom_smooth(method = "lm", color = "red", se = FALSE, linetype = "dashed", size = 1.2) +  
   labs(
     title = "Relation entre la température maximale quotidienne et le nombre d'incendies",
     subtitle = "Analyse de la température maximale (°C) et des incendies par jour",
@@ -2415,13 +2399,13 @@ ggplot(agg_data_daily, aes(x = tmax_med, y = nb_incendies)) +
     y = "Nombre d'Incendies",
     caption = "Source: Données d'incendies et température"
   ) +
-  theme_minimal(base_size = 14) +  # Thème minimal avec taille de base augmentée pour meilleure lisibilité
+  theme_minimal(base_size = 14) +  
   theme(
-    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),  # Centrer et formater le titre
-    plot.subtitle = element_text(hjust = 0.5, size = 12),               # Centrer et formater le sous-titre
-    axis.title = element_text(size = 14),                                # Taille des titres des axes
-    axis.text = element_text(size = 12),                                 # Taille des labels des axes
-    plot.caption = element_text(size = 10, hjust = 1)                    # Taille et alignement de la légende
+    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),  
+    plot.subtitle = element_text(hjust = 0.5, size = 12),               
+    axis.title = element_text(size = 14),                                
+    axis.text = element_text(size = 12),                                 
+    plot.caption = element_text(size = 10, hjust = 1)                    
   )
 ```
 
@@ -2498,7 +2482,6 @@ agg_data_combined <- agg_data %>%
     tmax_med = mean(tmax_med, na.rm = TRUE)
   )
 
-# Créer un graphique de chaleur (heatmap) pour l'impact combiné de la température et de l'heure
 ggplot(agg_data_combined, aes(x = tmax_med, y = heure, fill = nb_incendies)) +
   geom_tile() +  # Créer une carte de chaleur (tiles)
   scale_fill_gradient(low = "white", high = "red") +  # Définir les couleurs de la carte de chaleur
@@ -2510,10 +2493,10 @@ ggplot(agg_data_combined, aes(x = tmax_med, y = heure, fill = nb_incendies)) +
   ) +
   theme_minimal(base_size = 14) +  # Appliquer un thème minimal
   theme(
-    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),  # Centrer et formater le titre
-    axis.title = element_text(size = 14),                               # Taille des titres des axes
-    axis.text = element_text(size = 12),                                # Taille des labels des axes
-    plot.caption = element_text(size = 10, hjust = 1)                   # Taille et alignement de la légende
+    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),  
+    axis.title = element_text(size = 14),                               
+    axis.text = element_text(size = 12),                                
+    plot.caption = element_text(size = 10, hjust = 1)                   
   )
 ```
 
@@ -2587,10 +2570,8 @@ Les régions affichant le plus grand nombre d'incendies (indiquées par des poin
 library(ggplot2)
 library(dplyr)
 
-# Charger les données
 agg_data <- read.csv("../Exports/export_incendiestempheure.csv")
 
-# Créer des classes de température (par ex. tous les 2°C)
 agg_data_bins <- agg_data %>%
   mutate(
     tmax_bin = cut(tmax_med, breaks = seq(0, max(tmax_med, na.rm = TRUE) + 2, by = 2), right = FALSE)
@@ -2598,7 +2579,6 @@ agg_data_bins <- agg_data %>%
   group_by(tmax_bin) %>%
   summarise(nb_incendies = n())
 
-# Visualiser : Histogramme des incendies par classe de température
 ggplot(agg_data_bins, aes(x = tmax_bin, y = nb_incendies)) +
   geom_col(fill = "#FF5733", alpha = 0.8) +
   geom_vline(xintercept = which(agg_data_bins$nb_incendies == max(agg_data_bins$nb_incendies)), 
@@ -2981,17 +2961,6 @@ Ces résultats soulignent des liens significatifs fluctuants entre la températu
 L'augmentation inattendue des températures semble coïncider avec une plus grande exposition au soleil, ce qui est à prévoir dans un contexte de conditions météorologiques normales fluctuantes.  
 
 Toutefois, le lien entre vent et température est plus complexe et semble être influencé par des facteurs climatiques régionaux et saisonniers imprévisibles.
-
-
-
-
-
-
-
-
-
-
-
 
 
 #### 5.3.3 Géographie et environnement
@@ -3825,7 +3794,7 @@ ggplot(df_summary, aes(x = categorie_distance_cote, y = n, fill = categorie_dist
   geom_col(width = 0.6, color = "white") +
   scale_fill_brewer(palette = "YlOrRd") +
   labs(
-    title = "🔥 Risque d'incendie et proximité à la côte",
+    title = "Risque d'incendie et proximité à la côte",
     subtitle = "Analyse par distance minimale à des villes côtières",
     x = "Catégorie de distance à la côte",
     y = "Nombre d'incendies"
@@ -4253,7 +4222,7 @@ df_malveillance <- df_malveillance %>%
 ggplot(df_malveillance, aes(x = tranche_horaire, fill = tranche_horaire)) +
   geom_bar(width = 0.7, color = "white") +
   labs(
-    title = "⏰ Profil horaire des incendies criminels",
+    title = "Profil horaire des incendies criminels",
     x = "Tranche horaire",
     y = "Nombre d'incendies"
   ) +
@@ -4363,7 +4332,7 @@ df_malveillance <- df_malveillance %>%
 ggplot(df_malveillance, aes(x = mois, fill = mois)) +
   geom_bar(width = 0.7, color = "white") +
   labs(
-    title = "📆 Répartition mensuelle des incendies malveillants",
+    title = "Répartition mensuelle des incendies malveillants",
     x = "Mois",
     y = "Nombre d'incendies"
   ) +
@@ -4611,11 +4580,6 @@ Le prépondérance des incendies « Malveillance » indique que les facteurs hum
 Pour aller plus loin, nous pourrions envisager d'examiner d'autres variables ou réaliser des analyses statistiques afin de déterminer si les différences relevées ont une signification.  
 
 Ce type d'analyse constitue un excellent point de départ pour appréhender les données et formuler des interrogations plus spécifiques.
-
-
-
-
-
 
 ##### 5.3.4.5 Impact cumulé du climat et de l’urbanisation
 
@@ -4992,7 +4956,7 @@ ggplot(cause_combinee, aes(x = "", y = n, fill = cause)) +
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
         panel.grid = element_blank()) +
-  scale_fill_brewer(palette = "Set1") # Choisir une palette de couleurs
+  scale_fill_brewer(palette = "Set1")
 ```
 
 Le graphique en secteurs, nommé « Répartition des Causes Combinées des Incendies », compile les causes primaires et secondaires. 
@@ -5038,52 +5002,46 @@ data <- read.csv("../Exports/export_incendies_geo.csv")
 data_clean <- data %>%
   mutate(incendie = ifelse(!is.na(nature_inc_prim), 1, 0))
 
-# Vérifier et trier les données par commune et année
 data_survie <- data_clean %>%
-  arrange(code_INSEE, annee) %>%  # Trier les données par code_INSEE et année
+  arrange(code_INSEE, annee) %>%  
   group_by(code_INSEE) %>%
   mutate(
-    # Calculer la différence entre l'année courante et l'année précédente
     time = c(NA, diff(annee)),
-    event = incendie  # Garder 1 si incendie, 0 sinon
+    event = incendie  
   ) %>%
-  filter(event == 1)  # Garder uniquement les années où un incendie a eu lieu
+  filter(event == 1)  
 
-# Créer un objet de survie
 surv_obj <- Surv(time = data_survie$time, event = data_survie$event)
 
-# Ajuster un modèle de survie
 surv_fit <- survfit(surv_obj ~ 1)
 
-# Extraire les résultats du modèle survfit
 surv_data <- data.frame(
   time = surv_fit$time,
   surv = surv_fit$surv,
   n.risk = surv_fit$n.risk
 )
 
-# Visualisation améliorée avec ggplot2
 ggplot(surv_data, aes(x = time, y = surv)) +
-  geom_step(aes(color = "blue"), size = 1.5) +  # Courbe de survie colorée en bleu
+  geom_step(aes(color = "blue"), size = 1.5) +  
   labs(
     title = "Courbe de survie des incendies dans les communes",
     subtitle = "Suivi des incendies par commune et par année",
     x = "Temps depuis le dernier incendie (années)",
     y = "Probabilité de survie des communes",
   ) +
-  scale_color_manual(values = c("blue")) +  # Personnalisation de la couleur
+  scale_color_manual(values = c("blue")) +  
   theme_minimal() +  # Thème minimaliste
   theme(
-    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Centrer et styliser le titre
-    plot.subtitle = element_text(hjust = 0.5, size = 12),  # Centrer et styliser le sous-titre
-    axis.title = element_text(size = 14),  # Taille des titres des axes
-    axis.text = element_text(size = 12),  # Taille des étiquettes des axes
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotation des étiquettes de l'axe x pour plus de lisibilité
-    plot.caption = element_text(hjust = 1, size = 10, color = "grey"),  # Texte en bas à droite
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  
+    plot.subtitle = element_text(hjust = 0.5, size = 12), 
+    axis.title = element_text(size = 14), 
+    axis.text = element_text(size = 12),  
+    axis.text.x = element_text(angle = 45, hjust = 1),  
+    plot.caption = element_text(hjust = 1, size = 10, color = "grey"),  
     legend.position = "none",  # Cacher la légende
-    panel.grid.major = element_line(color = "lightgrey", size = 0.5),  # Lignes de grille principales
-    panel.grid.minor = element_line(color = "lightgrey", size = 0.25),  # Lignes de grille secondaires
-    panel.background = element_rect(fill = "white")  # Fond blanc pour une meilleure lisibilité
+    panel.grid.major = element_line(color = "lightgrey", size = 0.5),  
+    panel.grid.minor = element_line(color = "lightgrey", size = 0.25),  
+    panel.background = element_rect(fill = "white") 
   )
 ```
 
